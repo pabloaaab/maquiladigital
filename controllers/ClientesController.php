@@ -24,7 +24,7 @@ use yii\web\UploadedFile;
 
         public function actionIndex()
         {
-            if (!Yii::$app->user->isGuest) {
+            //if (!Yii::$app->user->isGuest) {
                 $form = new FormFiltroCliente;
                 $search = null;
                 if ($form->load(Yii::$app->request->get())) {
@@ -67,9 +67,9 @@ use yii\web\UploadedFile;
                     'pagination' => $pages,
 
                 ]);
-            }else{
+           /* }else{
                 return $this->redirect(["site/login"]);
-            }
+            }*/
 
         }
 

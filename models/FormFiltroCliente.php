@@ -23,7 +23,7 @@ class FormFiltroCliente extends Model
     public function attributeLabels()
     {
         return [
-            'q' => 'Buscar:',
+            'q' => '',
         ];
     }
 }

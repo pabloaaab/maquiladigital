@@ -12,7 +12,7 @@ use yii\widgets\LinkPager;
 $this->title = 'Clientes';
 ?>
 
-    <h1>Clientes</h1>
+    <h1>Lista Clientes</h1>
 <?php $f = ActiveForm::begin([
     "method" => "get",
     "action" => Url::toRoute("clientes/index"),
@@ -26,8 +26,8 @@ $this->title = 'Clientes';
 
 <div class="row" >
     <div class="col-lg-4">
-        <?= Html::submitButton("Buscar", ["class" => "btn btn-primary"]) ?>
-        <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary">Actualizar</a>
+        <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>                
+        <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
     </div>
 </div>
 <?php $f->end() ?>
@@ -35,7 +35,7 @@ $this->title = 'Clientes';
 <h3><?= $search ?></h3>
 
     <div class = "form-group" align="right">
-        <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary">Nuevo Cliente</a>
+        <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
     </div>
 
     <div class="container-fluid">
@@ -53,7 +53,7 @@ $this->title = 'Clientes';
                 <th scope="col">Razon Social</th>
                 <th scope="col">Fecha Ingreso</th>
                 <th scope="col">Teléfono</th>
-                <th scope="col">direccion</th>
+                <th scope="col">Direccion</th>
                 <th scope="col">Municipio</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -80,7 +80,7 @@ $this->title = 'Clientes';
         </table>
 
         <div class = "form-group" align="right">
-            <a href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary">Nuevo Cliente</a>
+            <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
         </div>
         <div class = "form-group" align="left">
             <?= LinkPager::widget(['pagination' => $pagination]) ?>
