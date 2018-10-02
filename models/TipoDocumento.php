@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use Yii;
 use yii\base\Model;
 
-class Departamentos extends ActiveRecord
+class TipoDocumento extends ActiveRecord
 {
     public static function getDb()
     {
@@ -16,6 +16,6 @@ class Departamentos extends ActiveRecord
 
     public static function tableName()
     {
-        return 'departamento';
+        return 'tipodocumento';
     }
 }

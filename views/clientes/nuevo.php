@@ -6,11 +6,12 @@ use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use app\models\Municipio;
 use app\models\Departamentos;
+use app\models\TipoDocumento;
 
-$this->title = 'Nuevo Inscrito';
+$this->title = 'Nuevo Cliente';
 ?>
 
-<h1>Nuevo Inscrito</h1>
+<h1>Nuevo Cliente</h1>
 <?php if ($tipomsg == "danger") { ?>
     <h3 class="alert-danger"><?= $msg ?></h3>
 <?php } else{ ?>
@@ -26,85 +27,75 @@ $this->title = 'Nuevo Inscrito';
 ?>
 
 <?php
-$lugarExp = ArrayHelper::map(Municipio::find()->all(), 'opcion','opcion');
-$municipioNac = ArrayHelper::map(Municipio::find()->all(), 'opcion','opcion');
-$sede = ArrayHelper::map(Municipio::find()->all(), 'opcion','opcion');
-$departamento_nac = ArrayHelper::map(Departamentos::find()->all(), 'opcion','opcion');
-$ciudadFirma = ArrayHelper::map(Municipio::find()->all(), 'opcion','opcion');
+$departamento= ArrayHelper::map(Departamentos::find()->all(), 'iddepartamento','nombredepartamento');
+$municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio','municipio');
+$tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descripcion');
 ?>
 
-<h3>Información Personal</h3>
+<h3>Información Cliente</h3>
 <div class="row" id="personal">
     <div class="col-lg-3">
-        <?= $form->field($model, 'consecutivo')->input("hidden") ?>
-        <?= $form->field($model, 'identificacion')->input("text") ?>
-        <?= $form->field($model, 'nombre1')->input("text") ?>
-        <?= $form->field($model, 'apellido1')->input("text") ?>
-        <?= $form->field($model, 'tipo_personal')->dropdownList(['Estudiante' => 'Estudiante', 'Administrativo' => 'Administrativo', 'Docente' => 'Docente'], ['prompt' => 'Seleccione...']) ?>
-        <?= $form->field($model, 'telefono')->input("text") ?>
-        <?= $form->field($model, 'email')->input("text") ?>
-        <?= $form->field($model, 'sexo')->dropdownList(['Masculino' => 'Masculino', 'Femenino' => 'Femenino'], ['prompt' => 'Seleccione...']) ?>
-        <?= $form->field($model, 'barrio')->input("text") ?>
-        <?= $form->field($model, 'municipio_nac')->dropDownList($municipioNac,['prompt' => 'Seleccione...' ]) ?>
-        <?= $form->field($model, 'municipio')->dropDownList($sede,['prompt' => 'Seleccione...' ]) ?>
+        <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...' ]) ?>
+        <?= $form->field($model, 'cedulanit')->input("text") ?>
+        <?= $form->field($model, 'razonsocial')->input("text") ?>
+
+    </div>
+    <div class="col-lg-4">
+        <?= $form->field($model, 'nombrecliente')->input("text") ?>
+        <?= $form->field($model, 'apellidocliente')->input("text") ?>
+        <?= $form->field($model, 'emailcliente')->input("text") ?>
     </div>
     <div class="col-lg-3">
-        <?= $form->field($model, 'a')->input("hidden") ?>
-        <?= $form->field($model, 'tipo_doc')->dropdownList(['cc' => 'Cédula de Ciudadanía', 'ti' => 'Tarjeta de Identidad', 'ce' => 'Cedula de Extranjería'], ['prompt' => 'Seleccione...']) ?>
-        <?= $form->field($model, 'nombre2')->input("text") ?>
-        <?= $form->field($model, 'apellido2')->input("text") ?>
-        <?= $form->field($model, 'lugar_exp')->dropDownList($lugarExp,['prompt' => 'Seleccione...' ]) ?>
-        <?= $form->field($model, 'celular')->input("text") ?>
-        <?= $form->field($model, 'direccion')->input("text") ?>
-        <?= $form->field($model, 'comuna')->input("text") ?>
-        <?= $form->field($model, 'fecha_nac')->input("date") ?>
-        <?= $form->field($model, 'departamento_nac')->dropDownList($departamento_nac,['prompt' => 'Seleccione...' ]) ?>
+        <?= $form->field($model, 'telefonocliente')->input("text") ?>
+        <?= $form->field($model, 'celularcliente')->input("text") ?>
+        <?= $form->field($model, 'direccioncliente')->input("text") ?>
+    </div>
+    <div class="col-lg-2">
+        <?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt' => 'Seleccione...' ]) ?>
+        <?= $form->field($model, 'idmunicipio')->dropDownList($municipio,['prompt' => 'Seleccione...' ]) ?>
+
     </div>
 </div>
-<h3>Información Familiar</h3>
-<div class="row" id="familiar">
-    <div class="col-lg-3">
-        <?= $form->field($model, 'nom_madre')->input("text") ?>
-        <?= $form->field($model, 'nom_padre')->input("text") ?>
+<h3>Información Contacto</h3>
+<div class="row" id="contacto">
+    <div class="col-lg-4">
+        <?= $form->field($model, 'contacto')->input("text") ?>
     </div>
     <div class="col-lg-2">
-        <?= $form->field($model, 'doc_madre')->input("text") ?>
-        <?= $form->field($model, 'doc_padre')->input("text") ?>
+        <?= $form->field($model, 'telefonocontacto')->input("text") ?>
     </div>
-    <div class="col-lg-3">
-        <?= $form->field($model, 'ocupacion_madre')->input("text") ?>
-        <?= $form->field($model, 'ocupacion_padre')->input("text") ?>
+    <div class="col-lg-2">
+        <?= $form->field($model, 'celularcontacto')->input("text") ?>
     </div>
 </div>
-<h3>Últimos Estudios Realizados</h3>
-<div class="row" id="estudios">
-    <div class="col-lg-3">
-        <?= $form->field($model, 'estudio1')->input("text") ?>
-        <?= $form->field($model, 'estudio2')->input("text") ?>
+<h3>Información Tributaria</h3>
+<div class="row" id="tributaria">
+    <div class="col-lg-2">
+        <?= $form->field($model, 'nitmatricula')->input("text") ?>
     </div>
     <div class="col-lg-2">
-        <?= $form->field($model, 'gradoc1')->input("text") ?>
-        <?= $form->field($model, 'gradoc2')->input("text") ?>
+        <?= $form->field($model, 'formapago')->dropdownList(['1' => 'Contado', '2' => 'Credito'], ['prompt' => 'Seleccione...']) ?>
+    </div>
+    <div class="col-lg-1">
+        <?= $form->field($model, 'plazopago')->input("text") ?>
     </div>
     <div class="col-lg-2">
-        <?= $form->field($model, 'anioc1')->input("date") ?>
-        <?= $form->field($model, 'anioc2')->input("date") ?>
+        <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'Cómun', '2' => 'Simpplificado'], ['prompt' => 'Seleccione...']) ?>
     </div>
     <div class="col-lg-2">
-        <?= $form->field($model, 'graduado1')->dropdownList(['Si' => 'Si', 'No' => 'No'], ['prompt' => 'Seleccione...']) ?>
-        <?= $form->field($model, 'graduado2')->dropdownList(['Si' => 'Si', 'No' => 'No'], ['prompt' => 'Seleccione...']) ?>
+        <?= $form->field($model, 'autoretenedor')->dropdownList(['si' => 'Si', 'no' => 'No'], ['prompt' => 'Seleccione...']) ?>
+    </div>
+    <div class="col-lg-1">
+        <?= $form->field($model, 'retencioniva')->input("text") ?>
+    </div>
+    <div class="col-lg-1">
+        <?= $form->field($model, 'retencionfuente')->input("text") ?>
     </div>
 </div>
-<h3>Autorización de Registro</h3>
+<h3>Obervaciones</h3>
 <div class="row" id="estudios">
     <div class="col-lg-2">
-        <?= $form->field($model, 'autoriza')->dropdownList(['1' => 'Si', '0' => 'No'], ['prompt' => 'Seleccione...']) ?>
-    </div>
-    <div class="col-lg-2">
-        <?= $form->field($model, 'fecha_autoriza')->input("date") ?>
-    </div>
-    <div class="col-lg-3">
-        <?= $form->field($model, 'ciudad_firma')->dropDownList($ciudadFirma,['prompt' => 'Seleccione...' ]) ?>
+        <?= $form->field($model, 'observacion')->textarea(['rows' => '3']) ?>
     </div>
 </div>
 <div class="row">

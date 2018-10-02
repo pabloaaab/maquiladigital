@@ -58,7 +58,6 @@ $this->title = 'Clientes';
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -73,9 +72,8 @@ $this->title = 'Clientes';
                 <td><?= $val->direccioncliente ?></td>
                 <td><?= $val->idmunicipio ?></td>
                 <td><a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Editar"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/firma_estudiante", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-pencil.svg" align="center" width="20px" height="20px" title="Firma Estudiante"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/firma_acudiente", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-pencil.svg" align="center" width="20px" height="20px" title="Firma Acudiente"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/imprimir", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-print.svg" align="center" width="20px" height="20px" title="Imprimir"></a></td>
+                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
+                <td><a href="<?= Url::toRoute(["clientes/eliminar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-delete.svg" align="center" width="20px" height="20px" title="Eliminar"></a></td>
             </tr>
             </tbody>
             <?php endforeach; ?>

@@ -11,10 +11,11 @@ use app\models\Cliente;
  */
 class FormCliente extends Model
 {
+    public $idcliente;
     public $idtipo;
     public $cedulanit;
     public $dv;
-    public $razonsocil;
+    public $razonsocial;
     public $nombrecliente;
     public $apellidocliente;
     public $direccioncliente;
@@ -46,7 +47,7 @@ class FormCliente extends Model
             ['cedulanit', 'cedulanit_existe'],
             ['dv', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['razonsocial', 'required', 'message' => 'Campo requerido'],
-            ['razonsocial', 'match', 'pattern' => "/^[a-záéíóúñ]+$/i", 'message' => 'Sólo se aceptan letras'],
+            ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'required', 'message' => 'Campo requerido'],
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
@@ -56,11 +57,11 @@ class FormCliente extends Model
             ['celularcliente', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['emailcliente', 'email'],
             ['emailcliente', 'email_existe'],
-            ['contacto', 'match', 'pattern' => "/^[a-záéíóúñ]+$/i", 'message' => 'Sólo se aceptan letras'],
+            ['contacto', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['telefonocontacto', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['celularcontacto', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['formadepago', 'required', 'message' => 'Campo requerido'],
-            ['formadepago', 'default'],
+            ['formapago', 'required', 'message' => 'Campo requerido'],
+            ['formapago', 'default'],
             ['plazopago', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['iddepartamento', 'required', 'message' => 'Campo requerido'],
             ['idmunicipio', 'required', 'message' => 'Campo requerido'],
@@ -91,18 +92,18 @@ class FormCliente extends Model
             'celularcliente' => 'celular:',
             'emailcliente' => 'Email:',
             'contacto' => 'Contacto:',
-            'telefonocontacto' => 'TelefonoContacto:',
-            'celularcontacto' => 'Celular Contacto:',
-            'formadepago' => 'Forma de Pago:',
-            'plazopago' => 'Plazo Pago:',
+            'telefonocontacto' => 'Telefono:',
+            'celularcontacto' => 'Celular:',
+            'formapago' => 'Forma de Pago:',
+            'plazopago' => 'Plazo:',
             'iddepartamento' => 'Departamento:',
-            'municipio' => 'Municipio:',
+            'idmunicipio' => 'Municipio:',
             'nitmatricula' => 'Nit/Matricula:',
             'tiporegimen' => 'Tipo Régimen:',
             'autoretenedor' => 'Autoretenedor:',
-            'retencioniva' => 'Retención Iva:',
-            'retencionfuente' => 'Retención Fuente:',
-            'observacion' => 'Observación:',
+            'retencioniva' => 'Rete Iva:',
+            'retencionfuente' => 'Rete Fte:',
+            'observacion' => '',
 
         ];
     }
@@ -110,21 +111,33 @@ class FormCliente extends Model
     public function cedulanit_existe($attribute, $params)
     {
         //Buscar la cedula/nit en la tabla
-        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit])->andWhere("codcliente!=:codcliente", [':codcliente' => $this->codcliente]);
+        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit]);
         //Si la identificacion existe mostrar el error
         if ($table->count() == 1)
         {
-            $this->addError($attribute, "El número de identificación ya existe".$this->consecutivo);
+            $this->addError($attribute, "El número de identificación o nit ya existe");
         }
     }
+
+    public function nitmatricula_existe($attribute, $params)
+    {
+        //Buscar la cedula/nit en la tabla
+        $table = Cliente::find()->where("nitmatricula=:nitmatricula", [":nitmatricula" => $this->nitmatricula])->andWhere("cedulanit!=:cedulanit", [':cedulanit' => $this->cedulanit]);
+        //Si la identificacion existe mostrar el error
+        if ($table->count() == 1)
+        {
+            $this->addError($attribute, "El número de nit o matricula ya existe".$this->cedulanit);
+        }
+    }
+
     public function email_existe($attribute, $params)
     {
         //Buscar el email en la tabla
-        $table = Cliente::find()->where("emailcliente=:emailcliente", [":emailcliente" => $this->emailcliente])->andWhere("codcliente!=:codcliente", [':codcliente' => $this->codcliente]);
+        $table = Cliente::find()->where("emailcliente=:emailcliente", [":emailcliente" => $this->emailcliente])->andWhere("cedulanit!=:cedulanit", [':cedulanit' => $this->cedulanit]);
         //Si el email existe mostrar el error
         if ($table->count() == 1)
         {
-            $this->addError($attribute, "El email ya existe".$this->codcliente);
+            $this->addError($attribute, "El email ya existe".$this->idcliente);
         }
     }
 }
