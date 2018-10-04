@@ -26,15 +26,16 @@ use yii\web\UploadedFile;
         {
             //if (!Yii::$app->user->isGuest) {
                 $form = new FormFiltroCliente;
-                $search = null;
+                $cedulanit = null;
+				$nitmatricula = null;
                 if ($form->load(Yii::$app->request->get())) {
                     if ($form->validate()) {
-                        $search = Html::encode($form->q);
+                        $cedulanit = Html::encode($form->cedulanit);
+						$nitmatricula = Html::encode($form->nitmatricula);						
                         $table = Cliente::find()
-                            ->where(['like', 'idcliente', $search])
-                            ->orWhere(['like', 'idcliente', $search])
-                            ->orWhere(['like', 'nombrecliente', $search])
-                            ->orderBy('idcliente desc');
+                            ->andFilterWhere(['like', 'cedulanit', $cedulanit])
+                            ->andFilterWhere(['like', 'nitmatricula', $nitmatricula])
+							->orderBy('idcliente desc');
                         $count = clone $table;
                         $pages = new Pagination([
                             'pageSize' => 20,
@@ -62,8 +63,7 @@ use yii\web\UploadedFile;
                 }
                 return $this->render('index', [
                     'model' => $model,
-                    'form' => $form,
-                    'search' => $search,
+                    'form' => $form,                    
                     'pagination' => $pages,
 
                 ]);

@@ -13,26 +13,43 @@ $this->title = 'Clientes';
 ?>
 
     <h1>Lista Clientes</h1>
-<?php $f = ActiveForm::begin([
+<?php $formulario = ActiveForm::begin([
     "method" => "get",
     "action" => Url::toRoute("clientes/index"),
     "enableClientValidation" => true,
+    
+    
+        'fieldConfig' => [
+            'template' => "{label}\n<div class=\"col-lg-5\">{input}</div>\n<div class=\"col-lg-4\">{error}</div>",
+            'labelOptions' => ['class' => 'col-lg-1 control-label'],
+        ],
+    
 ]);
 ?>
 
-<div class="form-group">
-    <?= $f->field($form, "q")->input("search") ?>
-</div>
-
-<div class="row" >
-    <div class="col-lg-4">
-        <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>                
-        <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+   <div class="panel panel-info panel-filters">
+        <div class="panel-heading">
+            Filtros de busqueda <span class='glyphicon glyphicon-filter'></span>
+        </div>
+        <div class="panel-body" ><!--style="display:none"-->
+                                                              
+                    <?= $formulario->field($form, "nitmatricula")->input("search") ?>                                          
+                
+                    <?= $formulario->field($form, "nitmatricula")->input("search") ?>
+                
+            </div>
+            
+            
+            <div class="panel-footer text-right" >
+                <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>                
+                <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            </div>
+        </div>
     </div>
-</div>
-<?php $f->end() ?>
+    
 
-<h3><?= $search ?></h3>
+<?php $formulario->end() ?>
+
 
     <div class = "form-group" align="right">
         <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
