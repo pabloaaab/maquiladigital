@@ -116,9 +116,9 @@ class SiteController extends Controller
             {
                 //Preparamos la consulta para guardar el usuario
                 $table = new Users();
-                $table->usuario = $model->usuario;
-                $table->nombreusuario = $model->nombreusuario;
-                $table->tipousuario = $model->tipousuario;
+                $table->username = $model->username;
+                $table->nombrecompleto = $model->nombrecompleto;
+                $table->role = $model->role;
                 $table->documentousuario = $model->documentousuario;
                 $table->emailusuario = $model->emailusuario;
                 //Encriptamos el password

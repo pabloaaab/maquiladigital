@@ -19,4 +19,20 @@ class Cliente extends ActiveRecord
         return 'cliente';
     }
 
+    /**
+ * @return \yii\db\ActiveQuery
+ */
+    public function getIdMunicipioFk()
+    {
+        return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdTipoFk()
+    {
+        return $this->hasOne(TipoDocumento::className(), ['idtipo' => 'idtipo']);
+    }
+
 }

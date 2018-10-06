@@ -11,14 +11,14 @@ use yii\base\Model;
 class FormFiltroCliente extends Model
 {
     public $cedulanit;
-    public $nitmatricula;
+    public $nombrecorto;
 
     public function rules()
     {
         return [
 
-            ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan numeros'],
-            ['nitmatricula', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan numeros'],
+            ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['nombrecorto', 'match', 'pattern' => '/^[a-z\s]+$/i', 'message' => 'Sólo se aceptan letras'],
         ];
     }
 
@@ -26,7 +26,7 @@ class FormFiltroCliente extends Model
     {
         return [
             'cedulanit' => 'Nro Identificacion',
-            'nitmatricula' => 'Cliente:',
+            'nombrecorto' => 'Cliente:',
         ];
     }
 }

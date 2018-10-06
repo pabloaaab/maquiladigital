@@ -18,4 +18,12 @@ class Municipio extends ActiveRecord
     {
         return 'municipio';
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdDepartamentoFk()
+    {
+        return $this->hasOne(TblDepartamentos::className(), ['iddepartamento' => 'iddepartamento']);
+    }
 }

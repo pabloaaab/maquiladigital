@@ -8,9 +8,9 @@ use app\models\Users;
 class FormRegister extends model{
 
     public $codusuario;
-    public $usuario;
-    public $nombreusuario;
-    public $tipousuario;
+    public $username;
+    public $nombrecompleto;
+    public $role;
     public $documentousuario;
     public $emailusuario;
     public $password;
@@ -22,13 +22,13 @@ class FormRegister extends model{
     public function rules()
     {
         return [
-            [['usuario', 'emailusuario', 'password', 'password_repeat','nombreusuario','tipousuario','documentousuario',], 'required', 'message' => 'Campo requerido'],
-            ['usuario', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 30 caracteres'],
-            ['usuario', 'match', 'pattern' => "/^[0-9a-z]+$/i", 'message' => 'Sólo se aceptan letras y números'],
-            ['usuario', 'usuario_existe'],
+            [['username', 'emailusuario', 'password', 'password_repeat','nombrecompleto','role','documentousuario',], 'required', 'message' => 'Campo requerido'],
+            ['username', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 30 caracteres'],
+            ['username', 'match', 'pattern' => "/^[0-9a-z]+$/i", 'message' => 'Sólo se aceptan letras y números'],
+            ['username', 'usuario_existe'],
 
-            ['nombreusuario', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 50 caracteres'],
-            ['nombreusuario', 'match', 'pattern' => "/^[a-z]+$/i", 'message' => 'Sólo se aceptan letras'],
+            ['nombrecompleto', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 50 caracteres'],
+            ['nombrecompleto', 'match', 'pattern' => "/^[a-z]+$/i", 'message' => 'Sólo se aceptan letras'],
 
             ['emailusuario', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Mínimo 5 y máximo 80 caracteres'],
             ['emailusuario', 'email', 'message' => 'Formato no válido'],
@@ -41,9 +41,9 @@ class FormRegister extends model{
     public function attributeLabels()
     {
         return [
-            'usuario' => 'Usuario:',
-            'nombreusuario' => 'Nombre:',
-            'tipousuario' => 'Tipo Usuario:',
+            'username' => 'Usuario:',
+            'nombrecompleto' => 'Nombre:',
+            'role' => 'Tipo Usuario:',
             'documentousuario' => 'Documento Usuario:',
             'emailusuario' => 'Email:',
             'password' => 'Clave:',
@@ -67,7 +67,7 @@ class FormRegister extends model{
     public function usuario_existe($attribute, $params)
     {
         //Buscar el usuario en la tabla
-        $table = Users::find()->where("usuario=:usuario", [":usuario" => $this->usuario]);
+        $table = Users::find()->where("username=:username", [":username" => $this->username]);
 
         //Si el username existe mostrar el error
         if ($table->count() == 1)

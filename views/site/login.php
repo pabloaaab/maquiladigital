@@ -24,7 +24,7 @@ $this->title = 'Inicio de Sesión';
         ],
     ]); ?>
 
-        <?= $form->field($model, 'usuario')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

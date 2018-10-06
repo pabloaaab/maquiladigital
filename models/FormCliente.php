@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use app\models\Cliente;
+use app\models\Departamentos;
+use app\models\Municipio;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -18,6 +20,7 @@ class FormCliente extends Model
     public $razonsocial;
     public $nombrecliente;
     public $apellidocliente;
+    public $nombrecorto;
     public $direccioncliente;
     public $telefonocliente;
     public $celularcliente;
@@ -45,7 +48,9 @@ class FormCliente extends Model
             ['cedulanit', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],
-            ['dv', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['dv', 'required', 'message' => 'Campo requerido'],
+            [['dv'], 'string', 'max' => 1],
+
             ['razonsocial', 'required', 'message' => 'Campo requerido'],
             ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
@@ -103,6 +108,7 @@ class FormCliente extends Model
             'autoretenedor' => 'Autoretenedor:',
             'retencioniva' => 'Rete Iva:',
             'retencionfuente' => 'Rete Fte:',
+            'dv' => 'DV:',
             'observacion' => '',
 
         ];

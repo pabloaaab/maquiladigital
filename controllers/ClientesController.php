@@ -13,6 +13,7 @@ use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Cliente;
+use app\models\Municipio;
 use app\models\FormCliente;
 use yii\helpers\Url;
 use app\models\FormFiltroCliente;
@@ -27,16 +28,17 @@ use yii\web\UploadedFile;
             //if (!Yii::$app->user->isGuest) {
                 $form = new FormFiltroCliente;
                 $cedulanit = null;
-				$nitmatricula = null;
+				$nombrecorto = null;
                 if ($form->load(Yii::$app->request->get())) {
                     if ($form->validate()) {
                         $cedulanit = Html::encode($form->cedulanit);
-						$nitmatricula = Html::encode($form->nitmatricula);						
+                        $nombrecorto = Html::encode($form->nombrecorto);
                         $table = Cliente::find()
                             ->andFilterWhere(['like', 'cedulanit', $cedulanit])
-                            ->andFilterWhere(['like', 'nitmatricula', $nitmatricula])
+                            ->andFilterWhere(['like', 'nombrecorto', $nombrecorto])
 							->orderBy('idcliente desc');
                         $count = clone $table;
+                        $to = $count->count();
                         $pages = new Pagination([
                             'pageSize' => 20,
                             'totalCount' => $count->count()
@@ -61,10 +63,12 @@ use yii\web\UploadedFile;
                         ->limit($pages->limit)
                         ->all();
                 }
+                $to = $count->count();
                 return $this->render('index', [
                     'model' => $model,
                     'form' => $form,                    
                     'pagination' => $pages,
+                    'to' => $to,
 
                 ]);
            /* }else{
@@ -255,6 +259,16 @@ use yii\web\UploadedFile;
                 return $this->redirect(["clientes/index"]);
             }
             return $this->render("editar", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg]);
+        }
+
+        public function actionMunicipio($id){
+            $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
+            echo "<option>Seleccione...</option>";
+            if(count($rows)>0){
+                foreach($rows as $row){
+                    echo "<option value='$row->idmunicipio'>$row->municipio</option>";
+                }
+            }
         }
 
 }

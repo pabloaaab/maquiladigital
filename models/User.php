@@ -6,9 +6,9 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 {
 
     public $codusuario;
-    public $usuario;
-    public $nombreusuario;
-    public $tipousuario;
+    public $username;
+    public $nombrecompleto;
+    public $role;
     public $documentousuario;
     public $emailusuario;
     public $password;
@@ -85,15 +85,15 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
      */
 
     /* Busca la identidad del usuario a través del username */
-    public static function findByUsername($usuario)
+    public static function findByUsername($username)
     {
         $users = Users::find()
             ->where("activo=:activo", ["activo" => 1])
-            ->andWhere("usuario=:usuario", [":usuario" => $usuario])
+            ->andWhere("username=:username", [":username" => $username])
             ->all();
 
         foreach ($users as $user) {
-            if (strcasecmp($user->usuario, $usuario) === 0) {
+            if (strcasecmp($user->username, $username) === 0) {
                 return new static($user);
             }
         }

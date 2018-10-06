@@ -16,12 +16,12 @@ use yii\widgets\ActiveForm;
 
     <div class="row" id="registro">
         <div class="col-lg-5">
-            <?= $form->field($model, "usuario")->input("text") ?>
+            <?= $form->field($model, "username")->input("text") ?>
             <?= $form->field($model, "password")->input("password") ?>
             <?= $form->field($model, "password_repeat")->input("password") ?>
-            <?= $form->field($model, "tipousuario")->input("text") ?>
+            <?= $form->field($model, "role")->input("text") ?>
             <?= $form->field($model, "emailusuario")->input("email") ?>
-            <?= $form->field($model, "nombreusuario")->input("text") ?>
+            <?= $form->field($model, "nombrecompleto")->input("text") ?>
             <?= $form->field($model, "documentousuario")->input("text") ?>
 
         </div>
