@@ -74,6 +74,21 @@ $this->title = 'Nuevo Cliente';
         document.getElementById('dv').value = y;
     }
 </script>
+<script language="JavaScript">
+    function mostrar() {
+        idtipo = document.getElementById('idtipo').value;
+        if (idtipo == '1'){
+            razonsocial.style.display = "none";
+            nombrecliente.style.display = "block";
+            apellidocliente.style.display = "block";
+        }
+        else if (idtipo == '5') {
+            razonsocial.style.display = "block";
+            nombrecliente.style.display = "none";
+            apellidocliente.style.display = "none";
+        }
+    }
+</script>
 <h1>Nuevo Cliente</h1>
 <?php if ($tipomsg == "danger") { ?>
     <h3 class="alert-danger"><?= $msg ?></h3>
@@ -102,33 +117,23 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
     <div class="panel-body">
         <div class="row" id="personal">
             <div class="col-lg-3">
-                <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...' ]) ?>
+                <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo' ]) ?>
                 <?= $form->field($model, 'telefonocliente')->input("text",['id' => 'telefonocliente']) ?>
                 <?= $form->field($model, 'direccioncliente')->input("text") ?>
             </div>
             <div class="col-lg-4">
-                <?php if ($model->idtipo == 5) { ?>
-                    <?= $form->field($model, 'razonsocial')->input("text") ?>
-                    <?= $form->field($model, 'celularcliente')->input("text") ?>
-                    <?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
+                <div id="razonsocial" style="display:none"><?= $form->field($model, 'razonsocial')->input("text") ?></div>
+                <div id="nombrecliente" style="display:block"><?= $form->field($model, 'nombrecliente')->input("text") ?></div>
+                <?= $form->field($model, 'celularcliente')->input("text") ?>
+                <?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
             $( "#'.Html::getInputId($model, 'idmunicipio').'" ).html( data ); });']); ?>
-                <?php } else { ?>
-                    <?= $form->field($model, 'nombrecliente')->input("text") ?>
-                    <?= $form->field($model, 'celularcliente')->input("text") ?>
-                    <?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
-            $( "#'.Html::getInputId($model, 'idmunicipio').'" ).html( data ); });']); ?>
-                <?php } ?>
+
             </div>
             <div class="col-lg-3">
-                <?php if ($model->idtipo == 5) { ?>
+                <div id="apellidocliente" style="display:block"><?= $form->field($model, 'apellidocliente')->input("text") ?></div>
+                <?= $form->field($model, 'emailcliente')->input("text") ?>
+                <?= $form->field($model, 'idmunicipio')->dropDownList(['prompt'=>'Seleccione...']) ?>
 
-                    <?= $form->field($model, 'emailcliente')->input("text") ?>
-                    <?= $form->field($model, 'idmunicipio')->dropDownList(['prompt'=>'Seleccione...']) ?>
-                <?php } else { ?>
-                    <?= $form->field($model, 'apellidocliente')->input("text") ?>
-                    <?= $form->field($model, 'emailcliente')->input("text") ?>
-                    <?= $form->field($model, 'idmunicipio')->dropDownList(['prompt'=>'Seleccione...']) ?>
-                <?php } ?>
             </div>
             <div class="col-lg-2">
 

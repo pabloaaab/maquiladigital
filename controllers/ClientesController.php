@@ -110,6 +110,16 @@ use yii\web\UploadedFile;
                     $table->autoretenedor = $model->autoretenedor;
                     $table->retencionfuente = $model->retencionfuente;
                     $table->retencioniva = $model->retencioniva;
+                    $table->observacion = $model->observacion;
+                    $table->dv = $model->dv;
+                    if ($model->idtipo == 1){
+                        $table->nombrecorto = $model->nombrecliente." ".$model->apellidocliente ;
+                        $model->razonsocial = null;
+                    }elseif ($model->idtipo == 5){
+                        $table->nombrecorto = $model->razonsocial;
+                        $model->nombrecliente = null;
+                        $model->apellidocliente = null;
+                    }
 
                     if ($table->insert()) {
                         $msg = "Registros guardados correctamente";

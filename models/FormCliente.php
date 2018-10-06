@@ -50,11 +50,9 @@ class FormCliente extends Model
             ['cedulanit', 'cedulanit_existe'],
             ['dv', 'required', 'message' => 'Campo requerido'],
             [['dv'], 'string', 'max' => 1],
-
-            ['razonsocial', 'required', 'message' => 'Campo requerido'],
             ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
-            ['nombrecliente', 'required', 'message' => 'Campo requerido'],
+
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['direccioncliente', 'default'],
