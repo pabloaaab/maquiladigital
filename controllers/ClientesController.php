@@ -14,6 +14,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Cliente;
 use app\models\Municipio;
+use app\models\Departamentos;
 use app\models\FormCliente;
 use yii\helpers\Url;
 use app\models\FormFiltroCliente;
@@ -253,13 +254,11 @@ use yii\bootstrap\Modal;
         public function actionDetalle()
         {
            // $model = new List();
-
-
-            return $this->render('detalle', [
+            $idcliente = Html::encode($_GET["idcliente"]);
+            $table = Cliente::find()->where(['idcliente' => $idcliente])->one();
+            return $this->render('detalle', ['table' => $table
                 ]);
-
         }
-
 
         public function actionMunicipio($id){
             $rows = Municipio::find()->where(['iddepartamento' => $id])->all();

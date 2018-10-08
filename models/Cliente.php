@@ -20,11 +20,19 @@ class Cliente extends ActiveRecord
     }
 
     /**
- * @return \yii\db\ActiveQuery
- */
+     * @return \yii\db\ActiveQuery
+     */
     public function getIdMunicipioFk()
     {
         return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdDepartamentoFk()
+    {
+        return $this->hasOne(Departamentos::className(), ['iddepartamento' => 'iddepartamento']);
     }
 
     /**
