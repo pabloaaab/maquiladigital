@@ -4,8 +4,6 @@
 /* @var $model app\models\ContactForm */
 
 
-use yii\widgets\LinkPager;
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
@@ -13,13 +11,11 @@ use yii\helpers\ArrayHelper;
 use app\models\Municipio;
 use app\models\Departamentos;
 use app\models\TipoDocumento;
-
+use yii\widgets\LinkPager;
 $this->title = 'Nuevo Cliente';
 ?>
 <script language="JavaScript">
     function calcularDigitoVerificacion() {
-        divC = 11111111;
-        //document.getElementById('dv').value = document.getElementById('cedulanit').value;
         var vpri,
             x,
             y,
@@ -71,7 +67,8 @@ $this->title = 'Nuevo Cliente';
         }
         y = x % 11 ;
         // console.log ( y ) ;
-        document.getElementById('dv').value = y;
+        //return ( y > 1 ) ? 11 - y : y ;
+        document.getElementById('dv').value = ( y > 1 ) ? 11 - y : y;
     }
 </script>
 <script language="JavaScript">
@@ -126,7 +123,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
                 <div id="nombrecliente" style="display:block"><?= $form->field($model, 'nombrecliente')->input("text") ?></div>
                 <?= $form->field($model, 'celularcliente')->input("text") ?>
                 <?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
-            $( "#'.Html::getInputId($model, 'idmunicipio').'" ).html( data ); });']); ?>
+            $( "#'.Html::getInputId($model, 'idmunicipio',['required']).'" ).html( data ); });']); ?>
 
             </div>
             <div class="col-lg-3">

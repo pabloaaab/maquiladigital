@@ -48,12 +48,13 @@ DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE `cliente` (
   `idcliente` int(11) NOT NULL AUTO_INCREMENT,
   `idtipo` int(11) NOT NULL,
-  `cedulanit` char(15) NOT NULL,
+  `cedulanit` int(15) NOT NULL,
   `dv` int(1) NOT NULL,
-  `razonsocial` char(40) NOT NULL,
-  `nombrecliente` char(30) NOT NULL,
-  `apellidocliente` char(30) NOT NULL,
-  `direccioncliente` char(40) NOT NULL,
+  `razonsocial` varchar(40) DEFAULT NULL,
+  `nombrecliente` varchar(30) DEFAULT NULL,
+  `apellidocliente` varchar(30) DEFAULT NULL,
+  `nombrecorto` varchar(200) DEFAULT NULL,
+  `direccioncliente` varchar(40) NOT NULL,
   `telefonocliente` char(15) NOT NULL,
   `celularcliente` char(15) NOT NULL,
   `emailcliente` char(40) NOT NULL,
@@ -61,7 +62,7 @@ CREATE TABLE `cliente` (
   `telefonocontacto` char(15) NOT NULL,
   `celularcontacto` char(15) NOT NULL,
   `formapago` char(15) NOT NULL,
-  `plazopago` int(11) NOT NULL,
+  `plazopago` int(11) DEFAULT NULL,
   `iddepartamento` char(10) NOT NULL,
   `idmunicipio` char(10) NOT NULL,
   `nitmatricula` char(15) NOT NULL,
@@ -76,15 +77,21 @@ CREATE TABLE `cliente` (
   KEY `nitmatricula` (`nitmatricula`),
   KEY `idmunicipio` (`idmunicipio`),
   KEY `idtipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
-insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nombrecliente`,`apellidocliente`,`direccioncliente`,`telefonocliente`,`celularcliente`,`emailcliente`,`contacto`,`telefonocontacto`,`celularcontacto`,`formapago`,`plazopago`,`iddepartamento`,`idmunicipio`,`nitmatricula`,`tiporegimen`,`autoretenedor`,`retencioniva`,`retencionfuente`,`observacion`,`fechaingreso`) values 
-(2,1,'70854409',8,'JOSE GREGORIO PULGARIN','','','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','17','901189320','COMUN','SI','SI','SI','ADASDASDAS','2018-09-27 08:24:49'),
-(3,1,'70855467',8,'WALTER PULGARIN MORALES','','','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','DKADA','2018-09-27 08:24:49'),
-(4,1,'4345145445',1,'EL DINERO PUNTO COM','','','CK 45 - 565 454','2524545','6454545','jose@hotmail.com','454545454','45454545','54545454','CONTADO',0,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','FDFSDFSD','2018-09-27 08:24:49'),
-(5,1,'48545454545',4,'MANUELA ZAPATA','','','ACADASD','4545545','545454545','caros@gmail.com','54545','545','454','CONTADO',0,'05','30','901189320','SIMPLIFICADO','NO','NO','NO','','2018-09-27 08:24:49');
+insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nombrecliente`,`apellidocliente`,`nombrecorto`,`direccioncliente`,`telefonocliente`,`celularcliente`,`emailcliente`,`contacto`,`telefonocontacto`,`celularcontacto`,`formapago`,`plazopago`,`iddepartamento`,`idmunicipio`,`nitmatricula`,`tiporegimen`,`autoretenedor`,`retencioniva`,`retencionfuente`,`observacion`,`fechaingreso`) values 
+(2,1,70854409,8,'JOSE GREGORIO PULGARIN','','','JOSE GREGORIO PULGARIN','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','17','901189320','COMUN','SI','SI','SI','ADASDASDAS','2018-10-05 11:16:00'),
+(3,1,70855467,8,'WALTER PULGARIN MORALES','','','WALTER PULGARIN MORALES','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','DKADA','2018-10-05 11:16:05'),
+(4,1,2147483647,1,'EL DINERO PUNTO COM','','','EL DINERO PUNTO COM','CK 45 - 565 454','2524545','6454545','jose@hotmail.com','454545454','45454545','54545454','CONTADO',0,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','FDFSDFSD','2018-10-05 11:16:12'),
+(6,1,71268830,0,'pollos pablo','pablo an','aranzazu a','pollos pablo','cra 34','222','2227','paul6126@hotmail.com','adadasdasss sds','222','444','1',12,'02','1','123','1','si','1','1','','2018-10-05 11:16:21'),
+(9,1,712688304,0,NULL,'pablo an','aranzazu a','aaaaaaaaaaaaaaaa','cra 34','222','2227','paul612662@hotmail.com','adadasda','222','444','1',NULL,'05','10','1232','1','si','1','1','','2018-10-06 08:45:33'),
+(10,5,2147483647,0,'abi y asociados','','','abi y asociados','cra 34','222','2227','abi01@hotmail.com','adadasda','222','444','1',NULL,'05','10','2234','1','si','1','1','','2018-10-06 11:09:31'),
+(11,5,36525525,1,'pablo y asociados','','','pablo y asociados','cra 34','222','300','abi012@hotmail.com','adadasda','222','444','1',4,'02','10','1232444','1','si','1','1','','2018-10-06 11:22:26'),
+(12,5,365255235,8,'pablo y asociados','','','pablo y asociados','cra 34','222','300','abi3012@hotmail.com','adadasda','222','444','1',4,'05','10','12324443','1','si','1','1','aaaaaaa','2018-10-06 11:17:13'),
+(13,1,5648755,9,'','jotge daniel','aranzazu a','jotge daniel aranzazu a','cra 34','222','300','ppaul6126@hotmail.com','adadasda','222','4444','2',15,'05','27','1232445','1','si','1','1','asdasdasd','2018-10-06 11:24:12'),
+(14,1,712688308,9,'','juan jose','perea lopez','juan jose perea lopez','cra 34','2222222','2227','paul61333326@hotmail.com','adadasda','222','444','1',10,'05','10','123222','2','si','1','1','hola','2018-10-07 14:55:06');
 
 /*Table structure for table `departamento` */
 
@@ -443,11 +450,11 @@ DROP TABLE IF EXISTS `usuario`;
 
 CREATE TABLE `usuario` (
   `codusuario` int(11) NOT NULL AUTO_INCREMENT,
-  `tipousuario` varchar(15) NOT NULL,
-  `usuario` varchar(50) NOT NULL,
+  `role` int(11) NOT NULL DEFAULT '1',
+  `username` varchar(50) NOT NULL,
   `password` varchar(250) NOT NULL,
   `documentousuario` varchar(15) NOT NULL,
-  `nombreusuario` varchar(40) NOT NULL,
+  `nombrecompleto` varchar(60) NOT NULL,
   `emailusuario` varchar(80) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   `fechaproceso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -458,8 +465,8 @@ CREATE TABLE `usuario` (
 
 /*Data for the table `usuario` */
 
-insert  into `usuario`(`codusuario`,`tipousuario`,`usuario`,`password`,`documentousuario`,`nombreusuario`,`emailusuario`,`activo`,`fechaproceso`,`authKey`,`accessToken`) values 
-(11,'a','71268830','fsvcwST6rx8GU','71268830','pablo','paul6126q@hotmail.com',1,'2018-09-28 17:26:04','bb602ba143bab0f2862a5fa73f6bb39d0c3ba78db764d8260da30233cab5f170ba6471b8796d4eb8e37b041dc36caec1c7fab951a9c312a926b173641a81a96021df5047278743f7c855401adff5016dfa2244ac13bad3a3c7576b1de2c6c8c820d3a66f','5d3ac1bd25b7f48f53f5ed81b5e2667ff5182d25e065ec4f329360a8a75f75fe0b65d6fb0a80217c6f8e502df81af1ca6f0fee2f810ad4f80ad79f01a643db05310754b167e2e5e2f39f3c42b3d9039e517e28a1aa2855295aa437e12dcea994df3259f0');
+insert  into `usuario`(`codusuario`,`role`,`username`,`password`,`documentousuario`,`nombrecompleto`,`emailusuario`,`activo`,`fechaproceso`,`authKey`,`accessToken`) values 
+(11,1,'71268830','fsvcwST6rx8GU','71268830','pablo','paul6126q@hotmail.com',1,'2018-10-05 10:07:23','bb602ba143bab0f2862a5fa73f6bb39d0c3ba78db764d8260da30233cab5f170ba6471b8796d4eb8e37b041dc36caec1c7fab951a9c312a926b173641a81a96021df5047278743f7c855401adff5016dfa2244ac13bad3a3c7576b1de2c6c8c820d3a66f','5d3ac1bd25b7f48f53f5ed81b5e2667ff5182d25e065ec4f329360a8a75f75fe0b65d6fb0a80217c6f8e502df81af1ca6f0fee2f810ad4f80ad79f01a643db05310754b167e2e5e2f39f3c42b3d9039e517e28a1aa2855295aa437e12dcea994df3259f0');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

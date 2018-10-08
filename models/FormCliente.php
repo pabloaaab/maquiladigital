@@ -52,7 +52,6 @@ class FormCliente extends Model
             [['dv'], 'string', 'max' => 1],
             ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
-
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['direccioncliente', 'default'],
@@ -78,7 +77,6 @@ class FormCliente extends Model
             ['retencionfuente', 'required', 'message' => 'Campo requerido'],
             ['retencionfuente', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['observacion', 'default'],
-
         ];
     }
 
@@ -115,7 +113,7 @@ class FormCliente extends Model
     public function cedulanit_existe($attribute, $params)
     {
         //Buscar la cedula/nit en la tabla
-        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit]);
+        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit])->andWhere("idcliente!=:idcliente", [':idcliente' => $this->idcliente]);
         //Si la identificacion existe mostrar el error
         if ($table->count() == 1)
         {

@@ -8,11 +8,14 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\bootstrap\Modal;
+
+
 
 $this->title = 'Clientes';
 ?>
 <script language="JavaScript">
-    function mostrar(l) {
+    function mostrarfiltro() {
         divC = document.getElementById("filtrocliente");
         if (divC.style.display == "none"){divC.style.display = "block";}else{divC.style.display = "none";}
     }
@@ -35,7 +38,7 @@ $this->title = 'Clientes';
 
 <div class="panel panel-info panel-filters">
     <div class="panel-heading">
-        Filtros de busqueda <a onclick="mostrar()"><span class='glyphicon glyphicon-filter'></span></a>
+        Filtros de busqueda <a onclick="mostrarfiltro()"><span class='glyphicon glyphicon-filter'></span></a>
     </div>
     <div class="panel-body" id="filtrocliente" style="display:none">
         <div class="row" >
@@ -59,13 +62,8 @@ $this->title = 'Clientes';
     <div class="panel-heading">
         Registros: <?= $pagination->totalCount ?>
     </div>
-
-
         <table class="table table-hover">
-
             <thead>
-
-
             <tr>
                 <th scope="col">Código</th>
                 <th scope="col">Tipo</th>
@@ -90,18 +88,22 @@ $this->title = 'Clientes';
                 <td><?= $val->direccioncliente ?></td>
                 <td><?= $val->idMunicipioFk->municipio ?></td>
                 <td><a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Editar"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
+                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
                 <td><a href="<?= Url::toRoute(["clientes/eliminar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-delete.svg" align="center" width="20px" height="20px" title="Eliminar"></a></td>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>
-
         <div class="panel-footer text-right" >
             <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
         </div>
-
     </div>
 </div>
 <?= LinkPager::widget(['pagination' => $pagination]) ?>
+
+
+
+
+
+
 
