@@ -52,10 +52,7 @@ $this->title = 'Clientes';
     </div>
 </div>
 
-
-
 <?php $formulario->end() ?>
-
 
 <div class="table-responsive">
 <div class="panel panel-info ">
@@ -88,8 +85,29 @@ $this->title = 'Clientes';
                 <td><?= $val->direccioncliente ?></td>
                 <td><?= $val->idMunicipioFk->municipio ?></td>
                 <td><a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Editar"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/eliminar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-delete.svg" align="center" width="20px" height="20px" title="Eliminar"></a></td>
+                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-view.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
+                <td><a href="#" data-toggle="modal" data-target="#idcliente<?= $val->idcliente ?>"><img src="svg/si-glyph-delete.svg" align="center" width="20px" height="20px" title="Eliminar"></a>
+                    <div class="modal fade" role="dialog" aria-hidden="true" id="idcliente<?= $val->idcliente ?>">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <h4 class="modal-title">Eliminar Cliente</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>¿Realmente deseas eliminar al cliente con código <?= $val->idcliente ?>?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <?= Html::beginForm(Url::toRoute("clientes/eliminar"), "POST") ?>
+                                    <input type="hidden" name="idcliente" value="<?= $val->idcliente ?>">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Eliminar</button>
+                                    <?= Html::endForm() ?>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+                </td>
             </tr>
             </tbody>
             <?php endforeach; ?>

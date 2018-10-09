@@ -260,6 +260,36 @@ use yii\bootstrap\Modal;
                 ]);
         }
 
+        public function actionEliminar()
+        {
+            if(Yii::$app->request->post())
+            {
+                $idcliente = Html::encode($_POST["idcliente"]);
+                if((int) $idcliente)
+                {
+                    if(Cliente::deleteAll("idcliente=:idcliente", [":idcliente" => $idcliente]))
+                    {
+                        //echo "Cliente con id $idcliente eliminado con éxito, redireccionando ...";
+                        $this->redirect(["clientes/index"]);
+                    }
+                    else
+                    {
+                       // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
+                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("clientes/index")."'>";
+                    }
+                }
+                else
+                {
+                   // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("clientes/index")."'>";
+                }
+            }
+            else
+            {
+                return $this->redirect(["clientes/index"]);
+            }
+        }
+
         public function actionMunicipio($id){
             $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
             echo "<option required>Seleccione...</option>";

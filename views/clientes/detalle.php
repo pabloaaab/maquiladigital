@@ -30,7 +30,7 @@ $this->title = 'Detalle Cliente';
             <tr>
                 <th>C贸digo:</th>
                 <td><?= $table->idcliente ?></td>
-                <th>Tipo Identificaci髇:</th>
+                <th>Tipo Identificaci贸n:</th>
                 <td><?= $table->idTipoFk->tipo ?></td>
                 <th>Cedula/Nit:</th>
                 <td><?= $table->cedulanit ?></td>
@@ -56,11 +56,11 @@ $this->title = 'Detalle Cliente';
                 <?php }?>
                 <th>Email:</th>
                 <td><?= $table->emailcliente ?></td>
-                <th >Direcci髇:</th>
+                <th >Direcci贸n:</th>
                 <td><?= $table->direccioncliente ?></td>
             </tr>
             <tr>
-                <th>Tel閒ono:</th>
+                <th>Tel茅fono:</th>
                 <td><?= $table->telefonocliente ?></td>
                 <th>Celular:</th>
                 <td><?= $table->celularcliente ?></td>
@@ -79,7 +79,7 @@ $this->title = 'Detalle Cliente';
             <tr>
                 <th>Contacto:</th>
                 <td><?= $table->contacto ?></td>
-                <th>Tel閒ono:</th>
+                <th>Tel茅fono:</th>
                 <td><?= $table->telefonocontacto ?></td>
                 <th>Celular:</th>
                 <td><?= $table->celularcontacto ?></td>
@@ -92,11 +92,38 @@ $this->title = 'Detalle Cliente';
         <h4>Informaci贸n Tributaria</h4>
     </div>
     <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>Nit/Matricula:</th>
+                <td><?= $table->nitmatricula ?></td>
+                <th>Forma de Pago:</th>
+                <td><?php if ($table->formapago = 1){echo "Contado";} else {echo "Cr茅dito";}  ?></td>
+                <th>Plazo:</th>
+                <td><?= $table->plazopago ?></td>
+                <th></th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Tipo Regimen:</th>
+                <td><?= $table->tiporegimen ?></td>
+                <th>AutoRetenedor:</th>
+                <td><?= $table->autoretenedor ?></td>
+                <th>Retenci贸n Fuente:</th>
+                <td><?= $table->retencionfuente ?></td>
+                <th>Retenci贸n Iva:</th>
+                <td><?= $table->retencioniva ?></td>
+            </tr>
+        </table>
     </div>
     <div class="panel-heading">
         <h4>Observaciones</h4>
     </div>
     <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <td><?= $table->observacion ?></td>
+            </tr>
+        </table>
     </div>
     <div class="panel-footer text-left">
         <a href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

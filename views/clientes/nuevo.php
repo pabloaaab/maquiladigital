@@ -175,7 +175,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
                 <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'Cómun', '2' => 'Simpplificado'], ['prompt' => 'Seleccione...']) ?>
             </div>
             <div class="col-lg-2">
-                <?= $form->field($model, 'autoretenedor')->dropdownList(['si' => 'Si', 'no' => 'No'], ['prompt' => 'Seleccione...']) ?>
+                <?= $form->field($model, 'autoretenedor')->dropdownList(['Si' => 'Si', 'No' => 'No'], ['prompt' => 'Seleccione...']) ?>
             </div>
             <div class="col-lg-1">
                 <?= $form->field($model, 'retencioniva')->input("text") ?>
