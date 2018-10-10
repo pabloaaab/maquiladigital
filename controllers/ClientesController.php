@@ -20,6 +20,7 @@ use yii\helpers\Url;
 use app\models\FormFiltroCliente;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 
     class ClientesController extends Controller
     {
@@ -142,7 +143,8 @@ use yii\bootstrap\Modal;
                         $model->autoretenedor = null;
                         $model->retencionfuente = null;
                         $model->retencioniva = null;
-                        $model->observacion = null;
+                        $model->dv = null;
+						$model->observacion = null;
                     } else {
                         $msg = "error";
                     }
@@ -150,7 +152,6 @@ use yii\bootstrap\Modal;
                     $model->getErrors();
                 }
             }
-
             return $this->render('nuevo', ['model' => $model, 'msg' => $msg, 'tipomsg' => $tipomsg]);
         }
 
@@ -218,6 +219,8 @@ use yii\bootstrap\Modal;
             if (Yii::$app->request->get("idcliente")) {
                 $idcliente = Html::encode($_GET["idcliente"]);
                 $table = Cliente::find()->where(['idcliente' => $idcliente])->one();
+				$municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
+				$municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
                 if ($table) {
                     $model->idtipo = $table->idtipo;
                     $model->cedulanit = $table->cedulanit;
@@ -241,14 +244,14 @@ use yii\bootstrap\Modal;
                     $model->retencionfuente = $table->retencionfuente;
                     $model->retencioniva = $table->retencioniva;
                     $model->dv = $table->dv;
-                    $model->observacion = $table->observacion;
+                    $model->observacion = $table->observacion;				
                 } else {
                     return $this->redirect(["clientes/index"]);
                 }
             } else {
                 return $this->redirect(["clientes/index"]);
             }
-            return $this->render("editar", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg]);
+            return $this->render("editar", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg, "municipio" => $municipio]);
         }
 
         public function actionDetalle()
@@ -292,6 +295,7 @@ use yii\bootstrap\Modal;
 
         public function actionMunicipio($id){
             $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
+			
             echo "<option required>Seleccione...</option>";
             if(count($rows)>0){
                 foreach($rows as $row){

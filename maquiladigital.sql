@@ -54,9 +54,9 @@ CREATE TABLE `cliente` (
   `nombrecliente` varchar(30) DEFAULT NULL,
   `apellidocliente` varchar(30) DEFAULT NULL,
   `nombrecorto` varchar(200) DEFAULT NULL,
-  `direccioncliente` varchar(40) NOT NULL,
-  `telefonocliente` char(15) NOT NULL,
-  `celularcliente` char(15) NOT NULL,
+  `direccioncliente` varchar(40) DEFAULT NULL,
+  `telefonocliente` char(15) DEFAULT NULL,
+  `celularcliente` char(15) DEFAULT NULL,
   `emailcliente` char(40) NOT NULL,
   `contacto` char(40) NOT NULL,
   `telefonocontacto` char(15) NOT NULL,
@@ -67,31 +67,34 @@ CREATE TABLE `cliente` (
   `idmunicipio` char(10) NOT NULL,
   `nitmatricula` char(15) NOT NULL,
   `tiporegimen` char(15) NOT NULL,
-  `autoretenedor` char(2) NOT NULL,
-  `retencioniva` char(2) NOT NULL,
-  `retencionfuente` char(2) NOT NULL,
-  `observacion` longtext NOT NULL,
+  `autoretenedor` char(2) DEFAULT NULL,
+  `retencioniva` char(2) DEFAULT NULL,
+  `retencionfuente` char(2) DEFAULT NULL,
+  `observacion` longtext,
   `fechaingreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`idcliente`),
   KEY `idepartamento` (`iddepartamento`),
   KEY `nitmatricula` (`nitmatricula`),
   KEY `idmunicipio` (`idmunicipio`),
   KEY `idtipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
 insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nombrecliente`,`apellidocliente`,`nombrecorto`,`direccioncliente`,`telefonocliente`,`celularcliente`,`emailcliente`,`contacto`,`telefonocontacto`,`celularcontacto`,`formapago`,`plazopago`,`iddepartamento`,`idmunicipio`,`nitmatricula`,`tiporegimen`,`autoretenedor`,`retencioniva`,`retencionfuente`,`observacion`,`fechaingreso`) values 
-(2,1,70854409,8,'JOSE GREGORIO PULGARIN','','','JOSE GREGORIO PULGARIN','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','17','901189320','COMUN','SI','SI','SI','ADASDASDAS','2018-10-05 11:16:00'),
-(3,1,70855467,8,'WALTER PULGARIN MORALES','','','WALTER PULGARIN MORALES','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','CONTADO',30,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','DKADA','2018-10-05 11:16:05'),
-(4,1,2147483647,1,'EL DINERO PUNTO COM','','','EL DINERO PUNTO COM','CK 45 - 565 454','2524545','6454545','jose@hotmail.com','454545454','45454545','54545454','CONTADO',0,'05','16','901189320','SIMPLIFICADO','NO','NO','NO','FDFSDFSD','2018-10-05 11:16:12'),
-(6,1,71268830,0,'pollos pablo','pablo an','aranzazu a','pollos pablo','cra 34','222','2227','paul6126@hotmail.com','adadasdasss sds','222','444','1',12,'02','1','123','1','si','1','1','','2018-10-05 11:16:21'),
-(9,1,712688304,0,NULL,'pablo an','aranzazu a','aaaaaaaaaaaaaaaa','cra 34','222','2227','paul612662@hotmail.com','adadasda','222','444','1',NULL,'05','10','1232','1','si','1','1','','2018-10-06 08:45:33'),
-(10,5,2147483647,0,'abi y asociados','','','abi y asociados','cra 34','222','2227','abi01@hotmail.com','adadasda','222','444','1',NULL,'05','10','2234','1','si','1','1','','2018-10-06 11:09:31'),
-(11,5,36525525,1,'pablo y asociados','','','pablo y asociados','cra 34','222','300','abi012@hotmail.com','adadasda','222','444','1',4,'02','10','1232444','1','si','1','1','','2018-10-06 11:22:26'),
+(2,1,70854409,8,'JOSE GREGORIO PULGARIN','','',' ','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','1',30,'05','10','901189320','1','si','1','1','ADASDASDAS','2018-10-09 19:35:01'),
+(3,1,70855467,8,'WALTER PULGARIN MORALES','','',' ','CL 45 -56 45','4545454','64564545','jose@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','1',30,'05','10','901189320','1','si','1','1','DKADA','2018-10-09 19:34:45'),
+(4,1,2147483647,1,'EL DINERO PUNTO COM','dfdffdf','fdfdffdf','dfdffdf fdfdffdf','CK 45 - 565 454','2524545','6454545','jose@hotmail.com','sdsd','45454545','54545454','1',0,'05','16','901189320','1','','1','1','FDFSDFSD','2018-10-09 19:22:14'),
 (12,5,365255235,8,'pablo y asociados','','','pablo y asociados','cra 34','222','300','abi3012@hotmail.com','adadasda','222','444','1',4,'05','10','12324443','1','si','1','1','aaaaaaa','2018-10-06 11:17:13'),
-(13,1,5648755,9,'','jotge daniel','aranzazu a','jotge daniel aranzazu a','cra 34','222','300','ppaul6126@hotmail.com','adadasda','222','4444','2',15,'05','27','1232445','1','si','1','1','asdasdasd','2018-10-06 11:24:12'),
-(14,1,712688308,9,'','juan jose','perea lopez','juan jose perea lopez','cra 34','2222222','2227','paul61333326@hotmail.com','adadasda','222','444','1',10,'05','10','123222','2','si','1','1','hola','2018-10-07 14:55:06');
+(14,1,712688308,9,'','juan jose','perea lopez','juan jose perea lopez','cra 34','2222222','2227','paul61333326@hotmail.com','adadasda','222','444','1',10,'05','10','123222','2','si','1','1','hola','2018-10-07 14:55:06'),
+(15,1,71268830,6,'','pablo an','aranzazu a','pablo an aranzazu a','cra 34','222','2227','','adadasda','222','444','1',12,'05','10','4562','1','','1','1','jjjhjh','2018-10-10 08:57:35'),
+(16,1,123,6,'','pablo an','aranzazu a','pablo an aranzazu a','cra 34','2222222','2227','paul6126@hotmail.com','adadasda','222','444','1',12,'05','10','1232','1','Si','1','1','jkjk','2018-10-10 09:58:16'),
+(18,1,1123,2,'','pablo an','aranzazu a','pablo an aranzazu a','av 32','222','2227','pauls6126@hotmail.com','adadasda','222','444','1',12,'05','10','4562','1','Si','1','1','ssdsds','2018-10-10 10:42:01'),
+(19,1,712688302,5,'','juan pablo','cbb','juan pablo cbb','xx','333','4444','paul65126@hotmail.com','','','','1',4,'05','10','4562','1','Si','10','1','fsf','2018-10-10 10:51:56'),
+(20,1,712688830,2,'','aaa','bbbb','aaa bbbb',NULL,'','','','','','','1',NULL,'05','10','22','1',NULL,'10','10','sdsd','2018-10-10 11:09:15'),
+(21,1,712682830,5,'','asd','asf','asd asf',NULL,'','2227','','','','','1',NULL,'05','10','123','1',NULL,'1','1','fs','2018-10-10 11:15:42'),
+(22,5,2147483647,8,'pollos pablo','asd','asf','pollos pablo','cra 34','222','2227','abi012@hotmail.com','adadasda','222','4444','1',12,'05','10','123','1','Si','1','1','fs','2018-10-10 11:21:31'),
+(23,5,888555224,7,'fsfdhkjfh','','','fsfdhkjfh','14','141','411','fh@hotmail.com','adadasda','222','444','2',12,'05','27','123','1','Si','1','1',NULL,'2018-10-10 11:23:55');
 
 /*Table structure for table `departamento` */
 
