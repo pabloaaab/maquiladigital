@@ -112,13 +112,12 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
     <div class="panel-heading">
         <h4>Información Cliente</h4>
     </div>
-
     <div class="panel-body">
 		<div class="row" id="personal">            
-			<?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo' ]) ?>
-			<?= $form->field($model, 'cedulanit')->input('text',['id' => 'cedulanit', 'onchange' =>  'calcularDigitoVerificacion()']) ?>			
-			
-			<?= $form->field($model, 'dv')->input('text',['id' => 'dv', 'style' => 'width:35px', 'readonly' => true]) ?>
+			<?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo' ]) ?>			
+            <?= $form->field($model, 'cedulanit')->input('text',['id' => 'cedulanit', 'onchange' =>  'calcularDigitoVerificacion()']) ?>
+			<?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'placeholder' => 'dv','style' => 'width:50px', 'readonly' => true]) ?>       
+		</div>														   
 		</div>
 		<div class="row">
 			<div id="nombrecliente" style="display:block"><?= $form->field($model, 'nombrecliente')->input("text") ?></div>
@@ -147,7 +146,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 		</div>	
         <div class="row">
             <?= $form->field($model, 'celularcontacto')->input("text") ?>
-			<?= $form->field($model, 'nitmatricula')->input("text") ?>			
+			
         </div>    
         <div class="row">
             <?= $form->field($model, 'formapago')->dropdownList(['1' => 'Contado', '2' => 'Credito'], ['prompt' => 'Seleccione...']) ?>

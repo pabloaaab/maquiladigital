@@ -47,8 +47,7 @@ class FormCliente extends Model
             ['idtipo', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['cedulanit', 'cedulanit_existe'],
-            ['dv', 'required', 'message' => 'Campo requerido'],
+            ['cedulanit', 'cedulanit_existe'],            
             [['dv'], 'string', 'max' => 1],
             ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
@@ -67,10 +66,7 @@ class FormCliente extends Model
             ['plazopago', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['iddepartamento', 'required', 'message' => 'Campo requerido'],
             ['idmunicipio', 'required', 'message' => 'Campo requerido'],
-			[['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio'],'message' => 'Campo requerido'],
-            ['nitmatricula', 'required', 'message' => 'Campo requerido'],
-            ['nitmatricula', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            
+			[['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio'],'message' => 'Campo requerido'],                      
             ['tiporegimen', 'required', 'message' => 'Campo requerido'],
             ['autoretenedor', 'default'],
             ['retencioniva', 'required', 'message' => 'Campo requerido'],
@@ -94,18 +90,17 @@ class FormCliente extends Model
             'celularcliente' => 'celular:',
             'emailcliente' => 'Email:',
             'contacto' => 'Contacto:',
-            'telefonocontacto' => 'Telefono:',
-            'celularcontacto' => 'Celular:',
+            'telefonocontacto' => 'Telefono contacto:',
+            'celularcontacto' => 'Celular contacto:',
             'formapago' => 'Forma de Pago:',
             'plazopago' => 'Plazo:',
             'iddepartamento' => 'Departamento:',
-            'idmunicipio' => 'Municipio:',
-            'nitmatricula' => 'Nit/Matricula:',
+            'idmunicipio' => 'Municipio:',            
             'tiporegimen' => 'Tipo Régimen:',
             'autoretenedor' => 'Autoretenedor:',
-            'retencioniva' => 'Rete Iva:',
-            'retencionfuente' => 'Rete Fte:',
-            'dv' => 'DV:',
+            'retencioniva' => 'Retención Iva:',
+            'retencionfuente' => 'Retención Fte:',
+            'dv' => '',
             'observacion' => 'Observaciones:',
 
         ];
@@ -114,7 +109,7 @@ class FormCliente extends Model
     public function cedulanit_existe($attribute, $params)
     {
         //Buscar la cedula/nit en la tabla
-        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit]);
+        $table = Cliente::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit])->andWhere("emailcliente!=:emailcliente", [':emailcliente' => $this->emailcliente]);
         //Si la identificacion existe mostrar el error
         if ($table->count() == 1)
         {

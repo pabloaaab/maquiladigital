@@ -85,7 +85,9 @@ use yii\helpers\ArrayHelper;
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
             }
+			
             if ($model->load(Yii::$app->request->post())) {
+				$dv = Html::encode($_POST["dv"]);
                 if ($model->validate()) {
                     $table = new Cliente();
                     $table->idtipo = $model->idtipo;
@@ -104,13 +106,13 @@ use yii\helpers\ArrayHelper;
                     $table->celularcontacto = $model->celularcontacto;
                     $table->formapago = $model->formapago;
                     $table->plazopago = $model->plazopago;
-                    $table->nitmatricula = $model->nitmatricula;
+                    $table->nitmatricula = $model->cedulanit;
                     $table->tiporegimen = $model->tiporegimen;
                     $table->autoretenedor = $model->autoretenedor;
                     $table->retencionfuente = $model->retencionfuente;
                     $table->retencioniva = $model->retencioniva;
                     $table->observacion = $model->observacion;
-                    $table->dv = $model->dv;
+                    $table->dv = $dv;
                     if ($model->idtipo == 1){
                         $table->nombrecorto = $model->nombrecliente." ".$model->apellidocliente ;
                         $model->razonsocial = null;
@@ -165,7 +167,9 @@ use yii\helpers\ArrayHelper;
                 return ActiveForm::validate($model);
             }
             $idcliente = Html::encode($_GET["idcliente"]);
+			
             if ($model->load(Yii::$app->request->post())) {
+				$dv = Html::encode($_POST["dv"]);
                 if ($model->validate()) {
                     $table = Cliente::find()->where(['idcliente' => $idcliente])->one();
                     if ($table) {
@@ -185,13 +189,13 @@ use yii\helpers\ArrayHelper;
                         $table->celularcontacto = $model->celularcontacto;
                         $table->formapago = $model->formapago;
                         $table->plazopago = $model->plazopago;
-                        $table->nitmatricula = $model->nitmatricula;
+                        $table->nitmatricula = $model->cedulanit;
                         $table->tiporegimen = $model->tiporegimen;
                         $table->autoretenedor = $model->autoretenedor;
                         $table->retencionfuente = $model->retencionfuente;
                         $table->retencioniva = $model->retencioniva;
                         $table->observacion = $model->observacion;
-                        $table->dv = $model->dv;
+                        $table->dv = $dv;
                         if ($model->idtipo == 1){
                             $table->nombrecorto = $model->nombrecliente." ".$model->apellidocliente ;
                             $model->razonsocial = null;
