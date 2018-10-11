@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <h1>Detalle del Cliente</h1>
 
-<div class="panel panel-info">
+<div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Cliente</h4>
     </div>

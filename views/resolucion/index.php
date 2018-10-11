@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ResolucionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Resoluciones';
+$this->title = 'Lista Resoluciones';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="resoluciones-index">
@@ -16,31 +16,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'fa fa-plus']), ['create'], ['class' => 'btn btn-success']);
-    ?>
+    <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        #'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
-
-            'idresolucion',
-            'nroresolucion',
-            'desde',
-            'hasta',
-            'fechavencimiento',
+            [                
+                'attribute' => 'nroresolucion',
+                'contentOptions' => ['class' => 'col-lg-2'],                
+            ],
+            [                
+                'attribute' => 'desde',
+                'contentOptions' => ['class' => 'col-lg-2'],                
+            ],
+            [               
+                'attribute' => 'hasta',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],
+            [               
+                'attribute' => 'fechavencimiento',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],                        
             [
-                'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['class' => 'text-center col-sm-1 fixed-grid-column'],
+                'class' => 'yii\grid\ActionColumn',              
             ],
         ],
-        'tableOptions' => ['class' => 'table-condensed'],
-        'summary' => '<span class="summary label label-default">Registros: {totalCount}</span>',
-        'layout' => '{summary}{items}<div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
+        'tableOptions' => ['class' => 'table table-success'],
+        'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
+		
+        'layout' => '{summary}{items}<div class="panel panel-footer" ><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
         'pager' => [
             'nextPageLabel' => '<i class="fa fa-forward"></i>',
             'prevPageLabel'  => '<i class="fa fa-backward"></i>',
             'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
             'firstPageLabel'  => '<i class="fa fa-fast-backward"></i>'
         ],
+        
     ]); ?>
 </div>

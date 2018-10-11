@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]);
 ?>
 
-<div class="panel panel-info panel-filters">
+<div class="panel panel-success panel-filters">
     <div class="panel-heading">
         Filtros de busqueda <a onclick="mostrarfiltro()"><span class='glyphicon glyphicon-filter'></span></a>
     </div>
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $formulario->end() ?>
 
 <div class="table-responsive">
-<div class="panel panel-info ">
+<div class="panel panel-success ">
     <div class="panel-heading">
         Registros: <?= $pagination->totalCount ?>
     </div>
@@ -71,9 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col">Teléfono</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Municipio</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col"></th>                               
             </tr>
             </thead>
             <tbody>
@@ -86,9 +84,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->telefonocliente ?></td>
                 <td><?= $val->direccioncliente ?></td>
                 <td><?= $val->idMunicipioFk->municipio ?></td>
-                <td><a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-document-edit.svg" align="center" width="20px" height="20px" title="Editar"></a></td>
-                <td><a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><img src="svg/si-glyph-view.svg" align="center" width="20px" height="20px" title="Detalle"></a></td>
-                <td><a href="#" data-toggle="modal" data-target="#idcliente<?= $val->idcliente ?>"><img src="svg/si-glyph-delete.svg" align="center" width="20px" height="20px" title="Eliminar"></a>
+                <td>				
+                <a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                <a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente])?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+				<a href="#" data-toggle="modal" data-target="#idcliente<?= $val->idcliente ?>"><span class="glyphicon glyphicon-trash"></span></a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="idcliente<?= $val->idcliente ?>">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -115,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
+            <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-success"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
         </div>
     </div>
 </div>

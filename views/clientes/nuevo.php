@@ -112,7 +112,7 @@ $departamento= ArrayHelper::map(Departamentos::find()->all(), 'iddepartamento','
 $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio','municipio');
 $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descripcion');
 ?>
-<div class="panel panel-info">
+<div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Cliente</h4>
     </div>

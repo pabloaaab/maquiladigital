@@ -39,7 +39,7 @@ class Resolucion extends \yii\db\ActiveRecord
             ['fechavencimiento', 'default', 'value' => null],
 
 
-            ['fechavencimiento', 'date', 'timestampAttribute' => 'deadline'],
+            ['fechavencimiento', 'integer'],
             [['activo'], 'integer'],
             [['nroresolucion'], 'string', 'max' => 40],
             [['desde', 'hasta'], 'string', 'max' => 10],
@@ -54,13 +54,13 @@ class Resolucion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idresolucion' => 'Codigo',
-            'nroresolucion' => 'Nroresolucion',
-            'desde' => 'Desde',
-            'hasta' => 'Hasta',
-            'fechavencimiento' => 'Fechavencimiento',
-            'nitmatricula' => 'Nitmatricula',
-            'activo' => 'Activo',
+            'idresolucion' => 'Código:',
+            'nroresolucion' => 'Nro Resolución',
+            'desde' => 'Desde:',
+            'hasta' => 'Hasta:',
+            'fechavencimiento' => 'Fecha Vencimiento:',
+            'nitmatricula' => 'Nit/Matricula:',
+            'activo' => 'Activo:',
         ];
     }
 
