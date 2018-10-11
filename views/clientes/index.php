@@ -11,8 +11,10 @@ use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 
 
-
 $this->title = 'Clientes';
+$this->params['breadcrumbs'][] = $this->title;
+
+
 ?>
 <script language="JavaScript">
     function mostrarfiltro() {

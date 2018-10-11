@@ -23,11 +23,14 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'plugins/select-2/js/select2.min.js',
+        'plugins/tinymce/tinymce.min.js',
         'js/main.js',
-		
+        'js/commons.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
     ];
 }

@@ -49,7 +49,10 @@ AppAsset::register($this);
                   'label' => 'Administración',
                   'items' => [
                       ['label' => 'Cliente', 'url' => ['/clientes/index']],
-                      ['label' => 'Otros', 'url' => ['/site/index']],
+                      ['label' => 'Banco', 'url' => ['/banco/index']],
+                      ['label' => 'Tipo Documento', 'url' => ['/tipo-documento/index']],
+                      ['label' => 'Tipo Recibo', 'url' => ['/tipo-recibo/index']],
+                      ['label' => 'Resolucion', 'url' => ['/resolucion/index']],
                   ]
                 ],
                 [

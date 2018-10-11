@@ -17,6 +17,8 @@ use yii\bootstrap\Modal;
 <?php
 
 $this->title = 'Detalle Cliente';
+$this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1>Detalle del Cliente</h1>

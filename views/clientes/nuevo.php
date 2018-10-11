@@ -7,7 +7,11 @@ use app\models\Municipio;
 use app\models\Departamentos;
 use app\models\TipoDocumento;
 use yii\widgets\LinkPager;
+
 $this->title = 'Nuevo Cliente';
+$this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <script language="JavaScript">
     function calcularDigitoVerificacion() {
