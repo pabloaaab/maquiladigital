@@ -368,14 +368,19 @@ CREATE TABLE `resolucion` (
   `nroresolucion` char(40) NOT NULL,
   `desde` char(10) NOT NULL,
   `hasta` char(10) NOT NULL,
-  `fechavencimiento` date NOT NULL,
+  `fechavencimiento` datetime NOT NULL,
   `nitmatricula` char(11) NOT NULL,
-  `activo` char(2) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idresolucion`),
-  KEY `nitmatricula` (`nitmatricula`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `nitmatricula` (`nitmatricula`),
+  CONSTRAINT `resolucion_ibfk_1` FOREIGN KEY (`nitmatricula`) REFERENCES `matriculaempresa` (`nitmatricula`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 /*Data for the table `resolucion` */
+
+insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`) values 
+(3,'1112','1','1000','2018-10-10 00:00:00','901189320',0),
+(6,'254','1001','2000','2018-10-10 00:00:00','901189320',0);
 
 /*Table structure for table `tipodocumento` */
 
@@ -404,48 +409,48 @@ DROP TABLE IF EXISTS `tiporecibo`;
 CREATE TABLE `tiporecibo` (
   `idtiporecibo` char(10) NOT NULL,
   `concepto` char(30) NOT NULL,
-  `activo` char(2) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idtiporecibo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `tiporecibo` */
 
 insert  into `tiporecibo`(`idtiporecibo`,`concepto`,`activo`) values 
-('1','RECIBO DE CAJA','NO'),
-('10','TERCERO','NO'),
-('11','TERCERO EN APORTES','NO'),
-('12','PRUEBA PRUEBA','NO'),
-('13','ABONO A FACTURAA','NO'),
-('14','TERCERO','SI'),
-('145','RECIBO DE CAJA','SI'),
-('15','ADAJDHASJD','SI'),
-('16','ADASDA','SI'),
-('17','AJDHASDAS','SI'),
-('18','ADASDAS','SI'),
-('19','DADADA','SI'),
-('2','RECIBO DE CAJA','NO'),
-('3','ABONO A AFACTURAA','NO'),
-('30','RECIBO DE TEMPORALIDAD','SI'),
-('31','RECIVO DE CAJA','SI'),
-('33','ABONO ADE BANCO','SI'),
-('39','TECERO','SI'),
-('4','PRESTAMO BANACRIA','NO'),
-('40','APORTES DE SOCIO','SI'),
-('42',' REGALO NAVIDEÑO','SI'),
-('43','REGISTRO DE ENTRADA','SI'),
-('44','TERCERO','SI'),
-('454545','ASDASDASDASD','SI'),
-('5','JHJHJHJHJ','SI'),
-('5454','DFDSFSDF','SI'),
-('54545','ASDASD','SI'),
-('55','ADASJ','SI'),
-('565656','DFDSFSDF','SI'),
-('56855','CUARTO','SI'),
-('6','ADASKDJASK','SI'),
-('7','SDFSDKFSDF','SI'),
-('8','AJDHASDHASJDAJ','SI'),
-('9','TERCERO DEL','SI'),
-('ADASD','DASDASDAS','SI');
+('1','RECIBO DE CAJA',0),
+('10','TERCERO',0),
+('11','TERCERO EN APORTES',0),
+('12','PRUEBA PRUEBA',0),
+('13','ABONO A FACTURAA',0),
+('14','TERCERO',0),
+('145','RECIBO DE CAJA',0),
+('15','ADAJDHASJD',0),
+('16','ADASDA',0),
+('17','AJDHASDAS',0),
+('18','ADASDAS',0),
+('19','DADADA',0),
+('2','RECIBO DE CAJA',0),
+('3','ABONO A AFACTURAA',0),
+('30','RECIBO DE TEMPORALIDAD',0),
+('31','RECIVO DE CAJA',0),
+('33','ABONO ADE BANCO',0),
+('39','TECERO',0),
+('4','PRESTAMO BANACRIA',0),
+('40','APORTES DE SOCIO',0),
+('42',' REGALO NAVIDEÑO',0),
+('43','REGISTRO DE ENTRADA',0),
+('44','TERCERO',0),
+('454545','ASDASDASDASD',0),
+('5','JHJHJHJHJ',0),
+('5454','DFDSFSDF',0),
+('54545','ASDASD',0),
+('55','ADASJ',0),
+('565656','DFDSFSDF',0),
+('56855','CUARTO',0),
+('6','ADASKDJASK',0),
+('7','SDFSDKFSDF',0),
+('8','AJDHASDHASJDAJ',0),
+('9','TERCERO DEL',0),
+('ADASD','DASDASDAS',0);
 
 /*Table structure for table `usuario` */
 
