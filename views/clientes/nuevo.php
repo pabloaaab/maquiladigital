@@ -142,7 +142,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 		<div class="row">
 			<?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
             $( "#'.Html::getInputId($model, 'idmunicipio',['required']).'" ).html( data ); });']); ?>
-			<?= $form->field($model, 'idmunicipio')->dropDownList($municipio,['prompt' => 'Seleccione...']) ?>
+			<?= $form->field($model, 'idmunicipio')->dropDownList(['prompt' => 'Seleccione...']) ?>
 		</div>
         <div class="row">
 			<?= $form->field($model, 'contacto')->input("text") ?>
@@ -153,12 +153,12 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 			
         </div>    
         <div class="row">
-            <?= $form->field($model, 'formapago')->dropdownList(['1' => 'Contado', '2' => 'Credito'], ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...']) ?>
 			<?= $form->field($model, 'plazopago')->input("text") ?>			
         </div>
 		<div class="row">
-            <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'Cómun', '2' => 'Simpplificado'], ['prompt' => 'Seleccione...']) ?>
-			<?= $form->field($model, 'autoretenedor')->dropdownList(['Si' => 'Si', 'No' => 'No'], ['prompt' => 'Seleccione...']) ?>			
+            <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...']) ?>
+			<?= $form->field($model, 'autoretenedor')->dropdownList(['SI' => 'SI', 'NO' => 'NO'], ['prompt' => 'Seleccione...']) ?>			
         </div>
 		<div class="row">
             <?= $form->field($model, 'retencioniva')->input("text") ?>
@@ -172,7 +172,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
     
     <div class="panel-footer text-left">
 
-        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-primary",]) ?>
+        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         <a href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
     </div>
 </div>

@@ -18,6 +18,15 @@ class Municipio extends ActiveRecord
     {
         return 'municipio';
     }
+	
+	public function beforeSave($insert) {
+	if(!parent::beforeSave($insert)){
+            return false;
+        }	       
+	$this->municipio = strtoupper($this->municipio);
+	
+    return true;
+    }
 
     /**
      * @return \yii\db\ActiveQuery

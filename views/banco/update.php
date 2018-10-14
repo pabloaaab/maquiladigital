@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Banco */
 
-$this->title = 'Update Banco: ' . $model->idbanco;
+$this->title = 'Editar Banco: ' . $model->idbanco;
 $this->params['breadcrumbs'][] = ['label' => 'Bancos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idbanco, 'url' => ['view', 'id' => $model->idbanco]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="banco-update">
 

@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $model->idresolucion;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idresolucion], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idresolucion], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idresolucion], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idresolucion], [
             'class' => 'btn btn-danger',
             'data' => [

@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Banco */
+/* @var $model app\models\Recibocaja */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -23,46 +23,43 @@ use yii\helpers\Url;
     
  <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Banco</h4>
+        <h4>Información Recibo Caja</h4>
     </div>
     <div class="panel-body">
 		<div class="row">            
-			<?= $form->field($model, 'idbanco')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'idrecibo')->textInput(['maxlength' => true]) ?>
 		</div>														   		
 		<div class="row">
-			<?= $form->field($model, 'nitbanco')->textInput(['maxlength' => true]) ?>    
+			<?= $form->field($model, 'fecharecibo')->textInput(['maxlength' => true]) ?>    
         </div>
 		<div class="row">
-            <?= $form->field($model, 'entidad')->textInput(['maxlength' => true]) ?>  					
+            <?= $form->field($model, 'fechapago')->textInput(['maxlength' => true]) ?>  					
         </div>
 		
 		<div class="row">
-			<?= $form->field($model, 'telefonobanco')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'idtiporecibo')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'direccionbanco')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'idmunicipio')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'telefonobanco')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'valorpagado')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'producto')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'valorletras')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'numerocuenta')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'idcliente')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'nitmatricula')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'observacion')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'usuariosistema')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="row">
-			<?= $form->field($model, 'nitmatricula')->textInput() ?>
-		</div>	
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
-			<a href="<?= Url::toRoute("banco/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+			<a href="<?= Url::toRoute("recibocaja/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>
 	</div>
 </div>

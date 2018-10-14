@@ -6,20 +6,21 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\TipoRecibo */
 
-$this->title = $model->idtiporecibo;
-$this->params['breadcrumbs'][] = ['label' => 'Tipo Recibos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Detalle Tipo Recibo';
+$this->params['breadcrumbs'][] = ['label' => 'Tipo de Recibos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->idtiporecibo;
 ?>
-<div class="tipo-recibo-view">
+<div class="tiporecibo-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idtiporecibo], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idtiporecibo], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idtiporecibo], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idtiporecibo], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idtiporecibo], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idtiporecibo',
             'concepto',
-            'activo',
+            'activo',            
         ],
     ]) ?>
 

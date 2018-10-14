@@ -1,10 +1,8 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
-/* @var $model app\models\BancoSearch */
+/* @var $model app\models\ResolucionSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -12,32 +10,29 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
-        'method' => 'get',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => [ 'tag' => false,]
+        ],
     ]); ?>
+    <div class="panel panel-success panel-filters" style="display:none">
+        <div class="panel-heading">
+            Filtros <i class="glyphicon glyphicon-filter"></i>
+        </div>
+        <div class="panel-body" style="display:none">
+            <div class="row">
+                <?= $form->field($model, 'idbanco') ?>
+                <?= $form->field($model, 'entidad') ?>
+            </div>
+            <div class="panel-footer text-right" style="display:none">
+                <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
+                <?=  Html::resetButton('Limpiar ' . Html::tag('i', '', ['class' => 'fa fa-eraser']), ['class' => 'btn btn-info']) ?>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'idbanco') ?>
+        <?php ActiveForm::end(); ?>
 
-    <?= $form->field($model, 'nitbanco') ?>
-
-    <?= $form->field($model, 'entidad') ?>
-
-    <?= $form->field($model, 'direccionbanco') ?>
-
-    <?= $form->field($model, 'telefonobanco') ?>
-
-    <?php // echo $form->field($model, 'producto') ?>
-
-    <?php // echo $form->field($model, 'numerocuenta') ?>
-
-    <?php // echo $form->field($model, 'nitmatricula') ?>
-
-    <?php // echo $form->field($model, 'activo') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

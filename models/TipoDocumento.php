@@ -18,4 +18,13 @@ class TipoDocumento extends ActiveRecord
     {
         return 'tipodocumento';
     }
+	
+	public function beforeSave($insert) {
+	if(!parent::beforeSave($insert)){
+            return false;
+        }	       
+	$this->descripcion = strtoupper($this->descripcion);
+	
+    return true;
+    }
 }

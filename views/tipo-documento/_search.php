@@ -1,31 +1,38 @@
 <?php
-
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
-/* @var $model app\models\TipoDocumentoSearch */
+/* @var $model app\models\TipoDocumentosSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tipo-documento-search">
+<div class="tipodocumento-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
-        'method' => 'get',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => [ 'tag' => false,]
+        ],
     ]); ?>
+    <div class="panel panel-success panel-filters" style="display:none">
+        <div class="panel-heading">
+            Filtros <i class="glyphicon glyphicon-filter"></i>
+        </div>
+        <div class="panel-body" style="display:none">
+            <div class="row">
+                <?= $form->field($model, 'idtipo') ?>
+                <?= $form->field($model, 'tipo') ?>
+            </div>
+            <div class="panel-footer text-right" style="display:none">
+                <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
+                <?=  Html::resetButton('Limpiar ' . Html::tag('i', '', ['class' => 'fa fa-eraser']), ['class' => 'btn btn-info']) ?>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'idtipo') ?>
+        <?php ActiveForm::end(); ?>
 
-    <?= $form->field($model, 'tipo') ?>
-
-    <?= $form->field($model, 'descripcion') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

@@ -39,9 +39,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="panel panel-success panel-filters">
-    <div class="panel-heading">
-        Filtros de busqueda <a onclick="mostrarfiltro()"><span class='glyphicon glyphicon-filter'></span></a>
+    <div class="panel-heading" onclick="mostrarfiltro()">
+        Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
     </div>
+	
     <div class="panel-body" id="filtrocliente" style="display:none">
         <div class="row" >
             <?= $formulario->field($form, "cedulanit")->input("search") ?>
@@ -63,9 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
         <table class="table table-hover">
             <thead>
-            <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Tipo</th>
+            <tr>                
                 <th scope="col">Cedula/Nit</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Teléfono</th>
@@ -76,9 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>
-                <th scope="row"><?= $val->idcliente ?></th>
-                <td><?= $val->idTipoFk->tipo ?></td>
+            <tr>                
                 <td><?= $val->cedulanit ?></td>
                 <td><?= $val->nombrecorto ?></td>
                 <td><?= $val->telefonocliente ?></td>

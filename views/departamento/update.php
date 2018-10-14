@@ -2,15 +2,15 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Banco */
 
-$this->title = 'Nuevo Banco';
+$this->title = 'Editar Departamento: ' . $model->iddepartamento;
 $this->params['breadcrumbs'][] = ['label' => 'Bancos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->params['breadcrumbs'][] = ['label' => $model->iddepartamento, 'url' => ['view', 'id' => $model->iddepartamento]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
-<div class="banco-create">
+<div class="banco-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

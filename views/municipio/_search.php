@@ -2,11 +2,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
-/* @var $model app\models\TipoReciboSearch */
+/* @var $model app\models\MunicipioSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tiporecibo-search">
+<div class="municipio-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -23,8 +23,8 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="panel-body" style="display:none">
             <div class="row">
-                <?= $form->field($model, 'idtiporecibo') ?>
-                <?= $form->field($model, 'concepto') ?>
+                <?= $form->field($model, 'idmunicipio') ?>
+                <?= $form->field($model, 'municipio') ?>
             </div>
             <div class="panel-footer text-right" style="display:none">
                 <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>

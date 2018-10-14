@@ -18,7 +18,22 @@ class Cliente extends ActiveRecord
     {
         return 'cliente';
     }
-
+	
+	public function beforeSave($insert) {
+	if(!parent::beforeSave($insert)){
+            return false;
+        }
+	       
+	$this->nombrecliente = strtoupper($this->nombrecliente);
+	$this->apellidocliente = strtoupper($this->apellidocliente);
+	$this->direccioncliente = strtoupper($this->direccioncliente);
+	$this->contacto = strtoupper($this->contacto);
+	$this->observacion = strtoupper($this->observacion);
+	$this->razonsocial = strtoupper($this->razonsocial);
+	
+        return true;
+    }
+	
     /**
      * @return \yii\db\ActiveQuery
      */

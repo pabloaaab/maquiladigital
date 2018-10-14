@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\TipoRecibo */
+/* @var $model app\models\Recibocaja */
 
-$this->title = 'Nuevo Tipo Recibo';
-$this->params['breadcrumbs'][] = ['label' => 'Tipo Recibos', 'url' => ['index']];
+$this->title = 'Nuevo Recibo Caja';
+$this->params['breadcrumbs'][] = ['label' => 'Recibos Cajas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tipo-documento-create">
+<div class="recibocaja-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

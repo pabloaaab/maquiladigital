@@ -197,10 +197,10 @@ use yii\helpers\ArrayHelper;
                         $table->observacion = $model->observacion;
                         $table->dv = $dv;
                         if ($model->idtipo == 1){
-                            $table->nombrecorto = $model->nombrecliente." ".$model->apellidocliente ;
+                            $table->nombrecorto = strtoupper($model->nombrecliente." ".$model->apellidocliente) ;
                             $model->razonsocial = null;
                         }elseif ($model->idtipo == 5){
-                            $table->nombrecorto = $model->razonsocial;
+                            $table->nombrecorto = strtoupper($model->razonsocial);
                             $model->nombrecliente = null;
                             $model->apellidocliente = null;
                         }

@@ -26,8 +26,8 @@ class Resolucion extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'resolucion';
-    }
-
+    }	
+	
     /**
      * {@inheritdoc}
      */

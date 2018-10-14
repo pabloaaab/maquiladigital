@@ -1,42 +1,50 @@
 <?php
-
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ResolucionSearch */
+/* @var $searchModel app\models\RecibocajaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Tipo Documentos';
+$this->title = 'Lista Recibos Cajas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tipodocumentos-index">
+<div class="recibocaja-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
-    
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             [                
-                'attribute' => 'idtipo',
+                'attribute' => 'idrecibo',
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [                
-                'attribute' => 'tipo',
+                'attribute' => 'fecharecibo',
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [               
-                'attribute' => 'descripcion',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
-            ],                                   
+                'attribute' => 'fechapago',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],
+            [               
+                'attribute' => 'valorpagado',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],
+			[               
+                'attribute' => 'idcliente',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],			
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],
+			
         ],
         'tableOptions' => ['class' => 'table table-success'],
         'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
@@ -51,4 +59,5 @@ $this->params['breadcrumbs'][] = $this->title;
         
     ]); ?>
 </div>
+
 

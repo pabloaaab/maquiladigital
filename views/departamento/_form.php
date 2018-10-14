@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\TipoRecibo */
+/* @var $model app\models\Departamento */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -23,22 +23,23 @@ use yii\helpers\Url;
     
  <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Tipo Recibo</h4>
+        <h4>Información Departamento</h4>
     </div>
     <div class="panel-body">
 		<div class="row">            
-			<?= $form->field($model, 'idtiporecibo')->textInput() ?>
+			<?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>
 		</div>														   		
 		<div class="row">
-			<?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
+			<?= $form->field($model, 'nombredepartamento')->textInput(['maxlength' => true]) ?>    
         </div>
 		<div class="row">
             <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>  					
-        </div>		
+        </div>			
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
-			<a href="<?= Url::toRoute("tipo-recibo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+			<a href="<?= Url::toRoute("departamento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+

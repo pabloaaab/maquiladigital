@@ -20,6 +20,15 @@ class TipoRecibo extends \yii\db\ActiveRecord
     {
         return 'tiporecibo';
     }
+	
+	public function beforeSave($insert) {
+	if(!parent::beforeSave($insert)){
+            return false;
+        }	       
+	$this->concepto = strtoupper($this->concepto);
+	
+    return true;
+    }
 
     /**
      * {@inheritdoc}

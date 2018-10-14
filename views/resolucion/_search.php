@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
             'options' => [ 'tag' => false,]
         ],
     ]); ?>
-    <div class="panel panel-success panel-filters">
+    <div class="panel panel-success panel-filters" style="display:none">
         <div class="panel-heading">
             Filtros <i class="glyphicon glyphicon-filter"></i>
         </div>
