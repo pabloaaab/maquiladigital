@@ -12,10 +12,11 @@ use Yii;
  * @property string $fechallegada
  * @property string $fechaprocesada
  * @property string $fechaentrega
- * @property string $totalorden
+ * @property double $totalorden
  * @property string $valorletras
  * @property string $observacion
- * @property string $estado
+ * @property int $estado
+ * @property string $ordenproduccion
  * @property string $usuariosistema
  *
  * @property Facturaventa[] $facturaventas
@@ -38,11 +39,13 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idordenproduccion', 'idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'totalorden', 'valorletras', 'observacion', 'estado', 'usuariosistema'], 'required', 'message' => 'Campo requerido'],
-            [['idordenproduccion', 'idcliente'], 'integer'],
-            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion'], 'required', 'message' => 'Campo requerido'],
+            [['idordenproduccion', 'idcliente', 'estado'], 'integer'],
+            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'integer'],
+            [['totalorden'], 'number', 'message' => 'Solo se aceptan números'],
             [['valorletras', 'observacion'], 'string'],
-            [['totalorden', 'estado', 'usuariosistema'], 'string', 'max' => 15],
+            [['ordenproduccion'], 'string', 'max' => 25],
+            [['usuariosistema'], 'string', 'max' => 50],
             [['idordenproduccion'], 'unique'],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
         ];
@@ -54,16 +57,17 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idordenproduccion' => 'Idordenproduccion:',
-            'idcliente' => 'Idcliente:',
-            'fechallegada' => 'Fecha Llegada:',
-            'fechaprocesada' => 'Fecha Procesada:',
-            'fechaentrega' => 'Fecha Entrega:',
-            'totalorden' => 'Total Orden:',
-            'valorletras' => 'Valor Letras:',
-            'observacion' => 'Observación:',
-            'estado' => 'Estado:',
-            'usuariosistema' => 'Usuariosistema:',
+            'idordenproduccion' => 'Idordenproduccion',
+            'idcliente' => 'Idcliente',
+            'fechallegada' => 'Fechallegada',
+            'fechaprocesada' => 'Fechaprocesada',
+            'fechaentrega' => 'Fechaentrega',
+            'totalorden' => 'Totalorden',
+            'valorletras' => 'Valorletras',
+            'observacion' => 'Observacion',
+            'estado' => 'Estado',
+            'ordenproduccion' => 'Ordenproduccion',
+            'usuariosistema' => 'Usuariosistema',
         ];
     }
 
