@@ -30,8 +30,9 @@ $this->params['breadcrumbs'][] = $model->idmunicipio;
         'model' => $model,
         'attributes' => [
             'idmunicipio',
+            'codigomunicipio',
             'municipio',
-            'iddepartamento',            
+            'iddepartamento',
             'activo',
         ],
     ]) ?>

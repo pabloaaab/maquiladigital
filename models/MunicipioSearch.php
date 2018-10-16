@@ -18,8 +18,8 @@ class MunicipioSearch extends Municipio
     public function rules()
     {
         return [
-            [['idmunicipio', 'iddepartamento'], 'integer'],
-            [['municipio', 'activo'], 'safe'],
+            [['idmunicipio', 'codigomunicipio', 'municipio', 'iddepartamento'], 'safe'],
+            [['activo'], 'integer'],
         ];
     }
 
@@ -59,12 +59,13 @@ class MunicipioSearch extends Municipio
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idmunicipio' => $this->idmunicipio,
-            'iddepartamento' => $this->iddepartamento,
+            'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'municipio', $this->municipio])
-            ->andFilterWhere(['like', 'activo', $this->activo]);
+        $query->andFilterWhere(['like', 'idmunicipio', $this->idmunicipio])
+            ->andFilterWhere(['like', 'codigomunicipio', $this->codigomunicipio])
+            ->andFilterWhere(['like', 'municipio', $this->municipio])
+            ->andFilterWhere(['like', 'iddepartamento', $this->iddepartamento]);
 
         return $dataProvider;
     }

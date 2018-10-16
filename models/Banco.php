@@ -42,7 +42,7 @@ class Banco extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idbanco', 'nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'nitmatricula', 'activo'], 'required'],
+            [['idbanco', 'nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'nitmatricula', 'activo'], 'required', 'message' => 'Campo requerido'],
             [['idbanco'], 'string', 'max' => 10],
             [['nitbanco', 'telefonobanco', 'producto', 'numerocuenta', 'nitmatricula'], 'string', 'max' => 15],
             [['entidad', 'direccionbanco'], 'string', 'max' => 40],
@@ -57,15 +57,15 @@ class Banco extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idbanco' => 'Idbanco',
-            'nitbanco' => 'Nitbanco',
-            'entidad' => 'Entidad',
-            'direccionbanco' => 'Direccionbanco',
-            'telefonobanco' => 'Telefonobanco',
-            'producto' => 'Producto',
-            'numerocuenta' => 'Numerocuenta',
-            'nitmatricula' => 'Nitmatricula',
-            'activo' => 'Activo',
+            'idbanco' => 'Idbanco:',
+            'nitbanco' => 'Nit:',
+            'entidad' => 'Entidad:',
+            'direccionbanco' => 'Dirección:',
+            'telefonobanco' => 'Teléfono:',
+            'producto' => 'Producto:',
+            'numerocuenta' => 'Número Cuenta:',
+            'nitmatricula' => 'Nit Matricula:',
+            'activo' => 'Activo:',
         ];
     }
 }

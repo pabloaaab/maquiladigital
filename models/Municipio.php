@@ -2,37 +2,81 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
-
 use Yii;
-use yii\base\Model;
 
-class Municipio extends ActiveRecord
+/**
+ * This is the model class for table "municipio".
+ *
+ * @property string $idmunicipio
+ * @property string $codigomunicipio
+ * @property string $municipio
+ * @property string $iddepartamento
+ * @property int $activo
+ *
+ * @property Cliente[] $clientes
+ * @property Departamento $departamento
+ * @property Recibocaja[] $recibocajas
+ */
+class Municipio extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return Yii::$app->db;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'municipio';
     }
-	
-	public function beforeSave($insert) {
-	if(!parent::beforeSave($insert)){
-            return false;
-        }	       
-	$this->municipio = strtoupper($this->municipio);
-	
-    return true;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['idmunicipio', 'codigomunicipio', 'municipio'], 'required', 'message' => 'Campo requerido'],
+            [['activo'], 'integer'],
+            [['idmunicipio', 'codigomunicipio', 'iddepartamento'], 'string', 'max' => 15],
+            [['municipio'], 'string', 'max' => 100],
+            [['idmunicipio'], 'unique'],
+            [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'idmunicipio' => 'Idmunicipio:',
+            'codigomunicipio' => 'Codigo Municipio:',
+            'municipio' => 'Municipio:',
+            'iddepartamento' => 'Iddepartamento:',
+            'activo' => 'Activo:',
+        ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdDepartamentoFk()
+    public function getClientes()
     {
-        return $this->hasOne(TblDepartamentos::className(), ['iddepartamento' => 'iddepartamento']);
+        return $this->hasMany(Cliente::className(), ['idmunicipio' => 'idmunicipio']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartamento()
+    {
+        return $this->hasOne(Departamento::className(), ['iddepartamento' => 'iddepartamento']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecibocajas()
+    {
+        return $this->hasMany(Recibocaja::className(), ['idmunicipio' => 'idmunicipio']);
     }
 }

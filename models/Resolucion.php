@@ -34,7 +34,7 @@ class Resolucion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nroresolucion', 'desde', 'hasta', 'fechavencimiento', 'nitmatricula'], 'required'],
+            [['nroresolucion', 'desde', 'hasta', 'fechavencimiento', 'nitmatricula'], 'required', 'message' => 'Campo requerido'],
 
             ['fechavencimiento', 'default', 'value' => null],
 

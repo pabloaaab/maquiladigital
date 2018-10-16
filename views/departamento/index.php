@@ -10,7 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Lista Departamentos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="departamentos-index">
+<div class="bancos-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [                
-                'attribute' => 'nombredepartamento',
+                'attribute' => 'departamento',
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [               

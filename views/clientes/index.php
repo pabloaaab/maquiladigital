@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->nombrecorto ?></td>
                 <td><?= $val->telefonocliente ?></td>
                 <td><?= $val->direccioncliente ?></td>
-                <td><?= $val->idMunicipioFk->municipio ?></td>
+                <td><?= $val->municipio->municipio ?></td>
                 <td>				
                 <a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                 <a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente])?>" ><span class="glyphicon glyphicon-pencil"></span></a>
@@ -97,7 +97,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 </div>
                                 <div class="modal-footer">
                                     <?= Html::beginForm(Url::toRoute("clientes/eliminar"), "POST") ?>
-                                    <input type="hidden" name="idcliente" value="<?= $val->idcliente ?>">
+                                    <input type="hidden" name="idcliente" value="<?= $val->idcliente ?>">									
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                                     <button type="submit" class="btn btn-primary">Eliminar</button>
                                     <?= Html::endForm() ?>

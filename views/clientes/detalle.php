@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use app\models\Municipio;
-use app\models\Departamentos;
+use app\models\Departamento;
 use app\models\TipoDocumento;
 use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th>Código:</th>
                 <td><?= $table->idcliente ?></td>
                 <th>Tipo Identificación:</th>
-                <td><?= $table->idTipoFk->tipo ?></td>
+                <td><?= $table->tipo->tipo ?></td>
                 <th>Cedula/Nit:</th>
                 <td><?= $table->cedulanit ?></td>
                 <th >DV:</th>
@@ -67,9 +67,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th>Celular:</th>
                 <td><?= $table->celularcliente ?></td>
                 <th>Departamento:</th>
-                <td><?= $table->idDepartamentoFk->nombredepartamento ?></td>
+                <td><?= $table->departamento->departamento ?></td>
                 <th >Municipio:</th>
-                <td><?= $table->idMunicipioFk->municipio ?></td>
+                <td><?= $table->municipio->municipio ?></td>
             </tr>
         </table>
     </div>

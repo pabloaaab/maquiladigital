@@ -10,7 +10,7 @@ $this->title = 'Nuevo Departamento';
 $this->params['breadcrumbs'][] = ['label' => 'Departamentos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="banco-create">
+<div class="departamento-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

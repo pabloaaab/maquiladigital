@@ -2,60 +2,126 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
-
 use Yii;
-use yii\base\Model;
 
-class Cliente extends ActiveRecord
+/**
+ * This is the model class for table "cliente".
+ *
+ * @property int $idcliente
+ * @property int $idtipo
+ * @property int $cedulanit
+ * @property int $dv
+ * @property string $razonsocial
+ * @property string $nombrecliente
+ * @property string $apellidocliente
+ * @property string $nombrecorto
+ * @property string $direccioncliente
+ * @property string $telefonocliente
+ * @property string $celularcliente
+ * @property string $emailcliente
+ * @property string $contacto
+ * @property string $telefonocontacto
+ * @property string $celularcontacto
+ * @property string $formapago
+ * @property int $plazopago
+ * @property int $iddepartamento
+ * @property int $idmunicipio
+ * @property string $nitmatricula
+ * @property string $tiporegimen
+ * @property string $autoretenedor
+ * @property string $retencioniva
+ * @property string $retencionfuente
+ * @property string $observacion
+ * @property string $fechaingreso
+ *
+ * @property Tipodocumento $tipo
+ * @property Departamento $departamento
+ * @property Municipio $municipio
+ * @property Facturaventa[] $facturaventas
+ * @property Ordenproduccion[] $ordenproduccions
+ * @property Producto[] $productos
+ * @property Recibocaja[] $recibocajas
+ */
+class Cliente extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return Yii::$app->db;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'cliente';
     }
-	
-	public function beforeSave($insert) {
+
+    public function beforeSave($insert) {
 	if(!parent::beforeSave($insert)){
             return false;
         }
-	       
+	# ToDo: Cambiar a cliente cargada de configuración.    
 	$this->nombrecliente = strtoupper($this->nombrecliente);
 	$this->apellidocliente = strtoupper($this->apellidocliente);
+	$this->razonsocial = strtoupper($this->razonsocial);
+	$this->nombrecorto = strtoupper($this->nombrecorto);
 	$this->direccioncliente = strtoupper($this->direccioncliente);
 	$this->contacto = strtoupper($this->contacto);
-	$this->observacion = strtoupper($this->observacion);
-	$this->razonsocial = strtoupper($this->razonsocial);
-	
+	$this->observacion = strtoupper($this->observacion);	
         return true;
     }
-	
+
+    
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdMunicipioFk()
+    public function getTipo()
+    {
+        return $this->hasOne(Tipodocumento::className(), ['idtipo' => 'idtipo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartamento()
+    {
+        return $this->hasOne(Departamento::className(), ['iddepartamento' => 'iddepartamento']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMunicipio()
     {
         return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdDepartamentoFk()
+    public function getFacturaventas()
     {
-        return $this->hasOne(Departamentos::className(), ['iddepartamento' => 'iddepartamento']);
+        return $this->hasMany(Facturaventa::className(), ['idcliente' => 'idcliente']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdTipoFk()
+    public function getOrdenproduccions()
     {
-        return $this->hasOne(TipoDocumento::className(), ['idtipo' => 'idtipo']);
+        return $this->hasMany(Ordenproduccion::className(), ['idcliente' => 'idcliente']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProductos()
+    {
+        return $this->hasMany(Producto::className(), ['idcliente' => 'idcliente']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecibocajas()
+    {
+        return $this->hasMany(Recibocaja::className(), ['idcliente' => 'idcliente']);
+    }
 }

@@ -9,8 +9,6 @@ use yii\helpers\Url;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
-
     <?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
 	'fieldConfig' => [
@@ -20,7 +18,6 @@ use yii\helpers\Url;
                 ],
 	]); ?>
 
-    
  <div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Departamento</h4>
@@ -30,11 +27,11 @@ use yii\helpers\Url;
 			<?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>
 		</div>														   		
 		<div class="row">
-			<?= $form->field($model, 'nombredepartamento')->textInput(['maxlength' => true]) ?>    
+			<?= $form->field($model, 'departamento')->textInput(['maxlength' => true]) ?>    
         </div>
 		<div class="row">
             <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>  					
-        </div>			
+        </div>
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
 			<a href="<?= Url::toRoute("departamento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

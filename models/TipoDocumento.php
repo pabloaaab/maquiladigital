@@ -27,4 +27,27 @@ class TipoDocumento extends ActiveRecord
 	
     return true;
     }
+	
+	/**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['idtipo', 'tipo', 'descripcion'], 'required', 'message' => 'Campo requerido'],
+            [['tipo', 'descripcion'], 'string', 'max' => 50],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'idtipo' => 'Id Tipo:',
+            'tipo' => 'Tipo:',
+            'descripcion' => 'Descripcion:',            
+        ];
+    }
 }

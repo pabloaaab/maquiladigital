@@ -9,8 +9,6 @@ use yii\helpers\Url;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
-
     <?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
 	'fieldConfig' => [
@@ -20,7 +18,6 @@ use yii\helpers\Url;
                 ],
 	]); ?>
 
-    
  <div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Banco</h4>

@@ -18,8 +18,8 @@ class DepartamentoSearch extends Departamento
     public function rules()
     {
         return [
-            [['iddepartamento'], 'integer'],
-            [['nombredepartamento', 'activo'], 'safe'],
+            [['iddepartamento', 'departamento'], 'safe'],
+            [['activo'], 'integer'],
         ];
     }
 
@@ -59,11 +59,11 @@ class DepartamentoSearch extends Departamento
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'iddepartamento' => $this->iddepartamento,
+            'activo' => $this->activo,
         ]);
 
-        $query->andFilterWhere(['like', 'nombredepartamento', $this->nombredepartamento])
-            ->andFilterWhere(['like', 'activo', $this->activo]);
+        $query->andFilterWhere(['like', 'iddepartamento', $this->iddepartamento])
+            ->andFilterWhere(['like', 'departamento', $this->departamento]);
 
         return $dataProvider;
     }

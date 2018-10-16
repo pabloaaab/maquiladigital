@@ -32,15 +32,24 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
             'idrecibo',
             'fecharecibo',
             'fechapago',
-            'idtiporecibo',
-            'idmunicipio',
+            [
+            'label'  => 'Tipo Recibo:',
+            'value' => $model->tiporecibo->concepto,
+            ],
+            [
+            'label'  => 'Municipio:',
+            'value' => $model->municipio->municipio,
+            ],
             'valorpagado',
             'valorletras',
-            'idcliente',
+            [
+            'label'  => 'Cliente:',
+            'value' => $model->cliente->nombrecorto,
+            ],
             'observacion',
 			'usuariosistema',
         ],
     ]) ?>
 	
-	<?=  $this->render('detalle', ['ReciboCajaDetalle' => $ReciboCajaDetalle]); ?>
+	<?=  $this->render('detalle', ['ReciboCajaDetalle' => $ReciboCajaDetalle, 'idrecibo' => $model->idrecibo]); ?>
 </div>

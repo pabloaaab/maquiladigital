@@ -55,6 +55,7 @@ AppAsset::register($this);
                       ['label' => 'Resolucion', 'url' => ['/resolucion/index']],
 					  ['label' => 'Departamento', 'url' => ['/departamento/index']],
 					  ['label' => 'Municipio', 'url' => ['/municipio/index']],
+					  ['label' => 'Producto', 'url' => ['/producto/index']],
                   ]
                 ],
                 [
@@ -71,9 +72,12 @@ AppAsset::register($this);
                 ],
                 [
                     'label' => 'Movimientos',
-                    'items' => [
-                        ['label' => 'Recibo Caja', 'url' => ['/recibocaja/index']],
+                    'items' => [                        
+						['label' => 'Orden Producción', 'url' => ['/orden-produccion/index']],
+						['label' => 'Factura Venta', 'url' => ['/facturaventa/index']],
+						['label' => 'Recibo Caja', 'url' => ['/recibocaja/index']],
 						['label' => 'Otros', 'url' => ['/site/index']],
+						
                     ]
                 ]
             ],

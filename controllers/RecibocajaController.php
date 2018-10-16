@@ -10,6 +10,18 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+use yii\base\Model;
+use yii\web\Response;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
+
 /**
  * RecibocajaController implements the CRUD actions for Recibocaja model.
  */
@@ -120,6 +132,111 @@ class RecibocajaController extends Controller
      * @return Recibocaja the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
+	 
+	public function actionNuevodetalle()
+        {
+        if(Yii::$app->request->post())
+            {
+                $idrecibo = Html::encode($_POST["idrecibo"]);
+				$nrofactura = Html::encode($_POST["nrofactura"]);
+				$vlrabono = Html::encode($_POST["vlrabono"]);
+				$vlrsaldo = Html::encode($_POST["vlrsaldo"]);
+				$retefuente = Html::encode($_POST["retefuente"]);
+				$reteiva = Html::encode($_POST["reteiva"]);
+				$reteica = Html::encode($_POST["reteica"]);
+				$observacion = Html::encode($_POST["observacion"]);
+                if((int) $idrecibo)
+                {                    
+                    $table = new ReciboCajaDetalle();
+                    $table->nrofactura = $nrofactura;
+                    $table->idrecibo = $idrecibo;
+                    $table->vlrabono = $vlrabono;
+                    $table->vlrsaldo = $vlrsaldo;
+                    $table->retefuente = $retefuente;
+                    $table->reteiva = $reteiva;
+                    $table->reteica = $reteica;                    
+                    $table->observacion = $observacion;
+					$table->insert();
+					$this->redirect(["recibocaja/view",'id' => $idrecibo]);
+                }
+                else
+                {
+                   // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("recibocaja/index")."'>";
+                }
+            }
+            else
+            {
+                return $this->redirect(["recibocaja/index"]);
+            }
+        }
+		
+	public function actionEditardetalle()
+        {			
+			if(Yii::$app->request->post()){
+				$iddetallerecibo = Html::encode($_POST["iddetallerecibo"]);
+                if((int) $iddetallerecibo)
+                {
+                    $table = ReciboCajaDetalle::find()->where(['iddetallerecibo' => $iddetallerecibo])->one();
+					$nrofactura = Html::encode($_POST["nrofactura"]);
+					$vlrabono = Html::encode($_POST["vlrabono"]);
+					$vlrsaldo = Html::encode($_POST["vlrsaldo"]);
+					$retefuente = Html::encode($_POST["retefuente"]);
+					$reteiva = Html::encode($_POST["reteiva"]);
+					$reteica = Html::encode($_POST["reteica"]);
+					$observacion= Html::encode($_POST["observacion"]);					
+					$idrecibo = $table->idrecibo;
+                    if ($table) {
+                        $table->nrofactura = $nrofactura;
+						$table->vlrabono = $vlrabono;
+						$table->vlrsaldo = $vlrsaldo;
+						$table->retefuente = $retefuente;
+						$table->reteiva = $reteiva;
+						$table->reteica = $reteica;
+						$table->observacion = $observacion;
+                        $table->update();
+                        $this->redirect(["recibocaja/view",'id' => $idrecibo]);
+                        
+                        
+                    } else {
+                        $msg = "El registro seleccionado no ha sido encontrado";
+                        $tipomsg = "danger";
+                    }
+                } else {
+                    $model->getErrors();
+                }
+            }
+			//return $this->render("_formeditardetalle", ["iddetallerecibo" => $iddetallerecibo,]);
+        }	
+		
+	public function actionEliminardetalle()
+        {
+            if(Yii::$app->request->post())
+            {
+                $iddetallerecibo = Html::encode($_POST["iddetallerecibo"]);
+				$idrecibo = Html::encode($_POST["idrecibo"]);
+                if((int) $iddetallerecibo)
+                {
+                    if(ReciboCajaDetalle::deleteAll("iddetallerecibo=:iddetallerecibo", [":iddetallerecibo" => $iddetallerecibo]))
+                    {                        
+                        $this->redirect(["recibocaja/view",'id' => $idrecibo]);
+                    }
+                    else
+                    {                       
+                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("recibocaja/index")."'>";
+                    }
+                }
+                else
+                {                   
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("recibocaja/index")."'>";
+                }
+            }
+            else
+            {
+                return $this->redirect(["recibocaja/index"]);
+            }
+        }	
+	
     protected function findModel($id)
     {
         if (($model = Recibocaja::findOne($id)) !== null) {

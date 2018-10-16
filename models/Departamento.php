@@ -7,9 +7,9 @@ use Yii;
 /**
  * This is the model class for table "departamento".
  *
- * @property int $iddepartamento
- * @property string $nombredepartamento
- * @property string $activo
+ * @property string $iddepartamento
+ * @property string $departamento
+ * @property int $activo
  *
  * @property Cliente[] $clientes
  * @property Municipio[] $municipios
@@ -30,10 +30,10 @@ class Departamento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['iddepartamento', 'nombredepartamento', 'activo'], 'required'],
-            [['iddepartamento'], 'integer'],
-            [['nombredepartamento'], 'string', 'max' => 40],
-            [['activo'], 'string', 'max' => 2],
+            [['iddepartamento', 'departamento'], 'required', 'message' => 'Campo requerido'],
+            [['activo'], 'integer'],
+            [['iddepartamento'], 'string', 'max' => 15],
+            [['departamento'], 'string', 'max' => 100],
             [['iddepartamento'], 'unique'],
         ];
     }
@@ -45,7 +45,7 @@ class Departamento extends \yii\db\ActiveRecord
     {
         return [
             'iddepartamento' => 'Iddepartamento',
-            'nombredepartamento' => 'Nombredepartamento',
+            'departamento' => 'Departamento',
             'activo' => 'Activo',
         ];
     }

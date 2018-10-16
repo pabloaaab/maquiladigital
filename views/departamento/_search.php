@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
@@ -6,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="banco-search">
+<div class="departamento-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -24,7 +25,7 @@ use yii\widgets\ActiveForm;
         <div class="panel-body" style="display:none">
             <div class="row">
                 <?= $form->field($model, 'iddepartamento') ?>
-                <?= $form->field($model, 'nombredepartamento') ?>
+                <?= $form->field($model, 'departamento') ?>
             </div>
             <div class="panel-footer text-right" style="display:none">
                 <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>

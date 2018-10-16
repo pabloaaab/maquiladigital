@@ -4,7 +4,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use app\models\Municipio;
-use app\models\Departamentos;
+use app\models\Departamento;
 use app\models\TipoDocumento;
 use yii\widgets\LinkPager;
 
@@ -108,7 +108,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php
-$departamento= ArrayHelper::map(Departamentos::find()->all(), 'iddepartamento','nombredepartamento');
+$departamento= ArrayHelper::map(Departamento::find()->all(), 'iddepartamento','departamento');
 $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio','municipio');
 $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descripcion');
 ?>

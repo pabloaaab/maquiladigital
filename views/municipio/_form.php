@@ -9,8 +9,6 @@ use yii\helpers\Url;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-
-
     <?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
 	'fieldConfig' => [
@@ -20,7 +18,6 @@ use yii\helpers\Url;
                 ],
 	]); ?>
 
-    
  <div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Municipio</h4>
@@ -30,15 +27,18 @@ use yii\helpers\Url;
 			<?= $form->field($model, 'idmunicipio')->textInput(['maxlength' => true]) ?>
 		</div>														   		
 		<div class="row">
-			<?= $form->field($model, 'municipio')->textInput(['maxlength' => true]) ?>    
+			<?= $form->field($model, 'codigomunicipio')->textInput(['maxlength' => true]) ?>    
         </div>
 		<div class="row">
-            <?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>  					
+            <?= $form->field($model, 'municipio')->textInput(['maxlength' => true]) ?>  					
         </div>
 		
 		<div class="row">
-			<?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>
 		</div>
+		<div class="row">
+			<?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>
+		</div>		
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
 			<a href="<?= Url::toRoute("municipio/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

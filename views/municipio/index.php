@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [               
                 'attribute' => 'activo',
                 'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],
+            ],					
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],
