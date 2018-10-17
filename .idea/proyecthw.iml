@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/vendor/arielcr/numero-a-letras" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/gherkin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bower-asset/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bower-asset/inputmask" />
@@ -23,6 +24,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-dialog" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-grid" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-krajee-base" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/kartik-v/yii2-widget-datepicker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/myclabs/deep-copy" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpdocumentor/reflection-docblock" />

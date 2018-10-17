@@ -23,12 +23,14 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 
+use NumeroALetras;
+
 /**
  * OrdenProduccionController implements the CRUD actions for Ordenproduccion model.
  */
 class OrdenProduccionController extends Controller
 {
-    /**
+     /**
      * {@inheritdoc}
      */
     public function behaviors()
@@ -83,6 +85,10 @@ class OrdenProduccionController extends Controller
         $model = new Ordenproduccion();
 		$clientes = Cliente::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->totalorden = 0;
+            $model->estado = 0;
+            $model->usuariosistema = Yii::$app->user->identity->username;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->idordenproduccion]);
         }
 
@@ -153,6 +159,9 @@ class OrdenProduccionController extends Controller
                     $table->subtotal = $subtotal;
                     $table->idordenproduccion = $idordenproduccion;
 					$table->insert();
+					$ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+					$ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->vlrprecio;
+					$ordenProduccion->update();
 					$this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
                 }
                 else
@@ -193,7 +202,7 @@ class OrdenProduccionController extends Controller
                         $tipomsg = "danger";
                     }
                 } else {
-                    $model->getErrors();
+                    $table->getErrors();
                 }
             }
 			//return $this->render("_formeditardetalle", ["iddetallerecibo" => $iddetallerecibo,]);

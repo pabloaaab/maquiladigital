@@ -26,20 +26,43 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idordenproduccion',
-            'idcliente',
-            'fechallegada',
-            'fechaprocesada',
-            'fechaentrega',
-            'totalorden',
-            'valorletras:ntext',
-            'observacion:ntext',
-            'estado',
-            'usuariosistema',
-        ],
-    ]) ?>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h5><?= Html::encode($this->title) ?></h5>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                    <td><?= Html::encode($model->idordenproduccion) ?></td>
+                    <th><?= Html::activeLabel($model, 'Cliente') ?></th>
+                    <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
+                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
+                    <td><?= Html::encode($model->ordenproduccion) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <td><?= Html::encode($model->fechallegada) ?></td>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <td><?= Html::encode($model->fechaprocesada) ?></td>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <td><?= Html::encode($model->fechaentrega) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'estado') ?></th>
+                    <td><?= Html::encode($model->getEtiquetaEstado()) ?></td>
+                    <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
+                    <td><?= Html::encode($model->usuariosistema) ?></td>
+                    <th><?= Html::activeLabel($model, 'totalorden') ?></th>
+                    <td><?= Html::encode($model->totalorden) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'observacion') ?></th>
+                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
 	<?=  $this->render('detalle', ['OrdenProduccionDetalle' => $OrdenProduccionDetalle, 'idordenproduccion' => $model->idordenproduccion]); ?>
 </div>

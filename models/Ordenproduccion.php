@@ -25,6 +25,9 @@ use Yii;
  */
 class Ordenproduccion extends \yii\db\ActiveRecord
 {
+    const ESTADO_ACTIVO = 1;
+    const ESTADO_INACTIVO = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -36,17 +39,26 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->observacion = strtoupper($this->observacion);
+        $this->ordenproduccion = strtoupper($this->ordenproduccion);
+        return true;
+    }
+
     public function rules()
     {
         return [
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion'], 'required', 'message' => 'Campo requerido'],
-            [['idordenproduccion', 'idcliente', 'estado'], 'integer'],
-            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'integer'],
-            [['totalorden'], 'number', 'message' => 'Solo se aceptan números'],
+            [['idcliente', 'estado'], 'integer'],
+            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe', 'message' => 'Campo requerido'],
+            [['totalorden'], 'number', 'message' => 'Solo se acpetan números'],
             [['valorletras', 'observacion'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],
-            [['idordenproduccion'], 'unique'],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
         ];
     }
@@ -93,5 +105,14 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function getOrdenproducciondetalles()
     {
         return $this->hasMany(Ordenproducciondetalle::className(), ['idordenproduccion' => 'idordenproduccion']);
+    }
+
+    public function getEtiquetaEstado(){
+        if($this->estado == 0){
+            return ('ABIERTO');
+        } else {
+
+            return ('CERRADO');
+        }
     }
 }
