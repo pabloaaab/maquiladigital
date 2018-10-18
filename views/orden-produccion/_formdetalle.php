@@ -16,6 +16,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -31,29 +34,47 @@ use kartik\select2\Select2;
     ],
 ]); ?>
 
-<?php $model = new Ordenproducciondetalle(); ?>
-<div class="panel panel-success">
-    <div class="panel-heading">
-        <h4>Información Orden Producción</h4>
-    </div>
-    <div class="panel-body">
-        <div class="row">
-            <?= $form->field($model, 'idproducto')->textInput(['maxlength' => true]) ?>
+<div class="table table-responsive">
+    <div class="panel panel-success ">
+        <div class="panel-heading">
+            Nuevo detalle Orden de prducción
         </div>
-        <div class="row">
-            <?= $form->field($model, 'cantidad')->textInput(['maxlength' => true]) ?>
+        <div class="panel-body">
+            <table class="table table-condensed">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Código</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Costo</th>
+                    <th scope="col">Total</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($productosCliente as $val): ?>
+                <tr>
+                    <td><?= Html::decode($val->idproducto) ?></td>
+                    <td><?= Html::decode($val->codigoproducto) ?></td>
+                    <td><?= Html::decode($val->producto) ?></td>
+                    <td><input type="text", name="cantidad", value="<?= $val->cantidad ?>"></td>
+                    <td><input type="text", name="costoconfeccion", value="<?= $val->costoconfeccion ?>"></td>
+                    <td><input type="text", name="costoconfeccion", value="0"></td>
+                    <td><input type="checkbox", name="idproducto[]", value="<?= $val->idproducto ?>" onchange="calcular()"></td>
+                </tr>
+                </tbody>
+                <?php endforeach; ?>
+            </table>
         </div>
-        <div class="row">
-            <?= $form->field($model, 'vlrprecio')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->textInput(['value' => $idordenproduccion,'maxlength' => true]) ?>
-        </div>
-        <div class="panel-footer text-right">
-            <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
-        </div>
+
+
     </div>
 </div>
 <?php ActiveForm::end(); ?>
 
+<script>
+    function calcular() {
+        $cantidad = document.getElementById('cedulanit').value;
+    }
+</script>

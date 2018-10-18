@@ -14,11 +14,19 @@ use yii\web\UploadedFile;
 use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
 use app\models\Ordenproduccion;
+use app\models\Cliente;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
+use yii\db\ActiveQuery;
+use kartik\select2\Select2;
+use yii\web\Session;
+use yii\data\Pagination;
+
+
+use yii\helpers\ArrayHelper;
 
 
 ?>
@@ -28,6 +36,7 @@ use yii\filters\AccessControl;
     <div class="panel-heading">
         Detalles	
     </div>
+    <div class="panel-body">
         <table class="table table-hover">
             <thead>
             <tr>                
@@ -41,7 +50,7 @@ use yii\filters\AccessControl;
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($modeldetalle as $val): ?>
+            <?php foreach ($modeldetalles as $val): ?>
             <tr>                
                 <td><?= $val->iddetalleorden ?></td>
                 <td><?= $val->idproducto ?></td>
@@ -61,7 +70,7 @@ use yii\filters\AccessControl;
                                 </div>
 								<?= Html::beginForm(Url::toRoute("orden-produccion/editardetalle"), "POST") ?>								
                                 <div class="modal-body">
-                                    <?=  $this->render('_formdetalle',['iddetalleorden' => $val->iddetalleorden]); ?>																		
+
                                 </div>
 								<?= Html::endForm() ?>		
                             </div><!-- /.modal-content -->
@@ -82,7 +91,7 @@ use yii\filters\AccessControl;
                                 <div class="modal-footer">
                                     <?= Html::beginForm(Url::toRoute("orden-produccion/eliminardetalle"), "POST") ?>
                                     <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
-									<input type="hidden" name="idordenproduccion" value="<?= $id ?>">
+									<input type="hidden" name="idordenproduccion" value="<?= $idordenproduccion ?>">
                                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
                                     <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                     <?= Html::endForm() ?>
@@ -95,6 +104,10 @@ use yii\filters\AccessControl;
             </tbody>
             <?php endforeach; ?>
         </table>		
+    </div>
+
 
     </div>
 </div>
+<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalle', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
+

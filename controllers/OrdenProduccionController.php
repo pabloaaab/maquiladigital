@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Producto;
 use Yii;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
@@ -10,7 +11,7 @@ use app\models\Cliente;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
 use yii\web\Session;
@@ -68,9 +69,13 @@ class OrdenProduccionController extends Controller
      */
     public function actionView($id)
     {
-
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $modeldetalle = new Ordenproducciondetalle();
 		return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalle' => $modeldetalle,
+            'modeldetalles' => $modeldetalles,
+
         ]);
     }
 
@@ -140,36 +145,16 @@ class OrdenProduccionController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
 
-    public function actionDetalle($id)
-    {
-        $modeldetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
-        return $this->render('detalle', [
-            'modeldetalle' => $modeldetalle,
 
-        ]);
-    }
 
-	public function actionNuevodetalle()
+	public function actionNuevodetalle($idordenproduccion,$idcliente)
         {
 
-            $model = new Ordenproducciondetalle();
-            if ($model->load(Yii::$app->request->post()) ) {
-                $table = new Ordenproducciondetalle;
-                $table->idproducto = $model->idproducto;
-                $table->cantidad = $model->cantidad;
-                $table->vlrprecio = $model->vlrprecio;
-                $table->subtotal = $model->cantidad * $model->vlrprecio;
-                $table->idordenproduccion = $model->idordenproduccion;
-                $table->insert();
-                $ordenProduccion = Ordenproduccion::findOne($model->idordenproduccion);
-                $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                $ordenProduccion->update();
-                return $this->redirect(['view', 'id' => $model->idordenproduccion]);
-            }
-
+            $pruductosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
 
             return $this->render('_formdetalle', [
-                'model' => $model,
+                'productosCliente' => $pruductosCliente,
+                'idordenprodcuccion' => $idordenproduccion,
 
             ]);
 

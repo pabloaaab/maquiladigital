@@ -4,6 +4,10 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\models\Ordenproducciondetalle;
 use yii\helpers\Url;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
+use yii\db\ActiveQuery;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -65,32 +69,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
             </table>
         </div>
     </div>
-    <?php $modeldetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $model->idordenproduccion])->all(); ?>
-    <?php $model = new Ordenproducciondetalle(); ?>
-    <?=  $this->render('detalle', ['modeldetalle' => $modeldetalle, 'id' => $model->idordenproduccion]); ?>
 
-    <!-- Nuevo modal detalle -->
 
-    <div class="modal fade" role="dialog" aria-hidden="true" id="idordenproduccion<?= $model->idordenproduccion ?>">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title">Nuevo detalle</h4>
-                </div>
-                <?= Html::beginForm(Url::toRoute("orden-produccion/nuevodetalle"), "POST") ?>
-                <div class="modal-body">
-                    <?=  $this->render('_formdetalle',['model' => $model, 'idordenproduccion' => $model->idordenproduccion]); ?>
+    <?=  $this->render('detalle', ['modeldetalles' => $modeldetalles, 'modeldetalle' => $modeldetalle, 'idordenproduccion' => $model->idordenproduccion, 'idcliente' => $model->idcliente]); ?>
 
-                </div>
-                <div class="modal-footer">
-                    <?= Html::endForm() ?>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    <div class="panel-footer text-right" >
-        <!-- Nuevo boton modal detalle -->
-        <a href="#" data-toggle="modal" data-target="#idordenproduccion<?= $model->idordenproduccion ?>" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-    </div>
+
 </div>
