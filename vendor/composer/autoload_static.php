@@ -33,6 +33,7 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         ),
         'k' => 
         array (
+            'kartik\\select2\\' => 15,
             'kartik\\date\\' => 12,
             'kartik\\base\\' => 12,
         ),
@@ -117,6 +118,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'kartik\\select2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-select2/src',
         ),
         'kartik\\date\\' => 
         array (

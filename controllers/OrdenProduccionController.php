@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Ordenproduccion;
-use app\models\OrdenProduccionDetalle;
+use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
 use app\models\Cliente;
 use yii\web\Controller;
@@ -68,10 +68,9 @@ class OrdenProduccionController extends Controller
      */
     public function actionView($id)
     {
-        $OrdenProduccionDetalle = OrdenProduccionDetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+
 		return $this->render('view', [
             'model' => $this->findModel($id),
-			'OrdenProduccionDetalle' => $OrdenProduccionDetalle,						
         ]);
     }
 
@@ -140,40 +139,41 @@ class OrdenProduccionController extends Controller
      * @return Ordenproduccion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-	 
+
+    public function actionDetalle($id)
+    {
+        $modeldetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        return $this->render('detalle', [
+            'modeldetalle' => $modeldetalle,
+
+        ]);
+    }
+
 	public function actionNuevodetalle()
         {
-        if(Yii::$app->request->post())
-            {
-                $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
-				$idproducto = Html::encode($_POST["idproducto"]);
-				$cantidad = Html::encode($_POST["cantidad"]);
-				$vlrprecio = Html::encode($_POST["vlrprecio"]);
-				$subtotal = Html::encode($_POST["subtotal"]);				
-                if((int) $idordenproduccion)
-                {                    
-                    $table = new OrdenProduccionDetalle();
-                    $table->idproducto = $idproducto;
-                    $table->cantidad = $cantidad;
-                    $table->vlrprecio = $vlrprecio;
-                    $table->subtotal = $subtotal;
-                    $table->idordenproduccion = $idordenproduccion;
-					$table->insert();
-					$ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-					$ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->vlrprecio;
-					$ordenProduccion->update();
-					$this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-                }
-                else
-                {
-                   // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("orden-produccion/index")."'>";
-                }
+
+            $model = new Ordenproducciondetalle();
+            if ($model->load(Yii::$app->request->post()) ) {
+                $table = new Ordenproducciondetalle;
+                $table->idproducto = $model->idproducto;
+                $table->cantidad = $model->cantidad;
+                $table->vlrprecio = $model->vlrprecio;
+                $table->subtotal = $model->cantidad * $model->vlrprecio;
+                $table->idordenproduccion = $model->idordenproduccion;
+                $table->insert();
+                $ordenProduccion = Ordenproduccion::findOne($model->idordenproduccion);
+                $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                $ordenProduccion->update();
+                return $this->redirect(['view', 'id' => $model->idordenproduccion]);
             }
-            else
-            {
-                return $this->redirect(["orden-produccion/index"]);
-            }
+
+
+            return $this->render('_formdetalle', [
+                'model' => $model,
+
+            ]);
+
+
         }
 		
 	public function actionEditardetalle()
@@ -182,7 +182,7 @@ class OrdenProduccionController extends Controller
 				$iddetalleorden = Html::encode($_POST["iddetalleorden"]);
                 if((int) $iddetalleorden)
                 {
-                    $table = OrdenProduccionDetalle::find()->where(['iddetalleorden' => $iddetalleorden])->one();
+                    $table = Ordenproducciondetalle::find()->where(['iddetalleorden' => $iddetalleorden])->one();
 					$idproducto = Html::encode($_POST["idproducto"]);
 					$cantidad = Html::encode($_POST["cantidad"]);
 					$vlrprecio = Html::encode($_POST["vlrprecio"]);
@@ -216,8 +216,13 @@ class OrdenProduccionController extends Controller
 				$idordenproduccion = Html::encode($_POST["idordenproduccion"]);
                 if((int) $iddetalleorden)
                 {
+                    $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($iddetalleorden);
+                    $subtotal = $ordenProduccionDetalle->subtotal;
                     if(OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden]))
-                    {                        
+                    {
+                        $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
+                        $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                        $ordenProduccion->update();
                         $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
                     }
                     else

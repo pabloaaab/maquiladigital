@@ -3,8 +3,11 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-
+use app\models\Cliente;
+use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
+use kartik\select2\Select2;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -19,14 +22,22 @@ use kartik\date\DatePicker;
                     'options' => []
                 ],
 	]); ?>
-    
+ <?php
+
+ ?>
  <div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Orden Producción</h4>
     </div>
     <div class="panel-body">																   		
-		<div class="row">			
-			<?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente']) ?>
+		<div class="row">
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+                'data' => $clientes,
+                'options' => ['prompt' => 'Seleccione un cliente...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
 		<div class="row">
             <?= $form->field($model,'fechallegada')->widget(DatePicker::className(),['name' => 'check_issue_date',
