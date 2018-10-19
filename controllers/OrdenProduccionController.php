@@ -150,10 +150,38 @@ class OrdenProduccionController extends Controller
 	public function actionNuevodetalle($idordenproduccion,$idcliente)
         {
 
-            $pruductosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
+            $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
+            if(Yii::$app->request->post()){
+                $idproducto =  ($_POST["idproducto"]);
 
+                $tregistros = count($idproducto);
+                ?> <script>alert(<?php echo $tregistros ?>);</script> <?php
+                for ($t=0; $t < $tregistros; $t++)
+                {
+
+                    $cantidad = ($_POST["cantidad"]);
+                    $codigoproducto = ($_POST["codigoproducto"]);
+                    $costo =  ($_POST["costoconfeccion"]);
+                    ?> <script>alert(<?php echo $t ?>);</script> <?php
+                    $table = new Ordenproducciondetalle();
+                    $table->idproducto = $idproducto[$t];
+                    $table->cantidad = $cantidad[$t];
+                    $table->vlrprecio = $costo[$t];
+                    $table->codigoproducto = $codigoproducto[$t];
+                    $table->subtotal = 100;
+                    $table->idordenproduccion = $idordenproduccion;
+                    $table->insert();
+                    /*$oProduccion = Ordenproduccion::findOne($idordenproduccion);
+                    $oProduccion->totalorden = $oProduccion->totalorden + $table->subtotal;
+                    $oProduccion->update();
+                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);*/
+
+
+                }
+
+            }
             return $this->render('_formdetalle', [
-                'productosCliente' => $pruductosCliente,
+                'productosCliente' => $productosCliente,
                 'idordenprodcuccion' => $idordenproduccion,
 
             ]);

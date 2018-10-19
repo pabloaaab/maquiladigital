@@ -26,6 +26,7 @@ use yii\db\ActiveQuery;
 ?>
 
 <?php $form = ActiveForm::begin([
+
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
     'fieldConfig' => [
         'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
@@ -48,33 +49,32 @@ use yii\db\ActiveQuery;
                     <th scope="col">Código</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
-                    <th scope="col">Total</th>
+
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($productosCliente as $val): ?>
                 <tr>
-                    <td><?= Html::decode($val->idproducto) ?></td>
-                    <td><?= Html::decode($val->codigoproducto) ?></td>
-                    <td><?= Html::decode($val->producto) ?></td>
-                    <td><input type="text", name="cantidad", value="<?= $val->cantidad ?>"></td>
-                    <td><input type="text", name="costoconfeccion", value="<?= $val->costoconfeccion ?>"></td>
-                    <td><input type="text", name="costoconfeccion", value="0"></td>
-                    <td><input type="checkbox", name="idproducto[]", value="<?= $val->idproducto ?>" onchange="calcular()"></td>
+                    <td><?= $val->idproducto ?></td>
+                    <td><?= $val->codigoproducto ?></td>
+                    <td><?= $val->producto ?></td>
+
+                    <td><input type="text" name="cantidad[]" value="<?= $val->cantidad ?>"></td>
+                    <td><input type="text" name="costoconfeccion[]" value="<?= $val->costoconfeccion ?>"></td>
+                    <td><input type="text" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
+
+                    <td><input type="checkbox" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
-
+        <div class="panel-footer text-right">
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+        </div>
 
     </div>
 </div>
 <?php ActiveForm::end(); ?>
 
-<script>
-    function calcular() {
-        $cantidad = document.getElementById('cedulanit').value;
-    }
-</script>
