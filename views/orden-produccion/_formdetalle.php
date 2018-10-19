@@ -62,9 +62,9 @@ use yii\db\ActiveQuery;
 
                     <td><input type="text" name="cantidad[]" value="<?= $val->cantidad ?>"></td>
                     <td><input type="text" name="costoconfeccion[]" value="<?= $val->costoconfeccion ?>"></td>
-                    <td><input type="text" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
+                    <td><input type="hidden" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
 
-                    <td><input type="checkbox" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
+                    <td><input type="hidden" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>

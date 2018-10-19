@@ -42,6 +42,7 @@ use yii\helpers\ArrayHelper;
             <tr>                
                 <th scope="col">iddetalleorden</th>
                 <th scope="col">idproducto</th>
+                <th scope="col">codigo</th>
                 <th scope="col">cantidad</th>
                 <th scope="col">vlrprecio</th>
                 <th scope="col">subtotal</th>
@@ -54,6 +55,7 @@ use yii\helpers\ArrayHelper;
             <tr>                
                 <td><?= $val->iddetalleorden ?></td>
                 <td><?= $val->idproducto ?></td>
+                <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->cantidad ?></td>
                 <td><?= $val->vlrprecio ?></td>
                 <td><?= $val->subtotal ?></td>

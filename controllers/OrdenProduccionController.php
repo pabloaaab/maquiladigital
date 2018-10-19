@@ -151,34 +151,27 @@ class OrdenProduccionController extends Controller
         {
 
             $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
-            if(Yii::$app->request->post()){
-                $idproducto =  ($_POST["idproducto"]);
+            //$idproducto =  ($_POST["idproducto"]);
+            //$cantidad = ($_POST["cantidad"]);
+            //$codigoproducto = ($_POST["codigoproducto"]);
+            //$costo =  ($_POST["costoconfeccion"]);
 
-                $tregistros = count($idproducto);
-                ?> <script>alert(<?php echo $tregistros ?>);</script> <?php
-                for ($t=0; $t < $tregistros; $t++)
-                {
-
-                    $cantidad = ($_POST["cantidad"]);
-                    $codigoproducto = ($_POST["codigoproducto"]);
-                    $costo =  ($_POST["costoconfeccion"]);
-                    ?> <script>alert(<?php echo $t ?>);</script> <?php
-                    $table = new Ordenproducciondetalle();
-                    $table->idproducto = $idproducto[$t];
-                    $table->cantidad = $cantidad[$t];
-                    $table->vlrprecio = $costo[$t];
-                    $table->codigoproducto = $codigoproducto[$t];
-                    $table->subtotal = 100;
-                    $table->idordenproduccion = $idordenproduccion;
-                    $table->insert();
-                    /*$oProduccion = Ordenproduccion::findOne($idordenproduccion);
-                    $oProduccion->totalorden = $oProduccion->totalorden + $table->subtotal;
-                    $oProduccion->update();
-                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);*/
-
-
+            if (isset($_POST["idproducto"])) {
+                $intIndice = 0;
+                foreach ($_POST["idproducto"] as $intCodigo) {
+                    if($_POST["idproducto"][$intIndice] > 0 ){
+                        //$intCantidad = $arrControles['TxtCantidad'][$intIndice];
+                        $table = new Ordenproducciondetalle();
+                        $table->idproducto = $_POST["idproducto"][$intIndice];
+                        $table->cantidad = $_POST["cantidad"][$intIndice];
+                        $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
+                        $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                        $table->subtotal = 100;
+                        $table->idordenproduccion = $idordenproduccion;
+                        $table->insert();
+                    }
+                    $intIndice++;
                 }
-
             }
             return $this->render('_formdetalle', [
                 'productosCliente' => $productosCliente,
