@@ -52,6 +52,7 @@ AppAsset::register($this);
                       ['label' => 'Banco', 'url' => ['/banco/index']],
                       ['label' => 'Tipo Documento', 'url' => ['/tipo-documento/index']],
                       ['label' => 'Tipo Recibo', 'url' => ['/tipo-recibo/index']],
+                      ['label' => 'Tipo Orden Producción', 'url' => ['/ordenproducciontipo/index']],
                       ['label' => 'Resolucion', 'url' => ['/resolucion/index']],
 					  ['label' => 'Departamento', 'url' => ['/departamento/index']],
 					  ['label' => 'Municipio', 'url' => ['/municipio/index']],

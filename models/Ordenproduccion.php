@@ -17,17 +17,15 @@ use Yii;
  * @property string $observacion
  * @property int $estado
  * @property string $ordenproduccion
+ * @property int $idtipo
  * @property string $usuariosistema
  *
  * @property Facturaventa[] $facturaventas
  * @property Cliente $cliente
- * @property Ordenproducciondetalle[] $ordenproducciondetalles
+ * @property Ordenproducciontipo $tipo
  */
 class Ordenproduccion extends \yii\db\ActiveRecord
 {
-    const ESTADO_ACTIVO = 1;
-    const ESTADO_INACTIVO = 0;
-
     /**
      * {@inheritdoc}
      */
@@ -39,27 +37,18 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-
-    public function beforeSave($insert) {
-        if(!parent::beforeSave($insert)){
-            return false;
-        }
-        $this->observacion = strtoupper($this->observacion);
-        $this->ordenproduccion = strtoupper($this->ordenproduccion);
-        return true;
-    }
-
     public function rules()
     {
         return [
-            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion'], 'required', 'message' => 'Campo requerido'],
-            [['idcliente', 'estado'], 'integer'],
-            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe', 'message' => 'Campo requerido'],
-            [['totalorden'], 'number', 'message' => 'Solo se acpetan números'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo'], 'required'],
+            [['idcliente', 'estado', 'idtipo'], 'integer'],
+            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
+            [['totalorden'], 'number'],
             [['valorletras', 'observacion'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
+            [['idtipo'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciontipo::className(), 'targetAttribute' => ['idtipo' => 'idtipo']],
         ];
     }
 
@@ -79,6 +68,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'estado' => 'Estado',
             'ordenproduccion' => 'Ordenproduccion',
+            'idtipo' => 'Idtipo',
             'usuariosistema' => 'Usuariosistema',
         ];
     }
@@ -102,17 +92,8 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdenproducciondetalles()
+    public function getTipo()
     {
-        return $this->hasMany(Ordenproducciondetalle::className(), ['idordenproduccion' => 'idordenproduccion']);
-    }
-
-    public function getEtiquetaEstado(){
-        if($this->estado == 0){
-            return ('ABIERTO');
-        } else {
-
-            return ('CERRADO');
-        }
+        return $this->hasOne(Ordenproducciontipo::className(), ['idtipo' => 'idtipo']);
     }
 }

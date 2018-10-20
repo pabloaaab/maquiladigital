@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\models\Cliente;
+use app\models\Ordenproducciontipo;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
@@ -34,6 +35,15 @@ use kartik\select2\Select2;
             <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
                 'data' => $clientes,
                 'options' => ['prompt' => 'Seleccione un cliente...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'idtipo')->widget(Select2::classname(), [
+                'data' => $ordenproducciontipos,
+                'options' => ['prompt' => 'Seleccione un tipo ...'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],

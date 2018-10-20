@@ -3,18 +3,13 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use app\models\Cliente;
-use yii\helpers\ArrayHelper;
-use kartik\date\DatePicker;
-use kartik\select2\Select2;
-
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Ordenproduccion */
+/* @var $model app\models\Ordenproducciontipo */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-    <?php $form = ActiveForm::begin([
+<?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
 	'fieldConfig' => [
                     'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
@@ -22,27 +17,24 @@ use kartik\select2\Select2;
                     'options' => []
                 ],
 	]); ?>
- <?php
 
- ?>
  <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Orden Producción Detalle</h4>
+        <h4>Información Banco</h4>
     </div>
-    <div class="panel-body">																   		
+    <div class="panel-body">
+		<div class="row">            
+			<?= $form->field($model, 'idtipo')->textInput(['maxlength' => true]) ?>
+		</div>														   		
 		<div class="row">
-            <?= $form->field($model, 'cantidad')->textInput(['maxlength' => true]) ?>
+			<?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
         </div>
 		<div class="row">
-            <?= $form->field($model, 'vlrprecio')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->textInput(['maxlength' => true]) ?>
-        </div>
-
-		<div class="panel-footer text-right">			
-
+            <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>  					
+        </div>	
+		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+			<a href="<?= Url::toRoute("ordenproducciontipo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>
 	</div>
 </div>

@@ -40,26 +40,26 @@ use yii\helpers\ArrayHelper;
         <table class="table table-hover">
             <thead>
             <tr>                
-                <th scope="col">iddetalleorden</th>
-                <th scope="col">idproducto</th>
-                <th scope="col">codigo</th>
-                <th scope="col">cantidad</th>
-                <th scope="col">vlrprecio</th>
-                <th scope="col">subtotal</th>
-				<th scope="col">idordenproduccion</th>				
-                <th scope="col"></th>                               
+                <th scope="col">Id</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Código</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Subtotal</th>
+                <th></th>
+                <th scope="col"><input type="checkbox" name="seleccionartodos"></th>
+
             </tr>
             </thead>
             <tbody>
             <?php foreach ($modeldetalles as $val): ?>
             <tr>                
                 <td><?= $val->iddetalleorden ?></td>
-                <td><?= $val->idproducto ?></td>
+                <td><?= $val->producto->producto ?></td>
                 <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->cantidad ?></td>
                 <td><?= $val->vlrprecio ?></td>
                 <td><?= $val->subtotal ?></td>
-				<td><?= $val->idordenproduccion ?></td>				
                 <td>				                                
 				<a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
 				<!-- Editar modal detalle -->
@@ -70,9 +70,34 @@ use yii\helpers\ArrayHelper;
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     <h4 class="modal-title">Editar detalle <?= $val->iddetalleorden ?></h4>
                                 </div>
-								<?= Html::beginForm(Url::toRoute("orden-produccion/editardetalle"), "POST") ?>								
+								<?= Html::beginForm(Url::toRoute("orden-produccion/editardetalle"), "POST") ?>
                                 <div class="modal-body">
-
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h4>Información Orden Producción Detalle</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-2">
+                                                <label>Cantidad:</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="cantidad" value="<?= $val->cantidad ?>" class="form-control" required>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <label>Costo:</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="vlrprecio" value="<?=  $val->vlrprecio ?>" class="form-control" required>
+                                            </div>
+                                            <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
+                                            <input type="hidden" name="idordenproduccion" value="<?= $val->idordenproduccion ?>">
+                                            <input type="hidden" name="subtotal" value="<?= $val->subtotal ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
                                 </div>
 								<?= Html::endForm() ?>		
                             </div><!-- /.modal-content -->
@@ -102,14 +127,55 @@ use yii\helpers\ArrayHelper;
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
                 </td>
+
+                <td><input type="checkbox" name="seleccion[]" value="<?php $val->iddetalleorden ?>"></td>
+
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>		
     </div>
+    <div class="panel-footer text-right">
+        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
+        <a href="" class="button" id="pasarcheck">Actualizar estatus</a>
 
+    </div>
 
     </div>
 </div>
-<?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalle', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
 
+<script>
+$('#pasarcheck').click(function(event) {
+event.preventDefault();
+var datos = {};
+var campo ='';
+
+$('.seleccion').each(function(index){
+campo = $(this).val();
+if ($(this).is(':checked')) {
+datos[campo] = 1;
+}
+else{
+datos[campo] = 0;
+}
+});
+var datosArray = datos;
+datosArray = {'datos': datosArray};
+var data = $.param(datosArray);
+console.log(data);
+
+$.ajax({
+url: '<?= Url::toRoute(['orden-produccion/eliminardetalles']) ?>',
+type: 'post',
+dataType: 'json',
+data: data,
+success: function(data) {
+alert('success');
+},
+error: function(data) {
+alert('error');
+}
+});
+});
+</script>

@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+
 use app\models\Producto;
 use Yii;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
+use app\models\Ordenproducciontipo;
 use app\models\Cliente;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -88,6 +90,7 @@ class OrdenProduccionController extends Controller
     {
         $model = new Ordenproduccion();
 		$clientes = Cliente::find()->all();
+        $ordenproducciontipos = Ordenproducciontipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
@@ -99,6 +102,7 @@ class OrdenProduccionController extends Controller
         return $this->render('create', [
             'model' => $model,
 			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+            'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
     }
 
@@ -113,6 +117,7 @@ class OrdenProduccionController extends Controller
     {
         $model = $this->findModel($id);
 		$clientes = Cliente::find()->all();
+        $ordenproducciontipos = Ordenproducciontipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idordenproduccion]);
         }
@@ -120,6 +125,7 @@ class OrdenProduccionController extends Controller
         return $this->render('update', [
             'model' => $model,
 			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+            'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
     }
 
@@ -145,44 +151,81 @@ class OrdenProduccionController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
 
+    public function actionNuevodetalles($idordenproduccion,$idcliente)
+    {
 
+        $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
 
-	public function actionNuevodetalle($idordenproduccion,$idcliente)
-        {
-
-            $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
-            //$idproducto =  ($_POST["idproducto"]);
-            //$cantidad = ($_POST["cantidad"]);
-            //$codigoproducto = ($_POST["codigoproducto"]);
-            //$costo =  ($_POST["costoconfeccion"]);
-
-            if (isset($_POST["idproducto"])) {
-                $intIndice = 0;
-                foreach ($_POST["idproducto"] as $intCodigo) {
-                    if($_POST["idproducto"][$intIndice] > 0 ){
-                        //$intCantidad = $arrControles['TxtCantidad'][$intIndice];
-                        $table = new Ordenproducciondetalle();
-                        $table->idproducto = $_POST["idproducto"][$intIndice];
-                        $table->cantidad = $_POST["cantidad"][$intIndice];
-                        $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
-                        $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                        $table->subtotal = 100;
-                        $table->idordenproduccion = $idordenproduccion;
-                        $table->insert();
-                    }
-                    $intIndice++;
+        if (isset($_POST["idproducto"])) {
+            $intIndice = 0;
+            foreach ($_POST["idproducto"] as $intCodigo) {
+                if($_POST["cantidad"][$intIndice] > 0 ){
+                    //$intCantidad = $arrControles['TxtCantidad'][$intIndice];
+                    $table = new Ordenproducciondetalle();
+                    $table->idproducto = $_POST["idproducto"][$intIndice];
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
+                    $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["costoconfeccion"][$intIndice];
+                    $table->idordenproduccion = $idordenproduccion;
+                    $table->insert();
+                    $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                    $ordenProduccion->update();
                 }
+                $intIndice++;
             }
-            return $this->render('_formdetalle', [
-                'productosCliente' => $productosCliente,
-                'idordenprodcuccion' => $idordenproduccion,
-
-            ]);
-
-
         }
-		
-	public function actionEditardetalle()
+        return $this->render('_formdetalles', [
+            'productosCliente' => $productosCliente,
+            'idordenprodcuccion' => $idordenproduccion,
+
+        ]);
+
+
+    }
+
+    public function actionEditardetalle()
+    {
+        $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
+        $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
+
+        if(Yii::$app->request->post()){
+
+            if((int) $iddetalleorden)
+            {
+                $table = Ordenproducciondetalle::findOne($iddetalleorden);
+                if ($table) {
+
+                    $table->cantidad = Html::encode($_POST["cantidad"]);
+                    $table->vlrprecio = Html::encode($_POST["vlrprecio"]);
+                    $table->subtotal = Html::encode($_POST["cantidad"]) * Html::encode($_POST["vlrprecio"]);
+                    $table->idordenproduccion = Html::encode($_POST["idordenproduccion"]);
+                    $table->update();
+
+                    $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
+                    $ordenProduccion->totalorden =  $ordenProduccion->totalorden - Html::encode($_POST["subtotal"]);
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                    $ordenProduccion->update();
+
+                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            } else {
+                $table->getErrors();
+            }
+        }
+        //return $this->render("_formeditardetalle", ["model" => $model,]);
+    }
+
+
+
+
+
+	public function actionEditardetalles()
         {			
 			if(Yii::$app->request->post()){
 				$iddetalleorden = Html::encode($_POST["iddetalleorden"]);
@@ -200,6 +243,9 @@ class OrdenProduccionController extends Controller
 						$table->vlrprecio = $vlrprecio;
 						$table->subtotal = $subtotal;
                         $table->update();
+                        $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
+                        $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                        $ordenProduccion->update();
                         $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
                         
                         
@@ -245,7 +291,19 @@ class OrdenProduccionController extends Controller
             {
                 return $this->redirect(["orden-produccion/index"]);
             }
-        }	
+        }
+
+    public function actionEliminardetalles()
+    {
+        if (isset($_POST["seleccion"])) {
+            $seleccion = $_POST["seleccion"];
+            //$idordenproduccion = Html::encode($_REQUEST["idordenproduccion"]);
+            //$this->redirect(["orden-produccion/view",'id' => 25]);
+        }else{
+            ?> <script>alert('hola');</script> <?php
+        }
+
+    }
 	
     protected function findModel($id)
     {

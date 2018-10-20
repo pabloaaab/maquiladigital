@@ -55,8 +55,16 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
                 <tr>
+                    <th></th>
+                    <td></td>
+                    <th></th>
+                    <td></td>
+                    <th><?= Html::activeLabel($model, 'tipo') ?></th>
+                    <td><?= Html::encode($model->idtipo) ?></td>
+                </tr>
+                <tr>
                     <th><?= Html::activeLabel($model, 'estado') ?></th>
-                    <td><?= Html::encode($model->getEtiquetaEstado()) ?></td>
+                    <td><?= Html::encode($model->estado) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'totalorden') ?></th>
