@@ -80,11 +80,11 @@
           <entry key="project.open.time.43" value="2" />
           <entry key="project.open.time.45" value="3" />
           <entry key="project.open.time.47" value="1" />
-          <entry key="project.open.time.49" value="2" />
+          <entry key="project.open.time.49" value="3" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.51" value="1" />
           <entry key="project.open.time.54" value="1" />
-          <entry key="project.opened" value="93" />
+          <entry key="project.opened" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -101,7 +101,7 @@
           <entry key="lock" value="2" />
           <entry key="log" value="1" />
           <entry key="md" value="2" />
-          <entry key="php" value="160" />
+          <entry key="php" value="165" />
           <entry key="png" value="1" />
           <entry key="sql" value="1" />
           <entry key="txt" value="1" />
@@ -115,7 +115,7 @@
           <entry key="JSON" value="6" />
           <entry key="JavaScript" value="1" />
           <entry key="Markdown" value="2" />
-          <entry key="PHP" value="162" />
+          <entry key="PHP" value="167" />
           <entry key="PLAIN_TEXT" value="9" />
           <entry key="SQL" value="1" />
           <entry key="SmartyConfig" value="1" />
@@ -129,7 +129,7 @@
           <entry key="js" value="161" />
           <entry key="json" value="56" />
           <entry key="md" value="29" />
-          <entry key="php" value="18565" />
+          <entry key="php" value="19350" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -137,7 +137,7 @@
           <entry key="JSON" value="56" />
           <entry key="JavaScript" value="161" />
           <entry key="Markdown" value="29" />
-          <entry key="PHP" value="18603" />
+          <entry key="PHP" value="19388" />
           <entry key="PLAIN_TEXT" value="41" />
         </counts>
       </usages-collector>
@@ -154,23 +154,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/orden-produccion/_form.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
-              <caret line="83" column="136" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="136" />
-              <folding>
-                <element signature="e#7#28#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/orden-produccion/detalle.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7">
-              <caret line="135" column="24" lean-forward="true" selection-start-line="135" selection-start-column="24" selection-end-line="135" selection-end-column="24" />
+            <state relative-caret-position="299">
+              <caret line="143" column="16" selection-start-line="143" selection-start-column="10" selection-end-line="143" selection-end-column="16" />
               <folding>
                 <element signature="e#121#142#0#PHP" expanded="true" />
               </folding>
@@ -179,10 +167,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/orden-produccion/view.php">
+        <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formeliminardetalles.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="62" column="55" selection-start-line="62" selection-start-column="55" selection-end-line="62" selection-end-column="55" />
+            <state relative-caret-position="517">
+              <caret line="63" column="50" selection-start-line="58" selection-start-column="20" selection-end-line="63" selection-end-column="50" />
               <folding>
                 <element signature="e#7#28#0#PHP" expanded="true" />
               </folding>
@@ -191,10 +179,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/orden-produccion/index.php">
+        <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formnuevodetalles.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="25" column="41" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="41" />
+            <state relative-caret-position="534">
+              <caret line="65" column="61" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="61" />
+              <folding>
+                <element signature="e#7#28#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formeditardetalles.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="63" column="100" selection-start-line="63" selection-start-column="100" selection-end-line="63" selection-end-column="100" />
+              <folding>
+                <element signature="e#7#28#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -202,7 +205,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Cliente.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-860">
+            <state relative-caret-position="476">
               <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
             </state>
           </provider>
@@ -211,7 +214,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/Ordenproduccion.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-367">
+            <state relative-caret-position="544">
               <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
             </state>
           </provider>
@@ -229,17 +232,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/clientes/nuevo.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
+            <state relative-caret-position="1105">
               <caret line="72" column="29" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/views/layouts/main.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="54" column="90" selection-start-line="54" selection-start-column="71" selection-end-line="54" selection-end-column="90" />
             </state>
           </provider>
         </entry>
@@ -247,10 +241,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/controllers/OrdenProduccionController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="300" column="14" selection-start-line="300" selection-start-column="14" selection-end-line="300" selection-end-column="14" />
+            <state relative-caret-position="339">
+              <caret line="178" column="32" selection-start-line="178" selection-start-column="32" selection-end-line="178" selection-end-column="32" />
               <folding>
                 <element signature="e#36#60#0#PHP" expanded="true" />
+                <element signature="e#6088#7631#0#PHP" />
+                <element signature="e#9262#10793#0#PHP" />
               </folding>
             </state>
           </provider>
@@ -287,9 +283,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/models/Users.php" />
-        <option value="$PROJECT_DIR$/views/site/index.php" />
-        <option value="$PROJECT_DIR$/models/FormInscrito.php" />
         <option value="$PROJECT_DIR$/models/Inscritos.php" />
         <option value="$PROJECT_DIR$/controllers/InscritosController.php" />
         <option value="$PROJECT_DIR$/views/inscritos/index.php" />
@@ -336,8 +329,11 @@
         <option value="$PROJECT_DIR$/views/orden-produccion/_form.php" />
         <option value="$PROJECT_DIR$/models/Ordenproduccion.php" />
         <option value="$PROJECT_DIR$/views/orden-produccion/view.php" />
-        <option value="$PROJECT_DIR$/views/orden-produccion/detalle.php" />
+        <option value="$PROJECT_DIR$/views/orden-produccion/_formeliminardetalles.php" />
+        <option value="$PROJECT_DIR$/views/orden-produccion/_formnuevodetalles.php" />
+        <option value="$PROJECT_DIR$/views/orden-produccion/_formeditardetalles.php" />
         <option value="$PROJECT_DIR$/controllers/OrdenProduccionController.php" />
+        <option value="$PROJECT_DIR$/views/orden-produccion/detalle.php" />
       </list>
     </option>
   </component>
@@ -455,18 +451,7 @@
             <path>
               <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
               <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
-              <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
-              <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="clientes" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
@@ -495,17 +480,17 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\proyecthw\models" />
+      <recent name="C:\xampp\htdocs\proyecthw\models\inscrito" />
+      <recent name="C:\xampp\htdocs\proyecthw\views\inscritos" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\maquiladigital\views\orden-produccion" />
       <recent name="C:\xampp\htdocs\maquiladigital\views\clientes" />
       <recent name="C:\xampp\htdocs\maquiladigital\models" />
       <recent name="C:\xampp\htdocs\proyecthw\models" />
       <recent name="C:\xampp\htdocs\proyecthw\views\grupos" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\proyecthw\models" />
-      <recent name="C:\xampp\htdocs\proyecthw\models\inscrito" />
-      <recent name="C:\xampp\htdocs\proyecthw\views\inscritos" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -666,11 +651,12 @@
       <workItem from="1539918630688" duration="1660000" />
       <workItem from="1539956203579" duration="10404000" />
       <workItem from="1539971640687" duration="4744000" />
+      <workItem from="1540221621937" duration="8261000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="399698000" />
+    <option name="totallyTimeSpent" value="407959000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -683,8 +669,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891776" weight="0.22919819" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891776" visible="true" weight="0.22867803" />
       <window_info id="Structure" order="1" sideWeight="0.50108224" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50108224" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -733,13 +720,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/models/Users.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/User.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
@@ -964,16 +944,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/ClientesController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1452">
-          <caret line="168" column="58" selection-start-line="168" selection-start-column="12" selection-end-line="168" selection-end-column="58" />
-          <folding>
-            <element signature="e#35#68#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/orden-produccion/nuevodetalle.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -981,48 +951,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formdetalles.php">
+    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_form.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="62" column="69" selection-start-line="62" selection-start-column="69" selection-end-line="62" selection-end-column="69" />
+        <state relative-caret-position="1292">
+          <caret line="83" column="136" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="136" />
           <folding>
             <element signature="e#7#28#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formdetalle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="39" column="55" selection-start-line="39" selection-start-column="55" selection-end-line="39" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/layouts/main.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="54" column="90" selection-start-line="54" selection-start-column="71" selection-end-line="54" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Cliente.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-860">
-          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Ordenproducciontipo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="35" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Ordenproduccion.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-367">
-          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1033,9 +968,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/models/Ordenproduccion.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Ordenproducciontipo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="35" selection-start-line="22" selection-start-column="16" selection-end-line="22" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/clientes/nuevo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="72" column="29" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layouts/main.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="816">
+          <caret line="54" column="90" selection-start-line="54" selection-start-column="71" selection-end-line="54" selection-end-column="90" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/views/orden-produccion/view.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
+        <state relative-caret-position="1054">
           <caret line="62" column="55" selection-start-line="62" selection-start-column="55" selection-end-line="62" selection-end-column="55" />
           <folding>
             <element signature="e#7#28#0#PHP" expanded="true" />
@@ -1043,37 +1006,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_form.php">
+    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formnuevodetalles.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1411">
-          <caret line="83" column="136" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="136" />
+        <state relative-caret-position="534">
+          <caret line="65" column="61" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="61" />
           <folding>
             <element signature="e#7#28#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/clientes/nuevo.php">
+    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formeditardetalles.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="72" column="29" selection-start-line="72" selection-start-column="8" selection-end-line="72" selection-end-column="29" />
+        <state relative-caret-position="561">
+          <caret line="63" column="100" selection-start-line="63" selection-start-column="100" selection-end-line="63" selection-end-column="100" />
+          <folding>
+            <element signature="e#7#28#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/ClientesController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="22" selection-end-column="28" />
+          <folding>
+            <element signature="e#35#68#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/Cliente.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="28" column="33" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/orden-produccion/_formeliminardetalles.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="63" column="50" selection-start-line="58" selection-start-column="20" selection-end-line="63" selection-end-column="50" />
+          <folding>
+            <element signature="e#7#28#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/OrdenProduccionController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="300" column="14" selection-start-line="300" selection-start-column="14" selection-end-line="300" selection-end-column="14" />
+        <state relative-caret-position="339">
+          <caret line="178" column="32" selection-start-line="178" selection-start-column="32" selection-end-line="178" selection-end-column="32" />
           <folding>
             <element signature="e#36#60#0#PHP" expanded="true" />
+            <element signature="e#6088#7631#0#PHP" />
+            <element signature="e#9262#10793#0#PHP" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/orden-produccion/detalle.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7">
-          <caret line="135" column="24" lean-forward="true" selection-start-line="135" selection-start-column="24" selection-end-line="135" selection-end-column="24" />
+        <state relative-caret-position="299">
+          <caret line="143" column="16" selection-start-line="143" selection-start-column="10" selection-end-line="143" selection-end-column="16" />
           <folding>
             <element signature="e#121#142#0#PHP" expanded="true" />
           </folding>

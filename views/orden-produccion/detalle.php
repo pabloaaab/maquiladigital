@@ -47,8 +47,6 @@ use yii\helpers\ArrayHelper;
                 <th scope="col">Precio</th>
                 <th scope="col">Subtotal</th>
                 <th></th>
-                <th scope="col"><input type="checkbox" name="seleccionartodos"></th>
-
             </tr>
             </thead>
             <tbody>
@@ -99,7 +97,7 @@ use yii\helpers\ArrayHelper;
                                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
                                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
                                 </div>
-								<?= Html::endForm() ?>		
+								<?= Html::endForm() ?>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
@@ -127,9 +125,6 @@ use yii\helpers\ArrayHelper;
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
                 </td>
-
-                <td><input type="checkbox" name="seleccion[]" value="<?php $val->iddetalleorden ?>"></td>
-
             </tr>
             </tbody>
             <?php endforeach; ?>
@@ -137,45 +132,41 @@ use yii\helpers\ArrayHelper;
     </div>
     <div class="panel-footer text-right">
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
-        <a href="" class="button" id="pasarcheck">Actualizar estatus</a>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-danger']) ?>
 
     </div>
 
     </div>
 </div>
 
+
+<?= Html::button('Create List', ['id' => 'modelButton', 'value' => \yii\helpers\Url::to(['clientes/index']), 'class' => 'btn btn-success']) ?>
+
+<?php
+
+Modal::begin([
+    'header' => '<h4>Destination</h4>',
+    'id'     => 'model',
+    'size'   => 'model-lg',
+]);
+
+echo "<div id='modelContent'></div>";
+
+Modal::end();
+
+?>
+
 <script>
-$('#pasarcheck').click(function(event) {
-event.preventDefault();
-var datos = {};
-var campo ='';
-
-$('.seleccion').each(function(index){
-campo = $(this).val();
-if ($(this).is(':checked')) {
-datos[campo] = 1;
-}
-else{
-datos[campo] = 0;
-}
-});
-var datosArray = datos;
-datosArray = {'datos': datosArray};
-var data = $.param(datosArray);
-console.log(data);
-
-$.ajax({
-url: '<?= Url::toRoute(['orden-produccion/eliminardetalles']) ?>',
-type: 'post',
-dataType: 'json',
-data: data,
-success: function(data) {
-alert('success');
-},
-error: function(data) {
-alert('error');
-}
-});
-});
+    $(function(){
+    $('#modelButton').click(function(){
+    $('.modal').modal('show')
+    .find('#modelContent')
+    .load($(this).attr('value'));
+    });
+    });
 </script>
+
+
+
+

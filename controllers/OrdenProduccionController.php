@@ -25,8 +25,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
-
-use NumeroALetras;
+use Codeception\Lib\HelperModule;
 
 /**
  * OrdenProduccionController implements the CRUD actions for Ordenproduccion model.
@@ -175,8 +174,9 @@ class OrdenProduccionController extends Controller
                 }
                 $intIndice++;
             }
+            $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
         }
-        return $this->render('_formdetalles', [
+        return $this->renderAjax('_formnuevodetalles', [
             'productosCliente' => $productosCliente,
             'idordenprodcuccion' => $idordenproduccion,
 
@@ -214,50 +214,40 @@ class OrdenProduccionController extends Controller
                     $msg = "El registro seleccionado no ha sido encontrado";
                     $tipomsg = "danger";
                 }
-            } else {
-                $table->getErrors();
             }
         }
         //return $this->render("_formeditardetalle", ["model" => $model,]);
     }
 
+	public function actionEditardetalles($idordenproduccion)
+        {
+            $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
 
+            if (isset($_POST["iddetalleorden"])) {
+                $intIndice = 0;
+                foreach ($_POST["iddetalleorden"] as $intCodigo) {
+                    if($_POST["cantidad"][$intIndice] > 0 ){
 
+                        $table = Ordenproducciondetalle::findOne($intCodigo);
+                        $subtotal = $table->subtotal;
+                        $table->cantidad = $_POST["cantidad"][$intIndice];
+                        $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
 
-
-	public function actionEditardetalles()
-        {			
-			if(Yii::$app->request->post()){
-				$iddetalleorden = Html::encode($_POST["iddetalleorden"]);
-                if((int) $iddetalleorden)
-                {
-                    $table = Ordenproducciondetalle::find()->where(['iddetalleorden' => $iddetalleorden])->one();
-					$idproducto = Html::encode($_POST["idproducto"]);
-					$cantidad = Html::encode($_POST["cantidad"]);
-					$vlrprecio = Html::encode($_POST["vlrprecio"]);
-					$subtotal = Html::encode($_POST["subtotal"]);
-					$idordenproduccion = Html::encode($_POST["idordenproduccion"]);
-                    if ($table) {
-                        $table->idproducto = $idproducto;
-						$table->cantidad = $cantidad;
-						$table->vlrprecio = $vlrprecio;
-						$table->subtotal = $subtotal;
+                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
                         $table->update();
-                        $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
+                        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                        $ordenProduccion->totalorden =  $ordenProduccion->totalorden - $subtotal;
                         $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
                         $ordenProduccion->update();
-                        $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-                        
-                        
-                    } else {
-                        $msg = "El registro seleccionado no ha sido encontrado";
-                        $tipomsg = "danger";
                     }
-                } else {
-                    $table->getErrors();
+                    $intIndice++;
                 }
+                $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
             }
-			//return $this->render("_formeditardetalle", ["iddetallerecibo" => $iddetallerecibo,]);
+            return $this->render('_formeditardetalles', [
+                'mds' => $mds,
+                'idordenprodcuccion' => $idordenproduccion,
+            ]);
         }	
 		
 	public function actionEliminardetalle()
@@ -293,15 +283,32 @@ class OrdenProduccionController extends Controller
             }
         }
 
-    public function actionEliminardetalles()
+    public function actionEliminardetalles($idordenproduccion)
     {
-        if (isset($_POST["seleccion"])) {
-            $seleccion = $_POST["seleccion"];
-            //$idordenproduccion = Html::encode($_REQUEST["idordenproduccion"]);
-            //$this->redirect(["orden-produccion/view",'id' => 25]);
-        }else{
-            ?> <script>alert('hola');</script> <?php
+        $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
+        if(Yii::$app->request->post())
+        {
+            $intIndice = 0;
+            $iddetalleorden = $_POST["seleccion"];
+            foreach ($iddetalleorden as $intCodigo)
+            {
+                $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
+                $subtotal = $ordenProduccionDetalle->subtotal;
+                if(OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo]))
+                {
+                    $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                    $ordenProduccion->update();
+                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+                }
+            }
+            $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
         }
+        return $this->render('_formeliminardetalles', [
+            'mds' => $mds,
+            'idordenprodcuccion' => $idordenproduccion,
+        ]);
+
 
     }
 	
