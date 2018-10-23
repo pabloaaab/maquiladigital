@@ -1,13 +1,14 @@
 <?php
+
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FacturaventaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Facturas de Ventas';
+$this->title = 'Facturas de ventas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="facturaventa-index">
@@ -16,29 +17,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
-
+    <?php Pjax::begin() ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             [                
-                'attribute' => 'nrofactura',
+                'attribute' => 'idfactura',
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [                
-                'attribute' => 'fechainicio',
+                'attribute' => 'idcliente',
                 'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [               
-                'attribute' => 'fechavcto',
+                'attribute' => 'idordenproduccion',
                 'contentOptions' => ['class' => 'col-lg-2 '],                
             ],
             [               
-                'attribute' => 'formapago',
+                'attribute' => 'fechainicio',
                 'contentOptions' => ['class' => 'col-lg-2 '],                
             ],
 			[               
-                'attribute' => 'idcliente',
+                'attribute' => 'totalpagar',
                 'contentOptions' => ['class' => 'col-lg-2 '],                
             ],			
             [
@@ -58,6 +59,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         
     ]); ?>
+    <?php Pjax::end(); ?>
 </div>
-
-

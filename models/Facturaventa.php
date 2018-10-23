@@ -7,9 +7,11 @@ use Yii;
 /**
  * This is the model class for table "facturaventa".
  *
+ * @property int $idfactura
  * @property int $nrofactura
  * @property string $fechainicio
  * @property string $fechavcto
+ * @property string $fechacreacion
  * @property string $formapago
  * @property int $plazopago
  * @property double $porcentajeiva
@@ -19,14 +21,18 @@ use Yii;
  * @property double $retencionfuente
  * @property double $impuestoiva
  * @property double $retencioniva
+ * @property double $saldo
  * @property double $totalpagar
  * @property string $valorletras
  * @property int $idcliente
  * @property int $idordenproduccion
  * @property string $usuariosistema
+ * @property int $idresolucion
  *
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
+ * @property Resolucion $resolucion
+ * @property Facturaventadetalle[] $facturaventadetalles
  * @property Recibocajadetalle[] $recibocajadetalles
  */
 class Facturaventa extends \yii\db\ActiveRecord
@@ -45,14 +51,15 @@ class Facturaventa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechainicio', 'fechavcto', 'formapago', 'plazopago', 'porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'totalpagar', 'valorletras', 'idcliente', 'idordenproduccion', 'usuariosistema'], 'required', 'message' => 'Campo requerido'],
-            [['fechainicio', 'fechavcto'], 'safe'],
-            [['plazopago', 'idcliente', 'idordenproduccion'], 'integer'],
-            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'totalpagar'], 'number'],
+            [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion'], 'integer'],
+            [['fechainicio', 'idcliente', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
+            [['fechainicio', 'fechavcto', 'fechacreacion'], 'safe'],
+            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
             [['valorletras'], 'string'],
             [['formapago', 'usuariosistema'], 'string', 'max' => 15],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
+            [['idresolucion'], 'exist', 'skipOnError' => true, 'targetClass' => Resolucion::className(), 'targetAttribute' => ['idresolucion' => 'idresolucion']],
         ];
     }
 
@@ -62,23 +69,27 @@ class Facturaventa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'nrofactura' => 'N° Factura:',
-            'fechainicio' => 'Fecha Inicio:',
-            'fechavcto' => 'Fecha Vencimiento:',
-            'formapago' => 'Forma Pago:',
-            'plazopago' => 'Plazo Pago:',
-            'porcentajeiva' => 'Porcentaje Iva;',
-            'porcentajefuente' => 'Porcentaje Fuente:',
-            'porcentajereteiva' => 'Porcentaje Rete Iva:',
-            'subtotal' => 'Subtotal:',
-            'retencionfuente' => 'Retención Fuente:',
-            'impuestoiva' => 'Impuesto Iva:',
-            'retencioniva' => 'Retención Iva:',
-            'totalpagar' => 'Total Pagar:',
-            'valorletras' => 'Valor Letras:',
-            'idcliente' => 'Idcliente:',
-            'idordenproduccion' => 'Idordenproduccion:',
-            'usuariosistema' => 'Usuariosistema:',
+            'idfactura' => 'Idfactura',
+            'nrofactura' => 'Nrofactura',
+            'fechainicio' => 'Fechainicio',
+            'fechavcto' => 'Fechavcto',
+            'fechacreacion' => 'Fechacreacion',
+            'formapago' => 'Formapago',
+            'plazopago' => 'Plazopago',
+            'porcentajeiva' => 'Porcentajeiva',
+            'porcentajefuente' => 'Porcentajefuente',
+            'porcentajereteiva' => 'Porcentajereteiva',
+            'subtotal' => 'Subtotal',
+            'retencionfuente' => 'Retencionfuente',
+            'impuestoiva' => 'Impuestoiva',
+            'retencioniva' => 'Retencioniva',
+            'saldo' => 'Saldo',
+            'totalpagar' => 'Totalpagar',
+            'valorletras' => 'Valorletras',
+            'idcliente' => 'Idcliente',
+            'idordenproduccion' => 'Idordenproduccion',
+            'usuariosistema' => 'Usuariosistema',
+            'idresolucion' => 'Idresolucion',
         ];
     }
 
@@ -101,8 +112,24 @@ class Facturaventa extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getResolucion()
+    {
+        return $this->hasOne(Resolucion::className(), ['idresolucion' => 'idresolucion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFacturaventadetalles()
+    {
+        return $this->hasMany(Facturaventadetalle::className(), ['idfactura' => 'idfactura']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getRecibocajadetalles()
     {
-        return $this->hasMany(Recibocajadetalle::className(), ['nrofactura' => 'nrofactura']);
+        return $this->hasMany(Recibocajadetalle::className(), ['idfactura' => 'idfactura']);
     }
 }

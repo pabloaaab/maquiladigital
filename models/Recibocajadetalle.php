@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "recibocajadetalle".
  *
  * @property int $iddetallerecibo
- * @property int $nrofactura
+ * @property int $idfactura
  * @property double $vlrabono
  * @property double $vlrsaldo
  * @property double $retefuente
@@ -17,8 +17,8 @@ use Yii;
  * @property int $idrecibo
  * @property string $observacion
  *
- * @property Facturaventa $factura
  * @property Recibocaja $recibo
+ * @property Facturaventa $factura
  */
 class Recibocajadetalle extends \yii\db\ActiveRecord
 {
@@ -36,12 +36,12 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nrofactura', 'vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica', 'idrecibo', 'observacion'], 'required', 'message' => 'Campo requerido'],
-            [['nrofactura', 'idrecibo'], 'integer'],
+            [['idfactura', 'vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica', 'idrecibo', 'observacion'], 'required'],
+            [['idfactura', 'idrecibo'], 'integer'],
             [['vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica'], 'number'],
             [['observacion'], 'string'],
-            [['nrofactura'], 'exist', 'skipOnError' => true, 'targetClass' => Facturaventa::className(), 'targetAttribute' => ['nrofactura' => 'nrofactura']],
             [['idrecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Recibocaja::className(), 'targetAttribute' => ['idrecibo' => 'idrecibo']],
+            [['idfactura'], 'exist', 'skipOnError' => true, 'targetClass' => Facturaventa::className(), 'targetAttribute' => ['idfactura' => 'idfactura']],
         ];
     }
 
@@ -51,24 +51,16 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'iddetallerecibo' => 'Idetallerecibo',
-            'nrofactura' => 'N° Factura:',
-            'vlrabono' => 'Valor Abono:',
-            'vlrsaldo' => 'Valor Saldo:',
-            'retefuente' => 'Rete Fuente:',
-            'reteiva' => 'Rete Iva:',
-            'reteica' => 'Rete Ica:',
-            'idrecibo' => 'Idrecibo:',
-            'observacion' => 'Observacion:',
+            'iddetallerecibo' => 'Iddetallerecibo',
+            'idfactura' => 'Idfactura',
+            'vlrabono' => 'Vlrabono',
+            'vlrsaldo' => 'Vlrsaldo',
+            'retefuente' => 'Retefuente',
+            'reteiva' => 'Reteiva',
+            'reteica' => 'Reteica',
+            'idrecibo' => 'Idrecibo',
+            'observacion' => 'Observacion',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFactura()
-    {
-        return $this->hasOne(Facturaventa::className(), ['nrofactura' => 'nrofactura']);
     }
 
     /**
@@ -77,5 +69,13 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     public function getRecibo()
     {
         return $this->hasOne(Recibocaja::className(), ['idrecibo' => 'idrecibo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFactura()
+    {
+        return $this->hasOne(Facturaventa::className(), ['idfactura' => 'idfactura']);
     }
 }

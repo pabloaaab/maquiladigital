@@ -7,17 +7,17 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Facturaventa */
 
 $this->title = 'Detalle Factura de Venta';
-$this->params['breadcrumbs'][] = ['label' => 'Facturas de Venta', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->nrofactura;
+$this->params['breadcrumbs'][] = ['label' => 'Facturas de ventas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->idfactura;
 ?>
 <div class="facturaventa-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->nrofactura], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->nrofactura], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->nrofactura], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idfactura], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idfactura], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idfactura], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
@@ -29,9 +29,11 @@ $this->params['breadcrumbs'][] = $model->nrofactura;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'idfactura',
             'nrofactura',
             'fechainicio',
             'fechavcto',
+            'fechacreacion',
             'formapago',
             'plazopago',
             'porcentajeiva',
@@ -41,12 +43,14 @@ $this->params['breadcrumbs'][] = $model->nrofactura;
             'retencionfuente',
             'impuestoiva',
             'retencioniva',
+            'saldo',
             'totalpagar',
             'valorletras:ntext',
             'idcliente',
             'idordenproduccion',
             'usuariosistema',
+            'idresolucion',
         ],
     ]) ?>
-	<?=  $this->render('detalle', ['Facturaventadetalle' => $Facturaventadetalle, 'nrofactura' => $model->nrofactura]); ?>
+
 </div>

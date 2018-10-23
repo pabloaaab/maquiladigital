@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventa */
 
-$this->title = 'Editar Factura de Venta: ' . $model->nrofactura;
-$this->params['breadcrumbs'][] = ['label' => 'Facturas de Ventas', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->nrofactura, 'url' => ['view', 'id' => $model->nrofactura]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Editar Factura de venta: ' . $model->idfactura;
+$this->params['breadcrumbs'][] = ['label' => 'Facturas de ventas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->idfactura, 'url' => ['view', 'id' => $model->idfactura]];
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="facturaventa-update">
 
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+		'clientes' => $clientes,
     ]) ?>
 
 </div>

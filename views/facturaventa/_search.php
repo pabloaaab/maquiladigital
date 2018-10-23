@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\FacturaventaSearch */
 /* @var $form yii\widgets\ActiveForm */
@@ -24,7 +25,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="panel-body" style="display:none">
             <div class="row">
-                <?= $form->field($model, 'nrofactura') ?>
+                <?= $form->field($model, 'idfactura') ?>
                 <?= $form->field($model, 'idcliente') ?>
             </div>
             <div class="panel-footer text-right" style="display:none">

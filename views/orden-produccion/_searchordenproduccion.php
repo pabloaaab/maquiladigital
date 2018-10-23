@@ -1,0 +1,111 @@
+<?php
+
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model app\models\ContactForm */
+
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
+use yii\bootstrap\Modal;
+use kartik\date\DatePicker;
+use kartik\select2\Select2;
+
+$this->title = 'Busqueda de Ordenes de Producción';
+$this->params['breadcrumbs'][] = $this->title;
+
+
+?>
+
+
+<h1>Lista Orden de produccion</h1>
+<?php $formulario = ActiveForm::begin([
+    "method" => "get",
+    "action" => Url::toRoute("orden-produccion/search"),
+    "enableClientValidation" => true,
+    'options' => ['class' => 'form-horizontal'],
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
+        'labelOptions' => ['class' => 'col-sm-2 control-label'],
+        'options' => [ 'tag' => false,]
+    ],
+
+]);
+?>
+
+<div class="panel panel-success panel-filters">
+    <div class="panel-heading" ">
+        Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
+    </div>
+
+    <div class="panel-body" id="filtronuevoorden" >
+        <div class="row">
+            <?= $formulario->field($form, 'idcliente')->widget(Select2::classname(), [
+                'data' => $clientes,
+                'options' => ['prompt' => 'Seleccione un cliente...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+            <?= $formulario->field($form, 'idtipo')->widget(Select2::classname(), [
+                'data' => $ordenproducciontipos,
+                'options' => ['prompt' => 'Seleccione un cliente...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        </div>
+        <div class="row" >
+            <?= $formulario->field($form, "ordenproduccion")->input("search") ?>
+        </div>
+
+        <div class="panel-footer text-right">
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
+            <a align="right" href="<?= Url::toRoute("orden-produccion/search") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+        </div>
+    </div>
+</div>
+
+<?php $formulario->end() ?>
+
+<div class="table-responsive">
+    <div class="panel panel-success ">
+        <div class="panel-heading">
+            Registros: <?= $pagination->totalCount ?>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Id Orden</th>
+                <th scope="col">Orden Produccion</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Fecha Llegada</th>
+                <th scope="col">Fecha Procesada</th>
+                <th scope="col">Fecha Entrega</th>
+                <th scope="col">Total</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Estado</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($model as $val): ?>
+            <tr>
+                <td><?= $val->idordenproduccion ?></td>
+                <td><?= $val->ordenproduccion ?></td>
+                <td><?= $val->cliente->nombrecorto ?></td>
+                <td><?= $val->fechallegada ?></td>
+                <td><?= $val->fechaprocesada ?></td>
+                <td><?= $val->fechaentrega ?></td>
+                <td><?= $val->totalorden ?></td>
+                <td><?= $val->tipo->tipo ?></td>
+                <td><?= $val->tipo->activo ?></td>
+                <td></td>
+            </tr>
+            </tbody>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</div>
+<?= LinkPager::widget(['pagination' => $pagination]) ?>

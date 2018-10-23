@@ -18,9 +18,9 @@ class FacturaventaSearch extends Facturaventa
     public function rules()
     {
         return [
-            [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion'], 'integer'],
-            [['fechainicio', 'fechavcto', 'formapago', 'valorletras', 'usuariosistema'], 'safe'],
-            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'totalpagar'], 'number'],
+            [['idfactura', 'nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion'], 'integer'],
+            [['fechainicio', 'fechavcto', 'fechacreacion', 'formapago', 'valorletras', 'usuariosistema'], 'safe'],
+            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
         ];
     }
 
@@ -60,9 +60,11 @@ class FacturaventaSearch extends Facturaventa
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'idfactura' => $this->idfactura,
             'nrofactura' => $this->nrofactura,
             'fechainicio' => $this->fechainicio,
             'fechavcto' => $this->fechavcto,
+            'fechacreacion' => $this->fechacreacion,
             'plazopago' => $this->plazopago,
             'porcentajeiva' => $this->porcentajeiva,
             'porcentajefuente' => $this->porcentajefuente,
@@ -71,9 +73,11 @@ class FacturaventaSearch extends Facturaventa
             'retencionfuente' => $this->retencionfuente,
             'impuestoiva' => $this->impuestoiva,
             'retencioniva' => $this->retencioniva,
+            'saldo' => $this->saldo,
             'totalpagar' => $this->totalpagar,
             'idcliente' => $this->idcliente,
             'idordenproduccion' => $this->idordenproduccion,
+            'idresolucion' => $this->idresolucion,
         ]);
 
         $query->andFilterWhere(['like', 'formapago', $this->formapago])

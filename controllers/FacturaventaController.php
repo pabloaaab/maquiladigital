@@ -2,14 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\Ordenproduccion;
 use Yii;
 use app\models\Facturaventa;
-use app\models\Facturaventadetalle;
 use app\models\FacturaventaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use app\models\Cliente;
+use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
 use yii\web\Session;
@@ -21,6 +22,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
+use Codeception\Lib\HelperModule;
 
 /**
  * FacturaventaController implements the CRUD actions for Facturaventa model.
@@ -65,10 +67,8 @@ class FacturaventaController extends Controller
      */
     public function actionView($id)
     {
-        $Facturaventadetalle = Facturaventadetalle::find()->Where(['=', 'nrofactura', $id])->all();
-		return $this->render('view', [
+        return $this->render('view', [
             'model' => $this->findModel($id),
-			'Facturaventadetalle' => $Facturaventadetalle,
         ]);
     }
 
@@ -80,13 +80,14 @@ class FacturaventaController extends Controller
     public function actionCreate()
     {
         $model = new Facturaventa();
-
+        $clientes = Cliente::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->nrofactura]);
+            return $this->redirect(['view', 'id' => $model->idfactura]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
         ]);
     }
 
@@ -100,13 +101,14 @@ class FacturaventaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $clientes = Cliente::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->nrofactura]);
+            return $this->redirect(['view', 'id' => $model->idfactura]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
         ]);
     }
 
@@ -131,104 +133,8 @@ class FacturaventaController extends Controller
      * @return Facturaventa the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-	 
-	public function actionNuevodetalle()
-        {
-        if(Yii::$app->request->post())
-            {
-                $nrofactura = Html::encode($_POST["nrofactura"]);
-				$idproducto = Html::encode($_POST["idproducto"]);
-				$codigoproducto = Html::encode($_POST["codigoproducto"]);
-				$cantidad = Html::encode($_POST["cantidad"]);
-				$preciounitario = Html::encode($_POST["preciounitario"]);
-				$total = Html::encode($_POST["total"]);				
-                if((int) $nrofactura)
-                {                    
-                    $table = new Facturaventadetalle();
-					$table->nrofactura = $nrofactura;
-                    $table->idproducto = $idproducto;
-					$table->codigoproducto = $codigoproducto;
-                    $table->cantidad = $cantidad;
-                    $table->preciounitario = $preciounitario;
-                    $table->total = $total;
-                    
-					$table->insert();
-					$this->redirect(["facturaventa/view",'id' => $nrofactura]);
-                }
-                else
-                {
-                   // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("facturaventa/view")."'>";
-                }
-            }
-            else
-            {
-                return $this->redirect(["facturaventa/index"]);
-            }
-        }
-		
-	public function actionEditardetalle()
-        {			
-			if(Yii::$app->request->post()){
-				$iddetallefactura = Html::encode($_POST["iddetallefactura"]);
-                if((int) $iddetallefactura)
-                {
-                    $table = Facturaventadetalle::find()->where(['iddetallefactura' => $iddetallefactura])->one();					
-					$idproducto = Html::encode($_POST["idproducto"]);					
-					$codigoproducto = Html::encode($_POST["codigoproducto"]);
-					$cantidad = Html::encode($_POST["cantidad"]);
-					$preciounitario = Html::encode($_POST["preciounitario"]);
-					$total = Html::encode($_POST["total"]);
-					$nrofactura = Html::encode($_POST["nrofactura"]);	
-                    if ($table) {
-                        $table->idproducto = $idproducto;
-						$table->codigoproducto = $codigoproducto;
-						$table->cantidad = $cantidad;
-						$table->preciounitario = $preciounitario;
-						$table->total = $total;
-                        $table->update();
-                        $this->redirect(["facturaventa/view",'id' => $nrofactura]);
-                        
-                        
-                    } else {
-                        $msg = "El registro seleccionado no ha sido encontrado";
-                        $tipomsg = "danger";
-                    }
-                } else {
-                    $model->getErrors();
-                }
-            }
-			//return $this->render("_formeditardetalle", ["iddetallerecibo" => $iddetallerecibo,]);
-        }	
-		
-	public function actionEliminardetalle()
-        {
-            if(Yii::$app->request->post())
-            {
-                $iddetallefactura = Html::encode($_POST["iddetallefactura"]);
-				$nrofactura = Html::encode($_POST["nrofactura"]);
-                if((int) $iddetallefactura)
-                {
-                    if(Facturaventadetalle::deleteAll("iddetallefactura=:iddetallefactura", [":iddetallefactura" => $iddetallefactura]))
-                    {                        
-                        $this->redirect(["facturaventa/view",'id' => $nrofactura]);
-                    }
-                    else
-                    {                       
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("facturaventa/index")."'>";
-                    }
-                }
-                else
-                {                   
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("facturaventa/index")."'>";
-                }
-            }
-            else
-            {
-                return $this->redirect(["facturaventa/index"]);
-            }
-        }	
-	
+
+
     protected function findModel($id)
     {
         if (($model = Facturaventa::findOne($id)) !== null) {

@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 
-use app\models\Producto;
 use Yii;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
@@ -13,6 +12,8 @@ use app\models\Cliente;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\FormFiltroOrdenProduccionNuevo;
+use app\models\Producto;
 use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
@@ -309,6 +310,65 @@ class OrdenProduccionController extends Controller
             'idordenproduccion' => $idordenproduccion,
         ]);
 
+
+    }
+
+    public function actionSearch()
+    {
+        //if (!Yii::$app->user->isGuest) {
+        $form = new FormFiltroOrdenProduccionNuevo;
+        $idcliente = null;
+        $ordenproduccion = null;
+        $idtipo = null;
+        $clientes = Cliente::find()->all();
+        $ordenproducciontipos = Ordenproducciontipo::find()->all();
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $idcliente = Html::encode($form->idcliente);
+                $ordenproduccion = Html::encode($form->ordenproduccion);
+                $idtipo = Html::encode($form->idtipo);
+                $table = Ordenproduccion::find()
+                    ->andFilterWhere(['=', 'idcliente', $idcliente])
+                    ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
+                    ->andFilterWhere(['=', 'idtipo', $idtipo])
+                    ->orderBy('idordenproduccion desc');
+                $count = clone $table;
+                $to = $count->count();
+                $pages = new Pagination([
+                    'pageSize' => 10,
+                    'totalCount' => $count->count()
+                ]);
+                $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+            } else {
+                $form->getErrors();
+            }
+        } else {
+            $table = Ordenproduccion::find()
+                ->orderBy('idordenproduccion desc');
+            $count = clone $table;
+            $pages = new Pagination([
+                'pageSize' => 10,
+                'totalCount' => $count->count(),
+            ]);
+            $model = $table
+                ->offset($pages->offset)
+                ->limit($pages->limit)
+                ->all();
+        }
+
+        return $this->render('_searchordenproduccion', [
+            'model' => $model,
+            'form' => $form,
+            'pagination' => $pages,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+            'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+        ]);
+        /* }else{
+             return $this->redirect(["site/login"]);
+         }*/
 
     }
 	
