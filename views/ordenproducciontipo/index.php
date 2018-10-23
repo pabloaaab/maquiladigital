@@ -21,10 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            [                
-                'attribute' => 'idtipo',
-                'contentOptions' => ['class' => 'col-lg-2'],                
-            ],
+
             [                
                 'attribute' => 'tipo',
                 'contentOptions' => ['class' => 'col-lg-2'],                

@@ -21,10 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            [                
-                'attribute' => 'idproducto',
-                'contentOptions' => ['class' => 'col-lg-2'],                
-            ],
+
             [                
                 'attribute' => 'codigoproducto',
                 'contentOptions' => ['class' => 'col-lg-2'],                
@@ -40,7 +37,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			[               
                 'attribute' => 'stock',
                 'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],			
+            ],
+            [
+                'attribute' => 'idcliente',
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

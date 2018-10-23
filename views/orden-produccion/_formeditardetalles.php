@@ -35,10 +35,11 @@ use yii\db\ActiveQuery;
     ],
 ]); ?>
 
-<div class="table table-responsive">
+<div class="modal-body">
+
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Orden de prducción
+            Editar detalle Orden de prducción
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -49,7 +50,6 @@ use yii\db\ActiveQuery;
                     <th scope="col">Código</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
-
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -68,10 +68,11 @@ use yii\db\ActiveQuery;
             </table>
         </div>
         <div class="panel-footer text-right">
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
-
     </div>
 </div>
+
 <?php ActiveForm::end(); ?>
 

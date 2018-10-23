@@ -176,9 +176,9 @@ class OrdenProduccionController extends Controller
             }
             $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
         }
-        return $this->renderAjax('_formnuevodetalles', [
+        return $this->render('_formnuevodetalles', [
             'productosCliente' => $productosCliente,
-            'idordenprodcuccion' => $idordenproduccion,
+            'idordenproduccion' => $idordenproduccion,
 
         ]);
 
@@ -246,7 +246,7 @@ class OrdenProduccionController extends Controller
             }
             return $this->render('_formeditardetalles', [
                 'mds' => $mds,
-                'idordenprodcuccion' => $idordenproduccion,
+                'idordenproduccion' => $idordenproduccion,
             ]);
         }	
 		
@@ -306,7 +306,7 @@ class OrdenProduccionController extends Controller
         }
         return $this->render('_formeliminardetalles', [
             'mds' => $mds,
-            'idordenprodcuccion' => $idordenproduccion,
+            'idordenproduccion' => $idordenproduccion,
         ]);
 
 

@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th></th>
                     <td></td>
                     <th><?= Html::activeLabel($model, 'tipo') ?></th>
-                    <td><?= Html::encode($model->idtipo) ?></td>
+                    <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'estado') ?></th>

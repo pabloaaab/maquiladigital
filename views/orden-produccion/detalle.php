@@ -15,6 +15,7 @@ use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
 use app\models\Ordenproduccion;
 use app\models\Cliente;
+use app\models\Producto;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -132,41 +133,10 @@ use yii\helpers\ArrayHelper;
     </div>
     <div class="panel-footer text-right">
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion],[ 'class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-danger']) ?>
 
     </div>
 
     </div>
 </div>
-
-
-<?= Html::button('Create List', ['id' => 'modelButton', 'value' => \yii\helpers\Url::to(['clientes/index']), 'class' => 'btn btn-success']) ?>
-
-<?php
-
-Modal::begin([
-    'header' => '<h4>Destination</h4>',
-    'id'     => 'model',
-    'size'   => 'model-lg',
-]);
-
-echo "<div id='modelContent'></div>";
-
-Modal::end();
-
-?>
-
-<script>
-    $(function(){
-    $('#modelButton').click(function(){
-    $('.modal').modal('show')
-    .find('#modelContent')
-    .load($(this).attr('value'));
-    });
-    });
-</script>
-
-
-
-

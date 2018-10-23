@@ -70,6 +70,7 @@ use yii\db\ActiveQuery;
             </table>
         </div>
         <div class="panel-footer text-right">
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
 

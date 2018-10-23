@@ -38,7 +38,7 @@ use yii\db\ActiveQuery;
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Orden de prducción
+            Eliminar detalle Orden de prducción
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -69,6 +69,7 @@ use yii\db\ActiveQuery;
             </table>
         </div>
         <div class="panel-footer text-right">
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['orden-produccion/view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger",]) ?>
         </div>
 

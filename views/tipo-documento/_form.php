@@ -26,9 +26,7 @@ use yii\helpers\Url;
         <h4>Información Tipo Documento</h4>
     </div>
     <div class="panel-body">
-		<div class="row">            
-			<?= $form->field($model, 'idtipo')->textInput() ?>
-		</div>														   		
+
 		<div class="row">
 			<?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
         </div>

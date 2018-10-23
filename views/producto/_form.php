@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use app\models\Cliente;
+use kartik\date\DatePicker;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Producto */
@@ -23,9 +26,7 @@ use yii\helpers\Url;
         <h4>Información Producto</h4>
     </div>
     <div class="panel-body">
-		<div class="row">            
-			<?= $form->field($model, 'idproducto')->textInput(['maxlength' => true]) ?>
-		</div>														   		
+
 		<div class="row">
 			<?= $form->field($model, 'codigoproducto')->textInput(['maxlength' => true]) ?>    
         </div>
@@ -44,21 +45,18 @@ use yii\helpers\Url;
 		<div class="row">
 			<?= $form->field($model, 'vlrventa')->textInput(['maxlength' => true]) ?>
 		</div>
+        <div class="row">
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+                'data' => $clientes,
+                'options' => ['prompt' => 'Seleccione un cliente...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        </div>
 		<div class="row">
-			<?= $form->field($model, 'idcliente')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
 		</div>
-		<div class="row">
-			<?= $form->field($model, 'observacion')->textInput(['maxlength' => true]) ?>
-		</div>
-		<div class="row">
-			<?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>
-		</div>
-		<div class="row">
-			<?= $form->field($model, 'fechaproceso')->textInput() ?>
-		</div>
-		<div class="row">
-			<?= $form->field($model, 'usuariosistema')->textInput() ?>
-		</div>	
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
 			<a href="<?= Url::toRoute("producto/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

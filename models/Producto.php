@@ -38,7 +38,7 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoproducto', 'producto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'observacion', 'activo'], 'required', 'message' => 'Campo requerido'],
+            [['codigoproducto', 'producto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'observacion', ], 'required', 'message' => 'Campo requerido'],
             [['cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente'], 'integer'],
             [['observacion'], 'string'],
             [['fechaproceso'], 'safe'],
@@ -77,4 +77,6 @@ class Producto extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Cliente::className(), ['idcliente' => 'idcliente']);
     }
+
+
 }
