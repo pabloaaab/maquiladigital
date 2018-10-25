@@ -28,6 +28,7 @@ use Yii;
  * @property int $idordenproduccion
  * @property string $usuariosistema
  * @property int $idresolucion
+ * @property int $estado
  *
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
@@ -51,7 +52,7 @@ class Facturaventa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion'], 'integer'],
+            [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','estado'], 'integer'],
             [['fechainicio', 'idcliente', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
             [['fechainicio', 'fechavcto', 'fechacreacion'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
@@ -90,6 +91,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             'idordenproduccion' => 'Idordenproduccion',
             'usuariosistema' => 'Usuariosistema',
             'idresolucion' => 'Idresolucion',
+            'estado' => 'Estado',
         ];
     }
 

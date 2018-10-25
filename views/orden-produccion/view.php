@@ -81,5 +81,4 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 
     <?=  $this->render('detalle', ['modeldetalles' => $modeldetalles, 'modeldetalle' => $modeldetalle, 'idordenproduccion' => $model->idordenproduccion, 'idcliente' => $model->idcliente]); ?>
 
-
 </div>

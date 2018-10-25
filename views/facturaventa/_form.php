@@ -44,9 +44,9 @@ use kartik\depdrop\DepDrop;
         $( "#'.Html::getInputId($model, 'idordenproduccion',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->dropDownList(['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione...']) ?>
         </div>
-		<div class="panel-footer text-left">
+		<div class="panel-footer text-right">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
 			<a href="<?= Url::toRoute("facturaventa/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>

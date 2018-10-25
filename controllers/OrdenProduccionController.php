@@ -185,8 +185,6 @@ class OrdenProduccionController extends Controller
             'idordenproduccion' => $idordenproduccion,
 
         ]);
-
-
     }
 
     public function actionEditardetalle()

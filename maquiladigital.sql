@@ -173,6 +173,7 @@ CREATE TABLE `facturaventa` (
   `idordenproduccion` int(11) NOT NULL,
   `usuariosistema` char(15) DEFAULT NULL,
   `idresolucion` int(11) DEFAULT NULL,
+  `estado` int(1) DEFAULT '0',
   PRIMARY KEY (`idfactura`),
   KEY `idordenproduccion` (`idordenproduccion`),
   KEY `idcliente` (`idcliente`),
@@ -180,14 +181,15 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
-insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`fechacreacion`,`formapago`,`plazopago`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`totalpagar`,`valorletras`,`idcliente`,`idordenproduccion`,`usuariosistema`,`idresolucion`) values 
-(4,1010,'2018-10-23','2018-10-23','2018-10-23 11:18:09','Credito',20,1,1,1,10,1,1,1,0,1000,'dsdsd\r\n',2,25,'admin',3),
-(5,1109,'2018-10-22','2018-10-22','2018-10-23 11:19:46','contado',30,1,1,1,1000,1,1,1,0,1000,'dsds\r\n',2,25,'admin',3),
-(6,1502,'2018-10-24','2018-10-24','2018-10-23 11:20:38','contado',25,1,1,1,12500,1,1,1,0,1200,'sasa',2,25,'admin',3);
+insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`fechacreacion`,`formapago`,`plazopago`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`totalpagar`,`valorletras`,`idcliente`,`idordenproduccion`,`usuariosistema`,`idresolucion`,`estado`) values 
+(4,1010,'2018-10-23','2018-10-23','2018-10-23 11:18:09','1',20,1,1,1,10,1,1,1,0,7000,'dsdsd\r\n',2,25,'admin',3,0),
+(5,1109,'2018-10-22','2018-10-22','2018-10-23 11:19:46','1',30,1,1,1,1000,1,1,1,0,1000,'dsds\r\n',2,25,'admin',3,0),
+(6,1502,'2018-10-24','2018-10-24','2018-10-23 11:20:38','1',25,1,1,1,12500,1,1,1,0,1200,'sasa',2,25,'admin',3,0),
+(31,0,'2018-10-25','2018-11-24','2018-10-25 10:04:26','1',30,0,0,0,0,0,0,0,0,0,'-',2,25,'71268830',3,0);
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -206,9 +208,17 @@ CREATE TABLE `facturaventadetalle` (
   KEY `nrofactura` (`idfactura`),
   CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
+
+insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproducto`,`codigoproducto`,`cantidad`,`preciounitario`,`total`) values 
+(1,4,1,'5010',10,100,1000),
+(2,4,1,'5010',10,100,1000),
+(3,4,1,'5010',10,100,1000),
+(4,4,1,'5010',10,100,1000),
+(5,4,1,'5010',10,100,1000),
+(6,4,1,'5010',10,100,1000);
 
 /*Table structure for table `matriculaempresa` */
 
@@ -1559,7 +1569,7 @@ CREATE TABLE `resolucion` (
 /*Data for the table `resolucion` */
 
 insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`) values 
-(3,'1112','1','1000','2018-10-10 00:00:00','901189320',0),
+(3,'1112','1','1000','2018-10-10 00:00:00','901189320',1),
 (6,'254','1001','2000','2018-10-10 00:00:00','901189320',0);
 
 /*Table structure for table `tipodocumento` */

@@ -21,7 +21,7 @@ use yii\data\Pagination;
 use yii\db\ActiveQuery;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Ordenproduccion */
+/* @var $model app\models\Facturaventadetalle */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -38,7 +38,7 @@ use yii\db\ActiveQuery;
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Orden de prducción
+            Nuevo detalle Factura Venta
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -48,29 +48,28 @@ use yii\db\ActiveQuery;
                     <th scope="col">Producto</th>
                     <th scope="col">Código</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Costo</th>
-
+                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Subtotal</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($productosCliente as $val): ?>
+                <?php foreach ($facturaOrden as $val): ?>
                 <tr>
-                    <td><?= $val->idproducto ?></td>
-                    <td><?= $val->producto ?></td>
+                    <td><?= $val->iddetalleorden ?></td>
+                    <td><?= $val->producto->producto ?></td>
                     <td><?= $val->codigoproducto ?></td>
-
-                    <td><input type="text" name="cantidad[]" value="0" required></td>
-                    <td><input type="text" name="costoconfeccion[]" value="<?= $val->costoconfeccion ?>" required></td>
-                    <td><input type="hidden" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
-                    <td><input type="hidden" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
+                    <td><?= $val->cantidad ?></td>
+                    <td><?= $val->vlrprecio ?></td>
+                    <td><?= $val->subtotal ?></td>
+                    <td><input type="checkbox" name="iddetalleorden[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view', 'id' => $idfactura], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
 

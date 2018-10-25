@@ -2,6 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\models\Ordenproducciondetalle;
+use yii\helpers\Url;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
+use yii\db\ActiveQuery;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventa */
@@ -26,31 +32,63 @@ $this->params['breadcrumbs'][] = $model->idfactura;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idfactura',
-            'nrofactura',
-            'fechainicio',
-            'fechavcto',
-            'fechacreacion',
-            'formapago',
-            'plazopago',
-            'porcentajeiva',
-            'porcentajefuente',
-            'porcentajereteiva',
-            'subtotal',
-            'retencionfuente',
-            'impuestoiva',
-            'retencioniva',
-            'saldo',
-            'totalpagar',
-            'valorletras:ntext',
-            'idcliente',
-            'idordenproduccion',
-            'usuariosistema',
-            'idresolucion',
-        ],
-    ]) ?>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <h5><?= Html::encode($this->title) ?></h5>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idfactura') ?></th>
+                    <td><?= Html::encode($model->idfactura) ?></td>
+                    <th><?= Html::activeLabel($model, 'Cliente') ?></th>
+                    <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
+                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                    <td><?= Html::encode($model->idordenproduccion) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'nrofactura') ?></th>
+                    <td><?= Html::encode($model->nrofactura) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentajeiva') ?></th>
+                    <td><?= Html::encode($model->porcentajeiva) ?></td>
+                    <th><?= Html::activeLabel($model, 'impuestoiva') ?></th>
+                    <td><?= Html::encode($model->impuestoiva) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechainicio') ?></th>
+                    <td><?= Html::encode($model->fechainicio) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentajeretefuente') ?></th>
+                    <td><?= Html::encode($model->porcentajefuente) ?></td>
+                    <th><?= Html::activeLabel($model, 'retencionfuente') ?></th>
+                    <td><?= Html::encode($model->retencionfuente) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechavcto') ?></th>
+                    <td><?= Html::encode($model->fechavcto) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentajereteiva') ?></th>
+                    <td><?= Html::encode($model->porcentajereteiva) ?></td>
+                    <th><?= Html::activeLabel($model, 'retencioniva') ?></th>
+                    <td><?= Html::encode($model->retencioniva) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'plazopago') ?></th>
+                    <td><?= Html::encode($model->plazopago) ?></td>
+                    <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
+                    <td><?= Html::encode($model->usuariosistema) ?></td>
+                    <th><?= Html::activeLabel($model, 'subtotal') ?></th>
+                    <td><?= Html::encode($model->retencioniva) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'formapago') ?></th>
+                    <td><?= Html::encode($model->formapago) ?></td>
+                    <th><?= Html::activeLabel($model, 'saldo') ?></th>
+                    <td><?= Html::encode($model->saldo) ?></td>
+                    <th><?= Html::activeLabel($model, 'total') ?></th>
+                    <td><?= Html::encode($model->retencioniva) ?></td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
+    <?=  $this->render('detalle', ['modeldetalles' => $modeldetalles, 'modeldetalle' => $modeldetalle, 'idfactura' => $model->idfactura, 'idordenproduccion' => $model->idordenproduccion]); ?>
 </div>
