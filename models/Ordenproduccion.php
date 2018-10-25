@@ -96,4 +96,9 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Ordenproducciontipo::className(), ['idtipo' => 'idtipo']);
     }
+
+    public function getOrdenProduccion()
+    {
+        return " Id: {$this->idordenproduccion} - Orden Producción: {$this->ordenproduccion} - Fecha Llegada: {$this->fechallegada} - Total: {$this->totalorden} - Tipo: {$this->tipo->tipo}";
+    }
 }

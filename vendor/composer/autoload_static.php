@@ -34,6 +34,8 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'k' => 
         array (
             'kartik\\select2\\' => 15,
+            'kartik\\plugins\\depdrop\\' => 23,
+            'kartik\\depdrop\\' => 15,
             'kartik\\date\\' => 12,
             'kartik\\base\\' => 12,
         ),
@@ -122,6 +124,14 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'kartik\\select2\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-select2/src',
+        ),
+        'kartik\\plugins\\depdrop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/dependent-dropdown',
+        ),
+        'kartik\\depdrop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-depdrop/src',
         ),
         'kartik\\date\\' => 
         array (
@@ -224,13 +234,6 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
-            ),
-        ),
-        'N' => 
-        array (
-            'NumeroALetras' => 
-            array (
-                0 => __DIR__ . '/..' . '/arielcr/numero-a-letras/src',
             ),
         ),
         'H' => 

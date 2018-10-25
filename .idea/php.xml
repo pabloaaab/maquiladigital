@@ -68,8 +68,9 @@
       <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-krajee-base" />
       <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-dialog" />
       <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-widget-datepicker" />
-      <path value="$PROJECT_DIR$/vendor/arielcr/numero-a-letras" />
       <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-widget-select2" />
+      <path value="$PROJECT_DIR$/vendor/kartik-v/dependent-dropdown" />
+      <path value="$PROJECT_DIR$/vendor/kartik-v/yii2-widget-depdrop" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="5.4.0" />

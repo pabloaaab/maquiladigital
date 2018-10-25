@@ -20,8 +20,10 @@
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-widget-select2": "@dev",
+        "kartik-v/yii2-widget-depdrop": "@dev",
+        "kartik-v/yii2-widget-depdrop": "dev-master"
 
-        "arielcr/numero-a-letras": "dev-master"
+
 
 		
     },

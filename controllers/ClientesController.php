@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Ordenproduccion;
 use Codeception\Lib\HelperModule;
 use yii;
 use yii\base\Model;
@@ -308,4 +309,6 @@ use yii\helpers\ArrayHelper;
             }
         }
 
-}
+
+
+    }

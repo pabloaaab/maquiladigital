@@ -140,8 +140,8 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
             <?= $form->field($model, 'direccioncliente')->input("text") ?>
 		</div>
 		<div class="row">
-			<?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
-            $( "#'.Html::getInputId($model, 'idmunicipio',['required']).'" ).html( data ); });']); ?>
+			<?= $form->field($model, 'iddepartamento')->dropDownList($departamento,['class' => 'select-2','prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('clientes/municipio').'", { id: $(this).val() } ) .done(function( data ) {
+            $( "#'.Html::getInputId($model, 'idmunicipio',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
 			<?= $form->field($model, 'idmunicipio')->dropDownList(['prompt' => 'Seleccione...']) ?>
 		</div>
         <div class="row">

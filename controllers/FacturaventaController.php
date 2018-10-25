@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\Ordenproduccion;
+
 use Yii;
 use app\models\Facturaventa;
 use app\models\FacturaventaSearch;
@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Cliente;
+use app\models\Ordenproduccion;
 use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
@@ -81,13 +82,17 @@ class FacturaventaController extends Controller
     {
         $model = new Facturaventa();
         $clientes = Cliente::find()->all();
+        $ordenesproduccion = Ordenproduccion::find()->all();
+        $seleccionado = null;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idfactura]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
+            'ordenesproduccion' => ArrayHelper::map($ordenesproduccion, "idordenproduccion", "idordenproduccion"),
+            'seleccionado' => $seleccionado,
         ]);
     }
 
@@ -134,6 +139,16 @@ class FacturaventaController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
 
+    public function actionOrdenp($id){
+        $rows = Ordenproduccion::find()->where(['idcliente' => $id])->all();
+
+        echo "<option required>Seleccione...</option>";
+        if(count($rows)>0){
+            foreach($rows as $row){
+                echo "<option value='$row->idordenproduccion' required>$row->ordenProduccion</option>";
+            }
+        }
+    }
 
     protected function findModel($id)
     {

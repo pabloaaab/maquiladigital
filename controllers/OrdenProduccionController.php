@@ -91,18 +91,21 @@ class OrdenProduccionController extends Controller
         $model = new Ordenproduccion();
 		$clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
             return $this->redirect(['view', 'id' => $model->idordenproduccion]);
+
         }
 
         return $this->render('create', [
             'model' => $model,
-			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
             'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+
         ]);
     }
 
@@ -380,4 +383,5 @@ class OrdenProduccionController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

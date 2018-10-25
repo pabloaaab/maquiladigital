@@ -7,6 +7,10 @@ use app\models\Cliente;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use yii\bootstrap\Modal;
+use yii\data\Pagination;
+
+use kartik\depdrop\DepDrop;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventa */
@@ -27,25 +31,20 @@ use kartik\select2\Select2;
         <h4>Información Banco</h4>
     </div>
     <div class="panel-body">
-		<div class="row">
+        <div class="row">
             <?= $form->field($model,'fechainicio')->widget(DatePicker::className(),['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]]) ?>
-        </div>														   		
-		<div class="row">
-            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
-                'data' => $clientes,
-                'options' => ['prompt' => 'Seleccione un cliente...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
         </div>
-		<div class="row">
-            <?= $form->field($model, 'idordenproduccion')->textInput(['maxlength' => true]) ?>  					
+        <div class="row">
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['class' => 'select-2','prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('facturaventa/ordenp').'", { id: $(this).val() } ) .done(function( data ) {
+        $( "#'.Html::getInputId($model, 'idordenproduccion',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'idordenproduccion')->dropDownList(['prompt' => 'Seleccione...']) ?>
         </div>
 		<div class="panel-footer text-left">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
@@ -53,4 +52,8 @@ use kartik\select2\Select2;
 		</div>
 	</div>
 </div>
+
+
+
 <?php ActiveForm::end(); ?>
+

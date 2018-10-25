@@ -21,12 +21,14 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'plugins/select-2/css/select2.min.css',
+        'plugins/font-awesome/css/font-awesome.min.css',
     ];
     public $js = [
-        'plugins/select-2/js/select2.min.js',
-        'plugins/tinymce/tinymce.min.js',
         'js/main.js',
         'js/commons.js',
+        'plugins/select-2/js/select2.min.js',
+        'plugins/tinymce/tinymce.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

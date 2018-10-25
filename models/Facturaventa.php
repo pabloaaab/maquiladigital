@@ -93,6 +93,16 @@ class Facturaventa extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function getOrden($provid)
+    {
+
+        $data=  \app\models\Ordenproduccion::find()
+            ->where(['idcliente'=>$provid])
+            ->select(['idordenproduccion as id'])->asArray()->all();
+
+        return $data;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -124,4 +124,9 @@ class Cliente extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Recibocaja::className(), ['idcliente' => 'idcliente']);
     }
+
+    public function getNombreClientes()
+    {
+        return "{$this->nombrecorto} - {$this->cedulanit}";
+    }
 }
