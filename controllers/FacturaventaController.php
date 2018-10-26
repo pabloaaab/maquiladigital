@@ -177,29 +177,164 @@ class FacturaventaController extends Controller
     {
 
         $facturaOrden = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
-
+        $mensaje = "";
         if (isset($_POST["iddetalleorden"])) {
+            $intIndice = 0;
             foreach ($_POST["iddetalleorden"] as $intCodigo) {
                     $table = new Facturaventadetalle();
-                    $ordenProduccion = Ordenproducciondetalle::find($intCodigo)->one();
-                    $table->idproducto = $ordenProduccion->idproducto;
-                    $table->cantidad = $ordenProduccion->cantidad;
-                    $table->preciounitario = $ordenProduccion->vlrprecio;
-                    $table->codigoproducto = $ordenProduccion->codigoproducto;
-                    $table->total = $ordenProduccion->subtotal;
+                    $ordenProducciondetalle = Ordenproducciondetalle::find()->where(['iddetalleorden' => $intCodigo])->one();
+                    $table->idproducto = $ordenProducciondetalle->idproducto;
+                    $table->cantidad = $ordenProducciondetalle->cantidad;
+                    $table->preciounitario = $ordenProducciondetalle->vlrprecio;
+                    $table->codigoproducto = $ordenProducciondetalle->codigoproducto;
+                    $table->total = $ordenProducciondetalle->subtotal;
                     $table->idfactura = $idfactura;
                     $table->insert();
                     $factura = Facturaventa::findOne($idfactura);
                     $factura->totalpagar = $factura->totalpagar + $table->total;
                     $factura->update();
-            }
-            $this->redirect(["facturaventa/view",'id' => $idfactura]);
+                }
+                $this->redirect(["facturaventa/view",'id' => $idfactura]);
+        }else {
+            $mensaje = "Debe seleccionar al menos un registro";
         }
+
         return $this->render('_formnuevodetalles', [
             'facturaOrden' => $facturaOrden,
             'idfactura' => $idfactura,
+            'mensaje' => $mensaje,
 
         ]);
+    }
+
+    public function actionEditardetalle()
+    {
+        $iddetallefactura = Html::encode($_POST["iddetallefactura"]);
+        $idfactura = Html::encode($_POST["idfactura"]);
+
+        if(Yii::$app->request->post()){
+
+            if((int) $iddetallefactura)
+            {
+                $table = Facturaventadetalle::findOne($iddetallefactura);
+                if ($table) {
+
+                    $table->cantidad = Html::encode($_POST["cantidad"]);
+                    $table->preciounitario = Html::encode($_POST["preciounitario"]);
+                    $table->total = Html::encode($_POST["cantidad"]) * Html::encode($_POST["preciounitario"]);
+                    $table->idfactura = Html::encode($_POST["idfactura"]);
+                    $table->update();
+
+                    $factura = Facturaventa::findOne($table->idfactura);
+                    $factura->totalpagar = $factura->totalpagar - Html::encode($_POST["total"]);
+                    $factura->totalpagar = $factura->totalpagar + $table->total;
+                    $factura->update();
+
+                    $this->redirect(["facturaventa/view",'id' => $idfactura]);
+
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            }
+        }
+        //return $this->render("_formeditardetalle", ["model" => $model,]);
+    }
+
+    public function actionEditardetalles($idfactura)
+    {
+        $mds = Facturaventadetalle::find()->where(['=', 'idfactura', $idfactura])->all();
+
+        if (isset($_POST["iddetallefactura"])) {
+            $intIndice = 0;
+            foreach ($_POST["iddetallefactura"] as $intCodigo) {
+                if($_POST["cantidad"][$intIndice] > 0 ){
+                    $table = Facturaventadetalle::findOne($intCodigo);
+                    $total = $table->total;
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->preciounitario = $_POST["preciounitario"][$intIndice];
+                    $table->total = $_POST["cantidad"][$intIndice] * $_POST["preciounitario"][$intIndice];
+                    $table->update();
+                    $factura = Facturaventa::findOne($idfactura);
+                    $factura->totalpagar = $factura->totalpagar - $total;
+                    $factura->totalpagar = $factura->totalpagar + $table->total;
+                    $factura->update();
+                }
+                $intIndice++;
+            }
+            $this->redirect(["facturaventa/view",'id' => $idfactura]);
+        }
+        return $this->render('_formeditardetalles', [
+            'mds' => $mds,
+            'idfactura' => $idfactura,
+        ]);
+    }
+
+    public function actionEliminardetalle()
+    {
+        if(Yii::$app->request->post())
+        {
+            $iddetallefactura = Html::encode($_POST["iddetallefactura"]);
+            $idfactura = Html::encode($_POST["idfactura"]);
+            if((int) $iddetallefactura)
+            {
+                $facturaDetalle = Facturaventadetalle::findOne($iddetallefactura);
+                $total = $facturaDetalle->total;
+                if(Facturaventadetalle::deleteAll("iddetallefactura=:iddetallefactura", [":iddetallefactura" => $iddetallefactura]))
+                {
+                    $factura = Facturaventa::findOne($idfactura);
+                    $factura->totalpagar = $factura->totalpagar - $total;
+                    $factura->update();
+                    $this->redirect(["facturaventa/view",'id' => $idfactura]);
+                }
+                else
+                {
+                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("facturaventa/index")."'>";
+                }
+            }
+            else
+            {
+                echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("facturaventa/index")."'>";
+            }
+        }
+        else
+        {
+            return $this->redirect(["facturaventa/index"]);
+        }
+    }
+
+    public function actionEliminardetalles($idfactura)
+    {
+        $mds = Facturaventadetalle::find()->where(['=', 'idfactura', $idfactura])->all();
+        $mensaje = "";
+        if(Yii::$app->request->post())
+        {
+            $intIndice = 0;
+
+            if (isset($_POST["seleccion"])) {
+                foreach ($_POST["seleccion"] as $intCodigo)
+                {
+                    $facturaDetalle = Facturaventadetalle::findOne($intCodigo);
+                    $total = $facturaDetalle->total;
+                    if(Facturaventadetalle::deleteAll("iddetallefactura=:iddetallefactura", [":iddetallefactura" => $intCodigo]))
+                    {
+                        $factura = Facturaventa::findOne($idfactura);
+                        $factura->totalpagar = $factura->totalpagar - $total;
+                        $factura->update();
+                    }
+                }
+                $this->redirect(["facturaventa/view",'id' => $idfactura]);
+            }else {
+                $mensaje = "Debe seleccionar al menos un registro";
+            }
+        }
+        return $this->render('_formeliminardetalles', [
+            'mds' => $mds,
+            'idfactura' => $idfactura,
+            'mensaje' => $mensaje,
+        ]);
+
+
     }
 
     public function actionOrdenp($id){

@@ -21,7 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            
+            [
+                'attribute' => 'idordenproduccion',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
             [                
                 'attribute' => 'idcliente',
                 'contentOptions' => ['class' => 'col-lg-2'],                
@@ -40,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			[               
                 'attribute' => 'totalorden',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],			
             [
                 'class' => 'yii\grid\ActionColumn',              

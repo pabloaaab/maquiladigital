@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Producto;
-use app\models\ProductoSearch;
+use app\models\Talla;
+use app\models\TallaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ProductoController implements the CRUD actions for Producto model.
+ * TallaController implements the CRUD actions for Talla model.
  */
-class ProductoController extends Controller
+class TallaController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class ProductoController extends Controller
     }
 
     /**
-     * Lists all Producto models.
+     * Lists all Talla models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ProductoSearch();
+        $searchModel = new TallaSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * Displays a single Producto model.
+     * Displays a single Talla model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,16 +58,16 @@ class ProductoController extends Controller
     }
 
     /**
-     * Creates a new Producto model.
+     * Creates a new Talla model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Producto();
+        $model = new Talla();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idproducto]);
+            return $this->redirect(['view', 'id' => $model->idtalla]);
         }
 
         return $this->render('create', [
@@ -76,7 +76,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * Updates an existing Producto model.
+     * Updates an existing Talla model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +87,7 @@ class ProductoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idproducto]);
+            return $this->redirect(['view', 'id' => $model->idtalla]);
         }
 
         return $this->render('update', [
@@ -96,7 +96,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * Deletes an existing Producto model.
+     * Deletes an existing Talla model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class ProductoController extends Controller
     }
 
     /**
-     * Finds the Producto model based on its primary key value.
+     * Finds the Talla model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Producto the loaded model
+     * @return Talla the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Producto::findOne($id)) !== null) {
+        if (($model = Talla::findOne($id)) !== null) {
             return $model;
         }
 

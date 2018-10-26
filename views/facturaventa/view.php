@@ -83,8 +83,8 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <td><?= Html::encode($model->formapago) ?></td>
                     <th><?= Html::activeLabel($model, 'saldo') ?></th>
                     <td><?= Html::encode($model->saldo) ?></td>
-                    <th><?= Html::activeLabel($model, 'total') ?></th>
-                    <td><?= Html::encode($model->retencioniva) ?></td>
+                    <th><?= Html::activeLabel($model, 'totalpagar') ?></th>
+                    <td><?= Html::encode($model->totalpagar) ?></td>
                 </tr>
             </table>
         </div>

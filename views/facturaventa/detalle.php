@@ -80,7 +80,7 @@ use yii\helpers\ArrayHelper;
                                                 <label>Costo:</label>
                                             </div>
                                             <div class="col-lg-3">
-                                                <input type="text" name="vlrprecio" value="<?=  $val->preciounitario ?>" class="form-control" required>
+                                                <input type="text" name="preciounitario" value="<?=  $val->preciounitario ?>" class="form-control" required>
                                             </div>
                                             <input type="hidden" name="iddetallefactura" value="<?= $val->iddetallefactura ?>">
                                             <input type="hidden" name="idfactura" value="<?= $val->idfactura ?>">

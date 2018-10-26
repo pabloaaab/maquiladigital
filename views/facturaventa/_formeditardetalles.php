@@ -6,10 +6,10 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Ordenproduccion;
+use app\models\Facturaventa;
 use app\models\Producto;
-use app\models\Ordenproducciondetalle;
-use app\models\OrdenproduccionSearch;
+use app\models\Facturaventadetalle;
+use app\models\FacturaventaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,12 +35,11 @@ use yii\db\ActiveQuery;
     ],
 ]); ?>
 
-<div class="alert alert-danger"><?= $mensaje ?></div>
+<div class="modal-body">
 
-<div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Eliminar detalle Orden de prducción
+            Editar detalle Factura Venta
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -51,31 +50,29 @@ use yii\db\ActiveQuery;
                     <th scope="col">Código</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
-
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($mds as $val): ?>
                 <tr>
-                    <td><?= $val->iddetalleorden ?></td>
+                    <td><?= $val->iddetallefactura ?></td>
                     <td><?= $val->producto->producto ?></td>
                     <td><?= $val->codigoproducto ?></td>
-                    <td><?= $val->cantidad ?></td>
-                    <td><?= $val->vlrprecio ?></td>
-                    <td><?= $val->subtotal ?></td>
-                    <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
+                    <td><input type="text" name="cantidad[]" value="<?= $val->cantidad ?>" required></td>
+                    <td><input type="text" name="preciounitario[]" value="<?= $val->preciounitario ?>" required></td>
+                    <td><input type="hidden" name="iddetallefactura[]" value="<?= $val->iddetallefactura ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['orden-produccion/view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['facturaventa/view', 'id' => $idfactura], ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
-
     </div>
 </div>
+
 <?php ActiveForm::end(); ?>
 

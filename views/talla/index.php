@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ProductoSearch */
+/* @var $searchModel app\models\TallaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Productos';
+$this->title = 'Tallas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="producto-index">
+<div class="talla-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Producto', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Talla', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,19 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'idproducto',
-            'codigoproducto',
-            'producto',
-            'cantidad',
-            'stock',
-            //'costoconfeccion',
-            //'vlrventa',
-            //'idcliente',
-            //'observacion:ntext',
-            //'activo',
-            //'fechaproceso',
-            //'usuariosistema',
-            //'idprendatipo',
+            'idtalla',
+            'talla',
+            'sexo',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

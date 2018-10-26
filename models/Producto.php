@@ -16,11 +16,15 @@ use Yii;
  * @property int $vlrventa
  * @property int $idcliente
  * @property string $observacion
- * @property string $activo
+ * @property int $activo
  * @property string $fechaproceso
  * @property string $usuariosistema
+ * @property int $idprendatipo
  *
+ * @property Facturaventadetalle[] $facturaventadetalles
+ * @property Ordenproducciondetalle[] $ordenproducciondetalles
  * @property Cliente $cliente
+ * @property Prendatipo $prendatipo
  */
 class Producto extends \yii\db\ActiveRecord
 {
@@ -38,14 +42,14 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoproducto', 'producto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'observacion', ], 'required', 'message' => 'Campo requerido'],
-            [['cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente'], 'integer'],
+            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'observacion', 'idprendatipo'], 'required'],
+            [['cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
             [['observacion'], 'string'],
             [['fechaproceso'], 'safe'],
             [['codigoproducto', 'usuariosistema'], 'string', 'max' => 15],
             [['producto'], 'string', 'max' => 40],
-            [['activo'], 'string', 'max' => 2],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
+            [['idprendatipo'], 'exist', 'skipOnError' => true, 'targetClass' => Prendatipo::className(), 'targetAttribute' => ['idprendatipo' => 'idprendatipo']],
         ];
     }
 
@@ -55,19 +59,36 @@ class Producto extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idproducto' => 'Idproducto:',
-            'codigoproducto' => 'Codigo:',
-            'producto' => 'Producto:',
-            'cantidad' => 'Cantidad:',
-            'stock' => 'Stock:',
-            'costoconfeccion' => 'Costo Confección:',
-            'vlrventa' => 'Valor Venta:',
-            'idcliente' => 'Idcliente:',
-            'observacion' => 'Observación:',
-            'activo' => 'Activo:',
-            'fechaproceso' => 'Fecha Proceso:',
-            'usuariosistema' => 'Usuariosistema:',
+            'idproducto' => 'Idproducto',
+            'codigoproducto' => 'Codigoproducto',
+            'producto' => 'Producto',
+            'cantidad' => 'Cantidad',
+            'stock' => 'Stock',
+            'costoconfeccion' => 'Costoconfeccion',
+            'vlrventa' => 'Vlrventa',
+            'idcliente' => 'Idcliente',
+            'observacion' => 'Observacion',
+            'activo' => 'Activo',
+            'fechaproceso' => 'Fechaproceso',
+            'usuariosistema' => 'Usuariosistema',
+            'idprendatipo' => 'Idprendatipo',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFacturaventadetalles()
+    {
+        return $this->hasMany(Facturaventadetalle::className(), ['idproducto' => 'idproducto']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenproducciondetalles()
+    {
+        return $this->hasMany(Ordenproducciondetalle::className(), ['idproducto' => 'idproducto']);
     }
 
     /**
@@ -78,5 +99,11 @@ class Producto extends \yii\db\ActiveRecord
         return $this->hasOne(Cliente::className(), ['idcliente' => 'idcliente']);
     }
 
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrendatipo()
+    {
+        return $this->hasOne(Prendatipo::className(), ['idprendatipo' => 'idprendatipo']);
+    }
 }

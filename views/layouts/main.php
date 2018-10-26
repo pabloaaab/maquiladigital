@@ -57,6 +57,8 @@ AppAsset::register($this);
 					  ['label' => 'Departamento', 'url' => ['/departamento/index']],
 					  ['label' => 'Municipio', 'url' => ['/municipio/index']],
 					  ['label' => 'Producto', 'url' => ['/producto/index']],
+                      ['label' => 'Prenda', 'url' => ['/prendatipo/index']],
+                      ['label' => 'Talla', 'url' => ['/talla/index']],
                   ]
                 ],
                 [

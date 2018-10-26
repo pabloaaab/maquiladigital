@@ -6,21 +6,20 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Producto */
 
-$this->title = 'Detalle Producto';
+$this->title = $model->idproducto;
 $this->params['breadcrumbs'][] = ['label' => 'Productos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->idproducto;
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="producto-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idproducto], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idproducto], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idproducto], [
+        <?= Html::a('Update', ['update', 'id' => $model->idproducto], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->idproducto], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Esta seguro de eliminar el registro?',
+                'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -41,6 +40,7 @@ $this->params['breadcrumbs'][] = $model->idproducto;
             'activo',
             'fechaproceso',
             'usuariosistema',
+            'idprendatipo',
         ],
     ]) ?>
 

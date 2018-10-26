@@ -158,7 +158,6 @@ class OrdenProduccionController extends Controller
     {
 
         $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
-
         if (isset($_POST["idproducto"])) {
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
@@ -291,24 +290,27 @@ class OrdenProduccionController extends Controller
         if(Yii::$app->request->post())
         {
             $intIndice = 0;
-            $iddetalleorden = $_POST["seleccion"];
-            foreach ($iddetalleorden as $intCodigo)
-            {
-                $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
-                $subtotal = $ordenProduccionDetalle->subtotal;
-                if(OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo]))
-                {
-                    $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
-                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
-                    $ordenProduccion->update();
-                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+            $mensaje = "";
+            if ($_POST["seleccion"]) {
+                foreach ($_POST["seleccion"] as $intCodigo) {
+                    $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
+                    $subtotal = $ordenProduccionDetalle->subtotal;
+                    if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo])) {
+                        $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
+                        $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                        $ordenProduccion->update();
+
+                    }
                 }
+                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+            }else{
+                 $mensaje;
             }
-            $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
         }
         return $this->render('_formeliminardetalles', [
             'mds' => $mds,
             'idordenproduccion' => $idordenproduccion,
+            'mensaje' => $mensaje,
         ]);
 
 
