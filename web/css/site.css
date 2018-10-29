@@ -125,6 +125,7 @@ table.kv-grid-table th, table.kv-grid-table th a {
     /*background-color: rgba(92, 184, 92, 0.6);*/
     background-color: #009999;
     border-color: rgba(92, 184, 92, 0.6);
+    color: #FFFFFF;
 }
 .panel-success, .panel-success .panel-footer{
     /*border-color: rgba(92, 184, 92, 0.6);*/
@@ -417,6 +418,7 @@ i.fa {
 }
 .select2-container{
     z-index: 30001;
+    width: 100%;
 }
 .modal-wide .modal-dialog{
     width: 70%;

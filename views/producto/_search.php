@@ -12,40 +12,29 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
-        'method' => 'get',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => [ 'tag' => false,]
+        ],
     ]); ?>
+    <div class="panel panel-success panel-filters" style="display:none">
+        <div class="panel-heading">
+            Filtros <i class="glyphicon glyphicon-filter"></i>
+        </div>
+        <div class="panel-body" style="display:none">
+            <div class="row">
+                <?= $form->field($model, 'idproducto') ?>
+                <?= $form->field($model, 'producto') ?>
+            </div>
+            <div class="panel-footer text-right" style="display:none">
+                <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
+                <?=  Html::resetButton('Limpiar ' . Html::tag('i', '', ['class' => 'fa fa-eraser']), ['class' => 'btn btn-info']) ?>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'idproducto') ?>
+        <?php ActiveForm::end(); ?>
 
-    <?= $form->field($model, 'codigoproducto') ?>
-
-    <?= $form->field($model, 'producto') ?>
-
-    <?= $form->field($model, 'cantidad') ?>
-
-    <?= $form->field($model, 'stock') ?>
-
-    <?php // echo $form->field($model, 'costoconfeccion') ?>
-
-    <?php // echo $form->field($model, 'vlrventa') ?>
-
-    <?php // echo $form->field($model, 'idcliente') ?>
-
-    <?php // echo $form->field($model, 'observacion') ?>
-
-    <?php // echo $form->field($model, 'activo') ?>
-
-    <?php // echo $form->field($model, 'fechaproceso') ?>
-
-    <?php // echo $form->field($model, 'usuariosistema') ?>
-
-    <?php // echo $form->field($model, 'idprendatipo') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

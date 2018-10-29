@@ -6,11 +6,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Talla */
 
-$this->title = 'Create Talla';
+$this->title = 'Nuevo Talla';
 $this->params['breadcrumbs'][] = ['label' => 'Tallas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="talla-create">
+<div class="talla-nuevo">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

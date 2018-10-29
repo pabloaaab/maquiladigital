@@ -5,9 +5,23 @@ namespace app\controllers;
 use Yii;
 use app\models\Prendatipo;
 use app\models\PrendatipoSearch;
+use app\models\Talla;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\ActiveQuery;
+use yii\base\Model;
+use yii\web\Response;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
+use Codeception\Lib\HelperModule;
 
 /**
  * PrendatipoController implements the CRUD actions for Prendatipo model.
@@ -65,13 +79,14 @@ class PrendatipoController extends Controller
     public function actionCreate()
     {
         $model = new Prendatipo();
-
+        $tallas = Talla::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idprendatipo]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'tallas' => ArrayHelper::map($tallas, "idtalla", "tindex"),
         ]);
     }
 
@@ -85,13 +100,14 @@ class PrendatipoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $tallas = Talla::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idprendatipo]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'tallas' => ArrayHelper::map($tallas, "idtalla", "tindex"),
         ]);
     }
 

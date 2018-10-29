@@ -44,8 +44,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'tableOptions' => ['class' => 'table table-success'],
         'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
-		
-        'layout' => '{summary}{items}<div class="panel panel-footer" ><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
+
+        'layout' => '{summary}{items}</div><div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
         'pager' => [
             'nextPageLabel' => '<i class="fa fa-forward"></i>',
             'prevPageLabel'  => '<i class="fa fa-backward"></i>',

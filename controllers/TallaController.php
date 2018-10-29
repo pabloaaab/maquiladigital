@@ -9,6 +9,23 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
+use app\models\FormFiltroOrdenProduccionNuevo;
+use app\models\Producto;
+use yii\db\ActiveQuery;
+use yii\base\Model;
+use yii\web\Response;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
+use Codeception\Lib\HelperModule;
+
 /**
  * TallaController implements the CRUD actions for Talla model.
  */
@@ -65,7 +82,6 @@ class TallaController extends Controller
     public function actionCreate()
     {
         $model = new Talla();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idtalla]);
         }
@@ -85,7 +101,6 @@ class TallaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idtalla]);
         }

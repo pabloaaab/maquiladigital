@@ -29,7 +29,7 @@ class Talla extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['talla', 'sexo'], 'required'],
+            [['talla', 'sexo'], 'required', 'message' => 'Campor requerido'],
             [['talla'], 'string', 'max' => 40],
             [['sexo'], 'string', 'max' => 20],
         ];
@@ -53,5 +53,10 @@ class Talla extends \yii\db\ActiveRecord
     public function getPrendatipos()
     {
         return $this->hasMany(Prendatipo::className(), ['idtalla' => 'idtalla']);
+    }
+
+    public function getTindex()
+    {
+        return "{$this->talla} - {$this->sexo}";
     }
 }

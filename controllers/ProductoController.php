@@ -5,6 +5,9 @@ namespace app\controllers;
 use Yii;
 use app\models\Producto;
 use app\models\ProductoSearch;
+use app\models\Cliente;
+use app\models\Prendatipo;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,13 +68,16 @@ class ProductoController extends Controller
     public function actionCreate()
     {
         $model = new Producto();
-
+        $clientes = Cliente::find()->all();
+        $prendas = Prendatipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
+            'prendas' => ArrayHelper::map($prendas,'idprendatipo','prenda')
         ]);
     }
 
@@ -85,13 +91,16 @@ class ProductoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $clientes = Cliente::find()->all();
+        $prendas = Prendatipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
+            'prendas' => ArrayHelper::map($prendas,'idprendatipo','prenda')
         ]);
     }
 

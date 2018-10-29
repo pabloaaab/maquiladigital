@@ -6,20 +6,21 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Prendatipo */
 
-$this->title = $model->idprendatipo;
-$this->params['breadcrumbs'][] = ['label' => 'Prendatipos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Detalle Prenda Tipo';
+$this->params['breadcrumbs'][] = ['label' => 'Prenda Tipos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $model->idprendatipo;
 ?>
 <div class="prendatipo-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->idprendatipo], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->idprendatipo], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idprendatipo], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idprendatipo], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idprendatipo], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,7 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'idprendatipo',
             'prenda',
-            'idtalla',
+            [                      // the owner name of the model
+                'label' => 'Talla',
+                'value' => "{$model->talla->talla} - {$model->talla->sexo}",
+            ],
         ],
     ]) ?>
 

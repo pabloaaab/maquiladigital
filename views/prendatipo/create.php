@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Prendatipo */
 
-$this->title = 'Create Prendatipo';
-$this->params['breadcrumbs'][] = ['label' => 'Prendatipos', 'url' => ['index']];
+$this->title = 'Nuevo Prenda';
+$this->params['breadcrumbs'][] = ['label' => 'Prendas tipo', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="prendatipo-create">
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'tallas' => $tallas,
     ]) ?>
 
 </div>

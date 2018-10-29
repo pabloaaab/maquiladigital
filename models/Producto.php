@@ -42,7 +42,7 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'observacion', 'idprendatipo'], 'required'],
+            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'idprendatipo'], 'required', 'message' => 'Campo requerido'],
             [['cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
             [['observacion'], 'string'],
             [['fechaproceso'], 'safe'],
@@ -60,18 +60,18 @@ class Producto extends \yii\db\ActiveRecord
     {
         return [
             'idproducto' => 'Idproducto',
-            'codigoproducto' => 'Codigoproducto',
+            'codigoproducto' => 'Cod Producto',
             'producto' => 'Producto',
             'cantidad' => 'Cantidad',
             'stock' => 'Stock',
-            'costoconfeccion' => 'Costoconfeccion',
-            'vlrventa' => 'Vlrventa',
-            'idcliente' => 'Idcliente',
+            'costoconfeccion' => 'Costo Confeccion',
+            'vlrventa' => 'Vlr Venta',
+            'idcliente' => 'Cliente',
             'observacion' => 'Observacion',
             'activo' => 'Activo',
             'fechaproceso' => 'Fechaproceso',
             'usuariosistema' => 'Usuariosistema',
-            'idprendatipo' => 'Idprendatipo',
+            'idprendatipo' => 'Prenda Tipo',
         ];
     }
 

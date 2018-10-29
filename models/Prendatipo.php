@@ -30,7 +30,7 @@ class Prendatipo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['prenda', 'idtalla'], 'required'],
+            [['prenda', 'idtalla'], 'required', 'message' => 'Campo requerido'],
             [['idtalla'], 'integer'],
             [['prenda'], 'string', 'max' => 40],
             [['idtalla'], 'exist', 'skipOnError' => true, 'targetClass' => Talla::className(), 'targetAttribute' => ['idtalla' => 'idtalla']],
@@ -43,9 +43,9 @@ class Prendatipo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idprendatipo' => 'Idprendatipo',
+            'idprendatipo' => 'Id Prenda Tipo',
             'prenda' => 'Prenda',
-            'idtalla' => 'Idtalla',
+            'idtalla' => 'Talla',
         ];
     }
 
@@ -64,4 +64,5 @@ class Prendatipo extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Producto::className(), ['idprendatipo' => 'idprendatipo']);
     }
+
 }

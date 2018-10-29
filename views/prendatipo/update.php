@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Prendatipo */
 
-$this->title = 'Update Prendatipo: ' . $model->idprendatipo;
-$this->params['breadcrumbs'][] = ['label' => 'Prendatipos', 'url' => ['index']];
+$this->title = 'Editar Prenda Tipo: ' . $model->idprendatipo;
+$this->params['breadcrumbs'][] = ['label' => 'Prendas tipos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->idprendatipo, 'url' => ['view', 'id' => $model->idprendatipo]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Editar';
 ?>
 <div class="prendatipo-update">
 
@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'tallas' => $tallas,
     ]) ?>
 
 </div>
