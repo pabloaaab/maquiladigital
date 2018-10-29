@@ -45,9 +45,9 @@ class TipoDocumento extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idtipo' => 'Id Tipo:',
-            'tipo' => 'Tipo:',
-            'descripcion' => 'Descripcion:',            
+            'idtipo' => 'Id',
+            'tipo' => 'Tipo',
+            'descripcion' => 'Descripcion',
         ];
     }
 }

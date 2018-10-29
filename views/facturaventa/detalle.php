@@ -51,8 +51,8 @@ use yii\helpers\ArrayHelper;
                 <td><?= $val->producto->producto ?></td>
                 <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->cantidad ?></td>
-                <td><?= $val->preciounitario ?></td>
-                <td><?= $val->total ?></td>
+                <td><?= '$ '.number_format($val->preciounitario) ?></td>
+                <td><?= '$ '.number_format($val->total) ?></td>
                 <td>				                                
 				<a href="#" data-toggle="modal" data-target="#iddetallefactura2<?= $val->iddetallefactura ?>"><span class="glyphicon glyphicon-pencil"></span></a>
 				<!-- Editar modal detalle -->

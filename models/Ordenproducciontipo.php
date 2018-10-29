@@ -49,7 +49,7 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idtipo' => 'Idtipo',
+            'idtipo' => 'Id',
             'tipo' => 'Tipo',
             'activo' => 'Activo',
         ];

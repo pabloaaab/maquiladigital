@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
+use app\models\Cliente;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FacturaventaSearch */
@@ -24,24 +26,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'idfactura',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
-            [                
+            [
+                'attribute' => 'nrofactura',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
                 'attribute' => 'idcliente',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'value' => function($model){
+                    $clientes = Cliente::findOne($model->idcliente);
+                    return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
+                },
+                'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [               
                 'attribute' => 'idordenproduccion',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],
             [               
                 'attribute' => 'fechainicio',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],
-			[               
-                'attribute' => 'totalpagar',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],			
+            [
+                'label' => 'Subtotal',
+                'attribute' =>'subtotal',
+                'contentOptions' => ['class' => 'col-lg-1'],
+                'format'=>['decimal',0]
+            ],
+            [
+                'label' => 'Total',
+                'attribute' =>'totalpagar',
+                'contentOptions' => ['class' => 'col-lg-1'],
+                'format'=>['decimal',0]
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

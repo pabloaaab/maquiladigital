@@ -52,15 +52,15 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'porcentajeiva') ?></th>
                     <td><?= Html::encode($model->porcentajeiva) ?></td>
                     <th><?= Html::activeLabel($model, 'impuestoiva') ?></th>
-                    <td><?= Html::encode($model->impuestoiva) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->impuestoiva)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechainicio') ?></th>
                     <td><?= Html::encode($model->fechainicio) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajeretefuente') ?></th>
+                    <th><?= Html::activeLabel($model, 'porcentajefuente') ?></th>
                     <td><?= Html::encode($model->porcentajefuente) ?></td>
                     <th><?= Html::activeLabel($model, 'retencionfuente') ?></th>
-                    <td><?= Html::encode($model->retencionfuente) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->retencionfuente)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechavcto') ?></th>
@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'porcentajereteiva') ?></th>
                     <td><?= Html::encode($model->porcentajereteiva) ?></td>
                     <th><?= Html::activeLabel($model, 'retencioniva') ?></th>
-                    <td><?= Html::encode($model->retencioniva) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->retencioniva)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'plazopago') ?></th>
@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'subtotal') ?></th>
-                    <td><?= Html::encode($model->retencioniva) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->subtotal)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'formapago') ?></th>
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'saldo') ?></th>
                     <td><?= Html::encode($model->saldo) ?></td>
                     <th><?= Html::activeLabel($model, 'totalpagar') ?></th>
-                    <td><?= Html::encode($model->totalpagar) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->totalpagar)) ?></td>
                 </tr>
             </table>
         </div>

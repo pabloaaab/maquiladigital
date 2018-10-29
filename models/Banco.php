@@ -57,15 +57,15 @@ class Banco extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idbanco' => 'Idbanco:',
-            'nitbanco' => 'Nit:',
-            'entidad' => 'Entidad:',
-            'direccionbanco' => 'Dirección:',
-            'telefonobanco' => 'Teléfono:',
-            'producto' => 'Producto:',
-            'numerocuenta' => 'Número Cuenta:',
-            'nitmatricula' => 'Nit Matricula:',
-            'activo' => 'Activo:',
+            'idbanco' => 'Id',
+            'nitbanco' => 'Nit',
+            'entidad' => 'Entidad',
+            'direccionbanco' => 'Dirección',
+            'telefonobanco' => 'Teléfono',
+            'producto' => 'Producto',
+            'numerocuenta' => 'Número Cuenta',
+            'nitmatricula' => 'Nit Matricula',
+            'activo' => 'Activo',
         ];
     }
 }

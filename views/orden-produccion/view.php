@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'totalorden') ?></th>
-                    <td><?= Html::encode($model->totalorden) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->totalorden)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?></th>

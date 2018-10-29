@@ -1,7 +1,9 @@
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\ArrayHelper;
+use app\models\Departamento;
+use app\models\Municipio;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MunicipioSearch */
@@ -23,15 +25,25 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'idmunicipio',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
-            [                
+            [
                 'attribute' => 'municipio',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'value' => function($model){
+                    $municipios = Municipio::findOne($model->idmunicipio);
+                    return $municipios->municipio;
+                },
+                'filter' => ArrayHelper::map(Municipio::find()->all(),'municipio','municipio'),
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
-            [               
+            [
                 'attribute' => 'iddepartamento',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'value' => function($model){
+                    $departamentos = Departamento::findOne($model->iddepartamento);
+                    return $departamentos->departamento;
+                },
+                'filter' => ArrayHelper::map(Departamento::find()->all(),'iddepartamento','departamento'),
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [               
                 'attribute' => 'activo',

@@ -38,7 +38,6 @@ AppAsset::register($this);
     ]);
 
 
-
     if (!Yii::$app->user->isGuest )
     {
         echo Nav::widget([

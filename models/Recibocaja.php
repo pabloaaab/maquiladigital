@@ -58,16 +58,16 @@ class Recibocaja extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idrecibo' => 'Idrecibo:',
+            'idrecibo' => 'Id',
             'fecharecibo' => 'Fecha Recibo',
-            'fechapago' => 'Fecha Pago:',
-            'idtiporecibo' => 'Idtiporecibo:',
-            'idmunicipio' => 'Idmunicipio:',
-            'valorpagado' => 'Valor Pagado:',
-            'valorletras' => 'Valor Letras:',
-            'idcliente' => 'Idcliente:',
-            'observacion' => 'Observación:',
-            'usuariosistema' => 'Usuariosistema:',
+            'fechapago' => 'Fecha Pago',
+            'idtiporecibo' => 'Tipo',
+            'idmunicipio' => 'Municiopio',
+            'valorpagado' => 'Valor Pagado',
+            'valorletras' => 'Valor Letras',
+            'idcliente' => 'Cliente',
+            'observacion' => 'Observación',
+            'usuariosistema' => 'Usuario Sistema',
         ];
     }
 

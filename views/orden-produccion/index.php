@@ -1,7 +1,8 @@
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\ArrayHelper;
+use app\models\Cliente;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenProduccionSearch */
@@ -25,25 +26,32 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idordenproduccion',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
-            [                
+            [
                 'attribute' => 'idcliente',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'value' => function($model){
+                    $clientes = Cliente::findOne($model->idcliente);
+                    return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
+                },
+                'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [               
                 'attribute' => 'fechallegada',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],
             [               
                 'attribute' => 'fechaprocesada',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],
 			[               
                 'attribute' => 'fechaentrega',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],
-			[               
-                'attribute' => 'totalorden',
                 'contentOptions' => ['class' => 'col-lg-1 '],
+            ],
+            [
+                'label' => 'Total Orden',
+                'attribute' =>'totalorden',
+                'contentOptions' => ['class' => 'col-lg-1'],
+                'format'=>['decimal',0]
             ],			
             [
                 'class' => 'yii\grid\ActionColumn',              

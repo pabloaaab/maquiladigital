@@ -51,7 +51,7 @@ use yii\db\ActiveQuery;
                     <th scope="col">Código</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
-
+                    <th scope="col">Subtotal</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -62,8 +62,8 @@ use yii\db\ActiveQuery;
                     <td><?= $val->producto->producto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= $val->vlrprecio ?></td>
-                    <td><?= $val->subtotal ?></td>
+                    <td><?= '$ '.number_format($val->vlrprecio) ?></td>
+                    <td><?= '$ '.number_format($val->subtotal) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>
                 </tbody>

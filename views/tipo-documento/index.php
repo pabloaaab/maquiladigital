@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'idtipo',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [                
                 'attribute' => 'tipo',
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'descripcion',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'contentOptions' => ['class' => 'col-lg-4 '],
             ],                                   
             [
                 'class' => 'yii\grid\ActionColumn',              

@@ -23,11 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'iddepartamento',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [                
                 'attribute' => 'departamento',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [               
                 'attribute' => 'activo',

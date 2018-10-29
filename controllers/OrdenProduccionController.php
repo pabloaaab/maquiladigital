@@ -287,10 +287,11 @@ class OrdenProduccionController extends Controller
     public function actionEliminardetalles($idordenproduccion)
     {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
+        $mensaje = "";
         if(Yii::$app->request->post())
         {
             $intIndice = 0;
-            $mensaje = "";
+
             if ($_POST["seleccion"]) {
                 foreach ($_POST["seleccion"] as $intCodigo) {
                     $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
@@ -304,7 +305,7 @@ class OrdenProduccionController extends Controller
                 }
                 $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
             }else{
-                 $mensaje;
+                 $mensaje = "Debe seleccionar al menos un registro";
             }
         }
         return $this->render('_formeliminardetalles', [

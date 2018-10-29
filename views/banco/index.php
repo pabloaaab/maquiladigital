@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'idbanco',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [                
                 'attribute' => 'nitbanco',

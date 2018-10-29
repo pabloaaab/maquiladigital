@@ -58,18 +58,18 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idordenproduccion' => 'Idordenproduccion',
-            'idcliente' => 'Idcliente',
-            'fechallegada' => 'Fechallegada',
-            'fechaprocesada' => 'Fechaprocesada',
-            'fechaentrega' => 'Fechaentrega',
-            'totalorden' => 'Totalorden',
-            'valorletras' => 'Valorletras',
+            'idordenproduccion' => 'Id',
+            'idcliente' => 'Cliente',
+            'fechallegada' => 'Fecha Llegada',
+            'fechaprocesada' => 'Fecha Procesada',
+            'fechaentrega' => 'Fecha Entrega',
+            'totalorden' => 'Total Orden',
+            'valorletras' => 'Valor Letras',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
-            'ordenproduccion' => 'Ordenproduccion',
+            'ordenproduccion' => 'Orden Produccion',
             'idtipo' => 'Idtipo',
-            'usuariosistema' => 'Usuariosistema',
+            'usuariosistema' => 'Usuario Sistema',
         ];
     }
 

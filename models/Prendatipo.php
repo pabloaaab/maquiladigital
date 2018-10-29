@@ -43,7 +43,7 @@ class Prendatipo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idprendatipo' => 'Id Prenda Tipo',
+            'idprendatipo' => 'Id',
             'prenda' => 'Prenda',
             'idtalla' => 'Talla',
         ];

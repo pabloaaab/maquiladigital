@@ -48,11 +48,11 @@ class Municipio extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idmunicipio' => 'Idmunicipio:',
-            'codigomunicipio' => 'Codigo Municipio:',
-            'municipio' => 'Municipio:',
-            'iddepartamento' => 'Iddepartamento:',
-            'activo' => 'Activo:',
+            'idmunicipio' => 'Id',
+            'codigomunicipio' => 'Codigo Municipio',
+            'municipio' => 'Municipio',
+            'iddepartamento' => 'Departamento',
+            'activo' => 'Activo',
         ];
     }
 

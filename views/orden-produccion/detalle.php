@@ -57,8 +57,8 @@ use yii\helpers\ArrayHelper;
                 <td><?= $val->producto->producto ?></td>
                 <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->cantidad ?></td>
-                <td><?= $val->vlrprecio ?></td>
-                <td><?= $val->subtotal ?></td>
+                <td><?= '$ '.number_format($val->vlrprecio) ?></td>
+                <td><?= '$ '.number_format($val->subtotal) ?></td>
                 <td>				                                
 				<a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
 				<!-- Editar modal detalle -->

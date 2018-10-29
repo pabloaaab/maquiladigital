@@ -8,6 +8,7 @@ use Yii;
 use app\models\Facturaventa;
 use app\models\FacturaventaSearch;
 use app\models\Facturaventadetalle;
+use app\models\Matriculaempresa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -97,7 +98,6 @@ class FacturaventaController extends Controller
             $nuevafecha = strtotime ( '+'.$table->plazopago.' day' , strtotime ( $fecha ) ) ;
             $nuevafecha = date ( 'Y-m-j' , $nuevafecha );
 
-            echo $nuevafecha;
             $model->nrofactura = 0;
             $model->fechavcto = $nuevafecha;
             $model->formapago = $table->formapago;
@@ -191,8 +191,15 @@ class FacturaventaController extends Controller
                     $table->idfactura = $idfactura;
                     $table->insert();
                     $factura = Facturaventa::findOne($idfactura);
-                    $factura->totalpagar = $factura->totalpagar + $table->total;
+                    $factura->subtotal = $factura->subtotal + $table->total;
+                    $config = Matriculaempresa::findOne(901189320);
+                    $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajefuente = $config->porcentajeretefuente;
+                    $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
                     $factura->update();
+
                 }
                 $this->redirect(["facturaventa/view",'id' => $idfactura]);
         }else {
@@ -226,8 +233,15 @@ class FacturaventaController extends Controller
                     $table->update();
 
                     $factura = Facturaventa::findOne($table->idfactura);
-                    $factura->totalpagar = $factura->totalpagar - Html::encode($_POST["total"]);
-                    $factura->totalpagar = $factura->totalpagar + $table->total;
+                    $factura->subtotal = $factura->subtotal - Html::encode($_POST["total"]);
+                    $factura->subtotal = $factura->subtotal + $table->total;
+
+                    $config = Matriculaempresa::findOne(901189320);
+                    $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajefuente = $config->porcentajeretefuente;
+                    $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
                     $factura->update();
 
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
@@ -256,8 +270,15 @@ class FacturaventaController extends Controller
                     $table->total = $_POST["cantidad"][$intIndice] * $_POST["preciounitario"][$intIndice];
                     $table->update();
                     $factura = Facturaventa::findOne($idfactura);
-                    $factura->totalpagar = $factura->totalpagar - $total;
-                    $factura->totalpagar = $factura->totalpagar + $table->total;
+                    $factura->subtotal = $factura->subtotal - $total;
+                    $factura->subtotal = $factura->subtotal + $table->total;
+
+                    $config = Matriculaempresa::findOne(901189320);
+                    $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajefuente = $config->porcentajeretefuente;
+                    $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
                     $factura->update();
                 }
                 $intIndice++;
@@ -283,8 +304,17 @@ class FacturaventaController extends Controller
                 if(Facturaventadetalle::deleteAll("iddetallefactura=:iddetallefactura", [":iddetallefactura" => $iddetallefactura]))
                 {
                     $factura = Facturaventa::findOne($idfactura);
-                    $factura->totalpagar = $factura->totalpagar - $total;
+                    $factura->subtotal = $factura->subtotal - $total;
+
+                    $config = Matriculaempresa::findOne(901189320);
+                    $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajefuente = $config->porcentajeretefuente;
+                    $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
                     $factura->update();
+
+
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
                 }
                 else

@@ -54,13 +54,13 @@ class Resolucion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idresolucion' => 'Código:',
+            'idresolucion' => 'Código',
             'nroresolucion' => 'Nro Resolución',
-            'desde' => 'Desde:',
-            'hasta' => 'Hasta:',
-            'fechavencimiento' => 'Fecha Vencimiento:',
-            'nitmatricula' => 'Nit/Matricula:',
-            'activo' => 'Activo:',
+            'desde' => 'Desde',
+            'hasta' => 'Hasta',
+            'fechavencimiento' => 'Fecha Vencimiento',
+            'nitmatricula' => 'Nit/Matricula',
+            'activo' => 'Activo',
         ];
     }
 

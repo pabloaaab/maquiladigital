@@ -59,7 +59,7 @@ class Producto extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idproducto' => 'Idproducto',
+            'idproducto' => 'Id',
             'codigoproducto' => 'Cod Producto',
             'producto' => 'Producto',
             'cantidad' => 'Cantidad',
@@ -69,8 +69,8 @@ class Producto extends \yii\db\ActiveRecord
             'idcliente' => 'Cliente',
             'observacion' => 'Observacion',
             'activo' => 'Activo',
-            'fechaproceso' => 'Fechaproceso',
-            'usuariosistema' => 'Usuariosistema',
+            'fechaproceso' => 'Fecha Proceso',
+            'usuariosistema' => 'Usuario Sistema',
             'idprendatipo' => 'Prenda Tipo',
         ];
     }

@@ -50,9 +50,9 @@ class TipoRecibo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idtiporecibo' => 'Idtiporecibo:',
-            'concepto' => 'Concepto:',
-            'activo' => 'Activo:',
+            'idtiporecibo' => 'Id',
+            'concepto' => 'Concepto',
+            'activo' => 'Activo',
         ];
     }
 }
