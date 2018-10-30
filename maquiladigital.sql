@@ -80,7 +80,7 @@ CREATE TABLE `cliente` (
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idtipo`) REFERENCES `tipodocumento` (`idtipo`),
   CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
   CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
@@ -97,7 +97,8 @@ insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nomb
 (20,1,712688830,2,'','ALFONSO','LOPEZ','ALFONSO LOPEZ','CRA 34','222','','jose5@hotmail.com','','222','','1',NULL,'05','05001','712688830','1',NULL,'10','10','SDSD','2018-10-15 18:34:56'),
 (21,1,712682830,5,'','JESUS','RIOS','JESUS RIOS','CRA 34','222','2227','jose33@hotmail.com','JOSE','222','444','1',NULL,'05','05001','712682830','1',NULL,'1','1','FS','2018-10-15 18:34:20'),
 (22,5,4125,8,'pollos pablo','asd','asf','pollos pablo','cra 34','222','2227','abi012@hotmail.com','adadasda','222','4444','1',12,'05','05001','123','1','Si','1','1','fs','2018-10-15 18:33:47'),
-(23,5,888555224,7,'fsfdhkjfh','','','fsfdhkjfh','14','141','411','fh@hotmail.com','adadasda','222','444','2',12,'05','05001','123','1','Si','1','1',NULL,'2018-10-10 11:23:55');
+(23,5,888555224,7,'fsfdhkjfh','','','fsfdhkjfh','14','141','411','fh@hotmail.com','adadasda','222','444','2',12,'05','05001','123','1','Si','1','1',NULL,'2018-10-10 11:23:55'),
+(24,5,1020304050,8,'FABRICATO SA','','','FABRICATO SA','CRA 86 # 96-69','258','301','fabricato@hotmail.com','PABLO','369','302','1',0,'05','05040','1020304050','2','NO','16','3','HOLA','2018-10-30 13:31:09');
 
 /*Table structure for table `departamento` */
 
@@ -181,12 +182,14 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
 insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`fechacreacion`,`formapago`,`plazopago`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`totalpagar`,`valorletras`,`idcliente`,`idordenproduccion`,`usuariosistema`,`idresolucion`,`estado`) values 
-(32,0,'2018-10-25','2018-11-24','2018-10-25 19:01:25','1',30,19,3.5,0,13000,455,2470,0,0,15015,'-',2,25,'71268830',3,0);
+(32,0,'2018-10-25','2018-11-24','2018-10-25 19:01:25','1',30,19,3.5,0,13000,455,2470,0,0,15015,'-',2,25,'71268830',3,0),
+(33,0,'2018-10-30','2018-10-30','2018-10-30 13:37:41','1',0,19,3.5,0,152000,5320,28880,0,0,175560,'-',24,28,'71268830',3,0),
+(34,0,'2018-10-30','2018-10-30','2018-10-30 13:54:37','1',0,19,3.5,0,152000,5320,28880,0,0,175560,'-',24,28,'71268830',3,0);
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -205,13 +208,17 @@ CREATE TABLE `facturaventadetalle` (
   KEY `nrofactura` (`idfactura`),
   CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
 
 insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproducto`,`codigoproducto`,`cantidad`,`preciounitario`,`total`) values 
 (29,32,1,'5010',10,100,1000),
-(30,32,2,'5241dd',60,200,12000);
+(30,32,2,'5241dd',60,200,12000),
+(31,33,8,'001',100,520,52000),
+(32,33,9,'002',100,1000,100000),
+(33,34,8,'001',100,520,52000),
+(34,34,9,'002',100,1000,100000);
 
 /*Table structure for table `matriculaempresa` */
 
@@ -1401,14 +1408,15 @@ CREATE TABLE `ordenproduccion` (
   KEY `idtipo` (`idtipo`),
   CONSTRAINT `ordenproduccion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `ordenproduccion_ibfk_2` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproduccion` */
 
 insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`) values 
 (25,2,'2018-10-18 09:36:39','2018-10-18 09:36:42','2018-10-18 09:36:46',36100,'ghghg ghghg ghghg','HJ HJHJ',0,'521LJ',1,'admin'),
 (26,14,'2018-10-18 00:00:00','2018-10-18 00:00:00','2018-10-18 00:00:00',0,NULL,'GGJLGJ',0,'5241FF',1,'71268830'),
-(27,3,'2018-10-22 00:00:00','2018-10-22 00:00:00','2018-10-22 00:00:00',330,NULL,'dfsdf',0,'d45',2,'71268830');
+(27,3,'2018-10-22 00:00:00','2018-10-22 00:00:00','2018-10-22 00:00:00',330,NULL,'dfsdf',0,'d45',2,'71268830'),
+(28,24,'2018-10-24 00:00:00','2018-10-11 00:00:00','2018-10-05 00:00:00',152000,NULL,'hola 3',0,'001',1,'71268830');
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -1422,22 +1430,26 @@ CREATE TABLE `ordenproducciondetalle` (
   `vlrprecio` double NOT NULL,
   `subtotal` double DEFAULT NULL,
   `idordenproduccion` int(11) NOT NULL,
+  `generado` tinyint(1) DEFAULT NULL,
+  `facturado` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`iddetalleorden`),
   KEY `idproducto` (`idproducto`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
-insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`) values 
-(1,1,'5010',10,100,1000,25),
-(2,2,'5241dd',60,200,12000,25),
-(8,1,'5010',10,500,5000,25),
-(10,3,'E453569',10,600,6000,25),
-(11,1,'5010',11,500,5500,25),
-(12,2,'5241dd',12,550,6600,25),
-(14,7,'dfd4',10,33,330,27);
+insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`,`generado`,`facturado`) values 
+(1,1,'5010',10,100,1000,25,NULL,NULL),
+(2,2,'5241dd',60,200,12000,25,NULL,NULL),
+(8,1,'5010',10,500,5000,25,NULL,NULL),
+(10,3,'E453569',10,600,6000,25,NULL,NULL),
+(11,1,'5010',11,500,5500,25,NULL,NULL),
+(12,2,'5241dd',12,550,6600,25,NULL,NULL),
+(14,7,'dfd4',10,33,330,27,NULL,NULL),
+(15,8,'001',100,520,52000,28,NULL,NULL),
+(16,9,'002',100,1000,100000,28,NULL,NULL);
 
 /*Table structure for table `ordenproducciontipo` */
 
@@ -1500,7 +1512,7 @@ CREATE TABLE `producto` (
   KEY `idprendatipo` (`idprendatipo`),
   CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`idprendatipo`) REFERENCES `prendatipo` (`idprendatipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `producto` */
 
@@ -1511,7 +1523,9 @@ insert  into `producto`(`idproducto`,`codigoproducto`,`producto`,`cantidad`,`sto
 (4,'dfd4','FLECO DERECHO INTERIOR',33,33,33,33,2,'sdds',0,'0000-00-00 00:00:00','ADMON',1),
 (5,'dfe45','FLECO INTERNO',34,34,34,34,2,'dsd',0,'0000-00-00 00:00:00','ADMON',1),
 (6,'w34','FLECO PRINCIPAL',35,35,335,355,2,'wwwww',0,'2018-10-22 21:59:38','ADMON',1),
-(7,'dfd4','PRENDA LADO DERECHO BLUSA',33,33,33,33,3,'dgdg',0,'2018-10-22 22:22:51','ADMON',1);
+(7,'dfd4','PRENDA LADO DERECHO BLUSA',33,33,33,33,3,'dgdg',0,'2018-10-22 22:22:51','ADMON',1),
+(8,'001','bluza',10,NULL,520,520,24,'hola 2',0,'2018-10-30 13:32:28',NULL,1),
+(9,'002','Bluza 2',15,NULL,1000,1000,24,'hola',0,'2018-10-30 13:33:36',NULL,2);
 
 /*Table structure for table `recibocaja` */
 
