@@ -13,6 +13,8 @@ use Yii;
  * @property double $vlrprecio
  * @property double $subtotal
  * @property int $idordenproduccion
+ * @property int $generado
+ * @property int $facturado
  *
  * @property Producto $producto
  * @property Ordenproduccion $ordenproduccion
@@ -34,7 +36,7 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idproducto', 'cantidad', 'vlrprecio', 'subtotal', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
-            [['idproducto', 'cantidad', 'idordenproduccion'], 'integer'],
+            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado'], 'integer'],
             [['vlrprecio', 'subtotal'], 'number'],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
@@ -53,6 +55,8 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
             'vlrprecio' => 'Vlrprecio',
             'subtotal' => 'Subtotal',
             'idordenproduccion' => 'Idordenproduccion',
+            'generado' => 'Generado',
+            'facturado' => 'Facturado'
         ];
     }
 

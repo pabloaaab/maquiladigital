@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'fechallegada',
-                'contentOptions' => ['class' => 'col-lg-1 '],
+                'contentOptions' => ['class' => 'col-lg-2 '],
             ],
             [               
                 'attribute' => 'fechaprocesada',
