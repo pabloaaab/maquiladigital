@@ -1,128 +1,65 @@
 <?php
+use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-use app\widgets\Alert;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
-use yii\widgets\menu;
 
-AppAsset::register($this);
-?>
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+if (Yii::$app->controller->action->id === 'login') { 
+/**
+ * Do not use this code in your template. Remove it. 
+ * Instead, use the code  $this->layout = '//main-login'; in your controller.
+ */
+    echo $this->render(
+        'main-login',
+        ['content' => $content]
+    );
+} else {
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-
-
-    if (!Yii::$app->user->isGuest )
-    {
-        echo Nav::widget([
-            'options' => ['class' => 'navbar-nav navbar-center'],
-            'items' => [
-                ['label' => 'Inicio', 'url' => ['/site/index']],
-                [
-                  'label' => 'Administración',
-                  'items' => [
-                      ['label' => 'Cliente', 'url' => ['/clientes/index']],
-                      ['label' => 'Banco', 'url' => ['/banco/index']],
-                      ['label' => 'Tipo Documento', 'url' => ['/tipo-documento/index']],
-                      ['label' => 'Tipo Recibo', 'url' => ['/tipo-recibo/index']],
-                      ['label' => 'Tipo Orden Producción', 'url' => ['/ordenproducciontipo/index']],
-                      ['label' => 'Resolucion', 'url' => ['/resolucion/index']],
-					  ['label' => 'Departamento', 'url' => ['/departamento/index']],
-					  ['label' => 'Municipio', 'url' => ['/municipio/index']],
-					  ['label' => 'Producto', 'url' => ['/producto/index']],
-                      ['label' => 'Prenda', 'url' => ['/prendatipo/index']],
-                      ['label' => 'Talla', 'url' => ['/talla/index']],
-                  ]
-                ],
-                [
-                'label' => 'Procesos',
-                'items' => [
-                    ['label' => 'Otros', 'url' => ['/site/index']],
-                    ]
-                ],
-                [
-                'label' => 'Utilidades',
-                'items' => [
-                    ['label' => 'Otros', 'url' => ['/site/index']],
-                    ]
-                ],
-                [
-                    'label' => 'Movimientos',
-                    'items' => [                        
-						['label' => 'Orden Producción', 'url' => ['/orden-produccion/index']],
-						['label' => 'Factura Venta', 'url' => ['/facturaventa/index']],
-						['label' => 'Recibo Caja', 'url' => ['/recibocaja/index']],
-						['label' => 'Otros', 'url' => ['/site/index']],
-						
-                    ]
-                ]
-            ],
-        ]);
+    if (class_exists('backend\assets\AppAsset')) {
+        backend\assets\AppAsset::register($this);
+    } else {
+        app\assets\AppAsset::register($this);
     }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
 
+    dmstr\web\AdminLteAsset::register($this);
 
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Iniciar Sesión', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Cerrar(' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
+    $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
     ?>
+    <?php $this->beginPage() ?>
+    <!DOCTYPE html>
+    <html lang="<?= Yii::$app->language ?>">
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?= Html::csrfMetaTags() ?>
+        <title><?= Html::encode($this->title) ?></title>
+        <?php $this->head() ?>
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+    <?php $this->beginBody() ?>
+    <div class="wrapper">
 
-    <div class="container" style="width:1208px">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+        <?= $this->render(
+            'header.php',
+            ['directoryAsset' => $directoryAsset]
+        ) ?>
+
+        <?= $this->render(
+            'left.php',
+            ['directoryAsset' => $directoryAsset]
+        )
+        ?>
+
+        <?= $this->render(
+            'content.php',
+            ['content' => $content, 'directoryAsset' => $directoryAsset]
+        ) ?>
+
     </div>
-</div>
 
-<footer class="footer">
-    <div class="container">
-
-    </div>
-</footer>
-
-<?php $this->endBody() ?>
-</body>
-</html>
-<?php $this->endPage() ?>
+    <?php $this->endBody() ?>
+    </body>
+    </html>
+    <?php $this->endPage() ?>
+<?php } ?>

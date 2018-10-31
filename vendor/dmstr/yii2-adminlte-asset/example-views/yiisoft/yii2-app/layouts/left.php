@@ -42,20 +42,51 @@
                             ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
                             ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
                             [
-                                'label' => 'Level One',
-                                'icon' => 'circle-o',
+                                'label' => 'Administración',
+                                'icon' => 'database',
                                 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                                    [
-                                        'label' => 'Level Two',
-                                        'icon' => 'circle-o',
-                                        'url' => '#',
-                                        'items' => [
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                                        ],
-                                    ],
+                                    ['label' => 'Clientes', 'icon' => 'plus-square-o', 'url' => '/clientes/index',],
+                                    ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => '#',],
+                                    ['label' => 'Tipo Documento', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                    ['label' => 'Tipo Orden Produccion', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                    ['label' => 'Prenda', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                    ['label' => 'Talla', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                    ['label' => 'Bancos', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                ],
+                            ],
+                            [
+                                'label' => 'Utilidades',
+                                'icon' => 'cube',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => 'Otros', 'icon' => 'plus-square-o', 'url' => '#',],
+                                ],
+                            ],
+                            [
+                                'label' => 'Procesos',
+                                'icon' => 'exchange',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => 'Otros', 'icon' => 'plus-square-o', 'url' => '#',],
+                                ],
+                            ],
+                            [
+                                'label' => 'Movimientos',
+                                'icon' => 'book',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => '#',],
+                                    ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => '#',],
+                                    ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => '#',],
+                                ],
+                            ],
+                            [
+                                'label' => 'General',
+                                'icon' => 'wrench',
+                                'url' => '#',
+                                'items' => [
+                                    ['label' => 'Configuración', 'icon' => 'cog', 'url' => '#',],
                                 ],
                             ],
                         ],
