@@ -30,7 +30,7 @@
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => [
-                    ['label' => 'Menu Yii2', 'options' => ['class' => 'header']],
+                    ['label' => 'MENÚ PRINCIPAL', 'options' => ['class' => 'header']],
                     ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']],
                     ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']],
                     ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
@@ -46,13 +46,17 @@
                                 'icon' => 'database',
                                 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Clientes', 'icon' => 'plus-square-o', 'url' => '/clientes/index',],
-                                    ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => '#',],
-                                    ['label' => 'Tipo Documento', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
-                                    ['label' => 'Tipo Orden Produccion', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
-                                    ['label' => 'Prenda', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
-                                    ['label' => 'Talla', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
-                                    ['label' => 'Bancos', 'icon' => 'plus-square-o', 'url' => 'banco/index',],
+                                    ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/index']],
+                                    ['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],
+                                    ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => ['/producto/index']],
+                                    ['label' => 'Tipo Documento', 'icon' => 'plus-square-o', 'url' => ['/tipo-documento/index']],
+                                    ['label' => 'Tipo Recibo', 'icon' => 'plus-square-o', 'url' => ['/tipo-recibo/index']],
+                                    ['label' => 'Tipo Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/ordenproducciontipo/index']],
+                                    ['label' => 'Resolución', 'icon' => 'plus-square-o', 'url' => ['/resolucion/index']],
+                                    ['label' => 'Departamento', 'icon' => 'plus-square-o', 'url' => ['/departamento/index']],
+                                    ['label' => 'Municipio', 'icon' => 'plus-square-o', 'url' => ['/municipio/index']],
+                                    ['label' => 'Prenda', 'icon' => 'plus-square-o', 'url' => ['prendatipo/index']],
+                                    ['label' => 'Talla', 'icon' => 'plus-square-o', 'url' => ['talla/index']],
                                 ],
                             ],
                             [
@@ -76,9 +80,9 @@
                                 'icon' => 'book',
                                 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => '#',],
-                                    ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => '#',],
-                                    ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => '#',],
+                                    ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/index']],
+                                    ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => ['/facturaventa/index']],
+                                    ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
                                 ],
                             ],
                             [

@@ -29,7 +29,7 @@ use yii\helpers\Url;
         <div class="row">
             <?= $form->field($model, 'sexo')->dropdownList(['HOMBRE' => 'HOMBRE', 'MUJER' => 'MUJER'], ['prompt' => 'Seleccione...']) ?>
         </div>
-        <div class="panel-footer text-left">
+        <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
             <a href="<?= Url::toRoute("talla/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
         </div>

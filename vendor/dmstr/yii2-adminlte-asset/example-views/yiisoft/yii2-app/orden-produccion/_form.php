@@ -30,7 +30,31 @@ use kartik\select2\Select2;
     <div class="panel-heading">
         <h4>Información Orden Producción</h4>
     </div>
-    <div class="panel-body">																   		
+    <div class="panel-body">
+        <div class="row">
+            <?= $form->field($model,'fechallegada')->widget(DatePicker::className(),['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model,'fechaprocesada')->widget(DatePicker::className(),['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model,'fechaentrega')->widget(DatePicker::className(),['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
+        </div>
 		<div class="row">
             <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
                 'data' => $clientes,
@@ -49,30 +73,6 @@ use kartik\select2\Select2;
                 ],
             ]); ?>
         </div>
-		<div class="row">
-            <?= $form->field($model,'fechallegada')->widget(DatePicker::className(),['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]]) ?>
-        </div>		
-		<div class="row">
-            <?= $form->field($model,'fechaprocesada')->widget(DatePicker::className(),['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]]) ?>
-		</div>
-		<div class="row">
-            <?= $form->field($model,'fechaentrega')->widget(DatePicker::className(),['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]]) ?>
-		</div>
         <div class="row">
             <?= $form->field($model, 'ordenproduccion')->textInput(['maxlength' => true]) ?>
         </div>

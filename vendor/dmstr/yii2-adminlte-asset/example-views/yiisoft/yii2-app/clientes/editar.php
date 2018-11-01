@@ -175,7 +175,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 			</div>
 		</div>        
     </div>
-    <div class="panel-footer text-left">
+    <div class="panel-footer text-right">
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         <a href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
     </div>

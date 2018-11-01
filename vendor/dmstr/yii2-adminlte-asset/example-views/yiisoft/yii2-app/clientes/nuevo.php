@@ -117,8 +117,8 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
         <h4>Información Cliente</h4>
     </div>
     <div class="panel-body">
-		<div class="row" id="personal">            
-			<?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo' ]) ?>			
+		<div class="row">
+			<?= $form->field($model, 'idtipo')->dropDownList($tipodocumento,['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo' ]) ?>
             <?= $form->field($model, 'cedulanit')->input('text',['id' => 'cedulanit', 'onchange' =>  'calcularDigitoVerificacion()']) ?>
 			<?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'placeholder' => 'dv','style' => 'width:50px', 'readonly' => true]) ?>       
 		</div>														   
@@ -170,7 +170,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 			</div>
 		</div> 	
     
-    <div class="panel-footer text-left">
+    <div class="panel-footer text-right">
 
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         <a href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

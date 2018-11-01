@@ -206,21 +206,26 @@ a:focus {
 .main-header #navbar-search-input.form-control {
   background: rgba(255, 255, 255, 0.2);
   border-color: transparent;
+  border-radius: 5px;
 }
 .main-header #navbar-search-input.form-control:focus,
 .main-header #navbar-search-input.form-control:active {
   border-color: rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
 }
 .main-header #navbar-search-input.form-control::-moz-placeholder {
   color: #ccc;
   opacity: 1;
+  border-radius: 5px;
 }
 .main-header #navbar-search-input.form-control:-ms-input-placeholder {
   color: #ccc;
+  border-radius: 5px;
 }
 .main-header #navbar-search-input.form-control::-webkit-input-placeholder {
   color: #ccc;
+  border-radius: 5px;
 }
 .main-header .navbar-custom-menu,
 .main-header .navbar-right {
@@ -1235,7 +1240,7 @@ a:focus {
  * ---------------
  */
 .form-control {
-  border-radius: 0;
+  border-radius: 5px;
   box-shadow: none;
   border-color: #d2d6de;
 }
@@ -1248,11 +1253,13 @@ a:focus {
 .form-control::-webkit-input-placeholder {
   color: #bbb;
   opacity: 1;
+  border-radius: 5px;
 }
 .form-control:not(select) {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  border-radius: 5px;
 }
 .form-group.has-success label {
   color: #00a65a;
@@ -1261,6 +1268,7 @@ a:focus {
 .form-group.has-success .input-group-addon {
   border-color: #00a65a;
   box-shadow: none;
+  border-radius: 5px;
 }
 .form-group.has-success .help-block {
   color: #00a65a;
@@ -1289,7 +1297,7 @@ a:focus {
 }
 /* Input group */
 .input-group .input-group-addon {
-  border-radius: 0;
+  border-radius: 2px;
   border-color: #d2d6de;
   background-color: #fff;
 }
@@ -1309,6 +1317,7 @@ a:focus {
 .input-group-lg + .form-control-feedback.fa,
 .form-group-lg .form-control + .form-control-feedback.fa {
   line-height: 46px;
+  border-radius: 5px;
 }
 .input-sm + .form-control-feedback.fa,
 .input-group-sm + .form-control-feedback.fa,
@@ -4274,14 +4283,17 @@ table.text-center th {
 .select2-dropdown .select2-search__field,
 .select2-search--inline .select2-search__field {
   border: 1px solid #d2d6de;
+  border-radius: 5px;
 }
 .select2-dropdown .select2-search__field:focus,
 .select2-search--inline .select2-search__field:focus {
   outline: none;
+  border-radius: 5px;
 }
 .select2-container--default.select2-container--focus .select2-selection--multiple,
 .select2-container--default .select2-search--dropdown .select2-search__field {
   border-color: #3c8dbc !important;
+  border-radius: 5px;
 }
 .select2-container--default .select2-results__option[aria-disabled=true] {
   color: #999;

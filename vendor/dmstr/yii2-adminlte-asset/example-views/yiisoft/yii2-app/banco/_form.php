@@ -23,7 +23,7 @@ use yii\helpers\Url;
         <h4>Información Banco</h4>
     </div>
     <div class="panel-body">
-		<div class="row">            
+		<div class="row">
 			<?= $form->field($model, 'idbanco')->textInput(['maxlength' => true]) ?>
 		</div>														   		
 		<div class="row">
@@ -56,12 +56,13 @@ use yii\helpers\Url;
 		</div>
 		<div class="row">
 			<?= $form->field($model, 'nitmatricula')->textInput() ?>
-		</div>	
-		<div class="panel-footer text-left">
-			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+		</div>
+		<div class="panel-footer text-right">
+			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
 			<a href="<?= Url::toRoute("banco/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>
+
 

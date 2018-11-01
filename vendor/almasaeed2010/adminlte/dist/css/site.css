@@ -302,7 +302,7 @@ i.fa {
     position: relative;
 }
 .side-nav-bar-container .nav-header .nav-search input{
-    border-radius: 0px;
+    border-radius: 2px;
     background-color: #212529;
     border: none;
 }

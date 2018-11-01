@@ -28,7 +28,7 @@ use yii\helpers\Url;
 			<?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
         </div>
 
-		<div class="panel-footer text-left">
+		<div class="panel-footer text-right">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
 			<a href="<?= Url::toRoute("ordenproducciontipo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
 		</div>

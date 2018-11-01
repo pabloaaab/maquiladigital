@@ -12,8 +12,9 @@ class AdminLteAsset extends BaseAdminLteAsset
 {
     public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
     public $css = [
+        'css/site.css',
         'css/AdminLTE.min.css',
-        'css/site.css'
+
     ];
     public $js = [
         'js/adminlte.min.js',
@@ -26,6 +27,7 @@ class AdminLteAsset extends BaseAdminLteAsset
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapPluginAsset',
+
     ];
 
     /**
@@ -33,6 +35,7 @@ class AdminLteAsset extends BaseAdminLteAsset
      * @see https://almsaeedstudio.com/themes/AdminLTE/documentation/index.html#layout
      */
     public $skin = '_all-skins';
+
 
     /**
      * @inheritdoc
@@ -46,6 +49,7 @@ class AdminLteAsset extends BaseAdminLteAsset
             }
 
             $this->css[] = sprintf('css/skins/%s.min.css', $this->skin);
+
         }
 
         parent::init();
