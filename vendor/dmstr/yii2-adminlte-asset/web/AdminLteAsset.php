@@ -14,6 +14,7 @@ class AdminLteAsset extends BaseAdminLteAsset
     public $css = [
         'css/site.css',
         'css/AdminLTE.min.css',
+        'css/skins/_all-skins.css/_all-skins.min.css',
 
     ];
     public $js = [

@@ -21,6 +21,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
+        'css/skins/_all-skins.min.css',
         'plugins/select-2/css/select2.min.css',
         'plugins/font-awesome/css/font-awesome.min.css',
         'login/style.ccs'
