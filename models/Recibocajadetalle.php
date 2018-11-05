@@ -36,7 +36,7 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idfactura', 'vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica', 'idrecibo', 'observacion'], 'required'],
+            [['idfactura', 'idrecibo',], 'required'],
             [['idfactura', 'idrecibo'], 'integer'],
             [['vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica'], 'number'],
             [['observacion'], 'string'],

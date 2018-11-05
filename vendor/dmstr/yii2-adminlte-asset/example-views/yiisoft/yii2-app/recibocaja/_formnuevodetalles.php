@@ -6,11 +6,6 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Ordenproduccion;
-use app\models\Producto;
-use app\models\Ordenproducciondetalle;
-use app\models\OrdenproduccionSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -44,38 +39,44 @@ if ($mensaje != ""){
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Factura Venta
+            Nuevo detalle Recibo Caja
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Precio Unitario</th>
+                    <th scope="col">Nro Factura</th>
+                    <th scope="col">Fecha Inicio</th>
+                    <th scope="col">Fecha Vcto</th>
                     <th scope="col">Subtotal</th>
+                    <th scope="col">Rete Fuente</th>
+                    <th scope="col">Rete iva</th>
+                    <th scope="col">Iva</th>
+                    <th scope="col">Total</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($facturaOrden as $val): ?>
+                <?php foreach ($reciboFactura as $val): ?>
                 <tr>
-                    <td><?= $val->iddetalleorden ?></td>
-                    <td><?= $val->producto->producto ?></td>
-                    <td><?= $val->codigoproducto ?></td>
-                    <td><?= $val->cantidad ?></td>
-                    <td><?= $val->vlrprecio ?></td>
+                    <td><?= $val->idfactura ?></td>
+                    <td><?= $val->nrofactura ?></td>
+                    <td><?= $val->fechainicio ?></td>
+                    <td><?= $val->fechavcto ?></td>
                     <td><?= $val->subtotal ?></td>
-                    <td><input type="checkbox" name="iddetalleorden[]" value="<?= $val->iddetalleorden ?>"></td>
+                    <td><?= $val->retencionfuente ?></td>
+                    <td><?= $val->retencioniva ?></td>
+                    <td><?= $val->impuestoiva ?></td>
+                    <td><?= $val->totalpagar ?></td>
+                    <td><input type="checkbox" name="idfactura[]" value="<?= $val->idfactura ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['facturaventa/view', 'id' => $idfactura], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['recibocaja/view', 'id' => $idrecibo], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
 

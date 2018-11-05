@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use app\models\Recibocaja;
 
 /**
- * RecibocajaSearch represents the model behind the search form of `app\models\Recibocaja`.
+ * ReciboCajaSearch represents the model behind the search form of `app\models\Recibocaja`.
  */
-class RecibocajaSearch extends Recibocaja
+class ReciboCajaSearch extends Recibocaja
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class RecibocajaSearch extends Recibocaja
     public function rules()
     {
         return [
-            [['idrecibo', 'idmunicipio', 'idcliente'], 'integer'],
-            [['fecharecibo', 'fechapago', 'idtiporecibo', 'valorletras', 'observacion', 'usuariosistema'], 'safe'],
+            [['idrecibo', 'idcliente'], 'integer'],
+            [['fecharecibo', 'fechapago', 'idtiporecibo', 'idmunicipio', 'valorletras', 'observacion', 'usuariosistema'], 'safe'],
             [['valorpagado'], 'number'],
         ];
     }
@@ -63,12 +63,12 @@ class RecibocajaSearch extends Recibocaja
             'idrecibo' => $this->idrecibo,
             'fecharecibo' => $this->fecharecibo,
             'fechapago' => $this->fechapago,
-            'idmunicipio' => $this->idmunicipio,
             'valorpagado' => $this->valorpagado,
             'idcliente' => $this->idcliente,
         ]);
 
         $query->andFilterWhere(['like', 'idtiporecibo', $this->idtiporecibo])
+            ->andFilterWhere(['like', 'idmunicipio', $this->idmunicipio])
             ->andFilterWhere(['like', 'valorletras', $this->valorletras])
             ->andFilterWhere(['like', 'observacion', $this->observacion])
             ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);

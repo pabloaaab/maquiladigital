@@ -11,16 +11,17 @@ use Yii;
  * @property string $fecharecibo
  * @property string $fechapago
  * @property string $idtiporecibo
- * @property int $idmunicipio
+ * @property string $idmunicipio
  * @property double $valorpagado
  * @property string $valorletras
  * @property int $idcliente
  * @property string $observacion
  * @property string $usuariosistema
+ * @property string $estado
  *
  * @property Tiporecibo $tiporecibo
- * @property Municipio $municipio
  * @property Cliente $cliente
+ * @property Municipio $municipio
  * @property Recibocajadetalle[] $recibocajadetalles
  */
 class Recibocaja extends \yii\db\ActiveRecord
@@ -39,16 +40,16 @@ class Recibocaja extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecharecibo', 'fechapago', 'idtiporecibo', 'idmunicipio', 'valorpagado', 'valorletras', 'idcliente', 'observacion', 'usuariosistema'], 'required', 'message' => 'Campo requerido'],
             [['fecharecibo', 'fechapago'], 'safe'],
-            [['idmunicipio', 'idcliente'], 'integer'],
+            [['idtiporecibo', 'idmunicipio', 'idcliente'], 'required'],
             [['valorpagado'], 'number'],
             [['valorletras', 'observacion'], 'string'],
+            [['idcliente','estado'], 'integer'],
             [['idtiporecibo'], 'string', 'max' => 10],
-            [['usuariosistema'], 'string', 'max' => 15],
+            [['idmunicipio', 'usuariosistema'], 'string', 'max' => 15],
             [['idtiporecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Tiporecibo::className(), 'targetAttribute' => ['idtiporecibo' => 'idtiporecibo']],
-            [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
+            [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
         ];
     }
 
@@ -61,12 +62,13 @@ class Recibocaja extends \yii\db\ActiveRecord
             'idrecibo' => 'Id',
             'fecharecibo' => 'Fecha Recibo',
             'fechapago' => 'Fecha Pago',
-            'idtiporecibo' => 'Tipo',
-            'idmunicipio' => 'Municiopio',
+            'idtiporecibo' => 'Tipo Recibo',
+            'idmunicipio' => 'Municipio',
             'valorpagado' => 'Valor Pagado',
             'valorletras' => 'Valor Letras',
             'idcliente' => 'Cliente',
-            'observacion' => 'Observación',
+            'estado' => 'Estado',
+            'observacion' => 'Observacion',
             'usuariosistema' => 'Usuario Sistema',
         ];
     }
@@ -82,17 +84,17 @@ class Recibocaja extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMunicipio()
+    public function getCliente()
     {
-        return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
+        return $this->hasOne(Cliente::className(), ['idcliente' => 'idcliente']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCliente()
+    public function getMunicipio()
     {
-        return $this->hasOne(Cliente::className(), ['idcliente' => 'idcliente']);
+        return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
     }
 
     /**
@@ -102,6 +104,4 @@ class Recibocaja extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Recibocajadetalle::className(), ['idrecibo' => 'idrecibo']);
     }
-	
-		
 }

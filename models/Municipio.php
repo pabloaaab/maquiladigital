@@ -79,4 +79,9 @@ class Municipio extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Recibocaja::className(), ['idmunicipio' => 'idmunicipio']);
     }
+
+    public function getMunicipioCompleto()
+    {
+        return "{$this->municipio} - {$this->departamento->departamento}";
+    }
 }

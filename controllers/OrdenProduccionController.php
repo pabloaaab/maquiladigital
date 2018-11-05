@@ -146,13 +146,30 @@ class OrdenProduccionController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Ordenproduccion model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Ordenproduccion the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    public function actionEstado($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->estado == 0){
+            $detalles = Ordenproducciondetalle::find()
+                ->where(['=', 'idordenproduccion', $id])
+                ->all();
+            $reg = count($detalles);
+            if ($reg <> 0) {
+                $model->estado = 1;
+                $model->update();
+            }else{
+
+                $this->redirect(["orden-produccion/view",'id' => $id]);
+            }
+
+        } else {
+            $model->estado = 0;
+            $model->update();
+            $this->redirect(["orden-produccion/view",'id' => $id]);
+        }
+
+
+    }
 
     public function actionNuevodetalles($idordenproduccion,$idcliente)
     {
@@ -162,23 +179,30 @@ class OrdenProduccionController extends Controller
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
                 if($_POST["cantidad"][$intIndice] > 0 ){
-                    //$intCantidad = $arrControles['TxtCantidad'][$intIndice];
-                    $table = new Ordenproducciondetalle();
-                    $table->idproducto = $_POST["idproducto"][$intIndice];
-                    $table->cantidad = $_POST["cantidad"][$intIndice];
-                    $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
-                    $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["costoconfeccion"][$intIndice];
-                    $table->idordenproduccion = $idordenproduccion;
-                    $table->insert();
-                    $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                    $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                    $ordenProduccion->update();
+                    $detalles = Ordenproducciondetalle::find()
+                        ->where(['=', 'idordenproduccion', $idordenproduccion])
+                        ->andWhere(['=', 'idproducto', $intCodigo])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table = new Ordenproducciondetalle();
+                        $table->idproducto = $_POST["idproducto"][$intIndice];
+                        $table->cantidad = $_POST["cantidad"][$intIndice];
+                        $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
+                        $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["costoconfeccion"][$intIndice];
+                        $table->idordenproduccion = $idordenproduccion;
+                        $table->insert();
+                        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                        $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                        $ordenProduccion->update();
+                    }
                 }
                 $intIndice++;
             }
             $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
         }
+
         return $this->render('_formnuevodetalles', [
             'productosCliente' => $productosCliente,
             'idordenproduccion' => $idordenproduccion,
@@ -292,7 +316,7 @@ class OrdenProduccionController extends Controller
         {
             $intIndice = 0;
 
-            if ($_POST["seleccion"]) {
+            if (isset($_POST["seleccion"])) {
                 foreach ($_POST["seleccion"] as $intCodigo) {
                     $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
                     $subtotal = $ordenProduccionDetalle->subtotal;
@@ -305,7 +329,7 @@ class OrdenProduccionController extends Controller
                 }
                 $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
             }else{
-                 $mensaje = "Debe seleccionar al menos un registro";
+                $mensaje = "Debe seleccionar al menos un registro";
             }
         }
         return $this->render('_formeliminardetalles', [

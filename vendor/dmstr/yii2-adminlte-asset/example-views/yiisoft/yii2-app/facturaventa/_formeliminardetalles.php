@@ -35,7 +35,11 @@ use yii\db\ActiveQuery;
     ],
 ]); ?>
 
-<div class="alert alert-danger"><?= $mensaje ?></div>
+<?php
+    if ($mensaje != ""){
+        ?> <div class="alert alert-danger"><?= $mensaje ?></div> <?php
+    }
+?>
 
 <div class="table table-responsive">
     <div class="panel panel-success ">

@@ -22,14 +22,20 @@ $this->params['breadcrumbs'][] = $model->idfactura;
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idfactura], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idfactura], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idfactura], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Esta seguro de eliminar el registro?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?php if ($model->estado == 0) { ?>
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idfactura], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idfactura], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => 'Esta seguro de eliminar el registro?',
+                    'method' => 'post',
+                ],
+            ]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['estado', 'id' => $model->idfactura], ['class' => 'btn btn-default']); }
+        else {
+            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['estado', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
+        }
+        ?>
     </p>
 
     <div class="panel panel-success">
@@ -90,5 +96,5 @@ $this->params['breadcrumbs'][] = $model->idfactura;
         </div>
     </div>
 
-    <?=  $this->render('detalle', ['modeldetalles' => $modeldetalles, 'modeldetalle' => $modeldetalle, 'idfactura' => $model->idfactura, 'idordenproduccion' => $model->idordenproduccion]); ?>
+    <?=  $this->render('detalle', ['modeldetalles' => $modeldetalles, 'modeldetalle' => $modeldetalle, 'idfactura' => $model->idfactura, 'idordenproduccion' => $model->idordenproduccion, 'estado' => $model->estado]); ?>
 </div>

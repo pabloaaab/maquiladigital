@@ -19,8 +19,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		'clientes' => $clientes,
         'ordenesproduccion' => [],
 
-
-        
     ]) ?>
 
 </div>

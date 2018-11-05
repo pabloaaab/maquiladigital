@@ -59,7 +59,8 @@ use yii\helpers\ArrayHelper;
                 <td><?= $val->cantidad ?></td>
                 <td><?= '$ '.number_format($val->vlrprecio) ?></td>
                 <td><?= '$ '.number_format($val->subtotal) ?></td>
-                <td>				                                
+                <?php if ($estado == 0) { ?>
+                <td>
 				<a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
 				<!-- Editar modal detalle -->
 				<div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden2<?= $val->iddetalleorden ?>">
@@ -126,17 +127,18 @@ use yii\helpers\ArrayHelper;
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
                 </td>
+                <?php } ?>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>		
     </div>
+    <?php if ($estado == 0) { ?>
     <div class="panel-footer text-right">
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $idordenproduccion,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $idordenproduccion],[ 'class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-danger']) ?>
-
     </div>
-
+    <?php } ?>
     </div>
 </div>

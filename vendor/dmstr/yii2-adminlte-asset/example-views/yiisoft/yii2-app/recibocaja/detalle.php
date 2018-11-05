@@ -11,14 +11,16 @@ use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Recibocaja;
 use app\models\Recibocajadetalle;
-use app\models\RecibocajaSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\web\Response;
+use app\models\Recibocaja;
+use app\models\Cliente;
+
 use yii\filters\AccessControl;
+use yii\db\ActiveQuery;
+use kartik\select2\Select2;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 
 
 ?>
@@ -28,34 +30,30 @@ use yii\filters\AccessControl;
     <div class="panel-heading">
         Detalles	
     </div>
+    <div class="panel-body">
         <table class="table table-hover">
             <thead>
             <tr>                
-                <th scope="col">iddetallerecibo</th>
-                <th scope="col">idfactura</th>
-                <th scope="col">vlrabono</th>
-                <th scope="col">vlrsaldo</th>
-                <th scope="col">retefuente</th>
-				<th scope="col">reteiva</th>
-				<th scope="col">reteica</th>
-				<th scope="col">idrecibo</th>
-				<th scope="col">observacion</th>
-                <th scope="col"></th>                               
+                <th scope="col">Id</th>
+                <th scope="col">Id Factura</th>
+                <th scope="col">Rete Fuente</th>
+                <th scope="col">Rete Iva</th>
+                <th scope="col">Valor Abono</th>
+                <th scope="col">Valor Saldo</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($ReciboCajaDetalle as $val): ?>
+            <?php foreach ($modeldetalles as $val): ?>
             <tr>                
                 <td><?= $val->iddetallerecibo ?></td>
-                <td><?= $val->nrofactura ?></td>
-                <td><?= $val->vlrabono ?></td>
-                <td><?= $val->vlrsaldo ?></td>
+                <td><?= $val->idfactura ?></td>
                 <td><?= $val->retefuente ?></td>
-				<td><?= $val->reteiva ?></td>
-				<td><?= $val->reteica ?></td>
-				<td><?= $val->idrecibo ?></td>
-				<td><?= $val->observacion ?></td>
-                <td>				                                
+                <td><?= $val->reteiva ?></td>
+                <td><?= '$ '.number_format($val->vlrabono) ?></td>
+                <td><?= '$ '.number_format($val->vlrsaldo) ?></td>
+                <?php if ($estado == 0) { ?>
+                <td>
 				<a href="#" data-toggle="modal" data-target="#iddetallerecibo2<?= $val->iddetallerecibo ?>"><span class="glyphicon glyphicon-pencil"></span></a>
 				<!-- Editar modal detalle -->
 				<div class="modal fade" role="dialog" aria-hidden="true" id="iddetallerecibo2<?= $val->iddetallerecibo ?>">
@@ -65,11 +63,31 @@ use yii\filters\AccessControl;
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                     <h4 class="modal-title">Editar detalle <?= $val->iddetallerecibo ?></h4>
                                 </div>
-								<?= Html::beginForm(Url::toRoute("recibocaja/editardetalle"), "POST") ?>								
+								<?= Html::beginForm(Url::toRoute("recibocaja/editardetalle"), "POST") ?>
                                 <div class="modal-body">
-                                    <?=  $this->render('_formdetalle',['iddetallerecibo' => $val->iddetallerecibo]); ?>																		
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h4>Información Recibo Caja Detalle</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-2">
+                                                <label>Abono:</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="vlrabono" value="<?= $val->vlrabono ?>" class="form-control" required>
+                                            </div>
+
+                                            <input type="hidden" name="iddetallerecibo" value="<?= $val->iddetallerecibo ?>">
+                                            <input type="hidden" name="idrecibo" value="<?= $val->idrecibo ?>">
+                                            <input type="hidden" name="total" value="<?= $val->vlrabono ?>">
+                                        </div>
+                                    </div>
                                 </div>
-								<?= Html::endForm() ?>		
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
+                                </div>
+								<?= Html::endForm() ?>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
@@ -97,53 +115,18 @@ use yii\filters\AccessControl;
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
                 </td>
+                <?php } ?>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>		
-                    <!-- Nuevo modal detalle -->
-					<div class="modal fade" role="dialog" aria-hidden="true" id="idrecibo<?= $idrecibo ?>">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    <h4 class="modal-title">Nuevo detalle</h4>
-                                </div>
-								<?= Html::beginForm(Url::toRoute("recibocaja/nuevodetalle"), "POST") ?>								
-                                <div class="modal-body">
-                                    <?=  $this->render('_formdetalle',['iddetallerecibo' => '', 'idrecibo' => $idrecibo]); ?>																			
-                                </div>
-                                <div class="modal-footer">                                                                                                          
-                                    <?= Html::endForm() ?>
-                                </div>
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-        <div class="panel-footer text-right" >
-			<!-- Nuevo boton modal detalle -->	
-			<a href="#" data-toggle="modal" data-target="#idrecibo<?= $idrecibo ?>" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>			
-        </div>
+    </div>
+    <?php if ($estado == 0) { ?>
+    <div class="panel-footer text-right">
+        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['recibocaja/nuevodetalles', 'idrecibo' => $idrecibo,'idcliente' => $idcliente], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['recibocaja/editardetalles', 'idrecibo' => $idrecibo],[ 'class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['recibocaja/eliminardetalles', 'idrecibo' => $idrecibo], ['class' => 'btn btn-danger']) ?>
+    </div>
+    <?php } ?>
     </div>
 </div>
-
-
-<script>
-function valida(e){
-    tecla = (document.all) ? e.keyCode : e.which;
-
-    //Tecla de retroceso para borrar, siempre la permite
-    if (tecla==8){
-        return true;
-    }
-        
-    // Patron de entrada, en este caso solo acepta numeros
-    patron =/[0-9]/;
-    tecla_final = String.fromCharCode(tecla);
-    return patron.test(tecla_final);
-}
-</script>
-
-
-
-
-

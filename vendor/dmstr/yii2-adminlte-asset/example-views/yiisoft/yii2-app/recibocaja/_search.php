@@ -1,12 +1,14 @@
 <?php
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+
 /* @var $this yii\web\View */
-/* @var $model app\models\recibocajaSearch */
+/* @var $model app\models\ReciboCajaSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="banco-search">
+<div class="recibocaja-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -24,7 +26,7 @@ use yii\widgets\ActiveForm;
         <div class="panel-body" style="display:none">
             <div class="row">
                 <?= $form->field($model, 'idrecibo') ?>
-                <?= $form->field($model, 'idcliente') ?>
+                <?= $form->field($model, 'idrecibo') ?>
             </div>
             <div class="panel-footer text-right" style="display:none">
                 <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>

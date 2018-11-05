@@ -25,6 +25,12 @@ use yii\db\ActiveQuery;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php
+$this->title = 'Eliminar Detalles Ordenes de Producción ' .$idordenproduccion;
+$this->params['breadcrumbs'][] = ['label' => 'Volver Detalle', 'url' => ['view','id' => $idordenproduccion]];
+$this->params['breadcrumbs'][] = $idordenproduccion;
+?>
+
 <?php $form = ActiveForm::begin([
 
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
@@ -35,7 +41,11 @@ use yii\db\ActiveQuery;
     ],
 ]); ?>
 
-<div class="alert alert-danger"><?= $mensaje ?></div>
+<?php
+if ($mensaje != ""){
+    ?> <div class="alert alert-danger"><?= $mensaje ?></div> <?php
+}
+?>
 
 <div class="table table-responsive">
     <div class="panel panel-success ">

@@ -1,13 +1,17 @@
 <?php
+
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
+use yii\helpers\ArrayHelper;
+use app\models\Cliente;
+use app\models\TipoRecibo;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\RecibocajaSearch */
+/* @var $searchModel app\models\ReciboCajaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Recibos Cajas';
+$this->title = 'Recibocajas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recibocaja-index">
@@ -16,35 +20,51 @@ $this->params['breadcrumbs'][] = $this->title;
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
-
+    <?php Pjax::begin() ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            [                
-                'attribute' => 'idrecibo',
-                'contentOptions' => ['class' => 'col-lg-2'],                
-            ],
-            [                
-                'attribute' => 'fecharecibo',
-                'contentOptions' => ['class' => 'col-lg-2'],                
-            ],
-            [               
-                'attribute' => 'fechapago',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],
-            [               
-                'attribute' => 'valorpagado',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],
-			[               
-                'attribute' => 'idcliente',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],			
             [
-                'class' => 'yii\grid\ActionColumn',              
+                'attribute' => 'idrecibo',
+                'contentOptions' => ['class' => 'col-lg-1 '],
             ],
-			
+            [
+                'attribute' => 'fecharecibo',
+                'contentOptions' => ['class' => 'col-lg-2 '],
+            ],
+            [
+                'attribute' => 'fechapago',
+                'contentOptions' => ['class' => 'col-lg-1 '],
+            ],
+            [
+                'attribute' => 'idcliente',
+                'value' => function($model){
+                    $clientes = Cliente::findOne($model->idcliente);
+                    return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
+                },
+                'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
+                'contentOptions' => ['class' => 'col-lg-4'],
+            ],
+            [
+                'attribute' => 'idtiporecibo',
+                'value' => function($model){
+                    $tiporecibos = TipoRecibo::findOne($model->idtiporecibo);
+                    return $tiporecibos->concepto;
+                },
+                'filter' => ArrayHelper::map(TipoRecibo::find()->all(),'idtiporecibo','concepto'),
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
+            [
+                'label' => 'valor Pagado',
+                'attribute' =>'valorpagado',
+                'contentOptions' => ['class' => 'col-lg-1'],
+                'format'=>['decimal',0]
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+            ],
+
         ],
         'tableOptions' => ['class' => 'table table-success'],
         'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
@@ -56,8 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
             'firstPageLabel'  => '<i class="fa fa-fast-backward"></i>'
         ],
-        
-    ]); ?>
-</div>
 
+    ]); ?>
+    <?php Pjax::end(); ?>
+</div>
 

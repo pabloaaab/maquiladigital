@@ -9,7 +9,6 @@ use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\bootstrap\Modal;
 use yii\data\Pagination;
-
 use kartik\depdrop\DepDrop;
 
 /* @var $this yii\web\View */
@@ -28,7 +27,7 @@ use kartik\depdrop\DepDrop;
 
  <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Banco</h4>
+        <h4>Información Factura Venta</h4>
     </div>
     <div class="panel-body">
         <div class="row">

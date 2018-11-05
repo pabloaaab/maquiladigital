@@ -178,9 +178,10 @@ class FacturaventaController extends Controller
 
         $facturaOrden = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $mensaje = "";
-        if (isset($_POST["iddetalleorden"])) {
-            $intIndice = 0;
-            foreach ($_POST["iddetalleorden"] as $intCodigo) {
+        if(Yii::$app->request->post()) {
+            if (isset($_POST["iddetalleorden"])) {
+                $intIndice = 0;
+                foreach ($_POST["iddetalleorden"] as $intCodigo) {
                     $table = new Facturaventadetalle();
                     $ordenProducciondetalle = Ordenproducciondetalle::find()->where(['iddetalleorden' => $intCodigo])->one();
                     $table->idproducto = $ordenProducciondetalle->idproducto;
@@ -201,9 +202,10 @@ class FacturaventaController extends Controller
                     $factura->update();
 
                 }
-                $this->redirect(["facturaventa/view",'id' => $idfactura]);
-        }else {
-            $mensaje = "Debe seleccionar al menos un registro";
+                $this->redirect(["facturaventa/view", 'id' => $idfactura]);
+            }else{
+                $mensaje = "Debe seleccionar al menos un registro";
+            }
         }
 
         return $this->render('_formnuevodetalles', [
@@ -363,8 +365,18 @@ class FacturaventaController extends Controller
             'idfactura' => $idfactura,
             'mensaje' => $mensaje,
         ]);
+    }
 
-
+    public function actionEstado($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->estado == 0){
+            $model->estado = 1;
+        } else {
+            $model->estado = 0;
+        }
+        $model->update();
+        $this->redirect(["facturaventa/view",'id' => $id]);
     }
 
     public function actionOrdenp($id){
