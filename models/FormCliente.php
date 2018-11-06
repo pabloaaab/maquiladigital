@@ -69,7 +69,7 @@ class FormCliente extends Model
             ['idmunicipio', 'required', 'message' => 'Campo requerido'],
 			[['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio'],'message' => 'Campo requerido'],                      
             ['tiporegimen', 'required', 'message' => 'Campo requerido'],
-            ['autoretenedor', 'default'],
+            ['autoretenedor', 'required'],
             ['retencioniva', 'required', 'message' => 'Campo requerido'],
             ['retencioniva', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['retencionfuente', 'required', 'message' => 'Campo requerido'],

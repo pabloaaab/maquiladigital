@@ -2,8 +2,10 @@
 
 namespace app\controllers;
 
+use app\models\Consecutivo;
 use app\models\Ordenproducciondetalle;
 use app\models\Resolucion;
+use Codeception\Module\Cli;
 use Yii;
 use app\models\Facturaventa;
 use app\models\FacturaventaSearch;
@@ -73,11 +75,12 @@ class FacturaventaController extends Controller
     {
         $modeldetalles = Facturaventadetalle::find()->Where(['=', 'idfactura', $id])->all();
         $modeldetalle = new Facturaventadetalle();
+        $mensaje = "";
         return $this->render('view', [
             'model' => $this->findModel($id),
             'modeldetalle' => $modeldetalle,
             'modeldetalles' => $modeldetalles,
-
+            'mensaje' => $mensaje,
         ]);
     }
 
@@ -90,7 +93,7 @@ class FacturaventaController extends Controller
     {
         $model = new Facturaventa();
         $clientes = Cliente::find()->all();
-        $ordenesproduccion = Ordenproduccion::find()->all();
+        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->all();
         $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $table = Cliente::find()->where(['=', 'idcliente', $model->idcliente])->one();
@@ -175,7 +178,6 @@ class FacturaventaController extends Controller
 
     public function actionNuevodetalles($idordenproduccion,$idfactura)
     {
-
         $facturaOrden = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
@@ -184,23 +186,41 @@ class FacturaventaController extends Controller
                 foreach ($_POST["iddetalleorden"] as $intCodigo) {
                     $table = new Facturaventadetalle();
                     $ordenProducciondetalle = Ordenproducciondetalle::find()->where(['iddetalleorden' => $intCodigo])->one();
-                    $table->idproducto = $ordenProducciondetalle->idproducto;
-                    $table->cantidad = $ordenProducciondetalle->cantidad;
-                    $table->preciounitario = $ordenProducciondetalle->vlrprecio;
-                    $table->codigoproducto = $ordenProducciondetalle->codigoproducto;
-                    $table->total = $ordenProducciondetalle->subtotal;
-                    $table->idfactura = $idfactura;
-                    $table->insert();
-                    $factura = Facturaventa::findOne($idfactura);
-                    $factura->subtotal = $factura->subtotal + $table->total;
-                    $config = Matriculaempresa::findOne(901189320);
-                    $factura->porcentajeiva = $config->porcentajeiva;
-                    $factura->porcentajefuente = $config->porcentajeretefuente;
-                    $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
-                    $factura->update();
-
+                    $detalles = Facturaventadetalle::find()
+                        ->where(['=', 'idfactura', $idfactura])
+                        ->andWhere(['=', 'idproducto', $ordenProducciondetalle->idproducto])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table->idproducto = $ordenProducciondetalle->idproducto;
+                        $table->cantidad = $ordenProducciondetalle->cantidad;
+                        $table->preciounitario = $ordenProducciondetalle->vlrprecio;
+                        $table->codigoproducto = $ordenProducciondetalle->codigoproducto;
+                        $table->total = $ordenProducciondetalle->subtotal;
+                        $table->idfactura = $idfactura;
+                        $table->insert();
+                        $factura = Facturaventa::findOne($idfactura);
+                        $factura->subtotal = $factura->subtotal + $table->total;
+                        $config = Matriculaempresa::findOne(901189320);
+                        $cliente = Cliente::findOne($factura->idcliente);
+                        $factura->porcentajeiva = $config->porcentajeiva;
+                        $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+                        if ($factura->subtotal >= $config->retefuente){
+                            if ($cliente->retencioniva == 1){
+                                $factura->porcentajefuente = $config->porcentajeretefuente;
+                                $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                                if ($cliente->autoretenedor == 1){
+                                    $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                                }
+                            }
+                        }else{
+                            $factura->retencionfuente = 0;
+                            $factura->retencioniva = 0;
+                        }
+                        $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                        $factura->saldo = $factura->totalpagar;
+                        $factura->update();
+                    }
                 }
                 $this->redirect(["facturaventa/view", 'id' => $idfactura]);
             }else{
@@ -239,11 +259,23 @@ class FacturaventaController extends Controller
                     $factura->subtotal = $factura->subtotal + $table->total;
 
                     $config = Matriculaempresa::findOne(901189320);
+                    $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
-                    $factura->porcentajefuente = $config->porcentajeretefuente;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
+                    if ($factura->subtotal >= $config->retefuente){
+                        if ($cliente->retencioniva == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                            if ($cliente->autoretenedor == 1){
+                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                            }
+                        }
+                    }else{
+                        $factura->retencionfuente = 0;
+                        $factura->retencioniva = 0;
+                    }
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->saldo = $factura->totalpagar;
                     $factura->update();
 
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
@@ -276,11 +308,23 @@ class FacturaventaController extends Controller
                     $factura->subtotal = $factura->subtotal + $table->total;
 
                     $config = Matriculaempresa::findOne(901189320);
+                    $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
-                    $factura->porcentajefuente = $config->porcentajeretefuente;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
+                    if ($factura->subtotal >= $config->retefuente){
+                        if ($cliente->retencioniva == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                            if ($cliente->autoretenedor == 1){
+                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                            }
+                        }
+                    }else{
+                        $factura->retencionfuente = 0;
+                        $factura->retencioniva = 0;
+                    }
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->saldo = $factura->totalpagar;
                     $factura->update();
                 }
                 $intIndice++;
@@ -309,14 +353,25 @@ class FacturaventaController extends Controller
                     $factura->subtotal = $factura->subtotal - $total;
 
                     $config = Matriculaempresa::findOne(901189320);
+                    $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
-                    $factura->porcentajefuente = $config->porcentajeretefuente;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-                    $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente;
+
+                    if ($factura->subtotal >= $config->retefuente){
+                        if ($cliente->retencioniva == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                            if ($cliente->autoretenedor == 1){
+                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                            }
+                        }
+                    }else{
+                        $factura->retencionfuente = 0;
+                        $factura->retencioniva = 0;
+                    }
+                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->saldo = $factura->totalpagar;
                     $factura->update();
-
-
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
                 }
                 else
@@ -351,7 +406,27 @@ class FacturaventaController extends Controller
                     if(Facturaventadetalle::deleteAll("iddetallefactura=:iddetallefactura", [":iddetallefactura" => $intCodigo]))
                     {
                         $factura = Facturaventa::findOne($idfactura);
-                        $factura->totalpagar = $factura->totalpagar - $total;
+                        $factura->subtotal = $factura->subtotal - $total;
+
+                        $config = Matriculaempresa::findOne(901189320);
+                        $cliente = Cliente::findOne($factura->idcliente);
+                        $factura->porcentajeiva = $config->porcentajeiva;
+                        $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
+
+                        if ($factura->subtotal >= $config->retefuente){
+                            if ($cliente->retencioniva == 1){
+                                $factura->porcentajefuente = $config->porcentajeretefuente;
+                                $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                                if ($cliente->autoretenedor == 1){
+                                    $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                                }
+                            }
+                        }else{
+                            $factura->retencionfuente = 0;
+                            $factura->retencioniva = 0;
+                        }
+                        $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                        $factura->saldo = $factura->totalpagar;
                         $factura->update();
                     }
                 }
@@ -367,20 +442,62 @@ class FacturaventaController extends Controller
         ]);
     }
 
-    public function actionEstado($id)
+    public function actionAutorizado($id)
     {
         $model = $this->findModel($id);
-        if ($model->estado == 0){
-            $model->estado = 1;
+        $mensaje = "";
+        if ($model->autorizado == 0){
+            $detalles = Facturaventadetalle::find()
+                ->where(['=', 'idfactura', $id])
+                ->all();
+            $reg = count($detalles);
+            if ($reg <> 0) {
+                $model->autorizado = 1;
+                $model->update();
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener ordenes relacionados en la factura de venta.');
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }
         } else {
-            $model->estado = 0;
+            $factura = Facturaventa::findOne($id);
+            if ($factura->nrofactura == 0){
+                $model->autorizado = 0;
+                $model->update();
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }else {
+                Yii::$app->getSession()->setFlash('error', 'No se puede desautorizar el registro, ya fue generado el número de factura.');
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }
         }
-        $model->update();
-        $this->redirect(["facturaventa/view",'id' => $id]);
+
+    }
+
+    public function actionGenerarnro($id)
+    {
+        $model = $this->findModel($id);
+        $mensaje = "";
+        if ($model->autorizado == 1){
+            $factura = Facturaventa::findOne($id);
+            if ($factura->nrofactura == 0){
+                $consecutivo = Consecutivo::findOne(1);
+                $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                $factura->nrofactura = $consecutivo->consecutivo;
+                $factura->update();
+                $consecutivo->update();
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado.');
+                $this->redirect(["facturaventa/view",'id' => $id]);
+            }
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'El registro debe estar autorizado para poder imprimir la factura.');
+            $this->redirect(["facturaventa/view",'id' => $id]);
+        }
     }
 
     public function actionOrdenp($id){
-        $rows = Ordenproduccion::find()->where(['idcliente' => $id])->all();
+        $rows = Ordenproduccion::find()->where(['idcliente' => $id])->andWhere(['autorizado' => 1])->all();
 
         echo "<option required>Seleccione...</option>";
         if(count($rows)>0){

@@ -53,6 +53,7 @@ if ($mensaje != ""){
                     <th scope="col">Rete Fuente</th>
                     <th scope="col">Rete iva</th>
                     <th scope="col">Iva</th>
+                    <th scope="col">Saldo</th>
                     <th scope="col">Total</th>
                     <th scope="col"></th>
                 </tr>
@@ -64,11 +65,12 @@ if ($mensaje != ""){
                     <td><?= $val->nrofactura ?></td>
                     <td><?= $val->fechainicio ?></td>
                     <td><?= $val->fechavcto ?></td>
-                    <td><?= $val->subtotal ?></td>
-                    <td><?= $val->retencionfuente ?></td>
-                    <td><?= $val->retencioniva ?></td>
-                    <td><?= $val->impuestoiva ?></td>
-                    <td><?= $val->totalpagar ?></td>
+                    <td><?= '$ ' .number_format($val->subtotal) ?></td>
+                    <td><?= '$ ' .number_format($val->retencionfuente) ?></td>
+                    <td><?= '$ ' .number_format($val->retencioniva) ?></td>
+                    <td><?= '$ ' .number_format($val->impuestoiva) ?></td>
+                    <td><?= '$ ' .number_format($val->saldo) ?></td>
+                    <td><?= '$ ' .number_format($val->totalpagar) ?></td>
                     <td><input type="checkbox" name="idfactura[]" value="<?= $val->idfactura ?>"></td>
                 </tr>
                 </tbody>

@@ -18,6 +18,7 @@ use Yii;
  * @property string $observacion
  * @property string $usuariosistema
  * @property string $estado
+ * @property string $autorizado
  *
  * @property Tiporecibo $tiporecibo
  * @property Cliente $cliente
@@ -44,7 +45,7 @@ class Recibocaja extends \yii\db\ActiveRecord
             [['idtiporecibo', 'idmunicipio', 'idcliente'], 'required'],
             [['valorpagado'], 'number'],
             [['valorletras', 'observacion'], 'string'],
-            [['idcliente','estado'], 'integer'],
+            [['idcliente','estado','autorizado'], 'integer'],
             [['idtiporecibo'], 'string', 'max' => 10],
             [['idmunicipio', 'usuariosistema'], 'string', 'max' => 15],
             [['idtiporecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Tiporecibo::className(), 'targetAttribute' => ['idtiporecibo' => 'idtiporecibo']],
@@ -68,6 +69,7 @@ class Recibocaja extends \yii\db\ActiveRecord
             'valorletras' => 'Valor Letras',
             'idcliente' => 'Cliente',
             'estado' => 'Estado',
+            'autorizado' => 'Autorizado',
             'observacion' => 'Observacion',
             'usuariosistema' => 'Usuario Sistema',
         ];

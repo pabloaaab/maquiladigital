@@ -2,31 +2,85 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
-
 use Yii;
-use yii\base\Model;
 
-class Matriculaempresa extends ActiveRecord
+/**
+ * This is the model class for table "matriculaempresa".
+ *
+ * @property string $nitmatricula
+ * @property int $dv
+ * @property string $razonsocialmatricula
+ * @property string $nombrematricula
+ * @property string $apellidomatricula
+ * @property string $direccionmatricula
+ * @property string $telefonomatricula
+ * @property string $celularmatricula
+ * @property string $emailmatricula
+ * @property string $iddepartamento
+ * @property string $idmunicipio
+ * @property string $paginaweb
+ * @property double $porcentajeiva
+ * @property double $porcentajeretefuente
+ * @property double $retefuente
+ * @property double $porcentajereteiva
+ *
+ * @property Resolucion[] $resolucions
+ */
+class Matriculaempresa extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return Yii::$app->db;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'matriculaempresa';
     }
 
-	public function beforeSave($insert) {
-	if(!parent::beforeSave($insert)){
-            return false;
-        }	       
-	$this->razonsocialmatricula = strtoupper($this->razonsocialmatricula);
-	$this->nombrematricula = strtoupper($this->nombrematricula);
-	$this->apellidomatricula = strtoupper($this->apellidomatricula);
-	$this->direccionmatricula = strtoupper($this->direccionmatricula);
-    return true;
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb'], 'required'],
+            [['dv'], 'integer'],
+            [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
+            [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
+            [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
+            [['nitmatricula'], 'unique'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'nitmatricula' => 'Nitmatricula',
+            'dv' => 'Dv',
+            'razonsocialmatricula' => 'Razonsocialmatricula',
+            'nombrematricula' => 'Nombrematricula',
+            'apellidomatricula' => 'Apellidomatricula',
+            'direccionmatricula' => 'Direccionmatricula',
+            'telefonomatricula' => 'Telefonomatricula',
+            'celularmatricula' => 'Celularmatricula',
+            'emailmatricula' => 'Emailmatricula',
+            'iddepartamento' => 'Iddepartamento',
+            'idmunicipio' => 'Idmunicipio',
+            'paginaweb' => 'Paginaweb',
+            'porcentajeiva' => 'Porcentajeiva',
+            'porcentajeretefuente' => 'Porcentajeretefuente',
+            'retefuente' => 'Retefuente',
+            'porcentajereteiva' => 'Porcentajereteiva',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResolucions()
+    {
+        return $this->hasMany(Resolucion::className(), ['nitmatricula' => 'nitmatricula']);
     }
 }

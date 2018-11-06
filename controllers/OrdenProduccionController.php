@@ -73,10 +73,12 @@ class OrdenProduccionController extends Controller
     {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
+        $mensaje = "";
 		return $this->render('view', [
             'model' => $this->findModel($id),
             'modeldetalle' => $modeldetalle,
             'modeldetalles' => $modeldetalles,
+            'mensaje' => $mensaje,
 
         ]);
     }
@@ -95,6 +97,7 @@ class OrdenProduccionController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
+            $model->autorizado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
             return $this->redirect(['view', 'id' => $model->idordenproduccion]);
@@ -127,7 +130,7 @@ class OrdenProduccionController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
             'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
     }
@@ -146,28 +149,29 @@ class OrdenProduccionController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionEstado($id)
+    public function actionAutorizado($id)
     {
         $model = $this->findModel($id);
-        if ($model->estado == 0){
+        $mensaje = "";
+        if ($model->autorizado == 0){
             $detalles = Ordenproducciondetalle::find()
                 ->where(['=', 'idordenproduccion', $id])
                 ->all();
             $reg = count($detalles);
             if ($reg <> 0) {
-                $model->estado = 1;
+                $model->autorizado = 1;
                 $model->update();
+                $this->redirect(["orden-produccion/view",'id' => $id]);
             }else{
-
+                Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener productos relacionados en la orden de producción.');
                 $this->redirect(["orden-produccion/view",'id' => $id]);
             }
 
         } else {
-            $model->estado = 0;
+            $model->autorizado = 0;
             $model->update();
             $this->redirect(["orden-produccion/view",'id' => $id]);
         }
-
 
     }
 

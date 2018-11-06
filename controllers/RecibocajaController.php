@@ -73,10 +73,12 @@ class RecibocajaController extends Controller
     {
         $modeldetalles = Recibocajadetalle::find()->Where(['=', 'idrecibo', $id])->all();
         $modeldetalle = new Recibocajadetalle();
+        $mensaje = "";
         return $this->render('view', [
             'model' => $this->findModel($id),
             'modeldetalle' => $modeldetalle,
             'modeldetalles' => $modeldetalles,
+            'mensaje' => $mensaje,
         ]);
     }
 
@@ -156,7 +158,11 @@ class RecibocajaController extends Controller
     public function actionNuevodetalles($idcliente,$idrecibo)
     {
 
-        $reciboFactura = Facturaventa::find()->where(['=', 'idcliente', $idcliente])->all();
+        $reciboFactura = Facturaventa::find()
+            ->where(['=', 'idcliente', $idcliente])
+            ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'nrofactura', 0])
+            ->andWhere(['<>', 'saldo', 0])
+            ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
             if (isset($_POST["idfactura"])) {
@@ -164,16 +170,23 @@ class RecibocajaController extends Controller
                 foreach ($_POST["idfactura"] as $intCodigo) {
                     $table = new Recibocajadetalle();
                     $factura = Facturaventa::find()->where(['idfactura' => $intCodigo])->one();
-                    $table->idfactura = $factura->idfactura;
-                    $table->vlrabono = $factura->totalpagar;
-                    $table->vlrsaldo = $factura->saldo;
-                    $table->retefuente = $factura->retencionfuente;
-                    $table->reteiva = $factura->retencioniva;
-                    $table->idrecibo = $idrecibo;
-                    $table->insert();
-                    $recibo = Recibocaja::findOne($idrecibo);
-                    $recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
-                    $recibo->update();
+                    $detalles = Recibocajadetalle::find()
+                        ->where(['=', 'idfactura', $factura->idfactura])
+                        ->andWhere(['=', 'idrecibo', $idrecibo])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table->idfactura = $factura->idfactura;
+                        $table->vlrabono = $factura->totalpagar;
+                        $table->vlrsaldo = $factura->saldo;
+                        $table->retefuente = $factura->retencionfuente;
+                        $table->reteiva = $factura->retencioniva;
+                        $table->idrecibo = $idrecibo;
+                        $table->insert();
+                        $recibo = Recibocaja::findOne($idrecibo);
+                        //$recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
+                        //$recibo->update();
+                    }
                 }
                 $this->redirect(["recibocaja/view", 'id' => $idrecibo]);
             } else {
@@ -316,16 +329,67 @@ class RecibocajaController extends Controller
         ]);
     }
 
-    public function actionEstado($id)
+    public function actionAutorizado($id)
     {
         $model = $this->findModel($id);
-        if ($model->estado == 0){
-            $model->estado = 1;
+        $mensaje = "";
+        if ($model->autorizado == 0){
+            $detalles = Recibocajadetalle::find()
+                ->where(['=', 'idrecibo', $id])
+                ->all();
+            $reg = count($detalles);
+            if ($reg <> 0) {
+                $model->autorizado = 1;
+                $model->update();
+                $this->redirect(["recibocaja/view",'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener facturas relacionados en el recibo de caja.');
+                $this->redirect(["recibocaja/view",'id' => $id]);
+            }
+
         } else {
-            $model->estado = 0;
+            if ($model->valorpagado <> 0) {
+                Yii::$app->getSession()->setFlash('error', 'No se puede desautorizar el registro, ya fue pagado.');
+                $this->redirect(["recibocaja/view",'id' => $id]);
+            } else {
+                $model->autorizado = 0;
+                $model->update();
+                $this->redirect(["recibocaja/view",'id' => $id]);
+            }
         }
-        $model->update();
-        $this->redirect(["recibocaja/view",'id' => $id]);
+    }
+
+    public function actionPagar($id)
+    {
+        $model = $this->findModel($id);
+        $mensaje = "";
+        if ($model->autorizado == 1){
+            if ($model->valorpagado == 0){
+                $recibodetalles = Recibocajadetalle::find()
+                    ->where(['idrecibo' => $id])
+                    ->all();
+                $total = 0;
+                foreach ($recibodetalles as $val) {
+                    $recibodetalle = Recibocajadetalle::find()->where(['iddetallerecibo' => $val])->one();
+                    $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
+                    $total = $total + $val->vlrabono;
+                    $recibodetalle->update();
+                    $factura = Facturaventa::findOne($val->idfactura);
+                    $factura->saldo = $recibodetalle->vlrsaldo;
+                    $factura->update();
+                    $this->redirect(["recibocaja/view",'id' => $id]);
+                }
+                $model->valorpagado = $total;
+                $model->fechapago = date('Y-m-d');
+                $model->update();
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'Ya se realizo el pago del recibo de caja.');
+                $this->redirect(["recibocaja/view",'id' => $id]);
+            }
+        } else {
+            Yii::$app->getSession()->setFlash('error', 'Para pagar el recibo de caja debe estar autorizado');
+            $this->redirect(["recibocaja/view",'id' => $id]);
+        }
     }
 
     protected function findModel($id)

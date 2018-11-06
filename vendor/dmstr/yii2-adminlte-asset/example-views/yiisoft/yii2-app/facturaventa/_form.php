@@ -39,11 +39,11 @@ use kartik\depdrop\DepDrop;
                     'todayHighlight' => true]]) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['class' => 'select-2','prompt'=>'Seleccione...', 'onchange'=>' $.get( "'.Url::toRoute('facturaventa/ordenp').'", { id: $(this).val() } ) .done(function( data ) {
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['class' => 'select-2','prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('facturaventa/ordenp').'", { id: $(this).val() } ) .done(function( data ) {
         $( "#'.Html::getInputId($model, 'idordenproduccion',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione una orden de producción...']) ?>
         </div>
 		<div class="panel-footer text-right">
 			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		

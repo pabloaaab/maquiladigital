@@ -16,6 +16,7 @@ use Yii;
  * @property string $valorletras
  * @property string $observacion
  * @property int $estado
+ * @property int $autorizado
  * @property string $ordenproduccion
  * @property int $idtipo
  * @property string $usuariosistema
@@ -41,7 +42,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     {
         return [
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo'], 'required'],
-            [['idcliente', 'estado', 'idtipo'], 'integer'],
+            [['idcliente', 'estado', 'idtipo','autorizado'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
             [['totalorden'], 'number'],
             [['valorletras', 'observacion'], 'string'],
@@ -67,6 +68,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'valorletras' => 'Valor Letras',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
+            'autorizado' => 'Autorizado',
             'ordenproduccion' => 'Orden Produccion',
             'idtipo' => 'Idtipo',
             'usuariosistema' => 'Usuario Sistema',

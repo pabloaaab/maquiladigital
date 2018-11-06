@@ -52,7 +52,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' =>'totalorden',
                 'contentOptions' => ['class' => 'col-lg-1'],
                 'format'=>['decimal',0]
-            ],			
+            ],
+
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

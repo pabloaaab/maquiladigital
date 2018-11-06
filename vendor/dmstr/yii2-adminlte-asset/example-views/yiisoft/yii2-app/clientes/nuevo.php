@@ -85,6 +85,22 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     }
 </script>
+<script language="JavaScript">
+    function tregimen() {
+        idtiporegimen = document.getElementById('tiporegimen').value;
+        if (idtiporegimen == 1){
+            document.getElementById('retencionfuente').value = 1;
+        }
+    }
+</script>
+<script language="JavaScript">
+    function retener() {
+        auto = document.getElementById('autoretenedor').value;
+        if (auto == 1){
+            document.getElementById('retencioniva').value = 1;
+        }
+    }
+</script>
 <h1>Nuevo Cliente</h1>
 <?php if ($tipomsg == "danger") { ?>
     <h3 class="alert-danger"><?= $msg ?></h3>
@@ -157,12 +173,12 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 			<?= $form->field($model, 'plazopago')->input("text") ?>			
         </div>
 		<div class="row">
-            <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...']) ?>
-			<?= $form->field($model, 'autoretenedor')->dropdownList(['SI' => 'SI', 'NO' => 'NO'], ['prompt' => 'Seleccione...']) ?>			
+            <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...','onchange' => 'tregimen()','id' => 'tiporegimen']) ?>
+			<?= $form->field($model, 'autoretenedor')->dropdownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione...','onchange' => 'retener()','id' => 'autoretenedor']) ?>
         </div>
 		<div class="row">
-            <?= $form->field($model, 'retencioniva')->input("text") ?>
-			<?= $form->field($model, 'retencionfuente')->input("text") ?>			
+            <?= $form->field($model, 'retencioniva')->dropdownList(['0' => 'NO', '1' => 'SI'],['id' => 'retencioniva','readonly' => 'readonly']) ?>
+			<?= $form->field($model, 'retencionfuente')->dropdownList(['0' => 'NO', '1' => 'SI'],['id' => 'retencionfuente','readonly' => 'readonly']) ?>
         </div>
 		<div class="row">
 			<div class="field-tblclientes-observaciones_cliente has-success">
