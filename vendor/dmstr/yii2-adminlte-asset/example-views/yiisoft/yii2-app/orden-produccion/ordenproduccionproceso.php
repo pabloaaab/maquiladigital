@@ -12,17 +12,21 @@ use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 
-$this->title = 'Busqueda de Ordenes de Producción';
+$this->title = 'Ordenes de Producción Procesos';
 $this->params['breadcrumbs'][] = $this->title;
 
-
 ?>
+<script language="JavaScript">
+    function mostrarfiltro() {
+        divC = document.getElementById("filtroproceso");
+        if (divC.style.display == "none"){divC.style.display = "block";}else{divC.style.display = "none";}
+    }
+</script>
 
-
-<h1>Lista Orden de produccion</h1>
+<h1>Lista Ordenes de producción</h1>
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
-    "action" => Url::toRoute("orden-produccion/search"),
+    "action" => Url::toRoute("orden-produccion/proceso"),
     "enableClientValidation" => true,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
@@ -35,11 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="panel panel-success panel-filters">
-    <div class="panel-heading" ">
+    <div class="panel-heading" onclick="mostrarfiltro()">
         Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
     </div>
 
-    <div class="panel-body" id="filtronuevoorden" >
+<div class="panel-body" id="filtroproceso" style="display:none">
         <div class="row">
             <?= $formulario->field($form, 'idcliente')->widget(Select2::classname(), [
                 'data' => $clientes,
@@ -62,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("orden-produccion/search") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <a align="right" href="<?= Url::toRoute("orden-produccion/proceso") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -83,9 +87,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col">Fecha Llegada</th>
                 <th scope="col">Fecha Procesada</th>
                 <th scope="col">Fecha Entrega</th>
-                <th scope="col">Total</th>
                 <th scope="col">Tipo</th>
-                <th scope="col">Estado</th>
+                <th scope="col">Progreso</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -98,10 +101,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->fechallegada ?></td>
                 <td><?= $val->fechaprocesada ?></td>
                 <td><?= $val->fechaentrega ?></td>
-                <td><?= $val->totalorden ?></td>
                 <td><?= $val->tipo->tipo ?></td>
-                <td><?= $val->tipo->activo ?></td>
-                <td></td>
+                <td><?= $val->porcentaje_proceso.' %' ?></td>
+                <td>
+                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_detalle', 'id' => $val->idordenproduccion] ) ?>
+                </td>
             </tr>
             </tbody>
             <?php endforeach; ?>

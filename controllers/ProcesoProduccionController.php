@@ -3,33 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Talla;
-use app\models\TallaSearch;
+use app\models\ProcesoProduccion;
+use app\models\ProcesoProduccionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-
-use app\models\FormFiltroOrdenProduccionProceso;
-use app\models\Producto;
-use yii\db\ActiveQuery;
-use yii\base\Model;
-use yii\web\Response;
-use yii\web\Session;
-use yii\data\Pagination;
-use yii\filters\AccessControl;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\helpers\Url;
-use yii\web\UploadedFile;
-use yii\bootstrap\Modal;
-use yii\helpers\ArrayHelper;
-use Codeception\Lib\HelperModule;
-
 /**
- * TallaController implements the CRUD actions for Talla model.
+ * ProcesoProduccionController implements the CRUD actions for ProcesoProduccion model.
  */
-class TallaController extends Controller
+class ProcesoProduccionController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -47,12 +30,12 @@ class TallaController extends Controller
     }
 
     /**
-     * Lists all Talla models.
+     * Lists all ProcesoProduccion models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TallaSearch();
+        $searchModel = new ProcesoProduccionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -62,7 +45,7 @@ class TallaController extends Controller
     }
 
     /**
-     * Displays a single Talla model.
+     * Displays a single ProcesoProduccion model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -75,15 +58,16 @@ class TallaController extends Controller
     }
 
     /**
-     * Creates a new Talla model.
+     * Creates a new ProcesoProduccion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Talla();
+        $model = new ProcesoProduccion();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtalla]);
+            return $this->redirect(['view', 'id' => $model->idproceso]);
         }
 
         return $this->render('create', [
@@ -92,7 +76,7 @@ class TallaController extends Controller
     }
 
     /**
-     * Updates an existing Talla model.
+     * Updates an existing ProcesoProduccion model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -101,8 +85,9 @@ class TallaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtalla]);
+            return $this->redirect(['view', 'id' => $model->idproceso]);
         }
 
         return $this->render('update', [
@@ -111,7 +96,7 @@ class TallaController extends Controller
     }
 
     /**
-     * Deletes an existing Talla model.
+     * Deletes an existing ProcesoProduccion model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -125,15 +110,15 @@ class TallaController extends Controller
     }
 
     /**
-     * Finds the Talla model based on its primary key value.
+     * Finds the ProcesoProduccion model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Talla the loaded model
+     * @return ProcesoProduccion the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Talla::findOne($id)) !== null) {
+        if (($model = ProcesoProduccion::findOne($id)) !== null) {
             return $model;
         }
 

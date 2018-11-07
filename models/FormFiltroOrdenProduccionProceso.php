@@ -8,7 +8,7 @@ use yii\base\Model;
 /**
  * ContactForm is the model behind the contact form.
  */
-class FormFiltroOrdenProduccionNuevo extends Model
+class FormFiltroOrdenProduccionProceso extends Model
 {
     public $idcliente;
     public $ordenproduccion;

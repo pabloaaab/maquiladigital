@@ -12,7 +12,7 @@ use app\models\Cliente;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\FormFiltroOrdenProduccionNuevo;
+use app\models\FormFiltroOrdenProduccionProceso;
 use app\models\Producto;
 use yii\db\ActiveQuery;
 use yii\base\Model;
@@ -345,10 +345,10 @@ class OrdenProduccionController extends Controller
 
     }
 
-    public function actionSearch()
+    public function actionProceso()
     {
         //if (!Yii::$app->user->isGuest) {
-        $form = new FormFiltroOrdenProduccionNuevo;
+        $form = new FormFiltroOrdenProduccionProceso();
         $idcliente = null;
         $ordenproduccion = null;
         $idtipo = null;
@@ -391,7 +391,7 @@ class OrdenProduccionController extends Controller
                 ->all();
         }
 
-        return $this->render('_searchordenproduccion', [
+        return $this->render('ordenproduccionproceso', [
             'model' => $model,
             'form' => $form,
             'pagination' => $pages,
@@ -402,6 +402,17 @@ class OrdenProduccionController extends Controller
              return $this->redirect(["site/login"]);
          }*/
 
+    }
+
+    public function actionView_detalle($id)
+    {
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $modeldetalle = new Ordenproducciondetalle();
+        return $this->render('view_detalle', [
+            'model' => $this->findModel($id),
+            'modeldetalle' => $modeldetalle,
+            'modeldetalles' => $modeldetalles,
+        ]);
     }
 	
     protected function findModel($id)

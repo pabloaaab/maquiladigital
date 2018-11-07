@@ -9,15 +9,18 @@ use Yii;
  *
  * @property int $iddetalleorden
  * @property int $idproducto
+ * @property string $codigoproducto
  * @property int $cantidad
  * @property double $vlrprecio
  * @property double $subtotal
  * @property int $idordenproduccion
  * @property int $generado
  * @property int $facturado
+ * @property int $porcentaje_proceso
+ * @property int $iddetalleproceso
  *
  * @property Producto $producto
- * @property Ordenproduccion $ordenproduccion
+ * @property Ordenproducciondetalleproceso $detalleproceso
  */
 class Ordenproducciondetalle extends \yii\db\ActiveRecord
 {
@@ -35,11 +38,12 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idproducto', 'cantidad', 'vlrprecio', 'subtotal', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
-            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado'], 'integer'],
+            [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
+            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso', 'iddetalleproceso'], 'integer'],
             [['vlrprecio', 'subtotal'], 'number'],
+            [['codigoproducto'], 'string', 'max' => 15],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
-            [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
+            [['iddetalleproceso'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciondetalleproceso::className(), 'targetAttribute' => ['iddetalleproceso' => 'iddetalleproceso']],
         ];
     }
 
@@ -51,12 +55,15 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
         return [
             'iddetalleorden' => 'Iddetalleorden',
             'idproducto' => 'Idproducto',
+            'codigoproducto' => 'Codigoproducto',
             'cantidad' => 'Cantidad',
             'vlrprecio' => 'Vlrprecio',
             'subtotal' => 'Subtotal',
             'idordenproduccion' => 'Idordenproduccion',
             'generado' => 'Generado',
-            'facturado' => 'Facturado'
+            'facturado' => 'Facturado',
+            'porcentaje_proceso' => 'Porcentaje Proceso',
+            'iddetalleproceso' => 'Iddetalleproceso',
         ];
     }
 
@@ -71,8 +78,8 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdenproduccion()
+    public function getDetalleproceso()
     {
-        return $this->hasOne(Ordenproduccion::className(), ['idordenproduccion' => 'idordenproduccion']);
+        return $this->hasOne(Ordenproducciondetalleproceso::className(), ['iddetalleproceso' => 'iddetalleproceso']);
     }
 }

@@ -93,7 +93,7 @@ class FacturaventaController extends Controller
     {
         $model = new Facturaventa();
         $clientes = Cliente::find()->all();
-        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->all();
+        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->all();
         $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $table = Cliente::find()->where(['=', 'idcliente', $model->idcliente])->one();
@@ -479,12 +479,15 @@ class FacturaventaController extends Controller
         $mensaje = "";
         if ($model->autorizado == 1){
             $factura = Facturaventa::findOne($id);
+            $ordenProduccion = Ordenproduccion::findOne($factura->idordenproduccion);
             if ($factura->nrofactura == 0){
                 $consecutivo = Consecutivo::findOne(1);
                 $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                 $factura->nrofactura = $consecutivo->consecutivo;
                 $factura->update();
                 $consecutivo->update();
+                $ordenProduccion->facturado = 1;
+                $ordenProduccion->update();
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{
                 Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado.');
@@ -497,7 +500,7 @@ class FacturaventaController extends Controller
     }
 
     public function actionOrdenp($id){
-        $rows = Ordenproduccion::find()->where(['idcliente' => $id])->andWhere(['autorizado' => 1])->all();
+        $rows = Ordenproduccion::find()->where(['idcliente' => $id])->andWhere(['autorizado' => 1])->andWhere(['facturado' => 0])->all();
 
         echo "<option required>Seleccione...</option>";
         if(count($rows)>0){

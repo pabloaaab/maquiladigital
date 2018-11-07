@@ -20,6 +20,9 @@ use Yii;
  * @property string $ordenproduccion
  * @property int $idtipo
  * @property string $usuariosistema
+ * @property int $facturado
+ * @property int $proceso_control
+ * @property int $porcentaje_proceso
  *
  * @property Facturaventa[] $facturaventas
  * @property Cliente $cliente
@@ -42,7 +45,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     {
         return [
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo'], 'required'],
-            [['idcliente', 'estado', 'idtipo','autorizado'], 'integer'],
+            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','porcentaje_proceso'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
             [['totalorden'], 'number'],
             [['valorletras', 'observacion'], 'string'],
@@ -68,10 +71,13 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'valorletras' => 'Valor Letras',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
+            'estado' => 'Facturado',
+            'proceso_control' => 'Control',
             'autorizado' => 'Autorizado',
             'ordenproduccion' => 'Orden Produccion',
             'idtipo' => 'Idtipo',
             'usuariosistema' => 'Usuario Sistema',
+            'porcentaje_proceso' => '% Proceso',
         ];
     }
 
