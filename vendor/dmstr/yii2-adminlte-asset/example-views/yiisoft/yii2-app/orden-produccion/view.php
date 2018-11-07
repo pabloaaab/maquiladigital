@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'totalorden') ?></th>
-                    <td><?= Html::encode('$ '.number_format($model->totalorden)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->totalorden,2)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?></th>
@@ -124,11 +124,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetalleorden ?></td>
-                        <td><?= $val->producto->producto ?></td>
+                        <td><?= $val->producto->nombreProducto ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
-                        <td><?= '$ '.number_format($val->vlrprecio) ?></td>
-                        <td><?= '$ '.number_format($val->subtotal) ?></td>
+                        <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                        <td><?= '$ '.number_format($val->subtotal,2) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>

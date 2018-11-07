@@ -69,11 +69,11 @@ if ($mensaje != ""){
                 <?php foreach ($mds as $val): ?>
                 <tr>
                     <td><?= $val->iddetalleorden ?></td>
-                    <td><?= $val->producto->producto ?></td>
+                    <td><?= $val->producto->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= '$ '.number_format($val->vlrprecio) ?></td>
-                    <td><?= '$ '.number_format($val->subtotal) ?></td>
+                    <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                    <td><?= '$ '.number_format($val->subtotal,2) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>
                 </tbody>

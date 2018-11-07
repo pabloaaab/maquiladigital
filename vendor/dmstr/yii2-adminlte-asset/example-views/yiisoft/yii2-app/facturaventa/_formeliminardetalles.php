@@ -63,11 +63,11 @@ use yii\db\ActiveQuery;
                 <?php foreach ($mds as $val): ?>
                 <tr>
                     <td><?= $val->iddetallefactura ?></td>
-                    <td><?= $val->producto->producto ?></td>
+                    <td><?= $val->producto->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= $val->preciounitario ?></td>
-                    <td><?= $val->total ?></td>
+                    <td><?= '$ '.number_format($val->preciounitario,2) ?></td>
+                    <td><?= '$ '.number_format($val->total,2) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallefactura ?>"></td>
                 </tr>
                 </tbody>

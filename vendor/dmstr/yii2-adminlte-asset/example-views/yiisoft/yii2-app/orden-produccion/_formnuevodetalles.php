@@ -57,11 +57,11 @@ use yii\db\ActiveQuery;
                 <?php foreach ($productosCliente as $val): ?>
                 <tr>
                     <td><?= $val->idproducto ?></td>
-                    <td><?= $val->producto ?></td>
+                    <td><?= $val->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
 
                     <td><input type="text" name="cantidad[]" value="0" required></td>
-                    <td><input type="text" name="costoconfeccion[]" value="<?= $val->costoconfeccion ?>" required></td>
+                    <td><input type="text" name="vlrventa[]" value="<?= $val->vlrventa ?>" required></td>
                     <td><input type="hidden" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
                     <td><input type="hidden" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
                 </tr>

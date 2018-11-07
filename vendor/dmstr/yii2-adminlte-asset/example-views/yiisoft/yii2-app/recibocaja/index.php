@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'valor Pagado',
                 'attribute' =>'valorpagado',
                 'contentOptions' => ['class' => 'col-lg-1'],
-                'format'=>['decimal',0]
+                'format'=>['decimal',2]
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

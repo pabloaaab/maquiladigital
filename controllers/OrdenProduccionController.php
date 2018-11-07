@@ -192,9 +192,9 @@ class OrdenProduccionController extends Controller
                         $table = new Ordenproducciondetalle();
                         $table->idproducto = $_POST["idproducto"][$intIndice];
                         $table->cantidad = $_POST["cantidad"][$intIndice];
-                        $table->vlrprecio = $_POST["costoconfeccion"][$intIndice];
+                        $table->vlrprecio = $_POST["vlrventa"][$intIndice];
                         $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["costoconfeccion"][$intIndice];
+                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrventa"][$intIndice];
                         $table->idordenproduccion = $idordenproduccion;
                         $table->insert();
                         $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);

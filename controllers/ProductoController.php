@@ -77,7 +77,7 @@ class ProductoController extends Controller
         return $this->render('create', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
-            'prendas' => ArrayHelper::map($prendas,'idprendatipo','prenda')
+            'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto')
         ]);
     }
 
@@ -100,7 +100,7 @@ class ProductoController extends Controller
         return $this->render('update', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
-            'prendas' => ArrayHelper::map($prendas,'idprendatipo','prenda')
+            'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto')
         ]);
     }
 

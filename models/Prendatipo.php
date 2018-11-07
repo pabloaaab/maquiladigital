@@ -65,4 +65,8 @@ class Prendatipo extends \yii\db\ActiveRecord
         return $this->hasMany(Producto::className(), ['idprendatipo' => 'idprendatipo']);
     }
 
+    public function getNombreProducto()
+    {
+        return "{$this->prenda} - {$this->talla->talla} - {$this->talla->sexo}";
+    }
 }

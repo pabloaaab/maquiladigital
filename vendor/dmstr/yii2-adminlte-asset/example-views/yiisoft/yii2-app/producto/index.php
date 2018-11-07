@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Cliente;
+use app\models\Producto;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -33,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'producto',
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'value' => function($model){
+                    $productos = Producto::findOne($model->idproducto);
+                    return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
+                },
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [
                 'attribute' => 'cantidad',

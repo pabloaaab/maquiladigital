@@ -218,10 +218,10 @@ class RecibocajaController extends Controller
                     $table->idrecibo = Html::encode($_POST["idrecibo"]);
                     $table->update();
 
-                    $recibo = Recibocaja::findOne($table->idrecibo);
+                    /*$recibo = Recibocaja::findOne($table->idrecibo);
                     $recibo->valorpagado = $recibo->valorpagado - Html::encode($_POST["total"]);
                     $recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
-                    $recibo->update();
+                    $recibo->update();*/
 
                     $this->redirect(["recibocaja/view",'id' => $idrecibo]);
 
@@ -246,12 +246,12 @@ class RecibocajaController extends Controller
                     $total = $table->vlrabono;
                     $table->vlrabono = $_POST["vlrabono"][$intIndice];
 
-                    $table->update();
+                    /*$table->update();
                     $recibo = Recibocaja::findOne($idrecibo);
                     $recibo->valorpagado = $recibo->valorpagado - $total;
                     $recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
 
-                    $recibo->update();
+                    $recibo->update();*/
                 }
                 $intIndice++;
             }
@@ -275,9 +275,9 @@ class RecibocajaController extends Controller
                 $total = $reciboDetalle->vlrabono;
                 if(Recibocajadetalle::deleteAll("iddetallerecibo=:iddetallerecibo", [":iddetallerecibo" => $iddetallerecibo]))
                 {
-                    $recibo = Recibocaja::findOne($idrecibo);
+                    /*$recibo = Recibocaja::findOne($idrecibo);
                     $recibo->valorpagado = $recibo->valorpagado - $total;
-                    $recibo->update();
+                    $recibo->update();*/
 
                     $this->redirect(["recibocaja/view",'id' => $idrecibo]);
                 }
@@ -312,9 +312,9 @@ class RecibocajaController extends Controller
                     $total = $reciboDetalle->vlrabono;
                     if(Recibocajadetalle::deleteAll("iddetallerecibo=:iddetallerecibo", [":iddetallerecibo" => $intCodigo]))
                     {
-                        $recibo = Recibocaja::findOne($idrecibo);
+                        /*$recibo = Recibocaja::findOne($idrecibo);
                         $recibo->valorpagado = $recibo->valorpagado - $total;
-                        $recibo->update();
+                        $recibo->update();*/
                     }
                 }
                 $this->redirect(["recibocaja/view",'id' => $idrecibo]);
@@ -339,9 +339,21 @@ class RecibocajaController extends Controller
                 ->all();
             $reg = count($detalles);
             if ($reg <> 0) {
-                $model->autorizado = 1;
-                $model->update();
-                $this->redirect(["recibocaja/view",'id' => $id]);
+                $error = 0;
+                foreach ($detalles as $dato){
+                    if ($dato->vlrabono > $dato->vlrsaldo){
+                        $error = 1;
+                    }
+                }
+                if ($error == 0){
+                    $model->autorizado = 1;
+                    $model->update();
+                    $this->redirect(["recibocaja/view",'id' => $id]);
+                }else{
+                    Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
+                    $this->redirect(["recibocaja/view",'id' => $id]);
+                }
+
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener facturas relacionados en el recibo de caja.');
                 $this->redirect(["recibocaja/view",'id' => $id]);
@@ -369,19 +381,35 @@ class RecibocajaController extends Controller
                     ->where(['idrecibo' => $id])
                     ->all();
                 $total = 0;
-                foreach ($recibodetalles as $val) {
-                    $recibodetalle = Recibocajadetalle::find()->where(['iddetallerecibo' => $val])->one();
-                    $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
-                    $total = $total + $val->vlrabono;
-                    $recibodetalle->update();
-                    $factura = Facturaventa::findOne($val->idfactura);
-                    $factura->saldo = $recibodetalle->vlrsaldo;
-                    $factura->update();
-                    $this->redirect(["recibocaja/view",'id' => $id]);
+                $error = 0;
+                foreach ($recibodetalles as $dato){
+                    if ($dato->vlrabono > $dato->vlrsaldo){
+                        $error = 1;
+                    }
                 }
-                $model->valorpagado = $total;
-                $model->fechapago = date('Y-m-d');
-                $model->update();
+                if ($error == 0){
+                    foreach ($recibodetalles as $val) {
+                        $recibodetalle = Recibocajadetalle::find()->where(['iddetallerecibo' => $val])->one();
+                        $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
+                        $total = $total + $val->vlrabono;
+                        $recibodetalle->update();
+                        $factura = Facturaventa::findOne($val->idfactura);
+                        $factura->saldo = $recibodetalle->vlrsaldo;
+                        if($factura->saldo <= 0){
+                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                        }elseif ($factura->saldo >= 0){
+                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                        }
+                        $factura->update();
+                    }
+                    $model->valorpagado = $total;
+                    $model->fechapago = date('Y-m-d');
+                    $model->update();
+                    $this->redirect(["recibocaja/view",'id' => $id]);
+                    } else {
+                        Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
+                        $this->redirect(["recibocaja/view",'id' => $id]);
+                    }
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Ya se realizo el pago del recibo de caja.');
                 $this->redirect(["recibocaja/view",'id' => $id]);

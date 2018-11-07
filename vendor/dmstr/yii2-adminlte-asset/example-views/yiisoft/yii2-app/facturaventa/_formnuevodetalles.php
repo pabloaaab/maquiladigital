@@ -63,11 +63,11 @@ if ($mensaje != ""){
                 <?php foreach ($facturaOrden as $val): ?>
                 <tr>
                     <td><?= $val->iddetalleorden ?></td>
-                    <td><?= $val->producto->producto ?></td>
+                    <td><?= $val->producto->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= $val->vlrprecio ?></td>
-                    <td><?= $val->subtotal ?></td>
+                    <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                    <td><?= '$ '.number_format($val->subtotal,0) ?></td>
                     <td><input type="checkbox" name="iddetalleorden[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>
                 </tbody>

@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'porcentajeiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajeiva) ?></td>
                     <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
-                    <td><?= Html::encode('$ '.number_format($model->subtotal)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->subtotal,2)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechainicio') ?>:</th>
@@ -74,7 +74,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'porcentajefuente') ?>:</th>
                     <td><?= Html::encode($model->porcentajefuente) ?></td>
                     <th><?= Html::activeLabel($model, 'impuestoiva') ?>: +</th>
-                    <td><?= Html::encode('$ '.number_format($model->impuestoiva)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->impuestoiva,2)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechavcto') ?>:</th>
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'porcentajereteiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajereteiva) ?></td>
                     <th><?= Html::activeLabel($model, 'retencioniva') ?>: -</th>
-                    <td><?= Html::encode('$ '.number_format($model->retencioniva)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->retencioniva,2)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'plazopago') ?>:</th>
@@ -90,15 +90,15 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'retencionfuente') ?>: -</th>
-                    <td><?= Html::encode('$ '.number_format($model->retencionfuente)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->retencionfuente,2)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'formapago') ?>:</th>
                     <td><?= Html::encode($model->formapago) ?></td>
                     <th><?= Html::activeLabel($model, 'saldo') ?>:</th>
-                    <td><?= Html::encode('$ '.number_format($model->saldo)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->saldo,2)) ?></td>
                     <th><?= Html::activeLabel($model, 'totalpagar') ?>:</th>
-                    <td><?= Html::encode('$ '.number_format($model->totalpagar)) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->totalpagar,2)) ?></td>
                 </tr>
             </table>
         </div>
@@ -125,11 +125,11 @@ $this->params['breadcrumbs'][] = $model->idfactura;
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetallefactura ?></td>
-                        <td><?= $val->producto->producto ?></td>
+                        <td><?= $val->producto->nombreProducto ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
-                        <td><?= '$ '.number_format($val->preciounitario) ?></td>
-                        <td><?= '$ '.number_format($val->total) ?></td>
+                        <td><?= '$ '.number_format($val->preciounitario,2) ?></td>
+                        <td><?= '$ '.number_format($val->total,2) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetallefactura2<?= $val->iddetallefactura ?>"><span class="glyphicon glyphicon-pencil"></span></a>
