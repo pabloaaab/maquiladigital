@@ -24,7 +24,11 @@ use yii\db\ActiveQuery;
 /* @var $model app\models\Ordenproduccion */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php
+$this->title = 'Nuevo Detalles';
+$this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view', 'id' => $idordenproduccion]];
+$this->params['breadcrumbs'][] = $this->title;
+?>
 <?php $form = ActiveForm::begin([
 
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
@@ -38,7 +42,7 @@ use yii\db\ActiveQuery;
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Orden de prducción
+            Nuevo detalle Orden de producción
         </div>
         <div class="panel-body">
             <table class="table table-condensed">

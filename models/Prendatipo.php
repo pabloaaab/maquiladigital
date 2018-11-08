@@ -24,6 +24,14 @@ class Prendatipo extends \yii\db\ActiveRecord
         return 'prendatipo';
     }
 
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->prenda = strtoupper($this->prenda);
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */

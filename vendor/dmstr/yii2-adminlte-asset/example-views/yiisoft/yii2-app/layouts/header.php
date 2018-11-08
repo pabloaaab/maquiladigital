@@ -229,18 +229,18 @@ use yii\helpers\Html;
 
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <img src="<?= $directoryAsset ?>/img/default-50x50.gif" class="user-image" alt="User Image"/>
+                        <span class="hidden-xs"><?= Yii::$app->user->identity->nombrecompleto ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
+                            <img src="<?= $directoryAsset ?>/img/default-50x50.gif" class="img-circle"
                                  alt="User Image"/>
 
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?= Yii::$app->user->identity->nombrecompleto ?> - <?= Yii::$app->user->identity->emailusuario ?>
+                                <small><?php if (Yii::$app->user->identity->role == 2){ echo "Administrador"; } else {echo "Usuario";} ?></small>
                             </p>
                         </li>
                         <!-- Menu Body -->

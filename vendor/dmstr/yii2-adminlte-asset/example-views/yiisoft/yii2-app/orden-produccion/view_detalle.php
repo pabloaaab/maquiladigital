@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            <h5>Orden Producción</h5>
+            Orden de Producción Procesos
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">

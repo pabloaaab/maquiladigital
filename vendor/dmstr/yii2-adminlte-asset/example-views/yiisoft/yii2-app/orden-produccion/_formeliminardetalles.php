@@ -27,7 +27,7 @@ use yii\db\ActiveQuery;
 
 <?php
 $this->title = 'Eliminar Detalles Ordenes de Producción ' .$idordenproduccion;
-$this->params['breadcrumbs'][] = ['label' => 'Volver Detalle', 'url' => ['view','id' => $idordenproduccion]];
+$this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view','id' => $idordenproduccion]];
 $this->params['breadcrumbs'][] = $idordenproduccion;
 ?>
 

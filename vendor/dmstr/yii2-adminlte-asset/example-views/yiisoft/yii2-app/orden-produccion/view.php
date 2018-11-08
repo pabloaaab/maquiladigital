@@ -24,8 +24,6 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 
 
-
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
@@ -35,7 +33,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 ?>
 <div class="ordenproduccion-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>
@@ -58,7 +56,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            <h5><?= Html::encode($this->title) ?></h5>
+            Orden de Producción
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">

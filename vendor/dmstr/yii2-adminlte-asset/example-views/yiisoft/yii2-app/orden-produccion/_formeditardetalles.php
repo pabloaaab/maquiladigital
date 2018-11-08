@@ -24,7 +24,11 @@ use yii\db\ActiveQuery;
 /* @var $model app\models\Ordenproduccion */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<?php
+$this->title = 'Editar Detalles';
+$this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view', 'id' => $idordenproduccion]];
+$this->params['breadcrumbs'][] = $this->title;
+?>
 <?php $form = ActiveForm::begin([
 
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],

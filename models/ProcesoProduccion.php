@@ -23,6 +23,14 @@ class ProcesoProduccion extends \yii\db\ActiveRecord
         return 'proceso_produccion';
     }
 
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->proceso = strtoupper($this->proceso);
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */

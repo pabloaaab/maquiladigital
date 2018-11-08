@@ -36,6 +36,14 @@ class Producto extends \yii\db\ActiveRecord
         return 'producto';
     }
 
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->producto = strtoupper($this->producto);
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */

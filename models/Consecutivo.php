@@ -21,6 +21,14 @@ class Consecutivo extends \yii\db\ActiveRecord
         return 'consecutivo';
     }
 
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->nombre = strtoupper($this->nombre);
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -23,6 +23,15 @@ class Talla extends \yii\db\ActiveRecord
         return 'talla';
     }
 
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
+            return false;
+        }
+        $this->talla = strtoupper($this->talla);
+        $this->sexo = strtoupper($this->sexo);
+        return true;
+    }
+
     /**
      * {@inheritdoc}
      */
