@@ -55,7 +55,7 @@
     <session id="1471215697">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="111" />
+          <entry key="project.closed" value="112" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="1" />
           <entry key="project.open.time.20" value="1" />
@@ -66,7 +66,7 @@
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.27" value="6" />
           <entry key="project.open.time.28" value="8" />
-          <entry key="project.open.time.29" value="5" />
+          <entry key="project.open.time.29" value="6" />
           <entry key="project.open.time.30" value="6" />
           <entry key="project.open.time.31" value="8" />
           <entry key="project.open.time.32" value="4" />
@@ -88,7 +88,7 @@
           <entry key="project.open.time.54" value="1" />
           <entry key="project.open.time.61" value="1" />
           <entry key="project.open.time.90" value="1" />
-          <entry key="project.opened" value="108" />
+          <entry key="project.opened" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -110,7 +110,7 @@
           <entry key="log" value="1" />
           <entry key="map" value="4" />
           <entry key="md" value="2" />
-          <entry key="php" value="875" />
+          <entry key="php" value="883" />
           <entry key="png" value="8" />
           <entry key="sql" value="1" />
           <entry key="txt" value="2" />
@@ -126,7 +126,7 @@
           <entry key="JSON" value="8" />
           <entry key="JavaScript" value="2" />
           <entry key="Markdown" value="2" />
-          <entry key="PHP" value="877" />
+          <entry key="PHP" value="885" />
           <entry key="PLAIN_TEXT" value="11" />
           <entry key="SQL" value="1" />
           <entry key="SmartyConfig" value="1" />
@@ -143,7 +143,7 @@
           <entry key="js" value="161" />
           <entry key="json" value="64" />
           <entry key="md" value="29" />
-          <entry key="php" value="43787" />
+          <entry key="php" value="43894" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -153,7 +153,7 @@
           <entry key="JSON" value="64" />
           <entry key="JavaScript" value="161" />
           <entry key="Markdown" value="29" />
-          <entry key="PHP" value="43824" />
+          <entry key="PHP" value="43931" />
           <entry key="PLAIN_TEXT" value="63" />
         </counts>
       </usages-collector>
@@ -169,7 +169,73 @@
     <favorites_list name="proyecthw" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/left.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="83" column="41" selection-start-line="83" selection-start-column="41" selection-end-line="83" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/ordenproduccionproceso.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
+              <folding>
+                <element signature="e#121#142#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="15" column="53" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_search.php">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/BancoSearch.php">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/models/FacturaventaSearch.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="888">
+              <caret line="82" column="14" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/controllers/OrdenProduccionController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-5916" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -237,7 +303,6 @@
         <option value="$PROJECT_DIR$/controllers/RecibocajaController.php" />
         <option value="$PROJECT_DIR$/controllers/FacturaventaController.php" />
         <option value="$PROJECT_DIR$/models/Ordenproduccion.php" />
-        <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/ordenproduccionproceso.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/view_detale.php" />
         <option value="$PROJECT_DIR$/controllers/OrdenProduccionController.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/proceso-produccion/_search.php" />
@@ -252,19 +317,20 @@
         <option value="$PROJECT_DIR$/models/Prendatipo.php" />
         <option value="$PROJECT_DIR$/models/Producto.php" />
         <option value="$PROJECT_DIR$/models/ProcesoProduccion.php" />
-        <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/left.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/header.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/content.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/main-login.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/index.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/update.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/create.php" />
-        <option value="$PROJECT_DIR$/web/index.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_formeditardetalles.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_formeliminardetalles.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/view.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_formnuevodetalles.php" />
         <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/view_detalle.php" />
+        <option value="$PROJECT_DIR$/web/index.php" />
+        <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/left.php" />
+        <option value="$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/ordenproduccionproceso.php" />
       </list>
     </option>
   </component>
@@ -273,6 +339,11 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/web/assets/24448bdd/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 5.6">
     <include_path>
@@ -373,6 +444,11 @@
             <path>
               <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
               <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
+              <item name="models" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
+              <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
               <item name="vendor" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -425,6 +501,11 @@
               <item name="yiisoft" type="462c0819:PsiDirectoryNode" />
               <item name="yii2-app" type="462c0819:PsiDirectoryNode" />
               <item name="orden-produccion" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="maquiladigital" type="b2602c69:ProjectViewProjectNode" />
+              <item name="maquiladigital" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -629,6 +710,7 @@
       <workItem from="1541420351907" duration="34903000" />
       <workItem from="1541530421135" duration="2506000" />
       <workItem from="1541600889651" duration="8011000" />
+      <workItem from="1541696246610" duration="2087000" />
     </task>
     <servers />
   </component>
@@ -641,7 +723,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="656187000" />
+    <option name="totallyTimeSpent" value="658274000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -653,9 +735,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891776" visible="true" weight="0.2707889" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891776" visible="true" weight="0.27458397" />
       <window_info id="Structure" order="1" sideWeight="0.50108224" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" sideWeight="0.50108224" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -683,16 +765,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/models/Resolucion.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/OrdenproduccionSearch.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/Ordenproducciontipo.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/ReciboCajaSearch.php">
+    <entry file="file://$PROJECT_DIR$/models/RecibocajaSearch.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/models/Recibocajadetalle.php">
@@ -780,9 +853,7 @@
     <entry file="file://$PROJECT_DIR$/vendor/almasaeed2010/adminlte/dist/img/default-50x50.gif">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/almasaeed2010/adminlte/dist/img/perfil.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/almasaeed2010/adminlte/dist/img/perfil.jpg" />
     <entry file="file://$PROJECT_DIR$/vendor/almasaeed2010/adminlte/dist/img/icons.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -809,9 +880,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="82" selection-start-line="19" selection-start-column="77" selection-end-line="19" selection-end-column="82" />
-          <folding>
-            <element signature="e#6#34#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -822,28 +890,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/left.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="81" selection-start-line="7" selection-start-column="80" selection-end-line="7" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/main.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#6#27#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/web/index-test.php">
       <provider selected="true" editor-type-id="text-editor" />
@@ -864,9 +912,6 @@
           <caret line="10" column="46" selection-start-line="8" selection-end-line="10" selection-end-column="46" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_search.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_formnuevodetalles.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -903,9 +948,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/OrdenProduccionController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5916" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/layouts/left.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="83" column="41" selection-start-line="83" selection-start-column="41" selection-end-line="83" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/ordenproduccionproceso.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
+        <state relative-caret-position="374">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#121#142#0#PHP" expanded="true" />
           </folding>
@@ -914,8 +979,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="51">
           <caret line="15" column="53" selection-start-line="15" selection-start-column="53" selection-end-line="15" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/dmstr/yii2-adminlte-asset/example-views/yiisoft/yii2-app/orden-produccion/_search.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/BancoSearch.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/FacturaventaSearch.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="888">
+          <caret line="82" column="14" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="14" />
         </state>
       </provider>
     </entry>

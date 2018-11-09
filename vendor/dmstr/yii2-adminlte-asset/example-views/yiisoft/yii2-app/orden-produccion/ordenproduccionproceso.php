@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </script>
 
-<h1>Lista Ordenes de producción</h1>
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
     "action" => Url::toRoute("orden-produccion/proceso"),
