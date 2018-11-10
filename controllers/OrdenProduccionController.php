@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 
+use app\models\Ordenproducciondetalleproceso;
+use app\models\ProcesoProduccion;
 use Yii;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
@@ -341,8 +343,6 @@ class OrdenProduccionController extends Controller
             'idordenproduccion' => $idordenproduccion,
             'mensaje' => $mensaje,
         ]);
-
-
     }
 
     public function actionProceso()
@@ -402,6 +402,54 @@ class OrdenProduccionController extends Controller
              return $this->redirect(["site/login"]);
          }*/
 
+    }
+
+    public function actionNuevo_detalle_proceso($id,$iddetalleorden){
+        $procesos = ProcesoProduccion::find()->all();
+        if(Yii::$app->request->post()) {
+            if (isset($_POST["idproceso"])) {
+                $intIndice = 0;
+                foreach ($_POST["idproceso"] as $intCodigo) {
+                    $table = new Ordenproducciondetalleproceso();
+                    $proceso = ProcesoProduccion::findOne($intCodigo);
+                    $detalles = Ordenproducciondetalleproceso::find()
+                        ->where(['=', 'idproceso', $intCodigo])
+                        ->andWhere(['=', 'iddetalleorden', $iddetalleorden])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table->idproceso = $intCodigo;
+                        $table->proceso = $proceso->proceso;
+                        $table->iddetalleorden = $iddetalleorden;
+                        $table->insert();
+                    }
+                }
+                $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
+            }
+        }
+        return $this->renderAjax('_formnuevodetalleproceso', [
+            'procesos' => $procesos,
+        ]);
+    }
+
+    public function actionDetalle_proceso(){
+        $procesos = Ordenproducciondetalleproceso::find()->all();
+        if(Yii::$app->request->post()) {
+            if (isset($_POST["editar"])) {
+                //Yii::$app->getSession()->setFlash('error', 'Editar.');
+                echo "<script>alert('editar');</script>";
+            }
+            if (isset($_POST["eliminar"])) {
+                //Yii::$app->getSession()->setFlash('error', 'Eliminar.');
+                echo "<script>alert('eliminar');</script>";
+            }
+        }
+        return $this->renderPartial('_formdetalleproceso', [
+            'procesos' => $procesos,
+        ]);
     }
 
     public function actionView_detalle($id)

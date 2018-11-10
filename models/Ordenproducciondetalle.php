@@ -17,10 +17,9 @@ use Yii;
  * @property int $generado
  * @property int $facturado
  * @property int $porcentaje_proceso
- * @property int $iddetalleproceso
  *
  * @property Producto $producto
- * @property Ordenproducciondetalleproceso $detalleproceso
+ * @property Ordenproducciondetalleproceso[] $ordenproducciondetalleprocesos
  */
 class Ordenproducciondetalle extends \yii\db\ActiveRecord
 {
@@ -39,11 +38,10 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
-            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso', 'iddetalleproceso'], 'integer'],
+            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso'], 'integer'],
             [['vlrprecio', 'subtotal'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
-            [['iddetalleproceso'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciondetalleproceso::className(), 'targetAttribute' => ['iddetalleproceso' => 'iddetalleproceso']],
         ];
     }
 
@@ -63,7 +61,6 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
             'generado' => 'Generado',
             'facturado' => 'Facturado',
             'porcentaje_proceso' => 'Porcentaje Proceso',
-            'iddetalleproceso' => 'Iddetalleproceso',
         ];
     }
 
@@ -78,8 +75,8 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDetalleproceso()
+    public function getOrdenproducciondetalleprocesos()
     {
-        return $this->hasOne(Ordenproducciondetalleproceso::className(), ['iddetalleproceso' => 'iddetalleproceso']);
+        return $this->hasMany(Ordenproducciondetalleproceso::className(), ['iddetalleorden' => 'iddetalleorden']);
     }
 }

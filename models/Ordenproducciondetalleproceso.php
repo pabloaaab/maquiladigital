@@ -14,9 +14,10 @@ use Yii;
  * @property int $total
  * @property int $idproceso
  * @property int $estado
+ * @property int $iddetalleorden
  *
- * @property Ordenproducciondetalle[] $ordenproducciondetalles
  * @property ProcesoProduccion $proceso0
+ * @property Ordenproducciondetalle $detalleorden
  */
 class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
 {
@@ -34,10 +35,11 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['duracion', 'ponderacion', 'total', 'idproceso', 'estado'], 'integer'],
-            [['idproceso'], 'required'],
+            [['duracion', 'ponderacion', 'total', 'idproceso', 'estado', 'iddetalleorden'], 'integer'],
+            [['idproceso', 'iddetalleorden'], 'required'],
             [['proceso'], 'string', 'max' => 50],
             [['idproceso'], 'exist', 'skipOnError' => true, 'targetClass' => ProcesoProduccion::className(), 'targetAttribute' => ['idproceso' => 'idproceso']],
+            [['iddetalleorden'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciondetalle::className(), 'targetAttribute' => ['iddetalleorden' => 'iddetalleorden']],
         ];
     }
 
@@ -54,15 +56,8 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
             'total' => 'Total',
             'idproceso' => 'Idproceso',
             'estado' => 'Estado',
+            'iddetalleorden' => 'Iddetalleorden',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getOrdenproducciondetalles()
-    {
-        return $this->hasMany(Ordenproducciondetalle::className(), ['iddetalleproceso' => 'iddetalleproceso']);
     }
 
     /**
@@ -71,5 +66,13 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function getProceso0()
     {
         return $this->hasOne(ProcesoProduccion::className(), ['idproceso' => 'idproceso']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDetalleorden()
+    {
+        return $this->hasOne(Ordenproducciondetalle::className(), ['iddetalleorden' => 'iddetalleorden']);
     }
 }
