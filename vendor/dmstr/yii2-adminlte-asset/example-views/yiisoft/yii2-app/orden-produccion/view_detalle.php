@@ -61,7 +61,10 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th></th>
                     <td></td>
                     <th><?= Html::activeLabel($model, 'Progreso') ?></th>
-                    <td><?= Html::encode($model->porcentaje_proceso).' %' ?></td>
+                    <td><div class="progress">
+                            <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>
+                            <span><b><?= Html::encode($model->porcentaje_proceso).' %' ?></b></span>
+                        </div></td>
                     <th><?= Html::activeLabel($model, 'tipo') ?></th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
@@ -93,8 +96,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <td><?= $val->producto->nombreProducto ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
-                        <td><?= $val->porcentaje_proceso.' %' ?></td>
-                        <?php if ($model->porcentaje_proceso <= 0) { ?>
+                        <td><div class="progress">
+                                <progress id="html5" max="100" value="<?= $val->porcentaje_proceso ?>"></progress>
+                                <span><b><?= $val->porcentaje_proceso ?> %</b></span>
+                            </div></td>
+                        <?php if ($model->porcentaje_proceso >= 0 && $model->porcentaje_proceso < 100) { ?>
                             <td>
                                 <!-- Inicio Nuevo Detalle proceso -->
                                 <?php echo Html::a('<span class="glyphicon glyphicon-log-in"></span>',
@@ -102,63 +108,33 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     [
                                         'title' => 'Nuevo Detalle Proceso',
                                         'data-toggle'=>'modal',
-                                        'data-target'=>'#modaldetalleproceso',
+                                        'data-target'=>'#modaldetallenuevo',
                                     ]
                                 );
                                 ?>
-                                <div class="modal remote fade" id="modaldetalleproceso">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content loader-lg"></div>
+                                <div class="modal remote fade" id="modaldetallenuevo">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content"></div>
                                     </div>
                                 </div>
                                 <!-- Fin Nuevo Detalle proceso -->
                                 <!-- Inicio Vista,Eliminar,Editar -->
                                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>',
-                                    ['/orden-produccion/detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],
+                                    ['/orden-produccion/detalle_proceso','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],
                                     [
                                         'title' => 'Detalle Proceso',
                                         'data-toggle'=>'modal',
-                                        'data-target'=>'#modaldetalleproceso2',
+                                        'data-target'=>'#modaldetalleproceso'.$val->iddetalleorden,
                                     ]
                                 );
                                 ?>
-                                <div class="modal remote fade" id="modaldetalleproceso2">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content loader-lg"></div>
+                                <div class="modal remote fade" id="modaldetalleproceso<?= $val->iddetalleorden ?>">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content"></div>
                                     </div>
                                 </div>
                                 <!-- Fin Vista,Eliminar,Editar -->
-                                <!-- Inicio vista 2 -->
-                                <a href="#" onclick="mostrarf(<?= $val->iddetalleorden ?>)"><span class="glyphicon glyphicon-eye-open"></span></a>
-                                <div id="detalleproceso<?= $val->iddetalleorden ?>" style="display:none">
-                                    <table class="table table-responsive">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col">Proceso</th>
-                                            <th scope="col">Duración</th>
-                                            <th scope="col">Ponderación</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                        </thead>
-                                        <?php
-                                        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $val->iddetalleorden])->all();
-                                        ?>
-                                        <?php foreach ($procesos as $val): ?>
-                                        <tr>
-                                            <td><?= $val->idproceso ?></td>
-                                            <td><?= $val->proceso ?></td>
-                                            <td><input type="checkbox" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                        <tr>
-                                            <th scope="col">Total</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <!-- Fin vista 2 -->
+
                             </td>
                         <?php } ?>
                     </tr>
@@ -174,4 +150,26 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         divC = document.getElementById("detalleproceso"+r);
         if (divC.style.display == "none"){divC.style.display = "block";}else{divC.style.display = "none";}
     }
+</script>
+<script type="text/javascript">
+
+    window.onload = function() {
+
+        animateprogress("#html5",91);
+        animateprogress("#php",72);
+        animateprogress("#css",86);
+        animateprogress("#python",52);
+        animateprogress("#javascript",79);
+        animateprogress("#nodejs",36);
+
+    }
+    document.querySelector ("#boton").addEventListener ("click", function() {
+        animateprogress("#html5",91);
+        animateprogress("#php",72);
+        animateprogress("#css",86);
+        animateprogress("#python",52);
+        animateprogress("#javascript",79);
+        animateprogress("#nodejs",36);
+
+    });
 </script>

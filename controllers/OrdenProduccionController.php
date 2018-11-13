@@ -168,13 +168,11 @@ class OrdenProduccionController extends Controller
                 Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener productos relacionados en la orden de producción.');
                 $this->redirect(["orden-produccion/view",'id' => $id]);
             }
-
         } else {
             $model->autorizado = 0;
             $model->update();
             $this->redirect(["orden-produccion/view",'id' => $id]);
         }
-
     }
 
     public function actionNuevodetalles($idordenproduccion,$idcliente)
@@ -406,48 +404,85 @@ class OrdenProduccionController extends Controller
 
     public function actionNuevo_detalle_proceso($id,$iddetalleorden){
         $procesos = ProcesoProduccion::find()->all();
-        if(Yii::$app->request->post()) {
-            if (isset($_POST["idproceso"])) {
-                $intIndice = 0;
-                foreach ($_POST["idproceso"] as $intCodigo) {
-                    $table = new Ordenproducciondetalleproceso();
-                    $proceso = ProcesoProduccion::findOne($intCodigo);
+        if (isset($_POST["idproceso"])) {
+            $intIndice = 0;
+            foreach ($_POST["idproceso"] as $intCodigo) {
+                if($_POST["duracion"][$intIndice] > 0 ){
                     $detalles = Ordenproducciondetalleproceso::find()
                         ->where(['=', 'idproceso', $intCodigo])
                         ->andWhere(['=', 'iddetalleorden', $iddetalleorden])
                         ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
+                        $table = new Ordenproducciondetalleproceso();
                         $table->idproceso = $intCodigo;
-                        $table->proceso = $proceso->proceso;
+                        $table->proceso = $_POST["proceso"][$intIndice];
+                        $table->duracion = $_POST["duracion"][$intIndice];
+                        $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                        $table->total = $_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice];
                         $table->iddetalleorden = $iddetalleorden;
                         $table->insert();
                     }
                 }
-                $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
-            }else{
-                Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
-                $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
+                $intIndice++;
             }
+            $this->ponderacion($iddetalleorden);
+            $this->redirect(["orden-produccion/view_detalle",'id' => $id]);
         }
+
         return $this->renderAjax('_formnuevodetalleproceso', [
             'procesos' => $procesos,
         ]);
     }
 
-    public function actionDetalle_proceso(){
-        $procesos = Ordenproducciondetalleproceso::find()->all();
+    public function actionDetalle_proceso($idordenproduccion,$iddetalleorden){
+        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
         if(Yii::$app->request->post()) {
             if (isset($_POST["editar"])) {
-                //Yii::$app->getSession()->setFlash('error', 'Editar.');
-                echo "<script>alert('editar');</script>";
+                if (isset($_POST["iddetalleproceso1"])) {
+                    $intIndice = 0;
+                    foreach ($_POST["iddetalleproceso1"] as $intCodigo) {
+                        if($_POST["duracion"][$intIndice] > 0 ){
+                            $table = Ordenproducciondetalleproceso::findOne($intCodigo);
+                            $table->duracion = $_POST["duracion"][$intIndice];
+                            $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                            $table->total = $_POST["duracion"][$intIndice] + $_POST["ponderacion"][$intIndice];
+                            $table->update();
+                        }
+                        $intIndice++;
+                    }
+                }
             }
             if (isset($_POST["eliminar"])) {
-                //Yii::$app->getSession()->setFlash('error', 'Eliminar.');
-                echo "<script>alert('eliminar');</script>";
+                if (isset($_POST["iddetalleproceso2"])) {
+                    foreach ($_POST["iddetalleproceso2"] as $intCodigo) {
+
+                        if (Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $intCodigo])) {
+
+                        }
+                    }
+                }else{
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["orden-produccion/view_detalle",'id' => $idordenproduccion]);
+                }
             }
+            if (isset($_POST["ac"])) {//abrir/cerrar en la ejecucion del proceso si esta terminado o no ha sido terminado
+                if (isset($_POST["iddetalleproceso1"])) {
+                    $intIndice = 0;
+                    foreach ($_POST["iddetalleproceso1"] as $intCodigo) {
+                        if($_POST["estado"][$intIndice] >= 0 ){
+                            $table = Ordenproducciondetalleproceso::findOne($intCodigo);
+                            $table->estado = $_POST["estado"][$intIndice];
+                            $table->update();
+                        }
+                        $intIndice++;
+                    }
+                }
+            }
+            $this->ponderacion($iddetalleorden);
+            $this->redirect(["orden-produccion/view_detalle",'id' => $idordenproduccion]);
         }
-        return $this->renderPartial('_formdetalleproceso', [
+        return $this->renderAjax('_formdetalleproceso', [
             'procesos' => $procesos,
         ]);
     }
@@ -472,4 +507,37 @@ class OrdenProduccionController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    protected function ponderacion($iddetalleorden){
+        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
+        $totalsegundos = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
+        $sum = $totalsegundos->where(['=','iddetalleorden',$iddetalleorden])->sum('total');
+        $progreso = 0;
+        $totalprogreso = 0;
+        if ($sum > 0){
+            foreach ($procesos as $val){
+                if ($val->estado == 1) {
+                    $progreso = ($val->total * 100) / $sum;
+                    $totalprogreso = $totalprogreso + $progreso;
+                }
+                $total = round($totalprogreso,0);
+                $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
+                $tabla->porcentaje_proceso = $total;
+                $tabla->update();
+                $tabla2 = Ordenproduccion::findOne(['=','idordenproduccion',$tabla->idordenproduccion]);
+                $detallesorden = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $tabla->idordenproduccion])->all();
+                $totalporc = 0;
+                foreach ($detallesorden as $dato){
+                    $totalporc = $totalporc + $dato->porcentaje_proceso;
+                }
+                $totalporcentaje = $totalporc / count($detallesorden);
+                $tabla2->porcentaje_proceso = round($totalporcentaje,0) ;
+                $tabla2->update();
+                //Yii::$app->getSession()->setFlash('error',$totalporc );
+            }
+        }else {
+            $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
+            $tabla->porcentaje_proceso = 0;
+            $tabla->update();
+        }
+    }
 }

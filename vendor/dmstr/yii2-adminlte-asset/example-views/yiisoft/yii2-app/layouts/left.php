@@ -57,6 +57,7 @@
                                     ['label' => 'Prenda', 'icon' => 'plus-square-o', 'url' => ['prendatipo/index']],
                                     ['label' => 'Talla', 'icon' => 'plus-square-o', 'url' => ['talla/index']],
                                     ['label' => 'Procesos Producción', 'icon' => 'plus-square-o', 'url' => ['proceso-produccion/index']],
+                                    ['label' => 'Conceptos Notas', 'icon' => 'plus-square-o', 'url' => ['conceptonota/index']],
                                 ],
                             ],
                             [
@@ -82,6 +83,7 @@
                                 'items' => [
                                     ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/index']],
                                     ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => ['/facturaventa/index']],
+                                    ['label' => 'Nota Crédito', 'icon' => 'plus-square-o', 'url' => ['/notacredito/index']],
                                     ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
                                     ['label' => 'Procesos Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/proceso']],
                                 ],

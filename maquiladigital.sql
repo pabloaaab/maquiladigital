@@ -16,6 +16,42 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`maquiladigital` /*!40100 DEFAULT CHARAC
 
 USE `maquiladigital`;
 
+/*Table structure for table `archivodir` */
+
+DROP TABLE IF EXISTS `archivodir`;
+
+CREATE TABLE `archivodir` (
+  `idarchivodir` int(11) NOT NULL AUTO_INCREMENT,
+  `iddocumentodir` int(11) DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `iddirectorio` int(11) DEFAULT NULL,
+  `nombre` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `extension` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tipo` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tamaño` float DEFAULT NULL,
+  `descripcion` text COLLATE utf8_spanish_ci,
+  `comentarios` text COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`idarchivodir`),
+  KEY `iddocumentodir` (`iddocumentodir`),
+  KEY `iddirectorio` (`iddirectorio`),
+  CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
+  CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `archivodir` */
+
+insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`numero`,`iddirectorio`,`nombre`,`extension`,`tipo`,`tamaño`,`descripcion`,`comentarios`) values 
+(9,2,1,1,'9906799225_0726057492.pdf','pdf','application/pdf',27903,'dfdfdfdf',NULL),
+(10,2,1,1,'Pedido por cliente C16.xls','xls','application/vnd.ms-excel',7168,'dfdfdfdf',NULL),
+(11,2,1,1,'Pedido por cliente C16.xls','xls','application/vnd.ms-excel',7168,'dfdfdfdf',NULL),
+(12,2,1,1,'Pedido por cliente C16.xls','xls','application/vnd.ms-excel',7168,'dfdfdfdf',NULL),
+(13,2,1,1,'Pedido por cliente C16.xls','xls','application/vnd.ms-excel',7168,'dfdfdfdf',NULL),
+(14,2,1,1,'Pedido por cliente C16.xls','xls','application/vnd.ms-excel',7168,'dfdfdfdf',NULL),
+(15,2,1,1,'Mercurio Web - Cita Asignada.pdf','pdf','application/pdf',570356,'dfdfdfdf',NULL),
+(16,2,1,1,'9906799225_0726057492.pdf','pdf','application/pdf',27903,'dfdfdfdf',NULL),
+(17,2,1,1,'9906799225_0726057492.pdf','pdf','application/pdf',27903,'dfdfdfdf',NULL),
+(18,2,3,1,'Mercurio Web - Cita Asignada.pdf','pdf','application/pdf',570356,'dfdfdfdf',NULL);
+
 /*Table structure for table `banco` */
 
 DROP TABLE IF EXISTS `banco`;
@@ -90,6 +126,22 @@ insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nomb
 (24,5,1020304050,8,'FABRICATO SA','','','FABRICATO SA','CRA 86 # 96-69','258','301','fabricato@hotmail.com','PABLO','369','302','1',0,'05','05040','1020304050','2',0,1,1,'HOLA','2018-11-05 11:16:37'),
 (25,1,71268830,6,'','PABLO ANDRES','ARANZAZU ATUESTA','PABLO ANDRES ARANZAZU ATUESTA','CRA 3','254','301','paul6126@hotmail.com','ABI','256','302','2',20,'05','05001','71268830','1',1,1,1,'HOLA','2018-11-05 10:19:43');
 
+/*Table structure for table `conceptonota` */
+
+DROP TABLE IF EXISTS `conceptonota`;
+
+CREATE TABLE `conceptonota` (
+  `idconceptonota` int(11) NOT NULL AUTO_INCREMENT,
+  `concepto` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`idconceptonota`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `conceptonota` */
+
+insert  into `conceptonota`(`idconceptonota`,`concepto`,`estado`) values 
+(1,'NOTA CREDITO',0);
+
 /*Table structure for table `consecutivo` */
 
 DROP TABLE IF EXISTS `consecutivo`;
@@ -104,7 +156,7 @@ CREATE TABLE `consecutivo` (
 /*Data for the table `consecutivo` */
 
 insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values 
-(1,'FACTURA DE VENTA',4);
+(1,'FACTURA DE VENTA',5);
 
 /*Table structure for table `departamento` */
 
@@ -154,6 +206,44 @@ insert  into `departamento`(`iddepartamento`,`departamento`,`activo`) values
 ('97','VAUPÉS',1),
 ('99','VICHADA',1);
 
+/*Table structure for table `directorio` */
+
+DROP TABLE IF EXISTS `directorio`;
+
+CREATE TABLE `directorio` (
+  `iddirectorio` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
+  `numeroarchivos` int(11) DEFAULT NULL,
+  `ruta` varchar(150) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`iddirectorio`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `directorio` */
+
+insert  into `directorio`(`iddirectorio`,`nombre`,`numero`,`numeroarchivos`,`ruta`) values 
+(1,'DOCUMENTOS',0,0,'Documentos/');
+
+/*Table structure for table `documentodir` */
+
+DROP TABLE IF EXISTS `documentodir`;
+
+CREATE TABLE `documentodir` (
+  `iddocumentodir` int(15) NOT NULL AUTO_INCREMENT,
+  `codigodocumento` int(11) DEFAULT NULL,
+  `nombre` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`iddocumentodir`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `documentodir` */
+
+insert  into `documentodir`(`iddocumentodir`,`codigodocumento`,`nombre`) values 
+(1,1,'FACTURA VENTA'),
+(2,2,'RECIBO CAJA'),
+(3,3,'NOTA CREDITO'),
+(4,4,'ORDEN PRODUCCION'),
+(5,5,'CLIENTE');
+
 /*Table structure for table `facturaventa` */
 
 DROP TABLE IF EXISTS `facturaventa`;
@@ -178,7 +268,7 @@ CREATE TABLE `facturaventa` (
   `valorletras` longtext,
   `idcliente` int(15) NOT NULL,
   `idordenproduccion` int(11) NOT NULL,
-  `usuariosistema` char(15) DEFAULT NULL,
+  `usuariosistema` char(50) DEFAULT NULL,
   `idresolucion` int(11) DEFAULT NULL,
   `estado` int(1) DEFAULT '0',
   `autorizado` tinyint(1) DEFAULT '0',
@@ -189,7 +279,7 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
@@ -197,7 +287,8 @@ insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`
 (3,1,'2018-11-05','2018-12-05','2018-11-05 11:36:15','1',30,19,3.5,0,837500,0,159125,0,0,996625,'-',2,30,'71268830',3,0,1),
 (4,2,'2018-11-20','2018-12-20','2018-11-06 11:32:26','1',30,19,0,0,397785,0,75579.15,0,0,473364.15,'-',3,32,'71268830',3,0,1),
 (5,3,'2018-11-21','2018-12-21','2018-11-07 10:44:46','1',30,19,0,0,704483,0,133851.77,0,0,838334.77,'-',3,33,'71268830',3,0,1),
-(6,4,'2018-11-07','2018-12-07','2018-11-07 11:02:56','1',30,19,0,0,278616,0,52937.04,0,0,331553.04,'-',3,34,'71268830',3,0,1);
+(6,4,'2018-11-07','2018-12-07','2018-11-07 11:02:56','1',30,19,0,0,278616,0,52937.04,0,0,331553.04,'-',3,34,'71268830',3,0,1),
+(7,5,'2018-11-12','2018-12-12','2018-11-12 20:03:30','1',30,19,0,0,397785,0,75579.15,0,428364.15,473364.15,'-',3,32,'71268830',3,1,1);
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -216,7 +307,7 @@ CREATE TABLE `facturaventadetalle` (
   KEY `nrofactura` (`idfactura`),
   CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
 
@@ -229,7 +320,10 @@ insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproducto`,`
 (42,5,10,'136',577,611,352547),
 (43,5,11,'136',288,611,175968),
 (44,6,7,'136',228,611,139308),
-(45,6,10,'136',228,611,139308);
+(45,6,10,'136',228,611,139308),
+(46,7,7,'136',288,345,99360),
+(47,7,10,'136',577,345,199065),
+(48,7,11,'136',288,345,99360);
 
 /*Table structure for table `matriculaempresa` */
 
@@ -1399,6 +1493,60 @@ insert  into `municipio`(`idmunicipio`,`codigomunicipio`,`municipio`,`iddepartam
 ('99624','624','SANTA ROSALIA','99',1),
 ('99773','773','CUMARIBO','99',1);
 
+/*Table structure for table `notacredito` */
+
+DROP TABLE IF EXISTS `notacredito`;
+
+CREATE TABLE `notacredito` (
+  `idnotacredito` int(11) NOT NULL AUTO_INCREMENT,
+  `idcliente` int(11) NOT NULL,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fechapago` date DEFAULT NULL,
+  `idconceptonota` int(11) NOT NULL,
+  `valor` double DEFAULT '0',
+  `numero` int(11) DEFAULT '0',
+  `autorizado` tinyint(1) DEFAULT '0',
+  `anulado` tinyint(1) DEFAULT '0',
+  `usuariosistema` char(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `observacion` text COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`idnotacredito`),
+  KEY `idcliente` (`idcliente`),
+  KEY `idconceptonota` (`idconceptonota`),
+  CONSTRAINT `notacredito_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
+  CONSTRAINT `notacredito_ibfk_2` FOREIGN KEY (`idconceptonota`) REFERENCES `conceptonota` (`idconceptonota`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `notacredito` */
+
+insert  into `notacredito`(`idnotacredito`,`idcliente`,`fecha`,`fechapago`,`idconceptonota`,`valor`,`numero`,`autorizado`,`anulado`,`usuariosistema`,`observacion`) values 
+(1,3,'2018-11-12 19:14:32','2018-11-13',1,15000,0,1,0,'71268830','asd'),
+(3,3,'2018-11-12 21:05:12','2018-11-13',1,15000,0,0,0,'71268830','fdf');
+
+/*Table structure for table `notacreditodetalle` */
+
+DROP TABLE IF EXISTS `notacreditodetalle`;
+
+CREATE TABLE `notacreditodetalle` (
+  `iddetallenota` int(11) NOT NULL AUTO_INCREMENT,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  `idfactura` int(15) DEFAULT NULL,
+  `nrofactura` int(11) DEFAULT '0',
+  `valor` double DEFAULT '0',
+  `usuariosistema` char(50) COLLATE utf8_spanish_ci DEFAULT '0',
+  `idnotacredito` int(11) NOT NULL,
+  PRIMARY KEY (`iddetallenota`),
+  KEY `idfactura` (`idfactura`),
+  KEY `idnotacredito` (`idnotacredito`),
+  CONSTRAINT `notacreditodetalle_ibfk_1` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`),
+  CONSTRAINT `notacreditodetalle_ibfk_2` FOREIGN KEY (`idnotacredito`) REFERENCES `notacredito` (`idnotacredito`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `notacreditodetalle` */
+
+insert  into `notacreditodetalle`(`iddetallenota`,`fecha`,`idfactura`,`nrofactura`,`valor`,`usuariosistema`,`idnotacredito`) values 
+(3,'2018-11-12 20:37:43',7,5,15000,'0',1),
+(4,'2018-11-12 21:05:19',7,5,15000,'0',3);
+
 /*Table structure for table `ordenproduccion` */
 
 DROP TABLE IF EXISTS `ordenproduccion`;
@@ -1419,21 +1567,22 @@ CREATE TABLE `ordenproduccion` (
   `autorizado` tinyint(1) DEFAULT '0',
   `facturado` tinyint(1) DEFAULT '0',
   `proceso_control` tinyint(1) DEFAULT '0',
-  `porcentaje_proceso` int(6) DEFAULT '0',
+  `porcentaje_proceso` int(20) DEFAULT '0',
   PRIMARY KEY (`idordenproduccion`),
   KEY `idcliente` (`idcliente`),
   KEY `idtipo` (`idtipo`),
   CONSTRAINT `ordenproduccion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `ordenproduccion_ibfk_2` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproduccion` */
 
 insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`) values 
 (30,2,'2018-11-05 00:00:00','2018-11-05 00:00:00','2018-11-05 00:00:00',2212600,NULL,'dfdfd',0,'414d',1,'71268830',0,0,0,0),
-(32,3,'2018-11-20 00:00:00','2018-11-20 00:00:00','2018-11-20 00:00:00',397785,NULL,'dsd',0,'10879',1,'71268830',1,0,0,0),
+(32,3,'2018-11-20 00:00:00','2018-11-20 00:00:00','2018-11-20 00:00:00',397785,NULL,'dsd',0,'10879',1,'71268830',1,1,0,0),
 (33,3,'2018-11-07 00:00:00','2018-11-07 00:00:00','2018-11-07 00:00:00',704483,NULL,'k',0,'l125',1,'71268830',1,0,0,0),
-(34,3,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-20 00:00:00',278616,NULL,'fgfg',0,'5241ff',1,'71268830',1,0,0,0);
+(34,3,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-20 00:00:00',278616,NULL,'fgfg',0,'5241ff',1,'71268830',1,0,0,33),
+(35,3,'2018-10-29 00:00:00','2018-11-12 00:00:00','2018-11-12 00:00:00',1222,NULL,'cvfd',0,'414d',1,'71268830',0,0,0,0);
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -1449,33 +1598,31 @@ CREATE TABLE `ordenproducciondetalle` (
   `idordenproduccion` int(11) NOT NULL,
   `generado` tinyint(1) DEFAULT NULL,
   `facturado` tinyint(1) DEFAULT NULL,
-  `porcentaje_proceso` int(10) DEFAULT '0',
-  `iddetalleproceso` int(11) DEFAULT NULL,
+  `porcentaje_proceso` int(20) DEFAULT '0',
   PRIMARY KEY (`iddetalleorden`),
   KEY `idproducto` (`idproducto`),
   KEY `idordenproduccion` (`idordenproduccion`),
-  KEY `iddetalleproceso` (`iddetalleproceso`),
-  CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
-  CONSTRAINT `ordenproducciondetalle_ibfk_2` FOREIGN KEY (`iddetalleproceso`) REFERENCES `ordenproducciondetalleproceso` (`iddetalleproceso`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+  CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
-insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`,`generado`,`facturado`,`porcentaje_proceso`,`iddetalleproceso`) values 
-(10,1,'5010',1000,500,500000,30,NULL,NULL,0,NULL),
-(11,2,'5241dd',250,550,137500,30,NULL,NULL,0,NULL),
-(12,3,'E453569',300,582,174600,30,NULL,NULL,0,NULL),
-(13,4,'dfd4',1500,330,495000,30,NULL,NULL,0,NULL),
-(14,5,'dfe45',200,340,68000,30,NULL,NULL,0,NULL),
-(15,6,'w34',2500,335,837500,30,NULL,NULL,0,NULL),
-(19,7,'136',288,345,99360,32,NULL,NULL,0,NULL),
-(20,10,'136',577,345,199065,32,NULL,NULL,0,NULL),
-(21,11,'136',288,345,99360,32,NULL,NULL,0,NULL),
-(22,7,'136',288,611,175968,33,NULL,NULL,0,NULL),
-(23,10,'136',577,611,352547,33,NULL,NULL,0,NULL),
-(24,11,'136',288,611,175968,33,NULL,NULL,0,NULL),
-(25,7,'136',228,611,139308,34,NULL,NULL,0,NULL),
-(26,10,'136',228,611,139308,34,NULL,NULL,0,NULL);
+insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`,`generado`,`facturado`,`porcentaje_proceso`) values 
+(10,1,'5010',1000,500,500000,30,NULL,NULL,0),
+(11,2,'5241dd',250,550,137500,30,NULL,NULL,0),
+(12,3,'E453569',300,582,174600,30,NULL,NULL,0),
+(13,4,'dfd4',1500,330,495000,30,NULL,NULL,0),
+(14,5,'dfe45',200,340,68000,30,NULL,NULL,0),
+(15,6,'w34',2500,335,837500,30,NULL,NULL,0),
+(19,7,'136',288,345,99360,32,NULL,NULL,0),
+(20,10,'136',577,345,199065,32,NULL,NULL,0),
+(21,11,'136',288,345,99360,32,NULL,NULL,0),
+(22,7,'136',288,611,175968,33,NULL,NULL,0),
+(23,10,'136',577,611,352547,33,NULL,NULL,0),
+(24,11,'136',288,611,175968,33,NULL,NULL,0),
+(25,7,'136',228,611,139308,34,NULL,NULL,20),
+(26,10,'136',228,611,139308,34,NULL,NULL,45),
+(27,7,'136',2,611,1222,35,NULL,NULL,0);
 
 /*Table structure for table `ordenproducciondetalleproceso` */
 
@@ -1489,12 +1636,22 @@ CREATE TABLE `ordenproducciondetalleproceso` (
   `total` int(15) DEFAULT '0',
   `idproceso` int(11) NOT NULL,
   `estado` tinyint(1) DEFAULT '0',
+  `iddetalleorden` int(11) NOT NULL,
   PRIMARY KEY (`iddetalleproceso`),
   KEY `idproceso` (`idproceso`),
-  CONSTRAINT `ordenproducciondetalleproceso_ibfk_1` FOREIGN KEY (`idproceso`) REFERENCES `proceso_produccion` (`idproceso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `iddetalleorden` (`iddetalleorden`),
+  CONSTRAINT `ordenproducciondetalleproceso_ibfk_1` FOREIGN KEY (`idproceso`) REFERENCES `proceso_produccion` (`idproceso`),
+  CONSTRAINT `ordenproducciondetalleproceso_ibfk_2` FOREIGN KEY (`iddetalleorden`) REFERENCES `ordenproducciondetalle` (`iddetalleorden`)
+) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `ordenproducciondetalleproceso` */
+
+insert  into `ordenproducciondetalleproceso`(`iddetalleproceso`,`proceso`,`duracion`,`ponderacion`,`total`,`idproceso`,`estado`,`iddetalleorden`) values 
+(85,'proceso 1',10,5,15,1,1,25),
+(86,'proceso 2',20,5,25,2,0,25),
+(87,'proceso 3',30,4,34,3,0,25),
+(88,'proceso 6',50,10,60,6,0,26),
+(90,'proceso 3',10,5,50,3,1,26);
 
 /*Table structure for table `ordenproducciontipo` */
 
@@ -1546,13 +1703,21 @@ CREATE TABLE `proceso_produccion` (
   `proceso` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `estado` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`idproceso`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `proceso_produccion` */
 
 insert  into `proceso_produccion`(`idproceso`,`proceso`,`estado`) values 
 (1,'proceso 1',0),
-(2,'proceso 2',0);
+(2,'proceso 2',0),
+(3,'proceso 3',0),
+(4,'proceso 4',0),
+(5,'proceso 5',0),
+(6,'proceso 6',0),
+(7,'proceso 7',0),
+(8,'proceso 8',0),
+(9,'proceso 9',0),
+(10,'proceso 10',0);
 
 /*Table structure for table `producto` */
 
@@ -1618,7 +1783,7 @@ CREATE TABLE `recibocaja` (
   CONSTRAINT `recibocaja_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`),
   CONSTRAINT `recibocaja_ibfk_3` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `recibocaja_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocaja` */
 
@@ -1626,7 +1791,8 @@ insert  into `recibocaja`(`idrecibo`,`fecharecibo`,`fechapago`,`idtiporecibo`,`i
 (2,'2018-11-05 12:12:34','2018-11-06','1','05001',996625,'-',2,'ggg','71268830',0,1),
 (6,'2018-11-06 14:33:46','2018-11-06','31','05001',200000,'-',3,'DFG','71268830',0,1),
 (7,'2018-11-06 14:35:27','2018-11-06','1','05001',273364.15,'-',3,'SD','71268830',0,1),
-(8,'2018-11-07 11:04:03','2018-11-07','1','05001',1169887.81,'-',3,'fgfg','71268830',0,1);
+(8,'2018-11-07 11:04:03','2018-11-07','1','05001',1169887.81,'-',3,'fgfg','71268830',0,1),
+(9,'2018-11-12 20:13:47',NULL,'1','05002',0,'-',3,'dsdsd','71268830',0,1);
 
 /*Table structure for table `recibocajadetalle` */
 
@@ -1647,7 +1813,7 @@ CREATE TABLE `recibocajadetalle` (
   KEY `idfactura` (`idfactura`),
   CONSTRAINT `recibocajadetalle_ibfk_2` FOREIGN KEY (`idrecibo`) REFERENCES `recibocaja` (`idrecibo`),
   CONSTRAINT `recibocajadetalle_ibfk_3` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocajadetalle` */
 
@@ -1655,7 +1821,8 @@ insert  into `recibocajadetalle`(`iddetallerecibo`,`idfactura`,`vlrabono`,`vlrsa
 (12,4,200000,273364.15,0,0,NULL,6,NULL),
 (13,4,273364.15,0,0,0,NULL,7,NULL),
 (14,5,838334.77,0,0,0,NULL,8,NULL),
-(15,6,331553.04,0,0,0,NULL,8,NULL);
+(15,6,331553.04,0,0,0,NULL,8,NULL),
+(17,7,473364.15,473364.15,0,0,NULL,9,NULL);
 
 /*Table structure for table `resolucion` */
 

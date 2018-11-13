@@ -131,7 +131,6 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
                                                         <div class="col-lg-3">
                                                             <input type="text" name="vlrabono" value="<?= $val->vlrabono ?>" class="form-control" required>
                                                         </div>
-
                                                         <input type="hidden" name="iddetallerecibo" value="<?= $val->iddetallerecibo ?>">
                                                         <input type="hidden" name="idrecibo" value="<?= $val->idrecibo ?>">
                                                         <input type="hidden" name="total" value="<?= $val->vlrabono ?>">

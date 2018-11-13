@@ -101,7 +101,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->fechaprocesada ?></td>
                 <td><?= $val->fechaentrega ?></td>
                 <td><?= $val->tipo->tipo ?></td>
-                <td><?= $val->porcentaje_proceso.' %' ?></td>
+                <td><div class="progress">
+                        <progress id="html5" max="100" value="<?= $val->porcentaje_proceso ?>"></progress>
+                        <span><b><?= Html::encode($val->porcentaje_proceso).' %' ?></b></span>
+                    </div></td>
                 <td>
                     <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_detalle', 'id' => $val->idordenproduccion] ) ?>
                 </td>
