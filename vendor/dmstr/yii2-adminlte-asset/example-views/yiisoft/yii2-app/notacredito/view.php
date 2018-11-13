@@ -47,14 +47,12 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                 ],
             ]) ?>
             <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idnotacredito], ['class' => 'btn btn-default']) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Cargar', ['archivodir/subir', 'codigo' => 3,'numero' => $model->idnotacredito], ['class' => 'btn btn-success'])?>
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito], ['class' => 'btn btn-success']);
+            <?= Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito], ['class' => 'btn btn-success']);
         }
             else {
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idnotacredito], ['class' => 'btn btn-default']);
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Generar', ['notacredito', 'id' => $model->idnotacredito], ['class' => 'btn btn-default']);
-                echo Html::a('<span class="glyphicon glyphicon-plus"></span> Cargar', ['archivodir/subir', 'codigo' => 3,'numero' => $model->idnotacredito], ['class' => 'btn btn-success']);
-                echo Html::a('<span class="glyphicon glyphicon-plus"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito], ['class' => 'btn btn-success']);
+                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito], ['class' => 'btn btn-success']);
             }
         ?>
     </p>

@@ -10,15 +10,10 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 
-
 $this->title = 'Lista de Archivos';
 $this->params['breadcrumbs'][] = $this->title;
 
-
 ?>
-
-
-<h1>Lista Archivos</h1>
 
 <div class="table-responsive">
 <div class="panel panel-success ">
@@ -44,15 +39,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->nombre ?></td>
                 <td><?= $val->tipo ?></td>
                 <td><?= $val->tamaño ?></td>
-                <td>				
-
+                <td>
+                    <a href="<?= Url::toRoute(["archivodir/descargar", "id" => $val->idarchivodir, 'numero' => $numero, 'codigo' => $codigo]) ?>" ><span class="glyphicon glyphicon-download"></span></a>
                 </td>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Archivos', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo], ['class' => 'btn btn-success']); ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['notacredito/view', 'id' => $codigo], ['class' => 'btn btn-primary']); ?>
+            <?= Html::a('<span class="glyphicon glyphicon-upload"></span> Subir Archivo', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo], ['class' => 'btn btn-success']); ?>
         </div>
     </div>
 </div>

@@ -16,19 +16,33 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 ?>
-    <h3 class="alert-danger"><?= $msg ?></h3>
-<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
 
-<?= $form->field($model, 'numero')->input("hidden") ?>
-<?= $form->field($model, 'codigo')->input("hidden") ?>
-<?= $form->field($model, 'imageFile')->fileInput() ?>
-
-    <div class="row">
-        <div class="col-lg-4">
-            <?= Html::submitButton("Subir Archivo", ["class" => "btn btn-primary"])?>
-
+<?php $form = ActiveForm::begin([
+    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form', 'enctype' => 'multipart/form-data'],
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-3 control-label'],
+        'options' => []
+    ],
+]); ?>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Información Archivo a subir
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <?= $form->field($model, 'numero')->input("hidden") ?>
+            </div>
+            <div class="row">
+                <?= $form->field($model, 'codigo')->input("hidden") ?>
+            </div>
+            <div class="row">
+                <?= $form->field($model, 'imageFile')->fileInput() ?>
+            </div>
+            <div class="panel-footer text-right">
+                <?= Html::submitButton("<span class='glyphicon glyphicon-upload'></span> Subir Archivo", ["class" => "btn btn-success",]) ?>
+            </div>
         </div>
     </div>
-
 <?php ActiveForm::end() ?>

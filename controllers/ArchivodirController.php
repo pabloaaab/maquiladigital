@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Archivodir;
+use app\models\Directorio;
 use Yii;
 
 use yii\web\NotFoundHttpException;
@@ -30,19 +31,16 @@ class ArchivodirController extends \yii\web\Controller
     {
         //if (!Yii::$app->user->isGuest) {
 
-
-
-            $table = Archivodir::find();
-
-            $count = clone $table;
-            $pages = new Pagination([
-                'pageSize' => 10,
-                'totalCount' => $count->count(),
-            ]);
-            $model = $table
-                ->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
+        $table = Archivodir::find();
+        $count = clone $table;
+        $pages = new Pagination([
+            'pageSize' => 10,
+            'totalCount' => $count->count(),
+        ]);
+        $model = $table
+            ->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
 
         $to = $count->count();
         return $this->render('index', [
@@ -97,4 +95,69 @@ class ArchivodirController extends \yii\web\Controller
         return $this->render("Subir", ["model" => $model, "msg" => $msg]);
     }
 
+    public function actionDescargar($id,$numero,$codigo)
+    {
+
+            $archivo = Archivodir::findOne($id);
+            $directorio = Directorio::findOne($archivo->iddirectorio);
+            var_dump($id,'dsdsdsd');
+            if (!$this->downloadFile('Documentos/', $archivo->nombre, ["pdf", "txt", "docx","xlsx","jpg","png"]))
+            {
+                //Mensaje flash para mostrar el error
+                Yii::$app->getSession()->setFlash('error', 'Error en la descarga.');
+
+                //$this->redirect(["archivodir/index",'codigo' => $codigo,'numero' => $numero]);
+            }
+
+
+        return $this->render('index', [
+            'codigo' => $codigo,
+            'numero' => $numero,
+        ]);
+    }
+
+    private function downloadFile($dir, $file, $extensions=[])
+    {
+        //Si el directorio existe
+        if (is_dir($dir))
+        {
+            //Ruta absoluta del archivo
+            $path = $dir.$file;
+
+            //Si el archivo existe
+            if (is_file($path))
+            {
+                //Obtener información del archivo
+                $file_info = pathinfo($path);
+                //Obtener la extensión del archivo
+                $extension = $file_info["extension"];
+
+                if (is_array($extensions))
+                {
+                    //Si el argumento $extensions es un array
+                    //Comprobar las extensiones permitidas
+                    foreach($extensions as $e)
+                    {
+                        //Si la extension es correcta
+                        if ($e === $extension)
+                        {
+                            //Procedemos a descargar el archivo
+                            // Definir headers
+                            $size = filesize($path);
+                            header("Content-Type: application/force-download");
+                            header("Content-Disposition: attachment; filename=$file");
+                            header("Content-Transfer-Encoding: binary");
+                            header("Content-Length: " . $size);
+                            // Descargar archivo
+                            readfile($path);
+                            //Correcto
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        //Ha ocurrido un error al descargar el archivo
+        return false;
+    }
 }
