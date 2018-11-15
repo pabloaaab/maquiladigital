@@ -204,17 +204,19 @@ class FacturaventaController extends Controller
                         $config = Matriculaempresa::findOne(901189320);
                         $cliente = Cliente::findOne($factura->idcliente);
                         $factura->porcentajeiva = $config->porcentajeiva;
+                        $factura->porcentajereteiva = $config->porcentajereteiva;
                         $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
                         if ($factura->subtotal >= $config->retefuente){
                             if ($cliente->retencioniva == 1){
                                 $factura->porcentajefuente = $config->porcentajeretefuente;
                                 $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                                if ($cliente->autoretenedor == 1){
-                                    $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
-                                }
                             }
                         }else{
                             $factura->retencionfuente = 0;
+                        }
+                        if ($cliente->autoretenedor == 1){
+                            $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                        }else{
                             $factura->retencioniva = 0;
                         }
                         $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
@@ -261,17 +263,19 @@ class FacturaventaController extends Controller
                     $config = Matriculaempresa::findOne(901189320);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajereteiva = $config->porcentajereteiva;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
                     if ($factura->subtotal >= $config->retefuente){
                         if ($cliente->retencioniva == 1){
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                            if ($cliente->autoretenedor == 1){
-                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
-                            }
                         }
                     }else{
                         $factura->retencionfuente = 0;
+                    }
+                    if ($cliente->autoretenedor == 1){
+                        $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                    }else{
                         $factura->retencioniva = 0;
                     }
                     $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
@@ -310,17 +314,19 @@ class FacturaventaController extends Controller
                     $config = Matriculaempresa::findOne(901189320);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajereteiva = $config->porcentajereteiva;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
                     if ($factura->subtotal >= $config->retefuente){
                         if ($cliente->retencioniva == 1){
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                            if ($cliente->autoretenedor == 1){
-                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
-                            }
                         }
                     }else{
                         $factura->retencionfuente = 0;
+                    }
+                    if ($cliente->autoretenedor == 1){
+                        $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                    }else{
                         $factura->retencioniva = 0;
                     }
                     $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
@@ -355,18 +361,20 @@ class FacturaventaController extends Controller
                     $config = Matriculaempresa::findOne(901189320);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
+                    $factura->porcentajereteiva = $config->porcentajereteiva;
                     $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-
+                    //calculo de retefuente, reteiva
                     if ($factura->subtotal >= $config->retefuente){
                         if ($cliente->retencioniva == 1){
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                            if ($cliente->autoretenedor == 1){
-                                $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
-                            }
                         }
                     }else{
                         $factura->retencionfuente = 0;
+                    }
+                    if ($cliente->autoretenedor == 1){
+                        $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                    }else{
                         $factura->retencioniva = 0;
                     }
                     $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
@@ -411,18 +419,20 @@ class FacturaventaController extends Controller
                         $config = Matriculaempresa::findOne(901189320);
                         $cliente = Cliente::findOne($factura->idcliente);
                         $factura->porcentajeiva = $config->porcentajeiva;
+                        $factura->porcentajereteiva = $config->porcentajereteiva;
                         $factura->impuestoiva = $factura->subtotal * $factura->porcentajeiva / 100;
-
+                        //calculo reteiva,retefuente
                         if ($factura->subtotal >= $config->retefuente){
                             if ($cliente->retencioniva == 1){
                                 $factura->porcentajefuente = $config->porcentajeretefuente;
                                 $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
-                                if ($cliente->autoretenedor == 1){
-                                    $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
-                                }
                             }
                         }else{
                             $factura->retencionfuente = 0;
+                        }
+                        if ($cliente->autoretenedor == 1){
+                            $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
+                        }else{
                             $factura->retencioniva = 0;
                         }
                         $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
@@ -470,7 +480,6 @@ class FacturaventaController extends Controller
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }
         }
-
     }
 
     public function actionGenerarnro($id)

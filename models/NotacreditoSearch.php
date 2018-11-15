@@ -20,7 +20,7 @@ class NotacreditoSearch extends Notacredito
         return [
             [['idnotacredito', 'idcliente', 'idconceptonota', 'numero', 'autorizado', 'anulado'], 'integer'],
             [['fecha', 'fechapago', 'usuariosistema', 'observacion'], 'safe'],
-            [['valor'], 'number'],
+            [['valor','iva','reteiva','retefuente','total'], 'number'],
         ];
     }
 
@@ -66,6 +66,10 @@ class NotacreditoSearch extends Notacredito
             'fechapago' => $this->fechapago,
             'idconceptonota' => $this->idconceptonota,
             'valor' => $this->valor,
+            'iva' => $this->iva,
+            'reteiva' => $this->reteiva,
+            'retefuente' => $this->retefuente,
+            'total' => $this->total,
             'numero' => $this->numero,
             'autorizado' => $this->autorizado,
             'anulado' => $this->anulado,

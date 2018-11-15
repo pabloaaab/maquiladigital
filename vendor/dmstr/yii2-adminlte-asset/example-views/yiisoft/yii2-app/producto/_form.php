@@ -36,6 +36,9 @@ use app\models\Prendatipo;
             <?= $form->field($model, 'cantidad')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
+            <?= $form->field($model, 'stock')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'costoconfeccion')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">

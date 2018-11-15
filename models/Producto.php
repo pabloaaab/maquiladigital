@@ -50,8 +50,9 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'idprendatipo'], 'required', 'message' => 'Campo requerido'],
-            [['cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
+            [['codigoproducto', 'producto', 'cantidad', 'stock' ,'costoconfeccion', 'vlrventa', 'idcliente', 'idprendatipo'], 'required', 'message' => 'Campo requerido'],
+            [['cantidad', 'stock', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
+            [['costoconfeccion','vlrventa'],'number'],
             [['observacion'], 'string'],
             [['fechaproceso'], 'safe'],
             [['codigoproducto', 'usuariosistema'], 'string', 'max' => 15],

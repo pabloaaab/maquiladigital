@@ -64,31 +64,47 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr>
-                    <th><?= Html::activeLabel($model, 'idnotacredito') ?></th>
+                    <th><?= Html::activeLabel($model, 'idnotacredito') ?>:</th>
                     <td><?= Html::encode($model->idnotacredito) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?></th>
+                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'idconceptonota') ?></th>
-                    <td><?= Html::encode($model->idconceptonota) ?></td>
+                    <th><?= Html::activeLabel($model, 'Subtotal') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->valor,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'numero') ?></th>
+                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>
-                    <th><?= Html::activeLabel($model, 'fecha') ?></th>
+                    <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
                     <td><?= Html::encode($model->fecha) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechapago') ?></th>
-                    <td><?= Html::encode($model->fechapago) ?></td>
+                    <th><?= Html::activeLabel($model, 'Iva') ?>: +</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->iva,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'autorizado') ?></th>
+                    <th><?= Html::activeLabel($model, 'autorizado') ?>:</th>
                     <td><?= Html::encode($model->autorizado) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
+                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'valor') ?></th>
-                    <td><?= Html::encode('$ '.number_format($model->valor,2)) ?></td>
+                    <th><?= Html::activeLabel($model, 'ReteIva') ?>: -</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->reteiva,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'observacion') ?></th>
+                    <th><?= Html::activeLabel($model, 'idconceptonota') ?>:</th>
+                    <td><?= Html::encode($model->conceptonota->concepto) ?></td>
+                    <th></th>
+                    <td></td>
+                    <th><?= Html::activeLabel($model, 'ReteFuente') ?>: -</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->retefuente,0)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
+                    <td><?= Html::encode($model->fechapago) ?></td>
+                    <th></th>
+                    <td></td>
+                    <th><?= Html::activeLabel($model, 'Total') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->total,0)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
                 </tr>
             </table>
@@ -117,7 +133,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                         <td><?= $val->iddetallenota ?></td>
                         <td><?= $val->idfactura ?></td>
                         <td><?= $val->nrofactura ?></td>
-                        <td><?= '$ '.number_format($val->valor,2) ?></td>
+                        <td><?= '$ '.number_format($val->valor,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetallenota2<?= $val->iddetallenota ?>"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -140,7 +156,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                                                             <label>Valor Nota Crédito:</label>
                                                         </div>
                                                         <div class="col-lg-3">
-                                                            <input type="text" name="valor" value="<?=  $val->valor ?>" class="form-control" required>
+                                                            <input type="text" name="valor" value="<?=  number_format($val->valor,0) ?>" class="form-control" required>
                                                         </div>
                                                         <input type="hidden" name="iddetallenota" value="<?= $val->iddetallenota ?>">
                                                         <input type="hidden" name="idnotacredito" value="<?= $val->idnotacredito ?>">

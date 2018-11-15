@@ -65,12 +65,12 @@ if ($mensaje != ""){
                     <td><?= $val->nrofactura ?></td>
                     <td><?= $val->fechainicio ?></td>
                     <td><?= $val->fechavcto ?></td>
-                    <td><?= '$ ' .number_format($val->subtotal) ?></td>
-                    <td><?= '$ ' .number_format($val->retencionfuente) ?></td>
-                    <td><?= '$ ' .number_format($val->retencioniva) ?></td>
-                    <td><?= '$ ' .number_format($val->impuestoiva) ?></td>
-                    <td><?= '$ ' .number_format($val->saldo) ?></td>
-                    <td><?= '$ ' .number_format($val->totalpagar) ?></td>
+                    <td><?= '$ ' .number_format($val->subtotal,0) ?></td>
+                    <td><?= '$ ' .number_format($val->retencionfuente,0) ?></td>
+                    <td><?= '$ ' .number_format($val->retencioniva,0) ?></td>
+                    <td><?= '$ ' .number_format($val->impuestoiva,0) ?></td>
+                    <td><?= '$ ' .number_format($val->saldo,0) ?></td>
+                    <td><?= '$ ' .number_format($val->totalpagar,0) ?></td>
                     <td><input type="checkbox" name="idfactura[]" value="<?= $val->idfactura ?>"></td>
                 </tr>
                 </tbody>

@@ -25,6 +25,7 @@ use Yii;
  * @property double $totalpagar
  * @property string $valorletras
  * @property int $idcliente
+ * @property int $observacion
  * @property int $idordenproduccion
  * @property string $usuariosistema
  * @property int $idresolucion
@@ -57,7 +58,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             [['fechainicio', 'idcliente', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
             [['fechainicio', 'fechavcto', 'fechacreacion'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
-            [['valorletras'], 'string'],
+            [['valorletras','observacion'], 'string'],
             [['formapago', 'usuariosistema'], 'string', 'max' => 15],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
@@ -94,6 +95,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             'idresolucion' => 'Resolucion',
             'estado' => 'Estado',
             'autorizado' => 'Autorizado',
+            'observacion' => 'Observaciones',
         ];
     }
 
@@ -145,5 +147,13 @@ class Facturaventa extends \yii\db\ActiveRecord
     public function getRecibocajadetalles()
     {
         return $this->hasMany(Recibocajadetalle::className(), ['idfactura' => 'idfactura']);
+    }
+
+    public function getFormadePago(){
+        if($this->formapago == 1){ //forma de pafo 1= contado, 2 = credito
+            return "CONTADO";
+        }elseif ($this->formapago == 2){
+            return "CRÉDITO";
+        }
     }
 }

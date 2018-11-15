@@ -432,6 +432,7 @@ class OrdenProduccionController extends Controller
 
         return $this->renderAjax('_formnuevodetalleproceso', [
             'procesos' => $procesos,
+            'id' => $id,
         ]);
     }
 
@@ -484,6 +485,7 @@ class OrdenProduccionController extends Controller
         }
         return $this->renderAjax('_formdetalleproceso', [
             'procesos' => $procesos,
+            'idordenproduccion' => $idordenproduccion,
         ]);
     }
 

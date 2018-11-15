@@ -13,6 +13,10 @@ use Yii;
  * @property string $fechapago
  * @property int $idconceptonota
  * @property double $valor
+ * @property double $iva
+ * @property double $reteiva
+ * @property double $retefuente
+ * @property double $total
  * @property int $numero
  * @property int $autorizado
  * @property int $anulado
@@ -41,7 +45,7 @@ class Notacredito extends \yii\db\ActiveRecord
             [['idcliente', 'idconceptonota'], 'required'],
             [['idcliente', 'idconceptonota', 'numero', 'autorizado', 'anulado'], 'integer'],
             [['fecha', 'fechapago'], 'safe'],
-            [['valor'], 'number'],
+            [['valor','iva','reteiva','retefuente','total'], 'number'],
             [['observacion'], 'string'],
             [['usuariosistema'], 'string', 'max' => 50],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
@@ -61,6 +65,10 @@ class Notacredito extends \yii\db\ActiveRecord
             'fechapago' => 'Fechapago',
             'idconceptonota' => 'Concepto',
             'valor' => 'Valor',
+            'iva' => 'Iva',
+            'reteiva' => 'rete Iva',
+            'retefuente' => 'Rete Fuente',
+            'total' => 'Total',
             'numero' => 'Numero',
             'autorizado' => 'Autorizado',
             'anulado' => 'Anulado',

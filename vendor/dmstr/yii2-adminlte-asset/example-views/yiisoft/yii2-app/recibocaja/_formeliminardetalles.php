@@ -66,8 +66,8 @@ if ($mensaje != ""){
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->retefuente ?></td>
                     <td><?= $val->reteiva ?></td>
-                    <td><?= '$ '.number_format($val->vlrabono) ?></td>
-                    <td><?= '$ '.number_format($val->vlrsaldo) ?></td>
+                    <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
+                    <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallerecibo ?>"></td>
                 </tr>
                 </tbody>

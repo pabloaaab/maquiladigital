@@ -71,6 +71,8 @@ class ProductoController extends Controller
         $clientes = Cliente::find()->all();
         $prendas = Prendatipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->usuariosistema = Yii::$app->user->identity->username;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 

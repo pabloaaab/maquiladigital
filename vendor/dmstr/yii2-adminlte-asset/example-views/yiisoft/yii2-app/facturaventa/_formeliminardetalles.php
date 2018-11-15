@@ -66,8 +66,8 @@ use yii\db\ActiveQuery;
                     <td><?= $val->producto->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= '$ '.number_format($val->preciounitario,2) ?></td>
-                    <td><?= '$ '.number_format($val->total,2) ?></td>
+                    <td><?= '$ '.number_format($val->preciounitario,0) ?></td>
+                    <td><?= '$ '.number_format($val->total,0) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallefactura ?>"></td>
                 </tr>
                 </tbody>

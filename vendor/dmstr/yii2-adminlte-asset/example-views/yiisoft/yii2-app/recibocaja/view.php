@@ -70,7 +70,7 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'valorpagado') ?>:</th>
-                    <td align="right"><?= Html::encode('$ '.number_format($model->valorpagado,2)) ?></td>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->valorpagado,0)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
@@ -105,8 +105,8 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
                         <td><?= $val->idfactura ?></td>
                         <td><?= $val->retefuente ?></td>
                         <td><?= $val->reteiva ?></td>
-                        <td><?= '$ '.number_format($val->vlrabono,2) ?></td>
-                        <td><?= '$ '.number_format($val->vlrsaldo,2) ?></td>
+                        <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
+                        <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetallerecibo2<?= $val->iddetallerecibo ?>"><span class="glyphicon glyphicon-pencil"></span></a>

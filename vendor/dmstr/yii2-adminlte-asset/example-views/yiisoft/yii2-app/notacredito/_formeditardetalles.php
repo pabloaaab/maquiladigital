@@ -57,7 +57,7 @@ use yii\db\ActiveQuery;
                     <td><?= $val->iddetallenota ?></td>
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->nrofactura ?></td>
-                    <td><input type="text" name="valor[]" value="<?= $val->valor ?>" required></td>
+                    <td><input type="text" name="valor[]" value="<?= number_format($val->valor,0) ?>" required></td>
                     <td><input type="hidden" name="iddetallenota[]" value="<?= $val->iddetallenota ?>"></td>
                 </tr>
                 </tbody>

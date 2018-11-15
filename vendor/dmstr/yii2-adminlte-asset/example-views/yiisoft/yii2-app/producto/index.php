@@ -38,10 +38,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     $productos = Producto::findOne($model->idproducto);
                     return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
                 },
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [
                 'attribute' => 'cantidad',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'stock',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
@@ -51,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
 
             [

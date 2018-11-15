@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use app\models\Ordenproduccion;
 ?>
 
 
@@ -13,16 +14,41 @@ use yii\bootstrap\ActiveForm;
         'options' => []
     ],
 ]); ?>
-
+<?php $model = Ordenproduccion::findOne($idordenproduccion); ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Detalle Procesos</h4>
+        <h4 class="modal-title"></h4>
     </div>
     <div class="modal-body">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                Operaciones
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive">
+                    <tr>
+                        <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                        <td><?= Html::encode($model->idordenproduccion) ?></td>
+                        <th><?= Html::activeLabel($model, 'tipo') ?></th>
+                        <td><?= Html::encode($model->tipo->tipo) ?></td>
+                        <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
+                        <td><?= Html::encode($model->ordenproduccion) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                        <td><?= Html::encode($model->fechallegada,'Y-m-d') ?></td>
+                        <th><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
+                        <td><?= Html::encode($model->fechaprocesada) ?></td>
+                        <th><?= Html::activeLabel($model, 'fechaentrega') ?></th>
+                        <td><?= Html::encode($model->fechaentrega) ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                   Procesos
+                    Operacion de producción
                 </div>
                 <div class="panel-body">
                     <table class="table table-responsive">
@@ -62,7 +88,7 @@ use yii\bootstrap\ActiveForm;
                         endforeach; ?>
                         <tr>
                             <td scope="col" colspan="4" align="right"><b>Total Duración:</b></td>
-                            <th scope="col"><?= $totalsegundos.'(Seg) - '. (number_format($totalsegundos / 60,2)) .'(Min)' ?></th>
+                            <th scope="col"><?= $totalsegundos.'(Seg) - '. (number_format($totalsegundos / 60,0)) .'(Min)' ?></th>
                         </tr>
                     </table>
                 </div>

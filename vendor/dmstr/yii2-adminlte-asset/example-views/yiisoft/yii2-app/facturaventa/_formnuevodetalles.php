@@ -66,7 +66,7 @@ if ($mensaje != ""){
                     <td><?= $val->producto->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                    <td><?= '$ '.number_format($val->vlrprecio,0) ?></td>
                     <td><?= '$ '.number_format($val->subtotal,0) ?></td>
                     <td><input type="checkbox" name="iddetalleorden[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>

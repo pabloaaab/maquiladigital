@@ -6,6 +6,7 @@ use app\models\Conceptonota;
 use app\models\Facturaventa;
 use app\models\Notacreditodetalle;
 use app\models\Cliente;
+use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use Yii;
 use app\models\Notacredito;
@@ -312,32 +313,69 @@ class NotacreditoController extends Controller
                 $notacreditodetalles = Notacreditodetalle::find()
                     ->where(['idnotacredito' => $id])
                     ->all();
-                $total = 0;
+                $subtotal = 0;
                 $error = 0;
-                $newsaldo = 0;
-                foreach ($notacreditodetalles as $dato){
-                    $saldofactura = Facturaventa::findOne($dato->idfactura);
-                    if ($dato->valor > $saldofactura->saldo){
+                $nuevosaldo = 0;
+                $total = 0;
+                $totaliva = 0;
+                $iva = 0;
+                $totalreteiva = 0;
+                $reteiva = 0;
+                $totalretefuente = 0;
+                $retefuente = 0;
+                foreach ($notacreditodetalles as $dato){ //se recorrer todos los registros de facturas para comprobar que el abono o nota credito no sea mayor al saldo
+                    $factura = Facturaventa::findOne($dato->idfactura);
+                    $iva = $dato->valor * $factura->porcentajeiva / 100;
+                    if($factura->retencioniva > 0){
+                        $reteiva = $iva * $factura->porcentajereteiva / 100;
+                    }
+                    if($factura->retencionfuente > 0){
+                        $retefuente = $dato->valor * $factura->porcentajefuente / 100;
+                    }
+
+                    $totalabono = ($factura->saldo) - ($dato->valor + $iva - $reteiva - $retefuente);
+                    if ($totalabono > $factura->saldo){
                         $error = 1;
                     }
                 }
                 if ($error == 0){
-                    foreach ($notacreditodetalles as $val) {
-                        $notacreditodetalle = Notacreditodetalle::find()->where(['iddetallenota' => $val])->one();
-                        $factura = Facturaventa::findOne($val->idfactura);
-                        $newsaldo = ($factura->saldo) - ($notacreditodetalle->valor);
-                        $total = $total + $val->valor;
-                        //$recibodetalle->update();
 
-                        $factura->saldo = $newsaldo;
-                        if($factura->saldo <= 0){
-                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
-                        }elseif ($factura->saldo >= 0){
-                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                    foreach ($notacreditodetalles as $val) {
+                        $factura = Facturaventa::findOne($val->idfactura);
+
+                        $iva = $val->valor * $factura->porcentajeiva / 100;
+                        if($factura->retencioniva > 0){
+                            $reteiva = $iva * $factura->porcentajereteiva / 100;
                         }
+                        if($factura->retencionfuente > 0){
+                            $retefuente = $val->valor * $factura->porcentajefuente / 100;
+                        }
+                        $subtotal = $subtotal + $val->valor;
+                        $totaliva = $totaliva + $iva;
+                        $totalreteiva = $totalreteiva + $reteiva;
+                        $totalretefuente = $totalretefuente + $retefuente;
+
+                        $nuevosaldo = ($factura->saldo) - ($val->valor + $iva - $reteiva - $retefuente);
+
+
+                        if($nuevosaldo <= 0){
+                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->saldo = $nuevosaldo;
+                        }
+                        if ($nuevosaldo > 0){
+                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->saldo = $nuevosaldo;
+                        }
+
                         $factura->update();
+
+
                     }
-                    $model->valor = $total;
+                    $model->valor = $subtotal;
+                    $model->iva = $totaliva;
+                    $model->reteiva = $totalreteiva;
+                    $model->retefuente = $totalretefuente;
+                    $model->total = $model->valor + $model->iva - $model->reteiva - $model->retefuente;
                     $model->fechapago = date('Y-m-d');
                     $model->update();
                     $this->redirect(["notacredito/view",'id' => $id]);
