@@ -47,6 +47,7 @@ if ($mensaje != ""){
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Nro Factura</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Vcto</th>
                     <th scope="col">Subtotal</th>
@@ -63,6 +64,7 @@ if ($mensaje != ""){
                 <tr>
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->nrofactura ?></td>
+                    <td><?= $val->cliente->nombrecorto ?></td>
                     <td><?= $val->fechainicio ?></td>
                     <td><?= $val->fechavcto ?></td>
                     <td><?= '$ ' .number_format($val->subtotal,0) ?></td>
@@ -71,7 +73,7 @@ if ($mensaje != ""){
                     <td><?= '$ ' .number_format($val->impuestoiva,0) ?></td>
                     <td><?= '$ ' .number_format($val->saldo,0) ?></td>
                     <td><?= '$ ' .number_format($val->totalpagar,0) ?></td>
-                    <td><input type="checkbox" name="idfactura[]" value="<?= $val->idfactura ?>"></td>
+                    <td><input type="radio" name="idfactura[]" value="<?= $val->idfactura ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>

@@ -237,8 +237,9 @@ class NotacreditoController extends Controller
             foreach ($_POST["iddetallenota"] as $intCodigo) {
                 if($_POST["valor"][$intIndice] > 0 ){
                     $table = Notacreditodetalle::findOne($intCodigo);
-                    $total = $table->valor;
+                    //$total = $table->valor;
                     $table->valor = $_POST["valor"][$intIndice];
+                    $table->update();
                 }
                 $intIndice++;
             }
@@ -290,9 +291,22 @@ class NotacreditoController extends Controller
                 ->all();
             $reg = count($detalles);
             if ($reg <> 0) {
-                $model->autorizado = 1;
-                $model->update();
-                $this->redirect(["notacredito/view",'id' => $id]);
+                list($error,$totalabono,$saldo) = $this->ValorNotaCredito($id); //se valida si la nota credito es mayor al saldo
+                if ($error == 0){
+                    $model->autorizado = 1;
+                    $model->update();
+                    $this->redirect(["notacredito/view",'id' => $id]);
+                }else{
+                    if ($error == 1){
+                        Yii::$app->getSession()->setFlash('error', 'EL valor de la nota crédito $'.number_format($totalabono,0).' no puede ser mayor al saldo $'.number_format($saldo,0));
+                        $this->redirect(["notacredito/view",'id' => $id]);
+                    }else{
+                        if($error == 2){
+                            Yii::$app->getSession()->setFlash('error', 'EL valor de la nota crédito no puede ser 0 o negativo');
+                            $this->redirect(["notacredito/view",'id' => $id]);
+                        }
+                    }
+                }
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener productos relacionados en la nota de crédito.');
                 $this->redirect(["notacredito/view",'id' => $id]);
@@ -314,7 +328,7 @@ class NotacreditoController extends Controller
                     ->where(['idnotacredito' => $id])
                     ->all();
                 $subtotal = 0;
-                $error = 0;
+
                 $nuevosaldo = 0;
                 $total = 0;
                 $totaliva = 0;
@@ -323,23 +337,8 @@ class NotacreditoController extends Controller
                 $reteiva = 0;
                 $totalretefuente = 0;
                 $retefuente = 0;
-                foreach ($notacreditodetalles as $dato){ //se recorrer todos los registros de facturas para comprobar que el abono o nota credito no sea mayor al saldo
-                    $factura = Facturaventa::findOne($dato->idfactura);
-                    $iva = $dato->valor * $factura->porcentajeiva / 100;
-                    if($factura->retencioniva > 0){
-                        $reteiva = $iva * $factura->porcentajereteiva / 100;
-                    }
-                    if($factura->retencionfuente > 0){
-                        $retefuente = $dato->valor * $factura->porcentajefuente / 100;
-                    }
-
-                    $totalabono = ($factura->saldo) - ($dato->valor + $iva - $reteiva - $retefuente);
-                    if ($totalabono > $factura->saldo){
-                        $error = 1;
-                    }
-                }
+                list($error,$totalabono,$saldo) = $this->ValorNotaCredito($id); //se valida si la nota credito es mayor al saldo
                 if ($error == 0){
-
                     foreach ($notacreditodetalles as $val) {
                         $factura = Facturaventa::findOne($val->idfactura);
 
@@ -357,7 +356,6 @@ class NotacreditoController extends Controller
 
                         $nuevosaldo = ($factura->saldo) - ($val->valor + $iva - $reteiva - $retefuente);
 
-
                         if($nuevosaldo <= 0){
                             $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
                             $factura->saldo = $nuevosaldo;
@@ -366,10 +364,7 @@ class NotacreditoController extends Controller
                             $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
                             $factura->saldo = $nuevosaldo;
                         }
-
                         $factura->update();
-
-
                     }
                     $model->valor = $subtotal;
                     $model->iva = $totaliva;
@@ -380,8 +375,15 @@ class NotacreditoController extends Controller
                     $model->update();
                     $this->redirect(["notacredito/view",'id' => $id]);
                 } else {
-                    Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
-                    $this->redirect(["notacredito/view",'id' => $id]);
+                    if($error == 1){
+                        Yii::$app->getSession()->setFlash('error', 'EL valor de la nota crédito $'.number_format($totalabono,0).' no puede ser mayor al saldo $'.number_format($saldo,0));
+                        $this->redirect(["notacredito/view",'id' => $id]);
+                    }else {
+                        if($error == 2){
+                            Yii::$app->getSession()->setFlash('error', 'EL valor de la nota crédito no puede ser 0 o negativo');
+                            $this->redirect(["notacredito/view", 'id' => $id]);
+                        }
+                    }
                 }
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Ya se realizo el descuento de la nota credito.');
@@ -391,6 +393,37 @@ class NotacreditoController extends Controller
             Yii::$app->getSession()->setFlash('error', 'Para pagar el recibo de caja debe estar autorizado');
             $this->redirect(["notacredito/view",'id' => $id]);
         }
+    }
+
+    protected function ValorNotaCredito($id)
+    {
+        $notacreditodetalles = Notacreditodetalle::find()
+            ->where(['idnotacredito' => $id])
+            ->all();
+
+        $error = 0;
+        $iva = 0;
+        $reteiva = 0;
+        $retefuente = 0;
+        foreach ($notacreditodetalles as $dato){ //se recorrer todos los registros de facturas para comprobar que el abono o nota credito no sea mayor al saldo
+            $factura = Facturaventa::findOne($dato->idfactura);
+            $iva = $dato->valor * $factura->porcentajeiva / 100;
+            if($factura->retencioniva > 0){
+                $reteiva = $iva * $factura->porcentajereteiva / 100;
+            }
+            if($factura->retencionfuente > 0){
+                $retefuente = $dato->valor * $factura->porcentajefuente / 100;
+            }
+            $totalabono = $dato->valor + $iva - $reteiva - $retefuente;
+            if ($totalabono > $factura->saldo){
+                $error = 1;
+            }else{
+                if ($dato->valor <= 0){
+                    $error = 2; //valor a ingresar es cero
+                }
+            }
+        }
+        return array($error,$totalabono,$factura->saldo);
     }
 
     /**

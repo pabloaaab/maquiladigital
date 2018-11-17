@@ -49,6 +49,7 @@ if ($mensaje != ""){
                     <th scope="col">Id</th>
                     <th scope="col">Id Factura</th>
                     <th scope="col">Nro Factura</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Valor</th>
                     <th></th>
                 </tr>
@@ -59,6 +60,7 @@ if ($mensaje != ""){
                     <td><?= $val->iddetallenota ?></td>
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->nrofactura ?></td>
+                    <td><?= $val->factura->cliente->nombrecorto ?></td>
                     <td><?= '$ '.number_format($val->valor) ?></td>
                     <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallenota ?>"></td>
                 </tr>

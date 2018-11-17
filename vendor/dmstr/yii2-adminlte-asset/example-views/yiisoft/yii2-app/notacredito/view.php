@@ -123,6 +123,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                         <th scope="col">Id</th>
                         <th scope="col">Factura</th>
                         <th scope="col">Nro Factura</th>
+                        <th scope="col">Cliente</th>
                         <th scope="col">Valor</th>
                         <th></th>
                     </tr>
@@ -133,6 +134,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                         <td><?= $val->iddetallenota ?></td>
                         <td><?= $val->idfactura ?></td>
                         <td><?= $val->nrofactura ?></td>
+                        <td><?= $val->factura->cliente->nombrecorto ?></td>
                         <td><?= '$ '.number_format($val->valor,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
@@ -156,7 +158,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                                                             <label>Valor Nota Crédito:</label>
                                                         </div>
                                                         <div class="col-lg-3">
-                                                            <input type="text" name="valor" value="<?=  number_format($val->valor,0) ?>" class="form-control" required>
+                                                            <input type="text" name="valor" value="<?=  $val->valor ?>" class="form-control" required>
                                                         </div>
                                                         <input type="hidden" name="iddetallenota" value="<?= $val->iddetallenota ?>">
                                                         <input type="hidden" name="idnotacredito" value="<?= $val->idnotacredito ?>">

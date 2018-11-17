@@ -47,6 +47,7 @@ use yii\db\ActiveQuery;
                     <th scope="col">Id</th>
                     <th scope="col">Id Factura</th>
                     <th scope="col">Nro Factura</th>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Valor</th>
                     <th></th>
                 </tr>
@@ -57,7 +58,8 @@ use yii\db\ActiveQuery;
                     <td><?= $val->iddetallenota ?></td>
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->nrofactura ?></td>
-                    <td><input type="text" name="valor[]" value="<?= number_format($val->valor,0) ?>" required></td>
+                    <td><?= $val->factura->cliente->nombrecorto ?></td>
+                    <td><input type="text" name="valor[]" value="<?= $val->valor ?>" required></td>
                     <td><input type="hidden" name="iddetallenota[]" value="<?= $val->iddetallenota ?>"></td>
                 </tr>
                 </tbody>
