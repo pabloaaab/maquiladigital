@@ -5,6 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Cliente;
+use app\models\Facturaventa;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FacturaventaSearch */
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="facturaventa-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
@@ -50,16 +51,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-1 '],
             ],
             [
-                'label' => 'Subtotal',
-                'attribute' =>'subtotal',
-                'contentOptions' => ['class' => 'col-lg-1'],
-                'format'=>['decimal',0]
+                'attribute' => 'subtotal',
+                'value' => function($model) {
+                    $factura = Facturaventa::findOne($model->idfactura);
+                    $subtotal = "$ ".number_format($factura->subtotal);
+                    return "{$subtotal}";
+                },
+                'contentOptions' => ['class' => 'col-lg-1.2'],
             ],
             [
                 'label' => 'Total',
-                'attribute' =>'totalpagar',
-                'contentOptions' => ['class' => 'col-lg-1'],
-                'format'=>['decimal',0]
+                'attribute' => 'totalpagar',
+                'value' => function($model) {
+                    $factura = Facturaventa::findOne($model->idfactura);
+                    $total = "$ ".number_format($factura->totalpagar);
+                    return "{$total}";
+                },
+                'contentOptions' => ['class' => 'col-lg-1.2'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',              

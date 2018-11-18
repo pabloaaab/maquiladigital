@@ -76,6 +76,9 @@ use kartik\select2\Select2;
         <div class="row">
             <?= $form->field($model, 'ordenproduccion')->textInput(['maxlength' => true]) ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'ponderacion')->textInput(['maxlength' => true]) ?>
+        </div>
 		<div class="row">
 			<?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
 		</div>

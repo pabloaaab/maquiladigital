@@ -22,6 +22,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
+use yii\bootstrap\Progress;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -61,10 +62,15 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th></th>
                     <td></td>
                     <th><?= Html::activeLabel($model, 'Progreso') ?></th>
-                    <td><div class="progress">
+                    <td><div class="progress"><b>Operación:&nbsp;</b>
                             <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>
                             <span><b><?= Html::encode($model->porcentaje_proceso).' %' ?></b></span>
-                        </div></td>
+                        </div>
+                        <div class="progress"><b>Cantidad:&nbsp;&nbsp;&nbsp;</b>
+                            <progress id="html5" max="100" value="<?= $model->porcentaje_cantidad ?>"></progress>
+                            <span><b><?= Html::encode($model->porcentaje_cantidad).' %' ?></b></span>
+                        </div>
+                    </td>
                     <th><?= Html::activeLabel($model, 'tipo') ?></th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
@@ -86,6 +92,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <th scope="col">Código</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Progreso</th>
+                        <th scope="col">Cantidad Operada</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -96,11 +103,14 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <td><?= $val->producto->nombreProducto ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
-                        <td><div class="progress">
+                        <td><div class="progress"><b>Operación:&nbsp;</b>
                                 <progress id="html5" max="100" value="<?= $val->porcentaje_proceso ?>"></progress>
-                                <span><b><?= $val->porcentaje_proceso ?> %</b></span>
-                            </div></td>
-                        <?php if ($model->porcentaje_proceso >= 0 && $model->porcentaje_proceso < 100) { ?>
+                                <span><b><?= Html::encode($val->porcentaje_proceso).' %' ?></b></span>&nbsp;&nbsp;-&nbsp;&nbsp;<b>Cantidad:</b>
+                                <progress id="html5" max="100" value="<?= $val->porcentaje_cantidad ?>" data-color="red"></progress>
+                                <span><b><?= Html::encode($val->porcentaje_cantidad).' %' ?></b></span>
+                            </div>
+                        </td>
+                        <td><?= $val->cantidad_operada ?></td>
                             <td>
                                 <!-- Inicio Nuevo Detalle proceso -->
                                 <?php echo Html::a('<span class="glyphicon glyphicon-log-in"></span>',
@@ -136,7 +146,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                 <!-- Fin Vista,Eliminar,Editar -->
 
                             </td>
-                        <?php } ?>
+
                     </tr>
                     </tbody>
                     <?php endforeach; ?>

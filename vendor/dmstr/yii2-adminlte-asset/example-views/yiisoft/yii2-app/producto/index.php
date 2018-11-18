@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="producto-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'codigoproducto',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-1.3'],
             ],
             [
                 'attribute' => 'producto',
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $productos = Producto::findOne($model->idproducto);
                     return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
                 },
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-3.2'],
             ],
             [
                 'attribute' => 'cantidad',
@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
 
             [

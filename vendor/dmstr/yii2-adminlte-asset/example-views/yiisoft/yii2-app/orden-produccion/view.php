@@ -61,39 +61,39 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr>
-                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?></th>
+                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
+                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechaprocesada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
                 <tr>
+                    <th><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
+                    <td><?= Html::encode($model->ponderacion) ?></td>
                     <th></th>
                     <td></td>
-                    <th></th>
-                    <td></td>
-                    <th><?= Html::activeLabel($model, 'tipo') ?></th>
+                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'autorizado') ?></th>
+                    <th><?= Html::activeLabel($model, 'autorizado') ?>:</th>
                     <td><?= Html::encode($model->autorizado) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?></th>
+                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'totalorden') ?></th>
+                    <th><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'observacion') ?></th>
+                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
                 </tr>
             </table>

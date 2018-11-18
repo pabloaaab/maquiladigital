@@ -54,7 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th scope="col">Cantidad Disponibles</th>
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
-
                     <th scope="col"></th>
                 </tr>
                 </thead>

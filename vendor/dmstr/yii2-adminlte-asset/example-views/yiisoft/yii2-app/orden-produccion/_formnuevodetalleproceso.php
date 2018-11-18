@@ -68,7 +68,7 @@ use app\models\Ordenproduccion;
                             <td><?= $val->idproceso ?></td>
                             <td><?= $val->proceso ?></td>
                             <td><input type="text" name="duracion[]" value="0" required></td>
-                            <td><input type="text" name="ponderacion[]" value="0" required></td>
+                            <td><input type="text" name="ponderacion[]" value="<?= $model->ponderacion ?>" required></td>
                             <td><input type="hidden" name="proceso[]" value="<?= $val->proceso ?>"></td>
                             <td><input type="hidden" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
                         </tr>

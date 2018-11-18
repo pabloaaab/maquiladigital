@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Ordenproduccion;
+use app\models\Ordenproducciondetalle;
 ?>
 
 
@@ -15,6 +16,8 @@ use app\models\Ordenproduccion;
     ],
 ]); ?>
 <?php $model = Ordenproduccion::findOne($idordenproduccion); ?>
+<?php $modeldetalle = Ordenproducciondetalle::findOne($iddetalleorden); ?>
+    $iddetalleorden
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"></h4>
@@ -27,7 +30,7 @@ use app\models\Ordenproduccion;
             <div class="panel-body">
                 <table class="table table-responsive">
                     <tr>
-                        <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                        <th><?= Html::activeLabel($model, 'orden') ?></th>
                         <td><?= Html::encode($model->idordenproduccion) ?></td>
                         <th><?= Html::activeLabel($model, 'tipo') ?></th>
                         <td><?= Html::encode($model->tipo->tipo) ?></td>
@@ -35,12 +38,12 @@ use app\models\Ordenproduccion;
                         <td><?= Html::encode($model->ordenproduccion) ?></td>
                     </tr>
                     <tr>
-                        <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
-                        <td><?= Html::encode($model->fechallegada,'Y-m-d') ?></td>
-                        <th><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
-                        <td><?= Html::encode($model->fechaprocesada) ?></td>
-                        <th><?= Html::activeLabel($model, 'fechaentrega') ?></th>
-                        <td><?= Html::encode($model->fechaentrega) ?></td>
+                        <th><?= Html::activeLabel($model, 'Producto') ?></th>
+                        <td><?= Html::encode($modeldetalle->producto->nombreProducto) ?></td>
+                        <th><?= Html::activeLabel($model, 'codigo') ?></th>
+                        <td><?= Html::encode($modeldetalle->producto->codigoproducto) ?></td>
+                        <th><?= Html::activeLabel($model, 'cantidad') ?></th>
+                        <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>
                 </table>
             </div>
@@ -87,8 +90,16 @@ use app\models\Ordenproduccion;
                         $totalsegundos = $totalsegundos + $val->total;
                         endforeach; ?>
                         <tr>
-                            <td scope="col" colspan="4" align="right"><b>Total Duración:</b></td>
-                            <th scope="col"><?= $totalsegundos.'(Seg) - '. (number_format($totalsegundos / 60,0)) .'(Min)' ?></th>
+                            <td scope="col" colspan="4" align="right"><b>Cantidad Operada:</b></td>
+                            <td scope="col"><input type="text" name="cantidadoperada" value="<?= $modeldetalle->cantidad_operada ?>" size="3" required></td>
+                        </tr>
+                        <tr>
+                            <td scope="col" colspan="4" align="right"><b>Total Segundos:</b></td>
+                            <th scope="col"><?= $totalsegundos ?></th>
+                        </tr>
+                        <tr>
+                            <td scope="col" colspan="4" align="right"><b>Total Minutos:</b></td>
+                            <th scope="col"><?= (number_format($totalsegundos / 60,1)) ?></th>
                         </tr>
                     </table>
                 </div>

@@ -23,6 +23,8 @@ use Yii;
  * @property int $facturado
  * @property int $proceso_control
  * @property int $porcentaje_proceso
+ * @property int $porcentaje_cantidad
+ * @property int $ponderacion
  *
  * @property Facturaventa[] $facturaventas
  * @property Cliente $cliente
@@ -44,10 +46,10 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo'], 'required'],
-            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','porcentaje_proceso'], 'integer'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion'], 'required', 'message' => 'Campo requerido'],
+            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','porcentaje_proceso','porcentaje_cantidad'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
-            [['totalorden'], 'number'],
+            [['totalorden','ponderacion'], 'number'],
             [['valorletras', 'observacion'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],
@@ -78,6 +80,8 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'idtipo' => 'Idtipo',
             'usuariosistema' => 'Usuario Sistema',
             'porcentaje_proceso' => '% Proceso',
+            'porcentaje_cantidad' => '% cantidad',
+            'ponderacion' => 'Ponderación',
         ];
     }
 

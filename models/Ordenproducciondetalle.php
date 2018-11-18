@@ -17,6 +17,9 @@ use Yii;
  * @property int $generado
  * @property int $facturado
  * @property int $porcentaje_proceso
+ * @property int $porcentaje_cantidad
+ * @property int $ponderacion
+ * @property int $cantidad_operada
  *
  * @property Producto $producto
  * @property Ordenproducciondetalleproceso[] $ordenproducciondetalleprocesos
@@ -38,8 +41,8 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
-            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso'], 'integer'],
-            [['vlrprecio', 'subtotal'], 'number'],
+            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso','porcentaje_cantidad','cantidad_operada'], 'integer'],
+            [['vlrprecio', 'subtotal','ponderacion'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
         ];
@@ -61,6 +64,9 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
             'generado' => 'Generado',
             'facturado' => 'Facturado',
             'porcentaje_proceso' => 'Porcentaje Proceso',
+            'porcentaje_cantidad' => 'Porcentaje Cantidad',
+            'ponderacion' => 'Ponderación',
+            'cantidad_operada' => 'Cantidad operada',
         ];
     }
 

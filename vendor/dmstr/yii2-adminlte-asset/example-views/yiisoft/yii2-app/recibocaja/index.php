@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Cliente;
 use app\models\TipoRecibo;
+use app\models\Recibocaja;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ReciboCajaSearch */
@@ -53,13 +54,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $tiporecibos->concepto;
                 },
                 'filter' => ArrayHelper::map(TipoRecibo::find()->all(),'idtiporecibo','concepto'),
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-2.2'],
             ],
             [
-                'label' => 'valor Pagado',
-                'attribute' =>'valorpagado',
+                'attribute' => 'valorpagado',
+                'value' => function($model) {
+                    $recibocaja = Recibocaja::findOne($model->idrecibo);
+                    $valor = "$ ".number_format($recibocaja->valorpagado);
+                    return "{$valor}";
+                },
                 'contentOptions' => ['class' => 'col-lg-1'],
-                'format'=>['decimal',0]
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

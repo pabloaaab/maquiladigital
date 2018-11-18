@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Cliente;
+use app\models\Ordenproduccion;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenProduccionSearch */
@@ -33,27 +34,30 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-3.1'],
             ],
             [               
                 'attribute' => 'fechallegada',
-                'contentOptions' => ['class' => 'col-lg-2 '],
+                'contentOptions' => ['class' => 'col-lg-1.5 '],
             ],
             [               
                 'attribute' => 'fechaprocesada',
-                'contentOptions' => ['class' => 'col-lg-1 '],
+                'contentOptions' => ['class' => 'col-lg-1.5 '],
             ],
 			[               
                 'attribute' => 'fechaentrega',
-                'contentOptions' => ['class' => 'col-lg-1 '],
+                'contentOptions' => ['class' => 'col-lg-1.5 '],
             ],
             [
-                'label' => 'Total Orden',
-                'attribute' =>'totalorden',
-                'contentOptions' => ['class' => 'col-lg-1'],
-                'format'=>['decimal',0]
+                'label' => 'Total',
+                'attribute' => 'totalorden',
+                'value' => function($model) {
+                    $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
+                    $total = "$ ".number_format($ordenp->totalorden);
+                    return "{$total}";
+                },
+                'contentOptions' => ['class' => 'col-lg-1.2'],
             ],
-
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],
