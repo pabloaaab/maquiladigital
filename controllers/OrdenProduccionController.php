@@ -433,6 +433,7 @@ class OrdenProduccionController extends Controller
         return $this->renderAjax('_formnuevodetalleproceso', [
             'procesos' => $procesos,
             'id' => $id,
+            'iddetalleorden' => $iddetalleorden,
         ]);
     }
 
@@ -453,9 +454,12 @@ class OrdenProduccionController extends Controller
                         $intIndice++;
                     }
                 }
+                
                 $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
-                $detalle->cantidad_operada = $_REQUEST['cantidadoperada'];
-                $detalle->porcentaje_cantidad = $detalle->cantidad_operada * $detalle->cantidad / 100;
+                $cantidad = $detalle->cantidad;
+                $cantidad_operada = $_REQUEST['cantidadoperada'];
+                $detalle->cantidad_operada = $cantidad_operada;
+                $detalle->porcentaje_cantidad = $cantidad_operada * 100 / $cantidad;
                 $detalle->update();
             }
             if (isset($_POST["eliminar"])) {
@@ -559,7 +563,7 @@ class OrdenProduccionController extends Controller
             $totalporcentajecant = $totalporcentajecant + $val->porcentaje_cantidad;
         }
         $ordenp = Ordenproduccion::findOne($idordenproduccion);
-        $ordenp->porcentaje_cantidad = $totalporcentajecant / 3;
+        $ordenp->porcentaje_cantidad = $totalporcentajecant / count($ordenDetalles);
         $ordenp->update();
     }
 

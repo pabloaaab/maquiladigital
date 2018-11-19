@@ -41,8 +41,8 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
-            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado', 'porcentaje_proceso','porcentaje_cantidad','cantidad_operada'], 'integer'],
-            [['vlrprecio', 'subtotal','ponderacion'], 'number'],
+            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado','cantidad_operada'], 'integer'],
+            [['vlrprecio', 'subtotal','ponderacion', 'porcentaje_proceso','porcentaje_cantidad'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
         ];

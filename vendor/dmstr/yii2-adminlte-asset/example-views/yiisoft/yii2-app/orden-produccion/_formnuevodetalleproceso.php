@@ -2,8 +2,8 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Ordenproduccion;
+use app\models\Ordenproducciondetalle;
 ?>
-
 
 <?php $form = ActiveForm::begin([
 
@@ -15,7 +15,7 @@ use app\models\Ordenproduccion;
     ],
 ]); ?>
     <?php $model = Ordenproduccion::findOne($id); ?>
-
+    <?php $modeldetalle = Ordenproducciondetalle::findOne($iddetalleorden); ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"></h4>
@@ -36,12 +36,12 @@ use app\models\Ordenproduccion;
                         <td><?= Html::encode($model->ordenproduccion) ?></td>
                     </tr>
                     <tr>
-                        <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
-                        <td><?= Html::encode($model->fechallegada,'Y-m-d') ?></td>
-                        <th><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
-                        <td><?= Html::encode($model->fechaprocesada) ?></td>
-                        <th><?= Html::activeLabel($model, 'fechaentrega') ?></th>
-                        <td><?= Html::encode($model->fechaentrega) ?></td>
+                        <th><?= Html::activeLabel($model, 'Producto') ?></th>
+                        <td><?= Html::encode($modeldetalle->producto->nombreProducto) ?></td>
+                        <th><?= Html::activeLabel($model, 'codigo') ?></th>
+                        <td><?= Html::encode($modeldetalle->producto->codigoproducto) ?></td>
+                        <th><?= Html::activeLabel($model, 'cantidad') ?></th>
+                        <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>
                 </table>
             </div>
