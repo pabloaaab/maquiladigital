@@ -103,10 +103,18 @@ class BancoController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    {                        
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["banco/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["banco/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el banco, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el banco, tiene registros asociados en otros procesos');
+            $this->redirect(["banco/index"]);
+        }
     }
 
     /**

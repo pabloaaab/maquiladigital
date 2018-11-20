@@ -124,41 +124,18 @@ use yii\helpers\ArrayHelper;
                     }
 
                     if ($table->insert()) {
-                        $msg = "Registros guardados correctamente";
-                        $model->idtipo = null;
-                        $model->cedulanit = null;
-                        $model->razonsocial = null;
-                        $model->nombrecliente = null;
-                        $model->apellidocliente = null;
-                        $model->direccioncliente = null;
-                        $model->telefonocliente = null;
-                        $model->celularcliente = null;
-                        $model->emailcliente = null;
-                        $model->iddepartamento = null;
-                        $model->idmunicipio = null;
-                        $model->contacto = null;
-                        $model->telefonocontacto = null;
-                        $model->celularcontacto = null;
-                        $model->formapago = null;
-                        $model->plazopago = null;
-                        $model->nitmatricula = null;
-                        $model->tiporegimen = null;
-                        $model->autoretenedor = null;
-                        $model->retencionfuente = null;
-                        $model->retencioniva = null;
-                        $model->dv = null;
-						$model->observacion = null;
-                    } else {
-                        $msg = "error";
-                    }
+                    $this->redirect(["clientes/detalle", 'idcliente' => $table->idcliente]);
                 } else {
-                    $model->getErrors();
+                    $msg = "error";
                 }
+            } else {
+                $model->getErrors();
             }
+        }
             return $this->render('nuevo', ['model' => $model, 'msg' => $msg, 'tipomsg' => $tipomsg]);
         }
 
-        public function actionEditar()
+        public function actionEditar($idcliente)
         {
             $model = new FormCliente();
             $msg = null;
@@ -166,9 +143,7 @@ use yii\helpers\ArrayHelper;
             if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
-            }
-            $idcliente = Html::encode($_GET["idcliente"]);
-			
+            }            		
             if ($model->load(Yii::$app->request->post())) {
 				$dv = Html::encode($_POST["dv"]);
                 if ($model->validate()) {
@@ -221,8 +196,7 @@ use yii\helpers\ArrayHelper;
             }
 
 
-            if (Yii::$app->request->get("idcliente")) {
-                $idcliente = Html::encode($_GET["idcliente"]);
+            if (Yii::$app->request->get("idcliente")) {                
                 $table = Cliente::find()->where(['idcliente' => $idcliente])->one();
 				$municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
 				$municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
@@ -259,56 +233,48 @@ use yii\helpers\ArrayHelper;
             return $this->render("editar", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg, "municipio" => $municipio]);
         }
 
-        public function actionDetalle()
+        public function actionDetalle($idcliente)
         {
-           // $model = new List();
-            $idcliente = Html::encode($_GET["idcliente"]);
+            // $model = new List();            
             $table = Cliente::find()->where(['idcliente' => $idcliente])->one();
             return $this->render('detalle', ['table' => $table
-                ]);
+            ]);
         }
 
-        public function actionEliminar()
-        {
-            if(Yii::$app->request->post())
-            {
-                $idcliente = Html::encode($_POST["idcliente"]);
-                if((int) $idcliente)
-                {
-                    if(Cliente::deleteAll("idcliente=:idcliente", [":idcliente" => $idcliente]))
-                    {
-                        //echo "Cliente con id $idcliente eliminado con éxito, redireccionando ...";
-                        $this->redirect(["clientes/index"]);
-                    }
-                    else
-                    {
-                       // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("clientes/index")."'>";
-                    }
+    public function actionEliminar($idcliente) {
+        if (Yii::$app->request->post()) {            
+            $cliente = Cliente::findOne($idcliente);
+            if ((int) $idcliente) {
+                try {
+                    Cliente::deleteAll("idcliente=:idcliente", [":idcliente" => $idcliente]);
+                    Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                    $this->redirect(["clientes/index"]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["clientes/index"]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el cliente ' . $cliente->cedulanit - $cliente->nombrecorto . ' tiene registros asociados en otros procesos');
+                } catch (\Exception $e) {
+
+                    $this->redirect(["clientes/index"]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el cliente ' . $cliente->cedulanit . '-' . $cliente->nombrecorto . ' tiene registros asociados en otros procesos');
                 }
-                else
-                {
-                   // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("clientes/index")."'>";
-                }
+            } else {
+                // echo "Ha ocurrido un error al eliminar el cliente, redireccionando ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("clientes/index") . "'>";
             }
-            else
-            {
-                return $this->redirect(["clientes/index"]);
-            }
+        } else {
+            return $this->redirect(["clientes/index"]);
         }
-
-        public function actionMunicipio($id){
-            $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
-			
-            echo "<option required>Seleccione...</option>";
-            if(count($rows)>0){
-                foreach($rows as $row){
-                    echo "<option value='$row->idmunicipio' required>$row->municipio</option>";
-                }
-            }
-        }
-
-
-
     }
+
+    public function actionMunicipio($id) {
+        $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
+
+        echo "<option required>Seleccione...</option>";
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                echo "<option value='$row->idmunicipio' required>$row->municipio</option>";
+            }
+        }
+    }
+
+}

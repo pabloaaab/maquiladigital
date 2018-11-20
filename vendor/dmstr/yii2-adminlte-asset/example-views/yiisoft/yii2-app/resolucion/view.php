@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $model->idresolucion;
 ?>
 <div class="resolucion-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idresolucion], ['class' => 'btn btn-primary']) ?>
@@ -25,18 +25,37 @@ $this->params['breadcrumbs'][] = $model->idresolucion;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idresolucion',
-            'nroresolucion',
-            'desde',
-            'hasta',
-            'fechavencimiento',
-            'nitmatricula',
-            'activo',
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Resolución
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idresolucion') ?>:</th>
+                    <td><?= Html::encode($model->idresolucion) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'nroresolucion') ?>:</th>
+                    <td><?= Html::encode($model->nroresolucion) ?></td>                    
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'desde') ?>:</th>
+                    <td><?= Html::encode($model->desde) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'hasta') ?>:</th>
+                    <td><?= Html::encode($model->hasta) ?></td>                    
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechavencimiento') ?>:</th>
+                    <td><?= Html::encode($model->fechavencimiento) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'nitmatricula') ?>:</th>
+                    <td><?= Html::encode($model->nitmatricula) ?></td>                    
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->activo) ?></td>                    
+                    <th></th>
+                    <td></td>                    
+                </tr>
+            </table>
+        </div>
+    </div>     
 </div>

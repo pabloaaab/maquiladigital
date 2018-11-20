@@ -108,7 +108,10 @@ class NotacreditoController extends Controller
         $model = $this->findModel($id);
         $clientes = Cliente::find()->all();
         $conceptonotacredito = Conceptonota::find()->all();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if(Notacreditodetalle::find()->where(['=', 'idnotacredito', $id])->all()){
+           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        }
+        else if($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idnotacredito]);
         }
 
@@ -128,9 +131,17 @@ class NotacreditoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["notacredito/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["notacredito/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la nota crédito, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la nota crédito, tiene registros asociados en otros procesos');
+            $this->redirect(["notacredito/index"]);
+        }
     }
 
     public function actionNuevodetalles($idcliente,$idnotacredito)
@@ -357,11 +368,11 @@ class NotacreditoController extends Controller
                         $nuevosaldo = ($factura->saldo) - ($val->valor + $iva - $reteiva - $retefuente);
 
                         if($nuevosaldo <= 0){
-                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->estado = 3; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura)
                             $factura->saldo = $nuevosaldo;
                         }
                         if ($nuevosaldo > 0){
-                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura)
                             $factura->saldo = $nuevosaldo;
                         }
                         $factura->update();

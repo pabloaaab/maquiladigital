@@ -107,9 +107,17 @@ class ResolucionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["resolucion/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["resolucion/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la resolución, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la resolución, tiene registros asociados en otros procesos');
+            $this->redirect(["resolucion/index"]);
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $model->idtiporecibo;
 ?>
 <div class="tiporecibo-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idtiporecibo], ['class' => 'btn btn-primary']) ?>
@@ -25,14 +25,21 @@ $this->params['breadcrumbs'][] = $model->idtiporecibo;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idtiporecibo',
-            'concepto',
-            'activo',            
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Tipo de recibo
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
+                    <td><?= Html::encode($model->idtiporecibo) ?></td>
+                    <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
+                    <td><?= Html::encode($model->concepto) ?></td>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->activo) ?></td>                    
+                </tr>                
+            </table>
+        </div>
+    </div>   
 </div>

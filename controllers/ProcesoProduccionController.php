@@ -104,9 +104,17 @@ class ProcesoProduccionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["proceso-produccion/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["proceso-produccion/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la operación, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la operación, tiene registros asociados en otros procesos');
+            $this->redirect(["proceso-produccion/index"]);
+        }
     }
 
     /**

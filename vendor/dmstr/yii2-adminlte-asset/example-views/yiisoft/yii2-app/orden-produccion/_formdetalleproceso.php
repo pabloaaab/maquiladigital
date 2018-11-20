@@ -17,7 +17,6 @@ use app\models\Ordenproducciondetalle;
 ]); ?>
 <?php $model = Ordenproduccion::findOne($idordenproduccion); ?>
 <?php $modeldetalle = Ordenproducciondetalle::findOne($iddetalleorden); ?>
-    $iddetalleorden
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"></h4>

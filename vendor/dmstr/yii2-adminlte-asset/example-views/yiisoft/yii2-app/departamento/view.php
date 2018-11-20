@@ -8,16 +8,16 @@ use yii\widgets\DetailView;
 
 $this->title = 'Detalle Departamento';
 $this->params['breadcrumbs'][] = ['label' => 'Departamentos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->idbanco;
+$this->params['breadcrumbs'][] = $model->iddepartamento;
 ?>
 <div class="departamento-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idbanco], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idbanco], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idbanco], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->iddepartamento], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->iddepartamento], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->iddepartamento], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
@@ -25,14 +25,21 @@ $this->params['breadcrumbs'][] = $model->idbanco;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'iddepartamento',
-            'departamento',
-            'activo',
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Departamento
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'iddepartamento') ?>:</th>
+                    <td><?= Html::encode($model->iddepartamento) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'departamento') ?>:</th>
+                    <td><?= Html::encode($model->departamento) ?></td>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->activo) ?></td>                    
+                </tr>                
+            </table>
+        </div>
+    </div>    
 </div>

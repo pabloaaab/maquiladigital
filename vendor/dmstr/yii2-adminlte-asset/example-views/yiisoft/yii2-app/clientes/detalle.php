@@ -21,11 +21,21 @@ $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<h1>Detalle del Cliente</h1>
+<p>
+    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'idcliente' => $table->idcliente], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['eliminar', 'idcliente' => $table->idcliente], [
+        'class' => 'btn btn-danger',
+        'data' => [
+            'confirm' => 'Esta seguro de eliminar el registro?',
+            'method' => 'post',
+        ],
+    ]) ?>
+</p>
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Cliente</h4>
+        Información Cliente
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -74,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
     </div>
     <div class="panel-heading">
-        <h4>Información Contacto</h4>
+        Información Contacto
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -91,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
     </div>
     <div class="panel-heading">
-        <h4>Información Tributaria</h4>
+        Información Tributaria
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -118,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
     </div>
     <div class="panel-heading">
-        <h4>Observaciones</h4>
+        Observaciones
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
@@ -126,9 +136,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $table->observacion ?></td>
             </tr>
         </table>
-    </div>
-    <div class="panel-footer text-left">
-        <a href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-    </div>
+    </div>    
 </div>
 

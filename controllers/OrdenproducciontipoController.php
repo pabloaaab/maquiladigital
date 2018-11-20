@@ -104,9 +104,17 @@ class OrdenproducciontipoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["ordenproducciontipo/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["ordenproducciontipo/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el tipo de orden de producción, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el tipo de orden de producción, tiene registros asociados en otros procesos');
+            $this->redirect(["ordenproducciontipo/index"]);
+        }
     }
 
     /**

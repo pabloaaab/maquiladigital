@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $model->idtipo;
 ?>
 <div class="ordenproducciontipo-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idtipo], ['class' => 'btn btn-primary']) ?>
@@ -25,14 +25,22 @@ $this->params['breadcrumbs'][] = $model->idtipo;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idtipo',
-            'tipo',
-            'activo',
-        ],
-    ]) ?>
+<div class="panel panel-success">
+        <div class="panel-heading">
+            Orden de Producción tipo
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idtipo') ?>:</th>
+                    <td><?= Html::encode($model->idtipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
+                    <td><?= Html::encode($model->tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->activo) ?></td>                    
+                </tr>                
+            </table>
+        </div>
+    </div>
 
 </div>

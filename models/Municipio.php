@@ -51,7 +51,7 @@ class Municipio extends \yii\db\ActiveRecord
             'idmunicipio' => 'Id',
             'codigomunicipio' => 'Codigo Municipio',
             'municipio' => 'Municipio',
-            'iddepartamento' => 'Departamento',
+            'iddepartamento' => 'Id Departamento',
             'activo' => 'Activo',
         ];
     }

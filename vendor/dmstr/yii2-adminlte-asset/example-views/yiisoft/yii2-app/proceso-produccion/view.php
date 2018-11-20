@@ -25,14 +25,20 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idproceso',
-            'proceso',
-            'estado',
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Operación producción
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idproceso') ?>:</th>
+                    <td><?= Html::encode($model->idproceso) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'proceso') ?>:</th>
+                    <td><?= Html::encode($model->proceso) ?></td>
+                    <th><?= Html::activeLabel($model, 'estado') ?>:</th>
+                    <td><?= Html::encode($model->estado) ?></td>                    
+                </tr>                               
+            </table>
+        </div>    
 </div>

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $model->idconceptonota;
 ?>
 <div class="conceptonota-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idconceptonota], ['class' => 'btn btn-primary']) ?>
@@ -25,14 +25,21 @@ $this->params['breadcrumbs'][] = $model->idconceptonota;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idconceptonota',
-            'concepto',
-            'estado',
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Concepto nota
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idconceptonota') ?>:</th>
+                    <td><?= Html::encode($model->idconceptonota) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
+                    <td><?= Html::encode($model->concepto) ?></td>
+                    <th><?= Html::activeLabel($model, 'estado') ?>:</th>
+                    <td><?= Html::encode($model->estado) ?></td>                    
+                </tr>                                
+            </table>
+        </div>
+    </div>    
 </div>

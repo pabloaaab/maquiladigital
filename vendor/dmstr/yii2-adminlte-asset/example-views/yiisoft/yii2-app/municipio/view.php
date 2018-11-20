@@ -25,16 +25,30 @@ $this->params['breadcrumbs'][] = $model->idmunicipio;
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'idmunicipio',
-            'codigomunicipio',
-            'municipio',
-            'iddepartamento',
-            'activo',
-        ],
-    ]) ?>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Municipio
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idmunicipio') ?>:</th>
+                    <td><?= Html::encode($model->idmunicipio) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'codigomunicipio') ?>:</th>
+                    <td><?= Html::encode($model->codigomunicipio) ?></td>
+                    <th><?= Html::activeLabel($model, 'municipio') ?>:</th>
+                    <td><?= Html::encode($model->municipio) ?></td>                    
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'iddepartamento') ?>:</th>
+                    <td><?= Html::encode($model->iddepartamento) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'departamento') ?>:</th>
+                    <td><?= Html::encode($model->departamento->departamento) ?></td>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->activo) ?></td>                    
+                </tr>                
+            </table>
+        </div>
+    </div>
 
 </div>

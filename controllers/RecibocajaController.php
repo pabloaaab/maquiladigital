@@ -121,7 +121,10 @@ class RecibocajaController extends Controller
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if(Recibocajadetalle::find()->where(['=', 'idrecibo', $id])->all() or $model->estado <> 0){
+           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        }
+        else if($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idrecibo]);
         }
 
@@ -142,9 +145,17 @@ class RecibocajaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["recibocaja/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["recibocaja/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el recibo de caja, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el recibo de caja, tiene registros asociados en otros procesos');
+            $this->redirect(["recibocaja/index"]);
+        }
     }
 
     /**
@@ -396,9 +407,9 @@ class RecibocajaController extends Controller
                         $factura = Facturaventa::findOne($val->idfactura);
                         $factura->saldo = $recibodetalle->vlrsaldo;
                         if($factura->saldo <= 0){
-                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura) 
                         }elseif ($factura->saldo >= 0){
-                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada.
+                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura)
                         }
                         $factura->update();
                     }

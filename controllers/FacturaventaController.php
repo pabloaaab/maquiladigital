@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Consecutivo;
 use app\models\Ordenproducciondetalle;
 use app\models\Resolucion;
+use app\models\Producto;
 use Codeception\Module\Cli;
 use Yii;
 use app\models\Facturaventa;
@@ -142,7 +143,10 @@ class FacturaventaController extends Controller
         $table = Facturaventa::find()->where(['idfactura' => $id])->one();
         $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $table->idordenproduccion])->all();
         $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if(Facturaventadetalle::find()->where(['=', 'idfactura', $id])->all() or $model->estado <> 0){
+           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        }
+        else if($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idfactura]);
         }
 
@@ -163,9 +167,17 @@ class FacturaventaController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["facturaventa/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["facturaventa/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la factura de venta, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la factura de venta, tiene registros asociados en otros procesos');
+            $this->redirect(["facturaventa/index"]);
+        }
     }
 
     /**
@@ -497,6 +509,7 @@ class FacturaventaController extends Controller
                 $consecutivo->update();
                 $ordenProduccion->facturado = 1;
                 $ordenProduccion->update();
+                $this->afectarcantidadfacturada($id);//se resta o descuenta las cantidades facturadas en los productos por cliente
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{
                 Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado.');
@@ -527,4 +540,16 @@ class FacturaventaController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    protected function afectarcantidadfacturada($id)
+    {        
+        $detalles = Facturaventadetalle::find()->where(['idfactura' => $id])->all();
+        foreach ($detalles as $dato) {
+            $producto = Producto::findOne($dato->idproducto);
+            $producto->cantidad = $producto->cantidad - $dato->cantidad;
+            $producto->stock = $producto->stock - $dato->cantidad;
+            $producto->update();
+        }
+    }
+    
 }

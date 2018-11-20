@@ -2,40 +2,45 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
-
 use Yii;
-use yii\base\Model;
 
-class TipoDocumento extends ActiveRecord
+/**
+ * This is the model class for table "tipodocumento".
+ *
+ * @property int $idtipo
+ * @property string $tipo
+ * @property string $descripcion
+ *
+ * @property Cliente[] $clientes
+ */
+class Tipodocumento extends \yii\db\ActiveRecord
 {
-    public static function getDb()
-    {
-        return Yii::$app->db;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'tipodocumento';
     }
-	
-	public function beforeSave($insert) {
-	if(!parent::beforeSave($insert)){
+
+    public function beforeSave($insert) {
+        if(!parent::beforeSave($insert)){
             return false;
         }	       
-	$this->descripcion = strtoupper($this->descripcion);
-	
-    return true;
+        $this->descripcion = strtoupper($this->descripcion);
+        $this->tipo = strtoupper($this->tipo);
+        return true;
     }
-	
-	/**
+    
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['idtipo', 'tipo', 'descripcion'], 'required', 'message' => 'Campo requerido'],
-            [['tipo', 'descripcion'], 'string', 'max' => 50],
+            [['tipo', 'descripcion'], 'required', 'message' => 'Campo requerido'],
+            [['tipo'], 'string', 'max' => 10],
+            [['descripcion'], 'string', 'max' => 40],
         ];
     }
 
@@ -45,9 +50,17 @@ class TipoDocumento extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idtipo' => 'Id',
+            'idtipo' => 'Idtipo',
             'tipo' => 'Tipo',
             'descripcion' => 'Descripcion',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClientes()
+    {
+        return $this->hasMany(Cliente::className(), ['idtipo' => 'idtipo']);
     }
 }

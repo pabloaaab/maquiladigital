@@ -124,15 +124,18 @@ class OrdenProduccionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-		$clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idordenproduccion]);
-        }
-
+        if(Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $id])->all() or $model->facturado == 1){            
+            Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        }else{                       
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->idordenproduccion]);
+            }
+        }        
         return $this->render('update', [
             'model' => $model,
-			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+	    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
             'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
     }
@@ -146,9 +149,17 @@ class OrdenProduccionController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["orden-produccion/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["orden-produccion/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la orden de producción, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la orden de producción, tiene registros asociados en otros procesos');
+            $this->redirect(["orden-produccion/index"]);
+        }
     }
 
     public function actionAutorizado($id)
@@ -179,6 +190,7 @@ class OrdenProduccionController extends Controller
     {
         $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
         $ponderacion = 0;
+        $error = 0;
         if (isset($_POST["idproducto"])) {
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
@@ -189,23 +201,32 @@ class OrdenProduccionController extends Controller
                         ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
-                        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                        $table = new Ordenproducciondetalle();
-                        $table->idproducto = $_POST["idproducto"][$intIndice];
-                        $table->cantidad = $_POST["cantidad"][$intIndice];
-                        $table->vlrprecio = $_POST["vlrventa"][$intIndice];
-                        $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrventa"][$intIndice];
-                        $table->idordenproduccion = $idordenproduccion;
-                        $table->ponderacion = $ordenProduccion->ponderacion;
-                        $table->insert();
-                        $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                        $ordenProduccion->update();
+                        $producto = Producto::findOne($intCodigo);
+                        if($_POST["cantidad"][$intIndice] <= $producto->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                            $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                            $table = new Ordenproducciondetalle();
+                            $table->idproducto = $_POST["idproducto"][$intIndice];
+                            $table->cantidad = $_POST["cantidad"][$intIndice];
+                            $table->vlrprecio = $_POST["vlrventa"][$intIndice];
+                            $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                            $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrventa"][$intIndice];
+                            $table->idordenproduccion = $idordenproduccion;
+                            $table->ponderacion = $ordenProduccion->ponderacion;
+                            $table->insert();
+                            $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                            $ordenProduccion->update();
+                        }else{
+                            $error = 1;                            
+                        }                        
                     }
                 }
                 $intIndice++;
             }
-            $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+            if($error == 1){
+                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');                
+            }else{
+                $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+            }            
         }
 
         return $this->render('_formnuevodetalles', [
@@ -224,21 +245,27 @@ class OrdenProduccionController extends Controller
             if((int) $iddetalleorden)
             {
                 $table = Ordenproducciondetalle::findOne($iddetalleorden);
+                $producto = Producto::findOne($table->idproducto);
                 if ($table) {
 
                     $table->cantidad = Html::encode($_POST["cantidad"]);
                     $table->vlrprecio = Html::encode($_POST["vlrprecio"]);
                     $table->subtotal = Html::encode($_POST["cantidad"]) * Html::encode($_POST["vlrprecio"]);
                     $table->idordenproduccion = Html::encode($_POST["idordenproduccion"]);
-                    $table->update();
-
+                    
                     $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
+                    
                     $ordenProduccion->totalorden =  $ordenProduccion->totalorden - Html::encode($_POST["subtotal"]);
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                    $ordenProduccion->update();
-
-                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-
+                    if(Html::encode($_POST["cantidad"]) <= $producto->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                       $table->update();
+                       $ordenProduccion->update();
+                       $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]); 
+                    }else{
+                       Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
+                       $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]); 
+                    }
+                    
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
                     $tipomsg = "danger";
@@ -251,27 +278,36 @@ class OrdenProduccionController extends Controller
 	public function actionEditardetalles($idordenproduccion)
         {
             $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
-
+            $error = 0;
             if (isset($_POST["iddetalleorden"])) {
                 $intIndice = 0;
                 foreach ($_POST["iddetalleorden"] as $intCodigo) {
-                    if($_POST["cantidad"][$intIndice] > 0 ){
+                    if($_POST["cantidad"][$intIndice] > 0 ){                                                
+                            $table = Ordenproducciondetalle::findOne($intCodigo);
+                            $subtotal = $table->subtotal;
+                            $table->cantidad = $_POST["cantidad"][$intIndice];
+                            $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
 
-                        $table = Ordenproducciondetalle::findOne($intCodigo);
-                        $subtotal = $table->subtotal;
-                        $table->cantidad = $_POST["cantidad"][$intIndice];
-                        $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
-
-                        $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
-                        $table->update();
-                        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                        $ordenProduccion->totalorden =  $ordenProduccion->totalorden - $subtotal;
-                        $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                        $ordenProduccion->update();
+                            $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
+                            
+                            $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                            $ordenProduccion->totalorden =  $ordenProduccion->totalorden - $subtotal;
+                            $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                            $producto = Producto::findOne($intCodigo);
+                            if($_POST["cantidad"][$intIndice] <= $table->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                                $table->update();
+                                $ordenProduccion->update();
+                            }else{
+                                $error = 1;
+                            }                        
                     }
                     $intIndice++;
                 }
-                $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+                if($error == 1){
+                    Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');                
+                }else{
+                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
+                }
             }
             return $this->render('_formeditardetalles', [
                 'mds' => $mds,
