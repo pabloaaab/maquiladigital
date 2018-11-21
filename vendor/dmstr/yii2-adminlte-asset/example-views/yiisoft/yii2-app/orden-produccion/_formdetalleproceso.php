@@ -98,7 +98,7 @@ use app\models\Ordenproducciondetalle;
                         </tr>
                         <tr>
                             <td scope="col" colspan="4" align="right"><b>Total Minutos:</b></td>
-                            <th scope="col"><?= (number_format($totalsegundos / 60,1)) ?></th>
+                            <th scope="col"><?= (number_format($totalsegundos / 60)) ?></th>
                         </tr>
                     </table>
                 </div>

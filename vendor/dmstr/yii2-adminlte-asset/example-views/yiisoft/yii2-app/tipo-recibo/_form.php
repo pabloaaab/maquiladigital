@@ -26,19 +26,19 @@ use yii\helpers\Url;
         <h4>Información Tipo Recibo</h4>
     </div>
     <div class="panel-body">
-		<div class="row">            
-			<?= $form->field($model, 'idtiporecibo')->textInput() ?>
-		</div>														   		
-		<div class="row">
-			<?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
+        <div class="row">            
+            <?= $form->field($model, 'idtiporecibo')->textInput() ?>
+        </div>														   		
+        <div class="row">
+            <?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
         </div>
-		<div class="row">
+	<div class="row">
             <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>  					
         </div>		
-		<div class="panel-footer text-right">
-			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
-			<a href="<?= Url::toRoute("tipo-recibo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-		</div>
+            <div class="panel-footer text-right">                
+                <a href="<?= Url::toRoute("tipo-recibo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+                <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+            </div>
 	</div>
 </div>
 <?php ActiveForm::end(); ?>

@@ -462,7 +462,36 @@ class OrdenProduccionController extends Controller
                 }
                 $intIndice++;
             }
-            $this->progresoproceso($iddetalleorden);
+            $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
+            $this->progresoproceso($iddetalleorden,$detalleorden->idordenproduccion);
+            //se replica los procesos a detalles que contengan el mismo codigo de producto, para agilizar la insercion de cada uno de las operaciones por detalle            
+            $detallesordenproduccion = Ordenproducciondetalle::find()
+                    ->where(['<>','iddetalleorden',$iddetalleorden])
+                    ->andWhere(['idordenproduccion' => $detalleorden->idordenproduccion])
+                    ->all();            
+            foreach ($detallesordenproduccion as $dato){
+                if ($dato->codigoproducto == $detalleorden->codigoproducto){
+                    $detallesprocesos = Ordenproducciondetalleproceso::find()->where(['iddetalleorden' => $iddetalleorden])->all();
+                    foreach ($detallesprocesos as $val){
+                        $detallesp = Ordenproducciondetalleproceso::find()
+                        ->where(['=', 'idproceso', $val->idproceso])
+                        ->andWhere(['=', 'iddetalleorden', $dato->iddetalleorden])
+                        ->all();
+                    $reg2 = count($detallesp);
+                        if($reg2 == 0){
+                            $tableprocesos = new Ordenproducciondetalleproceso();
+                            $tableprocesos->idproceso = $val->idproceso;
+                            $tableprocesos->proceso = $val->proceso;
+                            $tableprocesos->duracion = $val->duracion;
+                            $tableprocesos->ponderacion = $val->ponderacion;
+                            $tableprocesos->total = $val->total;
+                            $tableprocesos->iddetalleorden = $dato->iddetalleorden;
+                            $tableprocesos->insert();
+                        }
+                    }
+                    $this->progresoproceso($dato->iddetalleorden,$dato->idordenproduccion);
+                }
+            }
             $this->redirect(["orden-produccion/view_detalle",'id' => $id]);
         }
 

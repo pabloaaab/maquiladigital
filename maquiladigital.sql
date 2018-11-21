@@ -66,7 +66,6 @@ CREATE TABLE `banco` (
 
 insert  into `banco`(`idbanco`,`nitbanco`,`entidad`,`direccionbanco`,`telefonobanco`,`producto`,`numerocuenta`,`nitmatricula`,`activo`) values 
 ('1015','900456778','BANCO DAVIVIEND','CL 45 -56 56','4448120','CORRIENTE','257-41830918','901189320','SI'),
-('10154545','ADADA','ADASD','ADASDAS','4545545','AHORRO','SDASDASD','901189320','SI'),
 ('1020','8909212121','BANCOLOMBIA SA','CL 45 -56 -56','4448120','AHORROO','102045645645','901189320','SI');
 
 /*Table structure for table `cliente` */
@@ -108,7 +107,7 @@ CREATE TABLE `cliente` (
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idtipo`) REFERENCES `tipodocumento` (`idtipo`),
   CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
   CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
@@ -117,7 +116,8 @@ insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nomb
 (3,1,70855467,8,'WALTER PULGARIN MORALES','WALTER','PULGARIN','WALTER PULGARIN','CL 45 -56 45','4545454','64564545','jose2@hotmail.com','AJAS DHASJDHASJDH','4545454','44545455','1',30,'05','05001','70855467','1',1,1,1,'DKADA','2018-11-06 11:31:47'),
 (24,5,1020304050,8,'FABRICATO SA','','','FABRICATO SA','CRA 86 # 96-69','258','301','fabricato@hotmail.com','PABLO','369','302','1',0,'05','05040','1020304050','2',0,1,1,'HOLA','2018-11-05 11:16:37'),
 (25,1,71268830,6,'','PABLO ANDRES','ARANZAZU ATUESTA','PABLO ANDRES ARANZAZU ATUESTA','CRA 3','254','301','paul6126@hotmail.com','ABI','256','302','2',20,'05','05001','71268830','1',1,1,1,'HOLA','2018-11-05 10:19:43'),
-(26,5,901189320,2,'TENNIS SA','','','TENNIS SA','CRA T','213','300','tennis@hotmail.com','TENNIS','234','231','2',15,'05','05001','901189320','1',1,1,1,'TENNIS','2018-11-13 14:20:58');
+(26,5,901189320,2,'TENNIS SA','','','TENNIS SA','CRA T','213','300','tennis@hotmail.com','TENNIS','234','231','2',15,'05','05001','901189320','1',1,1,1,'TENNIS','2018-11-13 14:20:58'),
+(28,1,334343,5,'','PABLO AN','ARANZAZU A','PABLO AN ARANZAZU A','','222','','abi012444@hotmail.com','','','','1',NULL,'05','05001','334343','1',1,1,1,'','2018-11-20 09:45:40');
 
 /*Table structure for table `conceptonota` */
 
@@ -1525,8 +1525,7 @@ CREATE TABLE `notacredito` (
 /*Data for the table `notacredito` */
 
 insert  into `notacredito`(`idnotacredito`,`idcliente`,`fecha`,`fechapago`,`idconceptonota`,`valor`,`iva`,`reteiva`,`retefuente`,`total`,`numero`,`autorizado`,`anulado`,`usuariosistema`,`observacion`) values 
-(7,26,'2018-11-15 15:31:48','2018-11-15',1,200000,38000,5700,7000,225300,0,1,0,'71268830','sds'),
-(8,26,'2018-11-15 15:35:52','2018-11-17',1,0,0,0,0,0,0,0,0,'71268830','sds');
+(7,26,'2018-11-15 15:31:48','2018-11-15',1,200000,38000,5700,7000,225300,0,1,0,'71268830','sds');
 
 /*Table structure for table `notacreditodetalle` */
 
@@ -1550,8 +1549,7 @@ CREATE TABLE `notacreditodetalle` (
 /*Data for the table `notacreditodetalle` */
 
 insert  into `notacreditodetalle`(`iddetallenota`,`fecha`,`idfactura`,`nrofactura`,`valor`,`usuariosistema`,`idnotacredito`) values 
-(10,'2018-11-15 15:31:57',8,6,200000,'0',7),
-(16,'2018-11-16 21:40:54',8,6,10088,'0',8);
+(10,'2018-11-15 15:31:57',8,6,200000,'0',7);
 
 /*Table structure for table `ordenproduccion` */
 
@@ -1581,7 +1579,7 @@ CREATE TABLE `ordenproduccion` (
   KEY `idtipo` (`idtipo`),
   CONSTRAINT `ordenproduccion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `ordenproduccion_ibfk_2` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproduccion` */
 
@@ -1593,7 +1591,7 @@ insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`f
 (35,3,'2018-10-29 00:00:00','2018-11-12 00:00:00','2018-11-12 00:00:00',2140.17,NULL,'cvfd',0,'414d',1,'71268830',1,0,0,0,0,0),
 (36,26,'2018-10-29 00:00:00','2018-10-29 00:00:00','2018-11-29 00:00:00',703330,NULL,'as',0,'10879',1,'71268830',1,1,0,33,0,0),
 (37,26,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-11-14 00:00:00',18300,NULL,'dfdf',0,'ddd3',1,'71268830',0,1,0,0,0,0),
-(38,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',217000,NULL,'ddgd',0,'414dss',1,'71268830',1,0,0,47,10,10.1333);
+(40,28,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',13200,NULL,'dfds',0,'414d',1,'71268830',0,0,0,0,10,0);
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -1617,7 +1615,7 @@ CREATE TABLE `ordenproducciondetalle` (
   KEY `idproducto` (`idproducto`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
@@ -1643,9 +1641,10 @@ insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoprodu
 (31,12,'136',10,610,6100,37,NULL,NULL,0,NULL,0,0),
 (32,13,'136',10,610,6100,37,NULL,NULL,0,NULL,0,0),
 (33,14,'136',10,610,6100,37,NULL,NULL,0,NULL,0,0),
-(35,15,'sds',100,1255,125500,38,NULL,NULL,40,10,10,10),
-(36,16,'a23',50,1500,75000,38,NULL,NULL,30,10,20,10),
-(37,17,'5010w',500,33,16500,38,NULL,NULL,50,10,0.4,2);
+(35,15,'sds',100,1255,125500,38,NULL,NULL,14,10,10,10),
+(36,16,'a23',50,1500,75000,38,NULL,NULL,57,10,20,10),
+(37,17,'5010w',500,33,16500,38,NULL,NULL,50,10,20,100),
+(39,19,'aw2',11,1200,13200,40,NULL,NULL,0,10,0,0);
 
 /*Table structure for table `ordenproducciondetalleproceso` */
 
@@ -1665,7 +1664,7 @@ CREATE TABLE `ordenproducciondetalleproceso` (
   KEY `iddetalleorden` (`iddetalleorden`),
   CONSTRAINT `ordenproducciondetalleproceso_ibfk_1` FOREIGN KEY (`idproceso`) REFERENCES `proceso_produccion` (`idproceso`),
   CONSTRAINT `ordenproducciondetalleproceso_ibfk_2` FOREIGN KEY (`iddetalleorden`) REFERENCES `ordenproducciondetalle` (`iddetalleorden`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `ordenproducciondetalleproceso` */
 
@@ -1681,16 +1680,23 @@ insert  into `ordenproducciondetalleproceso`(`iddetalleproceso`,`proceso`,`durac
 (9,'MONTAR CORTE BAJO',40,2,42,8,0,30),
 (10,'UNIR CORTE PERRILLA',10,10,11,1,1,35),
 (11,'CERRAR CORTE PERRILLA',20,10,22,2,0,35),
-(12,'ARMAR CUELLO',30,10,33,3,1,35),
 (13,'MONTAR PERILLA CUELLO',40,10,44,4,0,35),
 (14,'UNIR CORTE PERRILLA',10,10,11,1,0,36),
 (15,'CERRAR CORTE PERRILLA',20,10,22,2,0,36),
-(16,'ARMAR CUELLO',30,10,33,3,1,36),
-(17,'MONTAR PERILLA CUELLO',40,10,44,4,0,36),
+(17,'MONTAR PERILLA CUELLO',40,10,44,4,1,36),
 (18,'UNIR CORTE PERRILLA',10,10,11,1,1,37),
 (19,'CERRAR CORTE PERRILLA',20,10,22,2,0,37),
 (20,'ARMAR CUELLO',30,10,33,3,0,37),
-(21,'MONTAR PERILLA CUELLO',40,10,44,4,1,37);
+(21,'MONTAR PERILLA CUELLO',40,10,44,4,1,37),
+(42,'UNIR CORTE PERRILLA',10,10,11,1,0,31),
+(43,'UNIR CORTE PERRILLA',10,10,11,1,0,32),
+(44,'UNIR CORTE PERRILLA',10,10,11,1,0,33),
+(45,'CERRAR CORTE PERRILLA',20,10,22,2,0,31),
+(46,'ARMAR CUELLO',30,10,33,3,0,31),
+(47,'CERRAR CORTE PERRILLA',20,10,22,2,0,32),
+(48,'ARMAR CUELLO',30,10,33,3,0,32),
+(49,'CERRAR CORTE PERRILLA',20,10,22,2,0,33),
+(50,'ARMAR CUELLO',30,10,33,3,0,33);
 
 /*Table structure for table `ordenproducciontipo` */
 
@@ -1787,7 +1793,7 @@ CREATE TABLE `producto` (
   KEY `idprendatipo` (`idprendatipo`),
   CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`idprendatipo`) REFERENCES `prendatipo` (`idprendatipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 /*Data for the table `producto` */
 
@@ -1808,7 +1814,8 @@ insert  into `producto`(`idproducto`,`codigoproducto`,`producto`,`cantidad`,`sto
 (14,'136','KIMONO ROSADO',288,NULL,223,610,26,'',0,'2018-11-13 14:25:09',NULL,9),
 (15,'sds','PANTALON',100,100,1255,1255,25,'eeee',0,'2018-11-14 17:09:58','71268830',2),
 (16,'a23','PANTALON',50,50,1500,1500,25,'sfsf',0,'2018-11-17 18:35:10','71268830',5),
-(17,'5010w','CAMISA',500,33,33,33,25,'ddddd',0,'2018-11-17 18:35:40','71268830',7);
+(17,'5010w','CAMISA',500,33,33,33,25,'ddddd',0,'2018-11-17 18:35:40','71268830',7),
+(19,'aw2','PRUEBA',11,11,1200,1200,28,'sdsd',0,'2018-11-20 16:09:33','71268830',1);
 
 /*Table structure for table `recibocaja` */
 
@@ -1944,10 +1951,10 @@ DROP TABLE IF EXISTS `tipodocumento`;
 
 CREATE TABLE `tipodocumento` (
   `idtipo` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` char(10) NOT NULL,
-  `descripcion` char(40) NOT NULL,
+  `tipo` varchar(10) NOT NULL,
+  `descripcion` varchar(40) NOT NULL,
   PRIMARY KEY (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tipodocumento` */
 
@@ -1973,28 +1980,22 @@ CREATE TABLE `tiporecibo` (
 
 insert  into `tiporecibo`(`idtiporecibo`,`concepto`,`activo`) values 
 ('1','RECIBO DE CAJA',0),
-('10','TERCERO',0),
-('11','TERCERO EN APORTES',0),
-('12','PRUEBA PRUEBA',0),
+('10','ABONO ADE BANCO',0),
+('11','TECERO',0),
+('12','APORTES DE SOCIO',0),
 ('13','ABONO A FACTURAA',0),
-('14','TERCERO',0),
-('145','RECIBO DE CAJA',0),
-('15','ADAJDHASJD',0),
-('16','ADASDA',0),
-('17','AJDHASDAS',0),
-('18','ADASDAS',0),
-('19','DADADA',0),
 ('2','RECIBO DE CAJA',0),
-('3','ABONO A AFACTURAA',0),
-('30','RECIBO DE TEMPORALIDAD',0),
+('3','TERCERO',0),
 ('31','ABONO DE FACTURA',0),
-('33','ABONO ADE BANCO',0),
-('39','TECERO',0),
 ('4','PRESTAMO BANACRIA',0),
-('40','APORTES DE SOCIO',0),
-('42',' REGALO NAVIDEÑO',0),
+('42','REGALO NAVIDEÑO',0),
 ('43','REGISTRO DE ENTRADA',0),
-('44','TERCERO',0);
+('44','TERCERO',0),
+('5','TERCERO EN APORTES',0),
+('6','PRUEBA PRUEBA',0),
+('7','TERCERO',0),
+('8','DADADA',0),
+('9','RECIBO DE TEMPORALIDAD',0);
 
 /*Table structure for table `usuario` */
 

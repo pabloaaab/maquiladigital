@@ -61,22 +61,9 @@ use yii\helpers\Url;
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+        <div class="panel-footer text-right">            
             <a href="<?= Url::toRoute("recibocaja/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
     </div>
 </div>

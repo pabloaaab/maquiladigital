@@ -25,19 +25,18 @@ use yii\helpers\Url;
     <div class="panel-heading">
         <h4>Información Tipo Documento</h4>
     </div>
-    <div class="panel-body">
-
-		<div class="row">
-			<?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
-        </div>
-		<div class="row">
-            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>  					
-        </div>		
-		<div class="panel-footer text-right">
-			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
-			<a href="<?= Url::toRoute("tipo-documento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-		</div>
-	</div>
+     <div class="panel-body">
+         <div class="row">
+             <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
+         </div>
+         <div class="row">
+             <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>  					
+         </div>		
+         <div class="panel-footer text-right">             
+             <a href="<?= Url::toRoute("tipo-documento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+         </div>
+     </div>
 </div>
 <?php ActiveForm::end(); ?>
 

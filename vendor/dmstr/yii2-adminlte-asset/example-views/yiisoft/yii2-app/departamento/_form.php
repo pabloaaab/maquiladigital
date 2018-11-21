@@ -18,25 +18,25 @@ use yii\helpers\Url;
                 ],
 	]); ?>
 
- <div class="panel panel-success">
+<div class="panel panel-success">
     <div class="panel-heading">
         <h4>Información Departamento</h4>
     </div>
     <div class="panel-body">
-		<div class="row">            
-			<?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>
-		</div>														   		
-		<div class="row">
-			<?= $form->field($model, 'departamento')->textInput(['maxlength' => true]) ?>    
+        <div class="row">            
+            <?= $form->field($model, 'iddepartamento')->textInput(['maxlength' => true]) ?>
+        </div>														   		
+        <div class="row">
+            <?= $form->field($model, 'departamento')->textInput(['maxlength' => true]) ?>    
         </div>
-		<div class="row">
+        <div class="row">
             <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>  					
         </div>
-		<div class="panel-footer text-right">
-			<?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
-			<a href="<?= Url::toRoute("departamento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-		</div>
-	</div>
+        <div class="panel-footer text-right">            
+            <a href="<?= Url::toRoute("departamento/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+        </div>
+    </div>
 </div>
 <?php ActiveForm::end(); ?>
 
