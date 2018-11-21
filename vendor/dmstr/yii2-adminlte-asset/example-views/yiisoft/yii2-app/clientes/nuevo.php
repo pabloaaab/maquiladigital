@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
         }
     }
 </script>
-<h1>Nuevo Cliente</h1>
+<!--<h1>Nuevo Cliente</h1>-->
 <?php if ($tipomsg == "danger") { ?>
     <h3 class="alert-danger"><?= $msg ?></h3>
 <?php } else { ?>

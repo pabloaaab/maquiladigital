@@ -22,7 +22,7 @@ $form = ActiveForm::begin([
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Banco</h4>
+        Información Banco
     </div>
     <div class="panel-body">
         <div class="row">

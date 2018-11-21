@@ -73,7 +73,7 @@ use app\models\Ordenproducciondetalle;
                             <td><?= $val->proceso ?></td>
                             <td><input type="text" name="duracion[]" value="<?= $val->duracion ?>" required></td>
                             <td><input type="text" name="ponderacion[]" value="<?= $val->ponderacion ?>" required></td>
-                            <td><?= $val->total ?></td>
+                            <td><?= number_format($val->total,1) ?></td>
 
                             <td><select name="estado[]">
                                     <?php if ($val->estado == 0){echo $estado = "Abierto";}else{echo $estado ="Cerrado";}?>
@@ -94,11 +94,11 @@ use app\models\Ordenproducciondetalle;
                         </tr>
                         <tr>
                             <td scope="col" colspan="4" align="right"><b>Total Segundos:</b></td>
-                            <th scope="col"><?= $totalsegundos ?></th>
+                            <th scope="col"><?= number_format($totalsegundos,1) ?></th>
                         </tr>
                         <tr>
                             <td scope="col" colspan="4" align="right"><b>Total Minutos:</b></td>
-                            <th scope="col"><?= (number_format($totalsegundos / 60)) ?></th>
+                            <th scope="col"><?= (number_format($totalsegundos,1) / (60)) ?></th>
                         </tr>
                     </table>
                 </div>

@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = 'Editar Tipo Documento';
 ?>
 <div class="tipo documento-update">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <?= $this->render('_form', [
         'model' => $model,

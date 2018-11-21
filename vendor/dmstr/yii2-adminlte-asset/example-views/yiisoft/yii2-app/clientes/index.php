@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 </script>
 
-<h1>Lista Clientes</h1>
+<!--<h1>Lista Clientes</h1>-->
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
     "action" => Url::toRoute("clientes/index"),

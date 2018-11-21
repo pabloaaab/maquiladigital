@@ -35,7 +35,8 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['duracion', 'ponderacion', 'total', 'idproceso', 'estado', 'iddetalleorden'], 'integer'],
+            [['duracion', 'ponderacion', 'idproceso', 'estado', 'iddetalleorden'], 'integer'],
+            [['total'], 'number'],
             [['idproceso', 'iddetalleorden'], 'required'],
             [['proceso'], 'string', 'max' => 50],
             [['idproceso'], 'exist', 'skipOnError' => true, 'targetClass' => ProcesoProduccion::className(), 'targetAttribute' => ['idproceso' => 'idproceso']],
