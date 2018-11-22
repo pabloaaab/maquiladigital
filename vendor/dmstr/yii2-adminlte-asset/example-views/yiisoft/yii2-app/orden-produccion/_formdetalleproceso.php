@@ -56,42 +56,43 @@ use app\models\Ordenproducciondetalle;
                     <table class="table table-responsive">
                         <thead>
                         <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Proceso</th>
-                            <th scope="col">Duración (Seg)</th>
-                            <th scope="col">Ponderación (Seg)</th>
-                            <th scope="col">Total (Seg)</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col"><input type="checkbox" name="todos[]" value=""></th>
+                            <td align="center"><b>Id</td>
+                            <td align="center"><b>Proceso</td>
+                            <td align="center"><b>Duración (Seg)</td>
+                            <td align="center"><b>Ponderación (Seg)</td>
+                            <td align="center"><b>Total (Seg)</td>
+                            <td align="center"><b>Total Proceso (Seg)</td>
+                            <td align="center"><b>% proceso </b></td>
+                            <td align="center"><b>Cant Operada </td>
+                            <td align="center"><b>Estado</td>
+                            <td align="center"><input type="checkbox" name="todos[]" value=""></td>
                         </tr>
                         </thead>
                         <tbody>
                         <?php $totalsegundos = 0; ?>
                         <?php foreach ($procesos as $val): ?>
                         <tr>
-                            <td><?= $val->iddetalleproceso ?></td>
-                            <td><?= $val->proceso ?></td>
-                            <td><input type="text" name="duracion[]" value="<?= $val->duracion ?>" required></td>
-                            <td><input type="text" name="ponderacion[]" value="<?= $val->ponderacion ?>" required></td>
-                            <td><?= number_format($val->total,1) ?></td>
-
-                            <td><select name="estado[]">
+                            <td align="center"><?= $val->iddetalleproceso ?></td>
+                            <td align="center"><?= $val->proceso ?></td>
+                            <td align="center"><input type="text" name="duracion[]" value="<?= $val->duracion ?>" size="2" required></td>
+                            <td align="center"><input type="text" name="ponderacion[]" value="<?= $val->ponderacion ?>" size="2" required></td>
+                            <td align="center"><?= number_format($val->total,1) ?></td>
+                            <td align="center"><?= number_format($val->totalproceso,1) ?></td>
+                            <td align="center"><?= number_format($val->porcentajeproceso,1) ?></td>
+                            <td align="center"><input type="text" name="cantidad_operada[]" value="<?= $val->cantidad_operada ?>" size="2" required></td>
+                            <td align="center"><select name="estado[]">
                                     <?php if ($val->estado == 0){echo $estado = "Abierto";}else{echo $estado ="Cerrado";}?>
                                     <option value="<?= $val->estado ?>"><?= $estado ?></option>
                                     <option value="0">Abierto</option>
                                     <option value="1">Cerrado</option>
                                 </select></td>
-                            <td><input type="checkbox" name="iddetalleproceso2[]" value="<?= $val->iddetalleproceso ?>"></td>
-                            <td><input type="hidden" name="iddetalleproceso1[]" value="<?= $val->iddetalleproceso ?>"></td>
+                            <td align="center"><input type="checkbox" name="iddetalleproceso2[]" value="<?= $val->iddetalleproceso ?>"></td>
+                            <td align="center"><input type="hidden" name="iddetalleproceso1[]" value="<?= $val->iddetalleproceso ?>"></td>
                         </tr>
                         </tbody>
                         <?php
                         $totalsegundos = $totalsegundos + $val->total;
-                        endforeach; ?>
-                        <tr>
-                            <td scope="col" colspan="4" align="right"><b>Cantidad Operada:</b></td>
-                            <td scope="col"><input type="text" name="cantidadoperada" value="<?= $modeldetalle->cantidad_operada ?>" size="3" required></td>
-                        </tr>
+                        endforeach; ?>                        
                         <tr>
                             <td scope="col" colspan="4" align="right"><b>Total Segundos:</b></td>
                             <th scope="col"><?= number_format($totalsegundos,1) ?></th>

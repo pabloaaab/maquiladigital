@@ -439,9 +439,10 @@ class OrdenProduccionController extends Controller
     }
 
     public function actionNuevo_detalle_proceso($id,$iddetalleorden){
+        $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
         $procesos = ProcesoProduccion::find()->all();
         if (isset($_POST["idproceso"])) {
-            $intIndice = 0;
+            $intIndice = 0;            
             foreach ($_POST["idproceso"] as $intCodigo) {
                 if($_POST["duracion"][$intIndice] > 0 ){
                     $detalles = Ordenproducciondetalleproceso::find()
@@ -449,21 +450,24 @@ class OrdenProduccionController extends Controller
                         ->andWhere(['=', 'iddetalleorden', $iddetalleorden])
                         ->all();
                     $reg = count($detalles);
-                    if ($reg == 0) {
+                    if ($reg == 0) {                        
                         $table = new Ordenproducciondetalleproceso();
                         $table->idproceso = $intCodigo;
                         $table->proceso = $_POST["proceso"][$intIndice];
                         $table->duracion = $_POST["duracion"][$intIndice];
                         $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                        $table->cantidad_operada = 0;
                         $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice]/100);
+                        $table->totalproceso = $detalleorden->cantidad * $table->total;                         
                         $table->iddetalleorden = $iddetalleorden;
-                        $table->insert();
+                        $table->insert();                        
                     }
                 }
                 $intIndice++;
             }
-            $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
+            $this->porcentajeproceso($iddetalleorden);
             $this->progresoproceso($iddetalleorden,$detalleorden->idordenproduccion);
+            //$this->progresocantidad($iddetalleorden,$detalleorden->idordenproduccion);
             //se replica los procesos a detalles que contengan el mismo codigo de producto, para agilizar la insercion de cada uno de las operaciones por detalle            
             $detallesordenproduccion = Ordenproducciondetalle::find()
                     ->where(['<>','iddetalleorden',$iddetalleorden])
@@ -485,11 +489,15 @@ class OrdenProduccionController extends Controller
                             $tableprocesos->duracion = $val->duracion;
                             $tableprocesos->ponderacion = $val->ponderacion;
                             $tableprocesos->total = $val->total;
+                            $tableprocesos->cantidad_operada = 0;
+                            $tableprocesos->totalproceso = $dato->cantidad * $tableprocesos->total;
                             $tableprocesos->iddetalleorden = $dato->iddetalleorden;
                             $tableprocesos->insert();
                         }
                     }
+                    $this->porcentajeproceso($dato->iddetalleorden);
                     $this->progresoproceso($dato->iddetalleorden,$dato->idordenproduccion);
+                    //$this->progresocantidad($dato->iddetalleorden,$dato->idordenproduccion);
                 }
             }
             $this->redirect(["orden-produccion/view_detalle",'id' => $id]);
@@ -504,6 +512,7 @@ class OrdenProduccionController extends Controller
 
     public function actionDetalle_proceso($idordenproduccion,$iddetalleorden){
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
+        $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
         if(Yii::$app->request->post()) {
             if (isset($_POST["editar"])) {
                 if (isset($_POST["iddetalleproceso1"])) {
@@ -513,19 +522,14 @@ class OrdenProduccionController extends Controller
                             $table = Ordenproducciondetalleproceso::findOne($intCodigo);
                             $table->duracion = $_POST["duracion"][$intIndice];
                             $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                            $table->cantidad_operada = $_POST["cantidad_operada"][$intIndice];
                             $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice]/100);
+                            $table->totalproceso = $detalle->cantidad * $table->total;  
                             $table->update();
                         }
                         $intIndice++;
                     }
-                }
-                
-                $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
-                $cantidad = $detalle->cantidad;
-                $cantidad_operada = $_REQUEST['cantidadoperada'];
-                $detalle->cantidad_operada = $cantidad_operada;
-                $detalle->porcentaje_cantidad = $cantidad_operada * 100 / $cantidad;
-                $detalle->update();
+                }                
             }
             if (isset($_POST["eliminar"])) {
                 if (isset($_POST["iddetalleproceso2"])) {
@@ -553,7 +557,9 @@ class OrdenProduccionController extends Controller
                     }
                 }
             }
+            $this->porcentajeproceso($iddetalleorden);
             $this->progresoproceso($iddetalleorden,$idordenproduccion);
+            //$this->progresocantidad($iddetalleorden,$idordenproduccion);
             $this->redirect(["orden-produccion/view_detalle",'id' => $idordenproduccion]);
         }
         return $this->renderAjax('_formdetalleproceso', [
@@ -584,52 +590,104 @@ class OrdenProduccionController extends Controller
     }
 
     protected function progresoproceso($iddetalleorden,$idordenproduccion){
-        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
-        $totalsegundos = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
-        $sum = $totalsegundos->where(['=','iddetalleorden',$iddetalleorden])->sum('total');
+        $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
+        $procesos = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$iddetalleorden])->all();
         $progreso = 0;
-        $totalprogreso = 0;
-        if ($sum > 0){
-            foreach ($procesos as $val){
-                if ($val->estado == 1) {
-                    $progreso = ($val->total * 100) / $sum;
-                    $totalprogreso = $totalprogreso + $progreso;
-                }
-                $total = round($totalprogreso,0);
-                $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
-                $tabla->porcentaje_proceso = $total;
-                $tabla->update();
-                $orden = Ordenproduccion::findOne(['=','idordenproduccion',$tabla->idordenproduccion]);
-                $detallesorden = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $tabla->idordenproduccion])->all();
-                $totalporc = 0;
-
-                //suma de cantidades de los detalles de orden de produccion
-                $totalcantidades = (new \yii\db\Query())->from('ordenproducciondetalle');
-                $sumcant = $totalcantidades->where(['=','idordenproduccion',$tabla->idordenproduccion])->sum('cantidad');
-                foreach ($detallesorden as $dato)
-                {
-                    //proceso para sacar el procentaje total de la orden de produccion en la parte operacional
-                    $porcentajecantidad = $dato->cantidad * 100/ $sumcant;
-                    $porcentajetotal = $dato->porcentaje_proceso * $porcentajecantidad /100;
-                    $totalporc = $totalporc + $porcentajetotal;
-                }
-                $orden->porcentaje_proceso = round($totalporc,0) ;
-                $orden->update();
-                //Yii::$app->getSession()->setFlash('error',$totalporc );
+        $totalprogresodetalle = 0;
+        $totalprocesodetalle = 0;
+        $cantidadefectiva = 0;
+        $sumacantxoperar = 0;
+        $totalsegxdetalle = 0;
+        foreach ($procesos as $val){
+            if ($val->estado == 1) {
+                $cantidadefectiva = $cantidadefectiva + $tabla->cantidad;
+                $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;                
+            }                        
+        }
+        $tsegundosproceso = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
+        $sumsegproc = $tsegundosproceso->where(['=','iddetalleorden',$iddetalleorden])->sum('totalproceso');
+        $total = $totalprogresodetalle;            
+        $tabla->porcentaje_proceso = $total;        
+        $sumacantxoperar = $tabla->cantidad * count($procesos);
+        if($sumacantxoperar == 0){
+           $sumacantxoperar = 1; 
+        }
+        $totalsegxdetalle = ($sumsegproc * $cantidadefectiva) / $sumacantxoperar;
+        $tabla->cantidad_efectiva = $cantidadefectiva;
+        $tabla->totalsegundos = $totalsegxdetalle;
+        $tabla->update();
+        $totaldetallesseg = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $tdetallesseg = 0;
+        $ts = 0;
+        foreach ($totaldetallesseg as $value) {
+            $tdetallesseg = $tdetallesseg + $value->totalsegundos;
+            $procesosx = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$value->iddetalleorden])->all();            
+            foreach ($procesosx as $v) {
+                $ts = $ts + $v->totalproceso;
             }
-        }else {
-            $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
-            $tabla->porcentaje_proceso = 0;
+        }        
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+        if($ts == 0){
+           $ts = 1; 
+        }
+        $orden->porcentaje_proceso = 100 * $tdetallesseg / $ts;
+        $orden->update();
+    }
+    
+    protected function progresocantidad($iddetalleorden,$idordenproduccion){
+        $tabla = Ordenproducciondetalle::findOne(['=','iddetalleorden',$iddetalleorden]);
+        $procesos = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$iddetalleorden])->all();
+        $progreso = 0;
+        $totalprogresodetalle = 0;
+        $totalprocesodetalle = 0;
+        $cantidadoperada = 0;
+        $sumacantxoperar = 0;
+        $totalsegxdetalle = 0;
+        foreach ($procesos as $val){
+            $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
+            $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;                       
+        }
+        $tsegundosproceso = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
+        $sumsegproc = $tsegundosproceso->where(['=','iddetalleorden',$iddetalleorden])->sum('totalproceso');
+        $total = $totalprogresodetalle;            
+        $tabla->porcentaje_proceso = $total;        
+        $sumacantxoperar = $tabla->cantidad * count($procesos);
+        if($sumacantxoperar == 0){
+           $sumacantxoperar = 1; 
+        }
+        $totalsegxdetalle = ($sumsegproc * $cantidadoperada) / $sumacantxoperar;
+        $tabla->cantidad_operada = $cantidadoperada;
+        $tabla->totalsegundos = $totalsegxdetalle;
+        $tabla->update();
+        $totaldetallesseg = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $tdetallesseg = 0;
+        $ts = 0;
+        foreach ($totaldetallesseg as $value) {
+            $tdetallesseg = $tdetallesseg + $value->totalsegundos;
+            $procesosx = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$value->iddetalleorden])->all();            
+            foreach ($procesosx as $v) {
+                $ts = $ts + $v->totalproceso;
+            }
+        }        
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+        if($ts == 0){
+           $ts = 1; 
+        }
+        $orden->porcentaje_cantidad = 100 * $tdetallesseg / $ts;
+        $orden->update();
+    }
+    
+    protected function porcentajeproceso($iddetalleorden){
+        $detallesprocesos = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$iddetalleorden])->all();
+        $totalproceso = 0;
+        //suma de segundos de todos los procesos
+        $totalsegundos = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
+        $sumseg = $totalsegundos->where(['=','iddetalleorden',$iddetalleorden])->sum('totalproceso');
+        foreach ($detallesprocesos as $val) {
+            $tabla = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
+            $tabla->porcentajeproceso = $val->totalproceso / $sumseg * 100;
             $tabla->update();
         }
-        $totalporcentajecant = 0;
-        $ordenDetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenproduccion])->all();
-        foreach ($ordenDetalles as $val){
-            $totalporcentajecant = $totalporcentajecant + $val->porcentaje_cantidad;
-        }
-        $ordenp = Ordenproduccion::findOne($idordenproduccion);
-        $ordenp->porcentaje_cantidad = $totalporcentajecant / count($ordenDetalles);
-        $ordenp->update();
     }
 
 }

@@ -15,6 +15,9 @@ use Yii;
  * @property int $idproceso
  * @property int $estado
  * @property int $iddetalleorden
+ * @property int $totalproceso
+ * @property int $porcentajeproceso
+ * @property int $cantidad_operada
  *
  * @property ProcesoProduccion $proceso0
  * @property Ordenproducciondetalle $detalleorden
@@ -35,8 +38,8 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['duracion', 'ponderacion', 'idproceso', 'estado', 'iddetalleorden'], 'integer'],
-            [['total'], 'number'],
+            [['duracion', 'ponderacion', 'idproceso', 'estado', 'iddetalleorden','cantidad_operada'], 'integer'],
+            [['total','totalproceso','porcentajeproceso'], 'number'],
             [['idproceso', 'iddetalleorden'], 'required'],
             [['proceso'], 'string', 'max' => 50],
             [['idproceso'], 'exist', 'skipOnError' => true, 'targetClass' => ProcesoProduccion::className(), 'targetAttribute' => ['idproceso' => 'idproceso']],
@@ -58,6 +61,9 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
             'idproceso' => 'Idproceso',
             'estado' => 'Estado',
             'iddetalleorden' => 'Iddetalleorden',
+            'totalproceso' => 'total Proceso',
+            'porcentajeproceso' => '% Proceso',
+            'cantidad_operada' => 'Cantidad Operada',
         ];
     }
 

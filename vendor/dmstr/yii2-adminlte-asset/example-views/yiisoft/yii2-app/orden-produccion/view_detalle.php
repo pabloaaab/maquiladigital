@@ -64,11 +64,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th><?= Html::activeLabel($model, 'Progreso') ?></th>
                     <td><div class="progress"><b>Operación:&nbsp;</b>
                             <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>
-                            <span><b><?= Html::encode($model->porcentaje_proceso).' %' ?></b></span>
+                            <span><b><?= Html::encode(round($model->porcentaje_proceso,1)).' %' ?></b></span>
                         </div>
                         <div class="progress"><b>Cantidad:&nbsp;&nbsp;&nbsp;</b>
-                            <progress id="html5" max="100" value="<?= $model->porcentaje_cantidad ?>"></progress>
-                            <span><b><?= Html::encode(number_format($model->porcentaje_cantidad),1).' %' ?></b></span>
+                            <progress id="html5" max="100" value="<?= round($model->porcentaje_cantidad,1) ?>"></progress>
+                            <span><b><?= Html::encode(round($model->porcentaje_cantidad),1).' %' ?></b></span>
                         </div>
                     </td>
                     <th><?= Html::activeLabel($model, 'tipo') ?></th>
@@ -105,9 +105,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <td><?= $val->cantidad ?></td>
                         <td><div class="progress"><b>Operación:&nbsp;</b>
                                 <progress id="html5" max="100" value="<?= $val->porcentaje_proceso ?>"></progress>
-                                <span><b><?= Html::encode($val->porcentaje_proceso).' %' ?></b></span>&nbsp;&nbsp;-&nbsp;&nbsp;<b>Cantidad:</b>
-                                <progress id="html5" max="100" value="<?= number_format($val->porcentaje_cantidad,1) ?>"></progress>
-                                <span><b><?= Html::encode($val->porcentaje_cantidad).' %' ?></b></span>
+                                <span><b><?= Html::encode(round($val->porcentaje_proceso,1)).' %' ?></b></span>&nbsp;&nbsp;-&nbsp;&nbsp;<b>Cantidad:</b>
+                                <progress id="html5" max="100" value="<?= $val->porcentaje_cantidad ?>"></progress>
+                                <span><b><?= Html::encode(round($val->porcentaje_cantidad,1)).' %' ?></b></span>
                             </div>
                         </td>
                         <td><?= $val->cantidad_operada ?></td>
