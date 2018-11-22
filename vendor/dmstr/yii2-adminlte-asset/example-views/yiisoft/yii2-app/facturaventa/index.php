@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $subtotal = "$ ".number_format($factura->subtotal);
                     return "{$subtotal}";
                 },
-                'contentOptions' => ['class' => 'col-lg-1.2'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'label' => 'Total',
@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $total = "$ ".number_format($factura->totalpagar);
                     return "{$total}";
                 },
-                'contentOptions' => ['class' => 'col-lg-1.2'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',              

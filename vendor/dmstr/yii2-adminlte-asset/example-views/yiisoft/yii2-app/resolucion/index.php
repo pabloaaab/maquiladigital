@@ -28,15 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [                
                 'attribute' => 'desde',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-3'],                
             ],
             [               
                 'attribute' => 'hasta',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],
             [               
                 'attribute' => 'fechavencimiento',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],                        
             [
                 'class' => 'yii\grid\ActionColumn',              

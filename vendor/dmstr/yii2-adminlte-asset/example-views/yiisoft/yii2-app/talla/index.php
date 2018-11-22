@@ -24,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'talla',
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-5'],
             ],
             [
                 'attribute' => 'sexo',
-                'contentOptions' => ['class' => 'col-lg-2 '],
+                'contentOptions' => ['class' => 'col-lg-6 '],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

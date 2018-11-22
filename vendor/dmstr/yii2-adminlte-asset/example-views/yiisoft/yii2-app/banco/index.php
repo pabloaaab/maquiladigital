@@ -31,15 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'entidad',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],
             [               
                 'attribute' => 'direccionbanco',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],
 			[               
                 'attribute' => 'telefonobanco',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-2.2 '],                
             ],			
             [
                 'class' => 'yii\grid\ActionColumn',              

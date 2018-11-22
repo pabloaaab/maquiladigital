@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 
-$this->title = 'Ordenes de Producción Procesos';
+$this->title = 'Ficha de Operaciones';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -101,10 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->fechaprocesada ?></td>
                 <td><?= $val->fechaentrega ?></td>
                 <td><?= $val->tipo->tipo ?></td>
-                <td><div class="progress">
-                        <progress id="html5" max="100" value="<?= $val->porcentaje_proceso ?>"></progress>
-                        <span><b><?= Html::encode($val->porcentaje_proceso).' %' ?></b></span>
-                    </div></td>
+                <td><?= 'Proceso '.'<b>'.round($val->porcentaje_proceso,1).' % - </b>Cantidad '.'<b>'.round($val->porcentaje_cantidad,1).' %' ?></td>
                 <td>
                     <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_detalle', 'id' => $val->idordenproduccion] ) ?>
                 </td>

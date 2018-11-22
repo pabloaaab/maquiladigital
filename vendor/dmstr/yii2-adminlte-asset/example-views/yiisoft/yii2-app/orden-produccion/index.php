@@ -34,19 +34,31 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-3.1'],
+                'contentOptions' => ['class' => 'col-lg-2.5'],
             ],
             [               
                 'attribute' => 'fechallegada',
-                'contentOptions' => ['class' => 'col-lg-1.5 '],
+                'value' => function($model){
+                    $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
+                    return date("Y-m-d", strtotime("$ordenp->fechallegada"));
+                },
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [               
                 'attribute' => 'fechaprocesada',
-                'contentOptions' => ['class' => 'col-lg-1.5 '],
+                'value' => function($model){
+                    $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
+                    return date("Y-m-d", strtotime("$ordenp->fechaprocesada"));
+                },
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
-			[               
-                'attribute' => 'fechaentrega',
-                'contentOptions' => ['class' => 'col-lg-1.5 '],
+            [               
+            'attribute' => 'fechaentrega',
+            'value' => function($model){
+                $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
+                return date("Y-m-d", strtotime("$ordenp->fechaentrega"));
+            },
+            'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'label' => 'Total',
@@ -56,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $total = "$ ".number_format($ordenp->totalorden);
                     return "{$total}";
                 },
-                'contentOptions' => ['class' => 'col-lg-1.2'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',              

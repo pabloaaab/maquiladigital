@@ -27,8 +27,8 @@ use yii\bootstrap\Progress;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
-$this->title = 'Orden de Producción Detalle';
-$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Producción Procesos', 'url' => ['proceso']];
+$this->title = 'Ficha de operaciones detalle';
+$this->params['breadcrumbs'][] = ['label' => 'Ficha Operaciones', 'url' => ['proceso']];
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
 ?>
 <div class="ordenproduccionproceso-view">
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            Orden de Producción Procesos
+            Ficha Operaciones Detalle
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
@@ -67,8 +67,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             <span><b><?= Html::encode(round($model->porcentaje_proceso,1)).' %' ?></b></span>
                         </div>
                         <div class="progress"><b>Cantidad:&nbsp;&nbsp;&nbsp;</b>
-                            <progress id="html5" max="100" value="<?= round($model->porcentaje_cantidad,1) ?>"></progress>
-                            <span><b><?= Html::encode(round($model->porcentaje_cantidad),1).' %' ?></b></span>
+                            <progress id="html5" max="100" value="<?= $model->porcentaje_cantidad ?>"></progress>
+                            <span><b><?= Html::encode(round($model->porcentaje_cantidad,1)).' %' ?></b></span>
                         </div>
                     </td>
                     <th><?= Html::activeLabel($model, 'tipo') ?></th>

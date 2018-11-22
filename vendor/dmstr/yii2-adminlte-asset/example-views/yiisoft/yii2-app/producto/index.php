@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'codigoproducto',
-                'contentOptions' => ['class' => 'col-lg-1.3'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'producto',
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $productos = Producto::findOne($model->idproducto);
                     return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
                 },
-                'contentOptions' => ['class' => 'col-lg-3.2'],
+                'contentOptions' => ['class' => 'col-lg-3.1'],
             ],
             [
                 'attribute' => 'cantidad',

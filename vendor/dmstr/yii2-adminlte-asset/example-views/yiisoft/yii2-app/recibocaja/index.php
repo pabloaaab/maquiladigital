@@ -30,9 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'idrecibo',
                 'contentOptions' => ['class' => 'col-lg-1 '],
             ],
-            [
+            [               
                 'attribute' => 'fecharecibo',
-                'contentOptions' => ['class' => 'col-lg-2 '],
+                'value' => function($model){
+                    $recibo = Recibocaja::findOne($model->idrecibo);
+                    return date("Y-m-d", strtotime("$recibo->fecharecibo"));
+                },
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'fechapago',

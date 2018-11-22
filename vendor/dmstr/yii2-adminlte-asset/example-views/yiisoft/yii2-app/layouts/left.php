@@ -85,7 +85,7 @@
                                     ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => ['/facturaventa/index']],
                                     ['label' => 'Nota Crédito', 'icon' => 'plus-square-o', 'url' => ['/notacredito/index']],
                                     ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
-                                    ['label' => 'Operaciones Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/proceso']],
+                                    ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/proceso']],
                                 ],
                             ],
                             [

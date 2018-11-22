@@ -72,6 +72,7 @@ class ProductoController extends Controller
         $prendas = Prendatipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;
+            $model->stock = $model->cantidad;
             $model->update();
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
@@ -96,6 +97,7 @@ class ProductoController extends Controller
         $clientes = Cliente::find()->all();
         $prendas = Prendatipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->stock = $model->cantidad;
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 

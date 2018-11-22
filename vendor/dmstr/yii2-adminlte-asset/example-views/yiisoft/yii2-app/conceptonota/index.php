@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ConceptonotaSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Conceptonotas';
+$this->title = 'Concepto Notas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="conceptonota-index">
@@ -23,15 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'idconceptonota',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [
                 'attribute' => 'concepto',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [
                 'attribute' => 'estado',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
 
             [

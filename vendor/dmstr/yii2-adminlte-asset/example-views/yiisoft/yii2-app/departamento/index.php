@@ -23,15 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'iddepartamento',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [                
                 'attribute' => 'departamento',
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-5'],
             ],
             [               
                 'attribute' => 'activo',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-4 '],                
             ],            			
             [
                 'class' => 'yii\grid\ActionColumn',              

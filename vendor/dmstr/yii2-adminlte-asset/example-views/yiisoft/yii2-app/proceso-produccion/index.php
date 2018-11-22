@@ -23,11 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'idproceso',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-5'],
             ],
             [
                 'attribute' => 'proceso',
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-6'],
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

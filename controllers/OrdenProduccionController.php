@@ -467,7 +467,7 @@ class OrdenProduccionController extends Controller
             }
             $this->porcentajeproceso($iddetalleorden);
             $this->progresoproceso($iddetalleorden,$detalleorden->idordenproduccion);
-            //$this->progresocantidad($iddetalleorden,$detalleorden->idordenproduccion);
+            $this->progresocantidad($iddetalleorden,$detalleorden->idordenproduccion);
             //se replica los procesos a detalles que contengan el mismo codigo de producto, para agilizar la insercion de cada uno de las operaciones por detalle            
             $detallesordenproduccion = Ordenproducciondetalle::find()
                     ->where(['<>','iddetalleorden',$iddetalleorden])
@@ -497,7 +497,7 @@ class OrdenProduccionController extends Controller
                     }
                     $this->porcentajeproceso($dato->iddetalleorden);
                     $this->progresoproceso($dato->iddetalleorden,$dato->idordenproduccion);
-                    //$this->progresocantidad($dato->iddetalleorden,$dato->idordenproduccion);
+                    $this->progresocantidad($dato->iddetalleorden,$dato->idordenproduccion);
                 }
             }
             $this->redirect(["orden-produccion/view_detalle",'id' => $id]);
@@ -513,6 +513,7 @@ class OrdenProduccionController extends Controller
     public function actionDetalle_proceso($idordenproduccion,$iddetalleorden){
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
         $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
+        $error = 0;
         if(Yii::$app->request->post()) {
             if (isset($_POST["editar"])) {
                 if (isset($_POST["iddetalleproceso1"])) {
@@ -525,10 +526,20 @@ class OrdenProduccionController extends Controller
                             $table->cantidad_operada = $_POST["cantidad_operada"][$intIndice];
                             $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice]/100);
                             $table->totalproceso = $detalle->cantidad * $table->total;  
-                            $table->update();
+                            if($_POST["cantidad_operada"][$intIndice] <= $detalle->cantidad){//se valida que la cantidad a operada no sea mayor a la cantidad a operar
+                                $table->update();                                
+                            }else{
+                                $error = 1;
+                            }                             
                         }
                         $intIndice++;
                     }
+                    if($error == 1){
+                        Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad operada');                
+                    }else{
+                        $this->redirect(["orden-produccion/view_detalle",'id' => $idordenproduccion]);
+                    }
+                    $this->progresocantidad($iddetalleorden,$idordenproduccion);
                 }                
             }
             if (isset($_POST["eliminar"])) {
@@ -559,7 +570,7 @@ class OrdenProduccionController extends Controller
             }
             $this->porcentajeproceso($iddetalleorden);
             $this->progresoproceso($iddetalleorden,$idordenproduccion);
-            //$this->progresocantidad($iddetalleorden,$idordenproduccion);
+            $this->progresocantidad($iddetalleorden,$idordenproduccion);
             $this->redirect(["orden-produccion/view_detalle",'id' => $idordenproduccion]);
         }
         return $this->renderAjax('_formdetalleproceso', [
@@ -644,13 +655,15 @@ class OrdenProduccionController extends Controller
         $sumacantxoperar = 0;
         $totalsegxdetalle = 0;
         foreach ($procesos as $val){
-            $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
-            $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;                       
+            if ($val->cantidad_operada > 0){
+                $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
+                $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;
+            }                                  
         }
         $tsegundosproceso = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
         $sumsegproc = $tsegundosproceso->where(['=','iddetalleorden',$iddetalleorden])->sum('totalproceso');
-        $total = $totalprogresodetalle;            
-        $tabla->porcentaje_proceso = $total;        
+        $total = ($tabla->cantidad_operada * $totalprogresodetalle) / $tabla->cantidad;            
+        $tabla->porcentaje_cantidad = $total;        
         $sumacantxoperar = $tabla->cantidad * count($procesos);
         if($sumacantxoperar == 0){
            $sumacantxoperar = 1; 
