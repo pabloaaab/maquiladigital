@@ -22,10 +22,8 @@
         "kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-widget-depdrop": "@dev",
         "kartik-v/yii2-widget-depdrop": "dev-master",
-        "dmstr/yii2-adminlte-asset": "^2.1"
-
-
-
+        "dmstr/yii2-adminlte-asset": "^2.1",
+        "kartik-v/yii2-mpdf": "dev-master"
 		
     },
     "require-dev": {

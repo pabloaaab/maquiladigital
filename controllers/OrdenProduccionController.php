@@ -275,85 +275,72 @@ class OrdenProduccionController extends Controller
         //return $this->render("_formeditardetalle", ["model" => $model,]);
     }
 
-	public function actionEditardetalles($idordenproduccion)
-        {
-            $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
-            $error = 0;
-            if (isset($_POST["iddetalleorden"])) {
-                $intIndice = 0;
-                foreach ($_POST["iddetalleorden"] as $intCodigo) {
-                    if($_POST["cantidad"][$intIndice] > 0 ){                                                
-                            $table = Ordenproducciondetalle::findOne($intCodigo);
-                            $subtotal = $table->subtotal;
-                            $table->cantidad = $_POST["cantidad"][$intIndice];
-                            $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
+    public function actionEditardetalles($idordenproduccion) {
+        $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
+        $error = 0;
+        if (isset($_POST["iddetalleorden"])) {
+            $intIndice = 0;
+            foreach ($_POST["iddetalleorden"] as $intCodigo) {
+                if ($_POST["cantidad"][$intIndice] > 0) {
+                    $table = Ordenproducciondetalle::findOne($intCodigo);
+                    $subtotal = $table->subtotal;
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
 
-                            $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
-                            
-                            $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                            $ordenProduccion->totalorden =  $ordenProduccion->totalorden - $subtotal;
-                            $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                            $producto = Producto::findOne($intCodigo);
-                            if($_POST["cantidad"][$intIndice] <= $table->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                                $table->update();
-                                $ordenProduccion->update();
-                            }else{
-                                $error = 1;
-                            }                        
-                    }
-                    $intIndice++;
-                }
-                if($error == 1){
-                    Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');                
-                }else{
-                    $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-                }
-            }
-            return $this->render('_formeditardetalles', [
-                'mds' => $mds,
-                'idordenproduccion' => $idordenproduccion,
-            ]);
-        }	
-		
-	public function actionEliminardetalle()
-        {
-            if(Yii::$app->request->post())
-            {
-                $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
-				$idordenproduccion = Html::encode($_POST["idordenproduccion"]);
-                if((int) $iddetalleorden)
-                {
-                    $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($iddetalleorden);
-                    $subtotal = $ordenProduccionDetalle->subtotal;
-                    if(OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden]))
-                    {
-                        $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
-                        $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
+
+                    $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                    $producto = Producto::findOne($intCodigo);
+                    if ($_POST["cantidad"][$intIndice] <= $table->cantidad) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                        $table->update();
                         $ordenProduccion->update();
-                        $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-                    }
-                    else
-                    {                       
-                        echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("orden-produccion/index")."'>";
+                    } else {
+                        $error = 1;
                     }
                 }
-                else
-                {                   
-                    echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("orden-produccion/index")."'>";
-                }
+                $intIndice++;
             }
-            else
-            {
-                return $this->redirect(["orden-produccion/index"]);
+            if ($error == 1) {
+                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
+            } else {
+                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
             }
         }
+        return $this->render('_formeditardetalles', [
+                    'mds' => $mds,
+                    'idordenproduccion' => $idordenproduccion,
+        ]);
+    }
 
-    public function actionEliminardetalles($idordenproduccion)
-    {
+    public function actionEliminardetalle() {
+        if (Yii::$app->request->post()) {
+            $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
+            $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
+            if ((int) $iddetalleorden) {
+                $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($iddetalleorden);
+                $subtotal = $ordenProduccionDetalle->subtotal;
+                if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden])) {
+                    $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                    $ordenProduccion->update();
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                } else {
+                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
+                }
+            } else {
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
+            }
+        } else {
+            return $this->redirect(["orden-produccion/index"]);
+        }
+    }
+
+    public function actionEliminardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $mensaje = "";
-        if(Yii::$app->request->post())
-        {
+        if (Yii::$app->request->post()) {
             $intIndice = 0;
 
             if (isset($_POST["seleccion"])) {
@@ -364,23 +351,21 @@ class OrdenProduccionController extends Controller
                         $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
                         $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
                         $ordenProduccion->update();
-
                     }
                 }
                 $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-            }else{
+            } else {
                 $mensaje = "Debe seleccionar al menos un registro";
             }
         }
         return $this->render('_formeliminardetalles', [
-            'mds' => $mds,
-            'idordenproduccion' => $idordenproduccion,
-            'mensaje' => $mensaje,
+                    'mds' => $mds,
+                    'idordenproduccion' => $idordenproduccion,
+                    'mensaje' => $mensaje,
         ]);
     }
 
-    public function actionProceso()
-    {
+    public function actionProceso() {
         //if (!Yii::$app->user->isGuest) {
         $form = new FormFiltroOrdenProduccionProceso();
         $idcliente = null;
@@ -394,10 +379,10 @@ class OrdenProduccionController extends Controller
                 $ordenproduccion = Html::encode($form->ordenproduccion);
                 $idtipo = Html::encode($form->idtipo);
                 $table = Ordenproduccion::find()
-                    ->andFilterWhere(['=', 'idcliente', $idcliente])
-                    ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
-                    ->andFilterWhere(['=', 'idtipo', $idtipo])
-                    ->orderBy('idordenproduccion desc');
+                        ->andFilterWhere(['=', 'idcliente', $idcliente])
+                        ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
+                        ->andFilterWhere(['=', 'idtipo', $idtipo])
+                        ->orderBy('idordenproduccion desc');
                 $count = clone $table;
                 $to = $count->count();
                 $pages = new Pagination([
@@ -405,37 +390,36 @@ class OrdenProduccionController extends Controller
                     'totalCount' => $count->count()
                 ]);
                 $model = $table
-                    ->offset($pages->offset)
-                    ->limit($pages->limit)
-                    ->all();
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
             } else {
                 $form->getErrors();
             }
         } else {
             $table = Ordenproduccion::find()
-                ->orderBy('idordenproduccion desc');
+                    ->orderBy('idordenproduccion desc');
             $count = clone $table;
             $pages = new Pagination([
                 'pageSize' => 10,
                 'totalCount' => $count->count(),
             ]);
             $model = $table
-                ->offset($pages->offset)
-                ->limit($pages->limit)
-                ->all();
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
         }
 
         return $this->render('ordenproduccionproceso', [
-            'model' => $model,
-            'form' => $form,
-            'pagination' => $pages,
-            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
-            'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+                    'model' => $model,
+                    'form' => $form,
+                    'pagination' => $pages,
+                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                    'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
         /* }else{
-             return $this->redirect(["site/login"]);
-         }*/
-
+          return $this->redirect(["site/login"]);
+          } */
     }
 
     public function actionNuevo_detalle_proceso($id,$iddetalleorden){

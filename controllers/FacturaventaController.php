@@ -30,6 +30,7 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
+use kartik\mpdf\Pdf;
 
 /**
  * FacturaventaController implements the CRUD actions for Facturaventa model.
@@ -76,7 +77,7 @@ class FacturaventaController extends Controller
     {
         $modeldetalles = Facturaventadetalle::find()->Where(['=', 'idfactura', $id])->all();
         $modeldetalle = new Facturaventadetalle();
-        $mensaje = "";
+        $mensaje = "";                        
         return $this->render('view', [
             'model' => $this->findModel($id),
             'modeldetalle' => $modeldetalle,
@@ -551,5 +552,42 @@ class FacturaventaController extends Controller
             $producto->update();
         }
     }
+    
+    
+ 
+public function actionImprimir() {
+    // get your HTML raw content without any layouts or scripts
+    $content = $this->renderPartial('formatos/imprimir');
+    
+    // setup kartik\mpdf\Pdf component
+    $pdf = new Pdf([
+        // set to use core fonts only
+        'mode' => Pdf::MODE_CORE, 
+        // A4 paper format
+        'format' => Pdf::FORMAT_LETTER, 
+        // portrait orientation
+        'orientation' => Pdf::ORIENT_PORTRAIT, 
+        // stream to browser inline
+        'destination' => Pdf::DEST_DOWNLOAD,
+        'filename' => 'dsds.pdf',
+        // your html content input
+        'content' => $content,  
+        // format content from your own css file if needed or use the
+        // enhanced bootstrap css built by Krajee for mPDF formatting 
+        'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+        // any css to be embedded if required
+        'cssInline' => '.kv-heading-1{font-size:18px}', 
+         // set mPDF properties on the fly
+        'options' => ['title' => 'Krajee Report Title'],
+         // call mPDF methods on the fly
+        'methods' => [ 
+            'SetHeader'=>['Krajee Report Header'], 
+            'SetFooter'=>['{PAGENO}'],            
+        ]
+    ]);
+
+    // return the pdf output as per the destination setting
+    return $pdf->render();     
+}
     
 }

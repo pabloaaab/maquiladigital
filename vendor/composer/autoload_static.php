@@ -39,6 +39,7 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         array (
             'kartik\\select2\\' => 15,
             'kartik\\plugins\\depdrop\\' => 23,
+            'kartik\\mpdf\\' => 12,
             'kartik\\depdrop\\' => 15,
             'kartik\\date\\' => 12,
             'kartik\\base\\' => 12,
@@ -72,6 +73,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         array (
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
+        ),
+        'M' => 
+        array (
+            'Mpdf\\' => 5,
         ),
         'G' => 
         array (
@@ -141,6 +146,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'kartik\\plugins\\depdrop\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/dependent-dropdown',
+        ),
+        'kartik\\mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-mpdf/src',
         ),
         'kartik\\depdrop\\' => 
         array (
@@ -213,6 +222,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Mpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -295,9 +308,14 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
     );
 
     public static $classMap = array (
+        'FPDF_TPL' => __DIR__ . '/..' . '/setasign/fpdi/fpdf_tpl.php',
+        'FPDI' => __DIR__ . '/..' . '/setasign/fpdi/fpdi.php',
         'File_Iterator' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Iterator.php',
         'File_Iterator_Facade' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Facade.php',
         'File_Iterator_Factory' => __DIR__ . '/..' . '/phpunit/php-file-iterator/src/Factory.php',
+        'FilterASCII85' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCII85.php',
+        'FilterASCIIHexDecode' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterASCIIHexDecode.php',
+        'FilterLZW' => __DIR__ . '/..' . '/setasign/fpdi/filters/FilterLZW.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
         'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
@@ -760,6 +778,8 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'SebastianBergmann\\ResourceOperations\\ResourceOperations' => __DIR__ . '/..' . '/sebastian/resource-operations/src/ResourceOperations.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
         'Text_Template' => __DIR__ . '/..' . '/phpunit/php-text-template/src/Template.php',
+        'fpdi_pdf_parser' => __DIR__ . '/..' . '/setasign/fpdi/fpdi_pdf_parser.php',
+        'pdf_context' => __DIR__ . '/..' . '/setasign/fpdi/pdf_context.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
