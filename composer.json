@@ -21,9 +21,10 @@
         "kartik-v/yii2-widget-datepicker": "@dev",
         "kartik-v/yii2-widget-select2": "@dev",
         "kartik-v/yii2-widget-depdrop": "@dev",
-        "kartik-v/yii2-widget-depdrop": "dev-master",
+        
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "kartik-v/yii2-mpdf": "dev-master"
+        "kartik-v/yii2-mpdf": "dev-master",
+        "inquid/yii2-fpdf": "*"
 		
     },
     "require-dev": {

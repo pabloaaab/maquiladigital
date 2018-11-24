@@ -555,7 +555,7 @@ class FacturaventaController extends Controller
     
     
  
-public function actionImprimir() {
+/*public function actionImprimir() {
     // get your HTML raw content without any layouts or scripts
     $content = $this->renderPartial('formatos/imprimir');
     
@@ -568,7 +568,7 @@ public function actionImprimir() {
         // portrait orientation
         'orientation' => Pdf::ORIENT_PORTRAIT, 
         // stream to browser inline
-        'destination' => Pdf::DEST_DOWNLOAD,
+        'destination' => Pdf::DEST_BROWSER,
         'filename' => 'dsds.pdf',
         // your html content input
         'content' => $content,  
@@ -576,18 +576,26 @@ public function actionImprimir() {
         // enhanced bootstrap css built by Krajee for mPDF formatting 
         'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
         // any css to be embedded if required
-        'cssInline' => '.kv-heading-1{font-size:18px}', 
+        'cssInline' => '.kv-heading-1{font-size:10px}', 
          // set mPDF properties on the fly
         'options' => ['title' => 'Krajee Report Title'],
          // call mPDF methods on the fly
-        'methods' => [ 
-            'SetHeader'=>['Krajee Report Header'], 
-            'SetFooter'=>['{PAGENO}'],            
+        'methods' => [              
+            'SetFooter'=>['PAG {PAGENO}'],            
         ]
     ]);
 
     // return the pdf output as per the destination setting
     return $pdf->render();     
-}
+}*/
+    
+    public function actionImprimir($id)
+    {
+                                
+        return $this->render('formatos/imprimir_1', [
+            'model' => $this->findModel($id),
+            
+        ]);
+    }
     
 }

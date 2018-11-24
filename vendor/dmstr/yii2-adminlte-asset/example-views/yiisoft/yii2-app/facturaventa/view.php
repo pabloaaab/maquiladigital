@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $model->idfactura;
         else {
             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
             echo Html::a('<span class="glyphicon glyphicon-check"></span> Generar', ['generarnro', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
-            echo Html::a('<span class="glyphicon glyphicon-check"></span> Imprimir', ['imprimir', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
+            echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
         }
         ?>
     </p>

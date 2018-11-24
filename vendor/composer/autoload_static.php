@@ -44,6 +44,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
             'kartik\\date\\' => 12,
             'kartik\\base\\' => 12,
         ),
+        'i' => 
+        array (
+            'inquid\\pdf\\' => 11,
+        ),
         'd' => 
         array (
             'dmstr\\' => 6,
@@ -162,6 +166,10 @@ class ComposerStaticInitda04a37dc982d38f8e98f3fbecae1a9c
         'kartik\\base\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base/src',
+        ),
+        'inquid\\pdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/inquid/yii2-fpdf',
         ),
         'dmstr\\' => 
         array (

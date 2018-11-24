@@ -120,4 +120,13 @@ return array (
       '@kartik/mpdf' => $vendorDir . '/kartik-v/yii2-mpdf/src',
     ),
   ),
+  'inquid/yii2-fpdf' => 
+  array (
+    'name' => 'inquid/yii2-fpdf',
+    'version' => '1.2.0.0',
+    'alias' => 
+    array (
+      '@inquid/pdf' => $vendorDir . '/inquid/yii2-fpdf',
+    ),
+  ),
 );

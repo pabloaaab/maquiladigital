@@ -1056,6 +1056,53 @@
         ]
     },
     {
+        "name": "inquid/yii2-fpdf",
+        "version": "v1.2",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/inquid/yii2-fpdf.git",
+            "reference": "6a14590c1a135b0e787deed7be29f8f0f22150a4"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/inquid/yii2-fpdf/zipball/6a14590c1a135b0e787deed7be29f8f0f22150a4",
+            "reference": "6a14590c1a135b0e787deed7be29f8f0f22150a4",
+            "shasum": ""
+        },
+        "require": {
+            "yiisoft/yii2": "*"
+        },
+        "require-dev": {
+            "yiisoft/yii2-coding-standards": "*"
+        },
+        "time": "2017-10-21T20:21:07+00:00",
+        "type": "yii2-extension",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "inquid\\pdf\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "IntegReady"
+            }
+        ],
+        "description": "FPDF in Yii2",
+        "homepage": "https://github.com/inquid/yii2-fpdf",
+        "keywords": [
+            "extension",
+            "fpdf",
+            "pdf",
+            "yii2"
+        ]
+    },
+    {
         "name": "kartik-v/dependent-dropdown",
         "version": "v1.4.8",
         "version_normalized": "1.4.8.0",
