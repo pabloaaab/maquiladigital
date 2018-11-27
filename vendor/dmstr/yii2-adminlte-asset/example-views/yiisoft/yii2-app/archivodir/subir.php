@@ -38,9 +38,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'codigo')->input("hidden") ?>
             </div>
             <div class="row">
+                <label id="descripcion" for="descripcion" class="col-sm-3 control-label">Descripción</label>
+                <div class="col-sm-5 form-group">
+                    <?= Html::textInput('descripcion', '', ['id' => 'descripcion', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 120, 'class' => 'form-control', 'style' => 'width:65%', 'required' => true]) ?>                        
+                </div>   
+            </div>                
+            <div class="row">
                 <?= $form->field($model, 'imageFile')->fileInput() ?>
             </div>
-            <div class="panel-footer text-right">
+            <div class="panel-footer text-right">                
+                <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['archivodir/index', 'numero' => $model->numero,'codigo' => $model->codigo], ['class' => 'btn btn-primary']); ?>
                 <?= Html::submitButton("<span class='glyphicon glyphicon-upload'></span> Subir Archivo", ["class" => "btn btn-success",]) ?>
             </div>
         </div>

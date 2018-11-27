@@ -61,19 +61,22 @@ class ArchivodirController extends \yii\web\Controller
 
         $codigo = Html::encode($_GET["codigo"]);
         $numero = Html::encode($_GET["numero"]);
-        if (Yii::$app->request->isPost) {
+        $descripcion = '';
+        if ($model->load(Yii::$app->request->post()))
+            
+            {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            $descripcion = $_POST['descripcion'];
             if ($model->upload()) {
 
                 $table = new Archivodir();
-                if ($table) {
-                    $table->descripcion = "dfdfdfdf";
+                if ($table) {                    
                     $table->nombre = $model->imageFile->baseName.'.'.$model->imageFile->extension;
                     $table->extension = $model->imageFile->extension;
                     $table->tamaño = $model->imageFile->size;
                     $table->tipo = $model->imageFile->type;
                     $table->numero = $numero;
-                    //$table->numero = $codigo;
+                    $table->descripcion = $descripcion;
                     $table->iddocumentodir = 2;
                     $table->iddirectorio = 1;
                     $table->insert();
@@ -86,10 +89,8 @@ class ArchivodirController extends \yii\web\Controller
             }
         }
         if (Yii::$app->request->get("numero")) {
-
             $model->codigo = $codigo;
-            $model->numero = $numero;
-
+            $model->numero = $numero;            
         }
 
         return $this->render("Subir", ["model" => $model, "msg" => $msg]);
@@ -99,8 +100,7 @@ class ArchivodirController extends \yii\web\Controller
     {
 
             $archivo = Archivodir::findOne($id);
-            $directorio = Directorio::findOne($archivo->iddirectorio);
-            var_dump($id,'dsdsdsd');
+            $directorio = Directorio::findOne($archivo->iddirectorio);            
             if (!$this->downloadFile('Documentos/', $archivo->nombre, ["pdf", "txt", "docx","xlsx","jpg","png"]))
             {
                 //Mensaje flash para mostrar el error
@@ -112,8 +112,47 @@ class ArchivodirController extends \yii\web\Controller
 
         return $this->render('index', [
             'codigo' => $codigo,
-            'numero' => $numero,
+            'numero' => $numero,            
         ]);
+    }
+    
+    public function actionEditar()
+    {
+        $idarchivodir = Html::encode($_POST["idarchivodir"]);
+        $numero = Html::encode($_POST["numero"]);
+        $codigo = Html::encode($_POST["codigo"]);
+        if(Yii::$app->request->post()){
+            if((int) $idarchivodir)
+            {
+                $table = Archivodir::findOne($idarchivodir);
+                
+                if ($table) {
+                    $table->descripcion = Html::encode($_POST["descripcion"]);                                                                                
+                    $table->update();                       
+                    $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo]); 
+                                        
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            }
+        }
+        //return $this->render("_formeditardetalle", ["model" => $model,]);
+    }
+    
+    public function actionBorrar($id,$numero,$codigo)
+    {
+
+            $archivo = Archivodir::findOne($id);
+            $directorio = Directorio::findOne($archivo->iddirectorio);            
+            if ($archivo)
+            {
+                $ruta = $directorio->ruta.$archivo->nombre;
+                $archivo->delete();
+                unlink($ruta);
+                $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo,]);
+            }
+        
     }
 
     private function downloadFile($dir, $file, $extensions=[])

@@ -13,21 +13,22 @@ class FormSubirArchivo extends Model
     public $imageFile;
     public $numero;
     public $codigo;
-
+    
     public function rules()
     {
         return [
-            ['imageFile', 'required', 'message' => 'Campo requerido'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, ],
+            [['imageFile'], 'required', 'message' => 'Campo requerido'],
+            [['imageFile'], 'file', 'skipOnEmpty' => false, ],            
             ['numero', 'default'],
             ['codigo', 'default'],
+            
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'imageFile' => 'Archivo:',
+            'imageFile' => 'Archivo:',            
             'numero' => '',
             'codigo' => '',
         ];

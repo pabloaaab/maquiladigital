@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Consecutivo;
 use app\models\Conceptonota;
 use app\models\Facturaventa;
 use app\models\Notacreditodetalle;
@@ -383,6 +384,13 @@ class NotacreditoController extends Controller
                     $model->retefuente = $totalretefuente;
                     $model->total = $model->valor + $model->iva - $model->reteiva - $model->retefuente;
                     $model->fechapago = date('Y-m-d');
+                    //generar consecutivo numero de la nota credito
+                    $consecutivo = Consecutivo::findOne(2);//2 nota credito
+                    $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                    $model->numero = $consecutivo->consecutivo;
+                    $model->update();
+                    $consecutivo->update();
+                    //fin generar consecutivo
                     $model->update();
                     $this->redirect(["notacredito/view",'id' => $id]);
                 } else {
@@ -451,5 +459,13 @@ class NotacreditoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionImprimir($id)
+    {                                
+        return $this->render('../formatos/notaCredito', [
+            'model' => $this->findModel($id),
+            
+        ]);
     }
 }

@@ -30,7 +30,7 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
-use kartik\mpdf\Pdf;
+
 
 /**
  * FacturaventaController implements the CRUD actions for Facturaventa model.
@@ -503,7 +503,7 @@ class FacturaventaController extends Controller
             $factura = Facturaventa::findOne($id);
             $ordenProduccion = Ordenproduccion::findOne($factura->idordenproduccion);
             if ($factura->nrofactura == 0){
-                $consecutivo = Consecutivo::findOne(1);
+                $consecutivo = Consecutivo::findOne(1);// 1 factura de venta
                 $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                 $factura->nrofactura = $consecutivo->consecutivo;
                 $factura->update();
@@ -592,7 +592,7 @@ class FacturaventaController extends Controller
     public function actionImprimir($id)
     {
                                 
-        return $this->render('formatos/imprimir_1', [
+        return $this->render('../formatos/facturaVenta', [
             'model' => $this->findModel($id),
             
         ]);

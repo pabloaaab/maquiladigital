@@ -23,6 +23,7 @@ use Yii;
  * @property double $porcentajeretefuente
  * @property double $retefuente
  * @property double $porcentajereteiva
+ * @property double $tiporegimen
  *
  * @property Resolucion[] $resolucions
  */
@@ -45,7 +46,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb'], 'required'],
             [['dv'], 'integer'],
             [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
-            [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
+            [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio','tiporegimen'], 'string', 'max' => 100],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
             [['nitmatricula'], 'unique'],
         ];
