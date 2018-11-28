@@ -390,8 +390,7 @@ class NotacreditoController extends Controller
                     $model->numero = $consecutivo->consecutivo;
                     $model->update();
                     $consecutivo->update();
-                    //fin generar consecutivo
-                    $model->update();
+                    //fin generar consecutivo                    
                     $this->redirect(["notacredito/view",'id' => $id]);
                 } else {
                     if($error == 1){

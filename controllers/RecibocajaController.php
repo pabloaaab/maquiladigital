@@ -415,7 +415,13 @@ class RecibocajaController extends Controller
                     }
                     $model->valorpagado = $total;
                     $model->fechapago = date('Y-m-d');
+                    //generar consecutivo numero de la nota credito
+                    $consecutivo = Consecutivo::findOne(3);//2 nota credito
+                    $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                    $model->numero = $consecutivo->consecutivo;
                     $model->update();
+                    $consecutivo->update();
+                    //fin generar consecutivo
                     $this->redirect(["recibocaja/view",'id' => $id]);
                     } else {
                         Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
@@ -438,5 +444,13 @@ class RecibocajaController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionImprimir($id)
+    {                                
+        return $this->render('../formatos/reciboCaja', [
+            'model' => $this->findModel($id),
+            
+        ]);
     }
 }

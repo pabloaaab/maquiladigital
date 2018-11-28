@@ -29,7 +29,11 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
             <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default']); }
         else {
             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
-            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Pagar', ['pagar', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
+            echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
+            if ($model->numero > 0){
+                    echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);            
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->idrecibo], ['class' => 'btn btn-default']);                                                         
+            }
         }
         ?>
     </p>
@@ -61,8 +65,8 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
                     <td><?= Html::encode($model->fecharecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
                     <td><?= Html::encode($model->municipio->municipioCompleto) ?></td>
-                    <th></th>
-                    <td></td>
+                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <td><?= Html::encode($model->numero) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
