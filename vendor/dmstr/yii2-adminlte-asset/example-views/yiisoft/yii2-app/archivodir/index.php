@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <thead>
             <tr>                
                 <th scope="col">Id</th>
-                <th scope="col">Código</th>
+                <th scope="col">Fecha Creación</th>
                 <th scope="col">Número</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach ($model as $val): ?>
             <tr>                
                 <td><?= $val->idarchivodir ?></td>
-                <td><?= $val->iddocumentodir ?></td>
+                <td><?= $val->fecha_creacion ?></td>
                 <td><?= $val->numero ?></td>
                 <td><?= $val->nombre ?></td>
                 <td><?= $val->descripcion ?></td>

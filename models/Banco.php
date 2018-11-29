@@ -27,15 +27,15 @@ class Banco extends \yii\db\ActiveRecord
         return 'banco';
     }
 
-	public function beforeSave($insert) {
-	if(!parent::beforeSave($insert)){
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
             return false;
-        }	       
-	$this->entidad = strtoupper($this->entidad);
-	$this->direccionbanco = strtoupper($this->direccionbanco);
-    return true;
+        }
+        $this->entidad = strtoupper($this->entidad);
+        $this->direccionbanco = strtoupper($this->direccionbanco);
+        return true;
     }
-	
+
     /**
      * {@inheritdoc}
      */

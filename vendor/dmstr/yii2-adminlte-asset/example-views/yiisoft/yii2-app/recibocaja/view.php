@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
 ?>
 <div class="recibocaja-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idrecibo], ['class' => 'btn btn-primary']) ?>

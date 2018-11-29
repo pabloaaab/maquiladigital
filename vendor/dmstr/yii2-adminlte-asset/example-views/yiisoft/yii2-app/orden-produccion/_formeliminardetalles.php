@@ -53,7 +53,7 @@ if ($mensaje != ""){
             Eliminar detalle Orden de prducción
         </div>
         <div class="panel-body">
-            <table class="table table-condensed">
+            <table class="table table-condensed" id="tablat">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
@@ -62,7 +62,7 @@ if ($mensaje != ""){
                     <th scope="col">Cantidad</th>
                     <th scope="col">Costo</th>
                     <th scope="col">Subtotal</th>
-                    <th scope="col"></th>
+                    <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,7 +74,7 @@ if ($mensaje != ""){
                     <td><?= $val->cantidad ?></td>
                     <td><?= '$ '.number_format($val->vlrprecio,0) ?></td>
                     <td><?= '$ '.number_format($val->subtotal,0) ?></td>
-                    <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
+                    <td><input type="checkbox" id="seleccion" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
@@ -89,3 +89,16 @@ if ($mensaje != ""){
 </div>
 <?php ActiveForm::end(); ?>
 
+<script type="text/javascript">
+	function marcar(source) 
+	{
+		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
+		{
+			if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+			{
+				checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+			}
+		}
+	}
+</script>

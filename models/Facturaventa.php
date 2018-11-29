@@ -47,6 +47,14 @@ class Facturaventa extends \yii\db\ActiveRecord
     {
         return 'facturaventa';
     }
+    
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->observacion = strtoupper($this->observacion);
+        return true;
+    }
 
     /**
      * {@inheritdoc}

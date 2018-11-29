@@ -35,6 +35,14 @@ class Notacredito extends \yii\db\ActiveRecord
     {
         return 'notacredito';
     }
+    
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->observacion = strtoupper($this->observacion);
+        return true;
+    }
 
     /**
      * {@inheritdoc}

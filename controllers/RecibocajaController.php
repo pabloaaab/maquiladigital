@@ -8,6 +8,7 @@ use app\models\Recibocaja;
 use app\models\ReciboCajaSearch;
 use app\models\Recibocajadetalle;
 use app\models\Facturaventa;
+use app\models\Consecutivo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -400,7 +401,7 @@ class RecibocajaController extends Controller
                 }
                 if ($error == 0){
                     foreach ($recibodetalles as $val) {
-                        $recibodetalle = Recibocajadetalle::find()->where(['iddetallerecibo' => $val])->one();
+                        $recibodetalle = Recibocajadetalle::findOne($val->iddetallerecibo);
                         $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
                         $total = $total + $val->vlrabono;
                         $recibodetalle->update();

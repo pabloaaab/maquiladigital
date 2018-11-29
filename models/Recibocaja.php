@@ -34,6 +34,14 @@ class Recibocaja extends \yii\db\ActiveRecord
     {
         return 'recibocaja';
     }
+    
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->observacion = strtoupper($this->observacion);
+        return true;
+    }
 
     /**
      * {@inheritdoc}

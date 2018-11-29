@@ -130,11 +130,12 @@ class PDF extends FPDF {
     }
 
     function Body($pdf,$model) {
+        $config = Matriculaempresa::findOne(901189320);
         $detalles = Facturaventadetalle::find()->where(['=','idfactura',$model->idfactura])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 8);
         foreach ($detalles as $detalle) {            
-            $pdf->Cell(13, 4, $detalle->iddetallefactura, 0, 0, 'L');
+            $pdf->Cell(13, 4, $detalle->producto->codigoproducto, 0, 0, 'L');
             $pdf->Cell(95, 4, $detalle->producto->nombreProducto, 0, 0, 'L');
             $pdf->Cell(18, 4, $detalle->cantidad, 0, 0, 'R');
             $pdf->Cell(20, 4, number_format($detalle->preciounitario, 2, '.', ','), 0, 0, 'R');
@@ -182,9 +183,9 @@ class PDF extends FPDF {
         $pdf->Cell(64, 5, 'FECHA',0,'L');
         $pdf->Cell(63, 5, 'FIRMA DEL EMISOR',0,'L');
         $pdf->SetXY(10, 245);//nit,fecha,fecha,firma  
-        $pdf->MultiCell(191, 4, utf8_decode('Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a una letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la calidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información referente a mi comportamiento comercial.'),1,'J');
+        $pdf->MultiCell(191, 4, utf8_decode($config->declaracion),1,'C');
         $pdf->SetXY(10, 266);//tipo cuenta
-        $pdf->Cell(191, 5, 'TIPO DE CUENTA: CUENTA DE AHORROS  - NUMERO DE CUENTA: 50 2217367 - ENTIDAD BANCARIA: BANCO AVVILLAS',1,'C');
+        $pdf->Cell(191, 5, 'TIPO DE CUENTA: '.$config->tipocuenta.'  - NUMERO DE CUENTA: '.$config->numerocuenta.' - ENTIDAD BANCARIA: '.$config->banco,1,'C');
     }
 
     function Footer() {

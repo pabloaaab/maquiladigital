@@ -31,6 +31,14 @@ class Archivodir extends \yii\db\ActiveRecord
         return 'archivodir';
     }
 
+    public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->descripcion = strtoupper($this->descripcion);                
+        return true;
+    }
+    
     /**
      * {@inheritdoc}
      */
