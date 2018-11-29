@@ -42,7 +42,7 @@ CREATE TABLE `archivodir` (
 /*Data for the table `archivodir` */
 
 insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`numero`,`iddirectorio`,`nombre`,`extension`,`tipo`,`tamaño`,`descripcion`,`comentarios`) values 
-(35,2,'2018-11-26 21:42:44',3,1,'94932961636718189996652759 (1).pdf','pdf','application/pdf',271821,'prueba pdfffcdcd',NULL);
+(35,2,'2018-11-26 21:42:44',3,1,'94932961636718189996652759 (1).pdf','pdf','application/pdf',271821,'PRUEBA PDFFFCDCD',NULL);
 
 /*Table structure for table `banco` */
 
@@ -144,13 +144,14 @@ CREATE TABLE `consecutivo` (
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `consecutivo` int(20) NOT NULL,
   PRIMARY KEY (`consecutivo_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `consecutivo` */
 
 insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values 
-(1,'FACTURA DE VENTA',7),
-(2,'NOTA CREDITO',1);
+(1,'FACTURA DE VENTA',9),
+(2,'NOTA CREDITO',1),
+(3,'RECIBO CAJA',6);
 
 /*Table structure for table `departamento` */
 
@@ -274,7 +275,7 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
@@ -285,7 +286,9 @@ insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`
 (6,4,'2018-11-07','2018-12-07','2018-11-07 11:02:56','1',30,19,0,15,278616,0,52937.04,0,0,331553.04,'-',3,34,'71268830',3,0,1,NULL),
 (7,5,'2018-11-12','2018-12-12','2018-11-12 20:03:30','1',30,19,0,15,397785,0,75579.15,0,428364.15,473364.15,'-',3,32,'71268830',3,1,1,NULL),
 (8,6,'2018-11-13','2018-11-28','2018-11-13 14:32:03','2',15,19,3.5,15,1037000,36295,197030,29554.5,492280.5,1168180.5,'-',26,36,'71268830',3,1,1,'dsdsdsd'),
-(9,7,'2018-11-14','2018-11-29','2018-11-14 16:54:16','2',15,19,3.5,15,18300,0,3477,522,20093.95,21255.45,'-',26,37,'71268830',3,1,1,'ddf');
+(9,7,'2018-11-14','2018-11-29','2018-11-14 16:54:16','2',15,19,3.5,15,18300,0,3477,522,20093.95,21255.45,'-',26,37,'71268830',3,1,1,'ddf'),
+(10,8,'2018-10-24','2018-11-13','2018-11-28 18:09:20','2',20,19,0,15,55760,0,10594.4,1589.16,0,64765.24,'-',25,42,'71268830',3,2,1,'DFDF'),
+(11,9,'2018-10-24','2018-11-13','2018-11-28 18:25:25','2',20,19,0,15,94400,0,17936,2690.4,0,109645.6,'-',25,43,'71268830',3,2,1,'FGF');
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -304,7 +307,7 @@ CREATE TABLE `facturaventadetalle` (
   KEY `nrofactura` (`idfactura`),
   CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
 
@@ -326,7 +329,13 @@ insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproducto`,`
 (51,8,14,'136',350,610,213500),
 (52,9,12,'136',10,610,6100),
 (53,9,13,'136',10,610,6100),
-(54,9,14,'136',10,610,6100);
+(54,9,14,'136',10,610,6100),
+(55,10,15,'sds',20,1255,25100),
+(56,10,16,'a23',20,1500,30000),
+(57,10,17,'5010w',20,33,660),
+(58,11,15,'sds',50,1255,62750),
+(59,11,17,'5010w',50,33,1650),
+(60,11,16,'a23',20,1500,30000);
 
 /*Table structure for table `matriculaempresa` */
 
@@ -349,14 +358,18 @@ CREATE TABLE `matriculaempresa` (
   `porcentajeretefuente` double NOT NULL DEFAULT '0',
   `retefuente` double NOT NULL DEFAULT '0',
   `porcentajereteiva` double NOT NULL DEFAULT '0',
-  `tiporegimen` varchar(100) DEFAULT NULL,
+  `tiporegimen` varchar(100) NOT NULL,
+  `declaracion` text NOT NULL,
+  `tipocuenta` varchar(100) NOT NULL,
+  `numerocuenta` int(30) NOT NULL,
+  `banco` varchar(100) NOT NULL,
   PRIMARY KEY (`nitmatricula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `matriculaempresa` */
 
-insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`tiporegimen`) values 
-('901189320',2,'MAQUILA DIGITAL SAS','JOSE GREGORIO','PULGARIN MORALES','CR 87 # 45 - 56','4448120','3105177348','jose@hotmail.com','05','05001','WWW-MAQUILA.COM',19,3.5,895000,15,'RÉGIMEN COMÚN');
+insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`tiporegimen`,`declaracion`,`tipocuenta`,`numerocuenta`,`banco`) values 
+('901189320',2,'MAQUILA DIGITAL SAS','JOSE GREGORIO','PULGARIN MORALES','CR 87 # 45 - 56','4448120','3105177348','jose@hotmail.com','05','05001','WWW-MAQUILA.COM',19,3.5,895000,15,'RÉGIMEN COMÚN','Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.','CUENTA DE AHORROS',502217367,'BANCO AVVILLAS');
 
 /*Table structure for table `municipio` */
 
@@ -1581,7 +1594,7 @@ CREATE TABLE `ordenproduccion` (
   KEY `idtipo` (`idtipo`),
   CONSTRAINT `ordenproduccion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `ordenproduccion_ibfk_2` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproduccion` */
 
@@ -1594,7 +1607,9 @@ insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`f
 (36,26,'2018-10-29 00:00:00','2018-10-29 00:00:00','2018-11-29 00:00:00',703330,NULL,'as',0,'10879',1,'71268830',1,1,0,33,0,0),
 (37,26,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-11-14 00:00:00',18300,NULL,'dfdf',0,'ddd3',1,'71268830',0,1,0,0,0,0),
 (40,28,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',13200,NULL,'dfds',0,'414d',1,'71268830',0,0,0,0,10,0),
-(41,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-21 00:00:00',2750000,NULL,'AS',0,'1545',1,'71268830',1,0,0,27.2727,10,2.27273);
+(41,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-21 00:00:00',2750000,NULL,'AS',0,'1545',1,'71268830',1,0,0,27.2727,10,2.27273),
+(42,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',55760,NULL,'dgd',0,'414d',5,'71268830',1,1,0,0,10,0),
+(43,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',94400,NULL,'dfd',0,'414d',1,'71268830',1,1,0,0,10,0);
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -1620,7 +1635,7 @@ CREATE TABLE `ordenproducciondetalle` (
   KEY `idproducto` (`idproducto`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
@@ -1651,7 +1666,13 @@ insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoprodu
 (37,17,'5010w',500,33,16500,38,NULL,NULL,50,10,20,NULL,100,NULL),
 (39,19,'aw2',11,1200,13200,40,NULL,NULL,0,10,0,NULL,0,NULL),
 (40,20,'158',150,5000,750000,41,NULL,NULL,100,10,11.3208,600,50,3643.75),
-(41,21,'158',400,5000,2000000,41,NULL,NULL,0,10,0,0,0,0);
+(41,21,'158',400,5000,2000000,41,NULL,NULL,0,10,0,0,0,0),
+(42,15,'sds',20,1255,25100,42,NULL,NULL,0,10,0,0,0,NULL),
+(43,16,'a23',20,1500,30000,42,NULL,NULL,0,10,0,0,0,NULL),
+(44,17,'5010w',20,33,660,42,NULL,NULL,0,10,0,0,0,NULL),
+(45,15,'sds',50,1255,62750,43,NULL,NULL,0,10,0,0,0,NULL),
+(46,17,'5010w',50,33,1650,43,NULL,NULL,0,10,0,0,0,NULL),
+(47,16,'a23',20,1500,30000,43,NULL,NULL,0,10,0,0,0,NULL);
 
 /*Table structure for table `ordenproducciondetalleproceso` */
 
@@ -1824,7 +1845,7 @@ insert  into `producto`(`idproducto`,`codigoproducto`,`producto`,`cantidad`,`sto
 (3,'E453569','camisa',120,120,582,562,2,'SDSDSD',1,'2018-10-15 19:47:06','ADMON',1),
 (4,'dfd4','camisa',33,33,33,33,2,'sdds',0,'0000-00-00 00:00:00','ADMON',1),
 (5,'dfe45','camisa',34,34,34,34,2,'dsd',0,'0000-00-00 00:00:00','ADMON',1),
-(6,'w34','camisa',35,35,335,355,2,'wwwww',0,'2018-10-22 21:59:38','ADMON',1),
+(6,'FGT554','camisa',35,35,335,355,2,'wwwww',0,'2018-10-22 21:59:38','ADMON',1),
 (7,'136','kimono rosado',288,33,345,611,3,'dgdg',0,'2018-10-22 22:22:51','ADMON',7),
 (8,'001','PANTALON',10,10,520,520,24,'hola 2',0,'2018-10-30 13:32:28',NULL,2),
 (9,'002','pantalon',15,NULL,1000,1000,24,'hola',0,'2018-10-30 13:33:36',NULL,2),
@@ -1833,10 +1854,10 @@ insert  into `producto`(`idproducto`,`codigoproducto`,`producto`,`cantidad`,`sto
 (12,'136','KIMONO TPI ROSADO',288,NULL,223,610,26,'',0,'2018-11-13 14:23:53',NULL,8),
 (13,'136','KIMONO ROSADO',577,NULL,223,610,26,'',0,'2018-11-13 14:24:38',NULL,7),
 (14,'136','KIMONO ROSADO',288,NULL,223,610,26,'',0,'2018-11-13 14:25:09',NULL,9),
-(15,'sds','PANTALON',100,100,1255,1255,25,'eeee',0,'2018-11-14 17:09:58','71268830',2),
-(16,'a23','PANTALON',50,50,1500,1500,25,'sfsf',0,'2018-11-17 18:35:10','71268830',5),
-(17,'5010w','CAMISA',500,33,33,33,25,'ddddd',0,'2018-11-17 18:35:40','71268830',7),
-(19,'aw2','PRUEBA',11,11,1200,1200,28,'sdsd',0,'2018-11-20 16:09:33','71268830',1),
+(15,'sds','PANTALON',30,30,1255,1255,25,'eeee',0,'2018-11-14 17:09:58','71268830',2),
+(16,'a23','PANTALON',10,10,1500,1500,25,'sfsf',0,'2018-11-17 18:35:10','71268830',5),
+(17,'5010w','CAMISA',430,-37,33,33,25,'ddddd',0,'2018-11-17 18:35:40','71268830',7),
+(19,'aw2d4567','PRUEBA',11,11,1200,1200,28,'sdsd',0,'2018-11-20 16:09:33','71268830',1),
 (20,'158','KIMONO AZUL',150,150,2000,5000,26,'',0,'2018-11-21 11:11:21','71268830',11),
 (21,'158','KIMONO AZUL',400,400,2000,5000,26,'',0,'2018-11-21 11:12:09','71268830',12);
 
@@ -1848,6 +1869,7 @@ CREATE TABLE `recibocaja` (
   `idrecibo` int(11) NOT NULL AUTO_INCREMENT,
   `fecharecibo` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fechapago` date DEFAULT NULL,
+  `numero` int(11) DEFAULT NULL,
   `idtiporecibo` char(10) NOT NULL,
   `idmunicipio` varchar(15) NOT NULL,
   `valorpagado` double DEFAULT '0',
@@ -1864,17 +1886,19 @@ CREATE TABLE `recibocaja` (
   CONSTRAINT `recibocaja_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`),
   CONSTRAINT `recibocaja_ibfk_3` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `recibocaja_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocaja` */
 
-insert  into `recibocaja`(`idrecibo`,`fecharecibo`,`fechapago`,`idtiporecibo`,`idmunicipio`,`valorpagado`,`valorletras`,`idcliente`,`observacion`,`usuariosistema`,`estado`,`autorizado`) values 
-(2,'2018-11-05 12:12:34','2018-11-06','1','05001',996625,'-',2,'ggg','71268830',0,1),
-(6,'2018-11-06 14:33:46','2018-11-06','31','05001',200000,'-',3,'DFG','71268830',0,1),
-(7,'2018-11-06 14:35:27','2018-11-06','1','05001',273364.15,'-',3,'SD','71268830',0,1),
-(8,'2018-11-07 11:04:03','2018-11-07','1','05001',1169887.81,'-',3,'fgfg','71268830',0,1),
-(9,'2018-11-12 20:13:47',NULL,'1','05002',0,'-',3,'dsdsd','71268830',0,1),
-(10,'2018-11-13 15:31:37','2018-11-13','13','05001',300000,'-',26,'abono','71268830',0,1);
+insert  into `recibocaja`(`idrecibo`,`fecharecibo`,`fechapago`,`numero`,`idtiporecibo`,`idmunicipio`,`valorpagado`,`valorletras`,`idcliente`,`observacion`,`usuariosistema`,`estado`,`autorizado`) values 
+(2,'2018-11-05 12:12:34','2018-11-06',1,'1','05001',996625,'-',2,'ggg','71268830',0,1),
+(6,'2018-11-06 14:33:46','2018-11-06',2,'31','05001',200000,'-',3,'DFG','71268830',0,1),
+(7,'2018-11-06 14:35:27','2018-11-06',3,'1','05001',273364.15,'-',3,'SD','71268830',0,1),
+(8,'2018-11-07 11:04:03','2018-11-07',4,'1','05001',1169887.81,'-',3,'fgfg','71268830',0,1),
+(9,'2018-11-12 20:13:47',NULL,5,'1','05002',0,'-',3,'dsdsd','71268830',0,1),
+(10,'2018-11-13 15:31:37','2018-11-13',6,'13','05001',300000,'-',26,'abono','71268830',0,1),
+(11,'2018-11-28 18:14:30',NULL,NULL,'10','05002',0,'-',25,'FDFD','71268830',0,0),
+(12,'2018-11-28 18:27:11','2018-11-29',6,'12','05002',109645.6,'-',25,'RTR','71268830',0,1);
 
 /*Table structure for table `recibocajadetalle` */
 
@@ -1895,17 +1919,19 @@ CREATE TABLE `recibocajadetalle` (
   KEY `idfactura` (`idfactura`),
   CONSTRAINT `recibocajadetalle_ibfk_2` FOREIGN KEY (`idrecibo`) REFERENCES `recibocaja` (`idrecibo`),
   CONSTRAINT `recibocajadetalle_ibfk_3` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocajadetalle` */
 
 insert  into `recibocajadetalle`(`iddetallerecibo`,`idfactura`,`vlrabono`,`vlrsaldo`,`retefuente`,`reteiva`,`reteica`,`idrecibo`,`observacion`) values 
-(12,4,200000,273364.15,0,0,NULL,6,NULL),
+(12,4,200000,-526635.85,0,0,NULL,6,NULL),
 (13,4,273364.15,0,0,0,NULL,7,NULL),
 (14,5,838334.77,0,0,0,NULL,8,NULL),
 (15,6,331553.04,0,0,0,NULL,8,NULL),
 (17,7,473364.15,473364.15,0,0,NULL,9,NULL),
-(18,8,300000,853180.5,36295,29554.5,NULL,10,NULL);
+(18,8,300000,853180.5,36295,29554.5,NULL,10,NULL),
+(19,10,50000,0,0,1589.16,NULL,11,NULL),
+(22,11,109645.6,0,0,2690.4,NULL,12,NULL);
 
 /*Table structure for table `resolucion` */
 
