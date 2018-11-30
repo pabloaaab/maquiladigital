@@ -113,4 +113,24 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     {
         return " Id: {$this->idordenproduccion} - Orden Producción: {$this->ordenproduccion} - Fecha Llegada: {$this->fechallegada} - Total: {$this->totalorden} - Tipo: {$this->tipo->tipo}";
     }
+    
+    public function getAutorizar()
+    {
+        if($this->autorizado == 1){
+            $autorizar = "SI";
+        }else{
+            $autorizar = "NO";
+        }
+        return $autorizar;
+    }
+    
+    public function getFacturar()
+    {
+        if($this->facturado == 1){
+            $facturar = "SI";
+        }else{
+            $facturar = "NO";
+        }
+        return $facturar;
+    }
 }

@@ -18,7 +18,7 @@ class ReciboCajaSearch extends Recibocaja
     public function rules()
     {
         return [
-            [['idrecibo', 'idcliente'], 'integer'],
+            [['idrecibo', 'idcliente','autorizado'], 'integer'],
             [['fecharecibo', 'fechapago', 'idtiporecibo', 'idmunicipio', 'valorletras', 'observacion', 'usuariosistema'], 'safe'],
             [['valorpagado'], 'number'],
         ];
@@ -65,6 +65,7 @@ class ReciboCajaSearch extends Recibocaja
             'fechapago' => $this->fechapago,
             'valorpagado' => $this->valorpagado,
             'idcliente' => $this->idcliente,
+            'autorizado' => $this->autorizado,
         ]);
 
         $query->andFilterWhere(['like', 'idtiporecibo', $this->idtiporecibo])

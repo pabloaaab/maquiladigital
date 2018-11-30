@@ -74,7 +74,7 @@ class Notacredito extends \yii\db\ActiveRecord
             'idconceptonota' => 'Concepto',
             'valor' => 'Valor',
             'iva' => 'Iva',
-            'reteiva' => 'rete Iva',
+            'reteiva' => 'Rete Iva',
             'retefuente' => 'Rete Fuente',
             'total' => 'Total',
             'numero' => 'Numero',
@@ -99,5 +99,15 @@ class Notacredito extends \yii\db\ActiveRecord
     public function getConceptonota()
     {
         return $this->hasOne(Conceptonota::className(), ['idconceptonota' => 'idconceptonota']);
+    }
+    
+    public function getAutorizar()
+    {
+        if($this->autorizado == 1){
+            $autorizar = "SI";
+        }else{
+            $autorizar = "NO";
+        }
+        return $autorizar;
     }
 }

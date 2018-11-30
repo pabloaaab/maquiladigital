@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $tiporecibos->concepto;
                 },
                 'filter' => ArrayHelper::map(TipoRecibo::find()->all(),'idtiporecibo','concepto'),
-                'contentOptions' => ['class' => 'col-lg-2.2'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [
                 'attribute' => 'valorpagado',
@@ -69,6 +69,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
+            [
+                'attribute' => 'autorizado',
+                'value' => function($model){
+                    $recibo = Recibocaja::findOne($model->idrecibo);                    
+                    return $recibo->autorizar;
+                },
+                'filter' => ArrayHelper::map(Recibocaja::find()->all(),'autorizado','autorizar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],            
             [
                 'class' => 'yii\grid\ActionColumn',
             ],

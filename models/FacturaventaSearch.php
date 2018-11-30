@@ -18,7 +18,7 @@ class FacturaventaSearch extends Facturaventa
     public function rules()
     {
         return [
-            [['idfactura', 'nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion'], 'integer'],
+            [['idfactura', 'nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','autorizado','estado'], 'integer'],
             [['fechainicio', 'fechavcto', 'fechacreacion', 'formapago', 'valorletras', 'usuariosistema'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
         ];
@@ -78,6 +78,8 @@ class FacturaventaSearch extends Facturaventa
             'idcliente' => $this->idcliente,
             'idordenproduccion' => $this->idordenproduccion,
             'idresolucion' => $this->idresolucion,
+            'autorizado' => $this->autorizado,
+            'estado' => $this->estado,
         ]);
 
         $query->andFilterWhere(['like', 'formapago', $this->formapago])

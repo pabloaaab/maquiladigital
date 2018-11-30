@@ -24,11 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'columns' => [
-            [                
-                'attribute' => 'idfactura',
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+        'columns' => [            
             [
                 'attribute' => 'nrofactura',
                 'contentOptions' => ['class' => 'col-lg-1'],
@@ -40,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-3.5'],
             ],
             [               
                 'attribute' => 'idordenproduccion',
@@ -67,8 +63,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     $total = "$ ".number_format($factura->totalpagar);
                     return "{$total}";
                 },
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
+            [
+                'attribute' => 'autorizado',
+                'value' => function($model){
+                    $factura = Facturaventa::findOne($model->idfactura);                    
+                    return $factura->autorizar;
+                },
+                'filter' => ArrayHelper::map(Facturaventa::find()->all(),'autorizado','autorizar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'estado',
+                'value' => function($model){
+                    $factura = Facturaventa::findOne($model->idfactura);                    
+                    return $factura->estados;
+                },
+                'filter' => ArrayHelper::map(Facturaventa::find()->all(),'estados','estados'),
+                'contentOptions' => ['class' => 'col-lg-1.5'],
+            ],                     
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

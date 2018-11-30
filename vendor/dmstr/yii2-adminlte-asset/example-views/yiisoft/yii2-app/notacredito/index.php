@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'columns' => [
         [
             'attribute' => 'idnotacredito',
-            'contentOptions' => ['class' => 'col-lg-1'],
+            'contentOptions' => ['class' => 'col-sm-1'],
         ],
         [
             'attribute' => 'idcliente',
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
             },
             'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-            'contentOptions' => ['class' => 'col-lg-3'],
+            'contentOptions' => ['class' => 'col-lg-2'],
         ],
         [
             'attribute' => 'idconceptonota',
@@ -95,7 +95,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'contentOptions' => ['class' => 'col-lg-1'],
         ],
         [
-            'class' => 'yii\grid\ActionColumn',
+                'attribute' => 'autorizado',
+                'value' => function($model){
+                    $notascredito = Notacredito::findOne($model->idnotacredito);                    
+                    return $notascredito->autorizar;
+                },
+                'filter' => ArrayHelper::map(Notacredito::find()->all(),'autorizado','autorizar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+        ],            
+        [
+            'class' => 'yii\grid\ActionColumn',            
         ],
 
     ],

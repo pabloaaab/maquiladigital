@@ -114,4 +114,14 @@ class Recibocaja extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Recibocajadetalle::className(), ['idrecibo' => 'idrecibo']);
     }
+    
+    public function getAutorizar()
+    {
+        if($this->autorizado == 1){
+            $autorizar = "SI";
+        }else{
+            $autorizar = "NO";
+        }
+        return $autorizar;
+    }
 }

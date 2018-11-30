@@ -164,4 +164,35 @@ class Facturaventa extends \yii\db\ActiveRecord
             return "CRÉDITO";
         }
     }
+    
+    public function getAutorizar()
+    {
+        if($this->autorizado == 1){
+            $autorizar = "SI";
+        }else{
+            $autorizar = "NO";
+        }
+        return $autorizar;
+    }
+    
+    public function getEstados()
+    {
+        if($this->estado == 0){
+            $estado = "ABIERTA";
+        }
+        if($this->estado == 1){
+            $estado = "ABONADA";
+        }
+        if($this->estado == 2){
+            $estado = "PAGADA";
+        }
+        if($this->estado == 3){
+            $estado = "ANULADA NC";
+        }
+        if($this->estado == 4){
+            $estado = "ABONO NC";
+        }
+        return $estado;
+    }
+    
 }

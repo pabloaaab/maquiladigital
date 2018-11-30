@@ -68,7 +68,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     $total = "$ ".number_format($ordenp->totalorden);
                     return "{$total}";
                 },
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'autorizado',
+                'value' => function($model){
+                    $orden = Ordenproduccion::findOne($model->idordenproduccion);                    
+                    return $orden->autorizar;
+                },
+                'filter' => ArrayHelper::map(Ordenproduccion::find()->all(),'autorizado','autorizar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+                        [
+                'attribute' => 'facturado',
+                'value' => function($model){
+                    $orden = Ordenproduccion::findOne($model->idordenproduccion);                    
+                    return $orden->facturar;
+                },
+                'filter' => ArrayHelper::map(Ordenproduccion::find()->all(),'facturado','facturar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',              
