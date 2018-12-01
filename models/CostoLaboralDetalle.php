@@ -24,9 +24,11 @@ use Yii;
  * @property double $admon
  * @property double $total
  * @property int $id_tipo_cargo
+ * @property int $id_arl
  *
  * @property CostoLaboral $costoLaboral
  * @property TipoCargo $tipoCargo
+ * @property Arl $arl0
  */
 class CostoLaboralDetalle extends \yii\db\ActiveRecord
 {
@@ -44,11 +46,11 @@ class CostoLaboralDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_costo_laboral', 'nro_empleados', 'salario', 'auxilio_transporte', 'tiempo_extra', 'bonificacion', 'arl', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste_vac', 'subtotal', 'admon', 'total', 'id_tipo_cargo'], 'required'],
-            [['id_costo_laboral', 'nro_empleados', 'id_tipo_cargo'], 'integer'],
+            [['id_costo_laboral', 'nro_empleados', 'id_tipo_cargo', 'id_arl'], 'integer'],
             [['salario', 'auxilio_transporte', 'tiempo_extra', 'bonificacion', 'arl', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste_vac', 'subtotal', 'admon', 'total'], 'number'],
             [['id_costo_laboral'], 'exist', 'skipOnError' => true, 'targetClass' => CostoLaboral::className(), 'targetAttribute' => ['id_costo_laboral' => 'id_costo_laboral']],
             [['id_tipo_cargo'], 'exist', 'skipOnError' => true, 'targetClass' => TipoCargo::className(), 'targetAttribute' => ['id_tipo_cargo' => 'id_tipo_cargo']],
+            [['id_arl'], 'exist', 'skipOnError' => true, 'targetClass' => Arl::className(), 'targetAttribute' => ['id_arl' => 'id_arl']],
         ];
     }
 
@@ -75,6 +77,7 @@ class CostoLaboralDetalle extends \yii\db\ActiveRecord
             'admon' => 'Admon',
             'total' => 'Total',
             'id_tipo_cargo' => 'Id Tipo Cargo',
+            'id_arl' => 'Id Arl',
         ];
     }
 
@@ -92,5 +95,13 @@ class CostoLaboralDetalle extends \yii\db\ActiveRecord
     public function getTipoCargo()
     {
         return $this->hasOne(TipoCargo::className(), ['id_tipo_cargo' => 'id_tipo_cargo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArl0()
+    {
+        return $this->hasOne(Arl::className(), ['id_arl' => 'id_arl']);
     }
 }

@@ -90,10 +90,9 @@ class OrdenProduccionController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Ordenproduccion();
-		$clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -103,14 +102,12 @@ class OrdenProduccionController extends Controller
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
             return $this->redirect(['view', 'id' => $model->idordenproduccion]);
-
         }
 
         return $this->render('create', [
-            'model' => $model,
-			'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
-            'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-
+                    'model' => $model,
+                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+                    'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
         ]);
     }
 

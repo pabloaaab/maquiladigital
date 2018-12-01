@@ -14,6 +14,11 @@ use Yii;
  * @property double $prestaciones
  * @property double $vacaciones
  * @property double $ajuste
+ * @property double $salario_minimo
+ * @property int $id_arl
+ * @property int $admon
+ *
+ * @property Arl $arl
  */
 class Parametros extends \yii\db\ActiveRecord
 {
@@ -31,8 +36,10 @@ class Parametros extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste'], 'required', 'message' => 'Campo requerido'],
-            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste'], 'number'],
+            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo', 'id_arl','admon'], 'required'],
+            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo','admon'], 'number'],
+            [['id_arl'], 'integer'],
+            [['id_arl'], 'exist', 'skipOnError' => true, 'targetClass' => Arl::className(), 'targetAttribute' => ['id_arl' => 'id_arl']],
         ];
     }
 
@@ -43,12 +50,23 @@ class Parametros extends \yii\db\ActiveRecord
     {
         return [
             'id_parametros' => 'Id Parametros',
-            'auxilio_transporte' => 'Auxilio Transporte',
-            'pension' => 'Pension',
-            'caja' => 'Caja',
-            'prestaciones' => 'Prestaciones',
-            'vacaciones' => 'Vacaciones',
-            'ajuste' => 'Ajuste',
+            'auxilio_transporte' => 'Auxilio Transporte:',
+            'pension' => 'Pensión:',
+            'caja' => 'Caja:',
+            'prestaciones' => 'Prestaciones:',
+            'vacaciones' => 'Vacaciones:',
+            'ajuste' => 'Ajuste:',
+            'salario_minimo' => 'Salario Minimo:',
+            'id_arl' => 'Arl:',
+            'admon' => 'Administración:',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getArl()
+    {
+        return $this->hasOne(Arl::className(), ['id_arl' => 'id_arl']);
     }
 }

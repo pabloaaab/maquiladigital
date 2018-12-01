@@ -37,15 +37,15 @@ class ParametrosController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionParametros($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_arl]);
+            //return $this->redirect(['view', 'id' => $model->id_parametros]);
         }
 
-        return $this->render('update', [
+        return $this->render('parametros', [
             'model' => $model,
         ]);
     }
@@ -60,7 +60,7 @@ class ParametrosController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Arl::findOne($id)) !== null) {
+        if (($model = Parametros::findOne($id)) !== null) {
             return $model;
         }
 
