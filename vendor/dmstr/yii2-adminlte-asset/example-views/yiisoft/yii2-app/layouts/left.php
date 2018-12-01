@@ -58,6 +58,8 @@
                                     ['label' => 'Talla', 'icon' => 'plus-square-o', 'url' => ['talla/index']],
                                     ['label' => 'Operación Producción', 'icon' => 'plus-square-o', 'url' => ['proceso-produccion/index']],
                                     ['label' => 'Conceptos Notas', 'icon' => 'plus-square-o', 'url' => ['conceptonota/index']],
+                                    ['label' => 'Tipo Cargo', 'icon' => 'plus-square-o', 'url' => ['tipocargo/index']],
+                                    ['label' => 'Arl', 'icon' => 'plus-square-o', 'url' => ['arl/index']],
                                 ],
                             ],
                             [
@@ -65,6 +67,7 @@
                                 'icon' => 'cube',
                                 'url' => '#',
                                 'items' => [
+                                    ['label' => 'Costo Laboral', 'icon' => 'plus-square-o', 'url' => ['costo-laboral/costolaboraldetalle', 'id' => 1]],
                                     ['label' => 'Otros', 'icon' => 'plus-square-o', 'url' => '#',],
                                 ],
                             ],
@@ -93,7 +96,7 @@
                                 'icon' => 'wrench',
                                 'url' => '#',
                                 'items' => [
-                                    ['label' => 'Configuración', 'icon' => 'cog', 'url' => '#',],
+                                    ['label' => 'Configuración', 'icon' => 'cog', 'url' => ['parametros/parametros', 'id' => 1]],
                                 ],
                             ],
                         ],
