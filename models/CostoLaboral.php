@@ -13,6 +13,8 @@ use Yii;
  * @property double $total_administracion
  * @property double $total_operativo
  * @property double $total_general
+ * @property double $empleados_operativos
+ * @property double $empleados_administrativos
  *
  * @property CostoLaboralDetalle[] $costoLaboralDetalles
  */
@@ -32,7 +34,7 @@ class CostoLaboral extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['total_otros', 'total_administrativo', 'total_administracion', 'total_operativo', 'total_general'], 'number'],
+            [['total_otros', 'total_administrativo', 'total_administracion', 'total_operativo', 'total_general','empleados_operativos','empleados_administrativos'], 'number'],
         ];
     }
 
@@ -48,6 +50,8 @@ class CostoLaboral extends \yii\db\ActiveRecord
             'total_administracion' => 'Total Administracion',
             'total_operativo' => 'Total Operativo',
             'total_general' => 'Total General',
+            'empleados_operativos' => 'Empleados Operativos',
+            'empleados_administrativos' => 'Empleados Operativos',
         ];
     }
 

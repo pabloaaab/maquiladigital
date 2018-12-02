@@ -1,0 +1,96 @@
+<?php
+
+namespace app\controllers;
+
+use Yii;
+use app\models\CostoFijo;
+use app\models\Parametros;
+use app\models\CostoFijoDetalle;
+use app\models\CostoFijoSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\helpers\Html;
+
+/**
+ * CostoFijoController implements the CRUD actions for CostoFijo model.
+ */
+class CostoFijoController extends Controller
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    public function actionNuevodetalle()
+    {
+        
+        if(Yii::$app->request->post()){
+            $id = Html::encode($_POST["id_costo_fijo"]);
+            $table = new CostoFijoDetalle();
+            $table->descripcion = Html::encode($_POST["descripcion"]);
+            $table->valor = Html::encode($_POST["valor"]);                
+            $table->id_costo_fijo = $id;
+            $table->insert();
+            $this->Totales($id);
+            $this->redirect(["costo-fijo/costofijodetalle",'id' => $id]);                             
+        }
+        
+    }
+    
+    public function actionEditardetalle()
+    {
+        
+        if(Yii::$app->request->post()){
+            $id = Html::encode($_POST["id_costo_fijo"]);
+            $iddetalle = Html::encode($_POST["id_detalle_costo_fijo"]);
+            $table = CostoFijoDetalle::findOne($iddetalle);
+            $table->descripcion = Html::encode($_POST["descripcion"]);
+            $table->valor = Html::encode($_POST["valor"]);                            
+            $table->update();
+            $this->Totales($id);
+            $this->redirect(["costo-fijo/costofijodetalle",'id' => $id]);                             
+        }
+        
+    }
+    
+    public function actionEliminar($iddetalle)
+    {                                
+        $costofijodetalle = CostoFijoDetalle::findOne($iddetalle);
+        $costofijodetalle->delete();
+        $this->Totales(1);
+        $this->redirect(["costo-fijo/costofijodetalle",'id' => 1]);        
+    }
+    
+    public function actionCostofijodetalle($id) {                
+                
+        $costofijo = CostoFijo::findOne($id);
+        $costofijodetalle = CostoFijoDetalle::find()->where(['=', 'id_costo_fijo', $id])->all();
+        return $this->render('costofijodetalle', [
+                    'costofijo' => $costofijo,
+                    'costofijodetalle' => $costofijodetalle,
+        ]);
+    }
+          
+    protected function Totales($id)
+    {        
+        $detalles = CostoFijoDetalle::find()->where(['=','id_costo_fijo',$id])->all();        
+        $total = 0;
+            foreach ($detalles as $val){                                                
+                $total = $total + $val->valor;
+        }        
+        $costofijo = CostoFijo::findOne($id);        
+        $costofijo->valor = $total;
+        $costofijo->update();
+}
+}

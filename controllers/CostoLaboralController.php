@@ -55,6 +55,14 @@ class CostoLaboralController extends Controller
         return $this->redirect(['costolaboraldetalle', 'id' => 1]);
     }
     
+    public function actionEliminar($iddetalle)
+    {                                
+        $costolaboraldetalle = CostoLaboralDetalle::findOne($iddetalle);
+        $costolaboraldetalle->delete();
+        $this->redirect(["costo-laboral/costolaboraldetalle",'id' => 1]);
+        $this->Totales(1);
+    }
+    
     public function actionCostolaboraldetalle($id) {                
         if (isset($_POST["nro_empleados"])) {
             $intIndice = 0;
@@ -75,6 +83,7 @@ class CostoLaboralController extends Controller
             }
             
         }
+        $this->totales($id);
         $costolaboral = CostoLaboral::findOne($id);
         $costolaboraldetalle = CostoLaboralDetalle::find()->where(['=', 'id_costo_laboral', $id])->all();
         return $this->render('costolaboraldetalle', [
@@ -98,5 +107,39 @@ class CostoLaboralController extends Controller
         $table->admon = round($subtotal * $parametros->admon / 100);
         $table->total = round($subtotal + $table->admon);
         $table->update();
+    }
+    
+    protected function Totales($id)
+    {
+        //$parametros = Parametros::findOne(1);
+        //$arl = $table->arl0->arl;
+        $detalles = CostoLaboralDetalle::find()->where(['=','id_costo_laboral',$id])->all();
+        $operativos = 0;
+        $administrativos = 0;
+        $totaloperativo = 0;
+        $totaladministrativo = 0;        
+        $totaladministracion = 0;
+        $totalgeneral = 0;
+            foreach ($detalles as $val){
+                if($val->id_tipo_cargo == 1){ //1 = operativo, 2 = administrativo
+                    $totaloperativo = $totaloperativo + $val->total;
+                    $operativos = $operativos + $val->nro_empleados;
+                }
+                if($val->id_tipo_cargo == 2){ //1 = operativo, 2 = administrativo
+                    $totaladministrativo = $totaladministrativo + $val->total;
+                    $totaloperativo = $totaloperativo + $val->total;
+                    $administrativos = $administrativos + $val->nro_empleados;
+                }                
+                $totaladministracion = $totaladministracion + $val->admon;
+                $totalgeneral = $totalgeneral + $val->total;
+        }        
+        $costolaboral = CostoLaboral::findOne($id);
+        $costolaboral->empleados_administrativos = $administrativos;
+        $costolaboral->empleados_operativos = $operativos;
+        $costolaboral->total_operativo = $totaloperativo;
+        $costolaboral->total_administrativo = $totaladministrativo;
+        $costolaboral->total_administracion = $totaladministracion;
+        $costolaboral->total_general = $totalgeneral;
+        $costolaboral->update();
     }
 }

@@ -159,31 +159,3 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         </div>
     </div>
 </div>
-<script language="JavaScript">
-    function mostrarf(r) {
-        divC = document.getElementById("detalleproceso"+r);
-        if (divC.style.display == "none"){divC.style.display = "block";}else{divC.style.display = "none";}
-    }
-</script>
-<script type="text/javascript">
-
-    window.onload = function() {
-
-        animateprogress("#html5",91);
-        animateprogress("#php",72);
-        animateprogress("#css",86);
-        animateprogress("#python",52);
-        animateprogress("#javascript",79);
-        animateprogress("#nodejs",36);
-
-    }
-    document.querySelector ("#boton").addEventListener ("click", function() {
-        animateprogress("#html5",91);
-        animateprogress("#php",72);
-        animateprogress("#css",86);
-        animateprogress("#python",52);
-        animateprogress("#javascript",79);
-        animateprogress("#nodejs",36);
-
-    });
-</script>

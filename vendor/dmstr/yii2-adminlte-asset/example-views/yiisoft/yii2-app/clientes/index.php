@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td>				
                 <a href="<?= Url::toRoute(["clientes/detalle", "idcliente" => $val->idcliente]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                 <a href="<?= Url::toRoute(["clientes/editar", "idcliente" => $val->idcliente])?>" ><span class="glyphicon glyphicon-pencil"></span></a>
-				<a href="#" data-toggle="modal" data-target="#idcliente<?= $val->idcliente ?>"><span class="glyphicon glyphicon-trash"></span></a>
+		<a href="#" data-toggle="modal" data-target="#idcliente<?= $val->idcliente ?>"><span class="glyphicon glyphicon-trash"></span></a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="idcliente<?= $val->idcliente ?>">
                         <div class="modal-dialog">
                             <div class="modal-content">

@@ -27,15 +27,16 @@ $this->title = 'Costo Laboral';
 
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php $form = ActiveForm::begin([
-
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-]); ?>
+<?php
+$form = ActiveForm::begin([
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-3 control-label'],
+                'options' => []
+            ],
+        ]);
+?>
 <?php
 $tiposcargo = ArrayHelper::map(TipoCargo::find()->all(), 'id_tipo_cargo', 'tipo');
 $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
@@ -47,11 +48,21 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
     <div class="panel-body">
         <table class="table table-bordered table-striped table-hover">
             <tr>
-                <th><?= Html::activeLabel($costolaboral, 'id_costo_laboral') ?>:</th>
-                <td><?= Html::encode($costolaboral->id_costo_laboral) ?></td>
-                <th><?= Html::activeLabel($costolaboral, 'id_costo_laboral') ?>:</th>
-                <td><?= Html::encode($costolaboral->id_costo_laboral) ?></td>                    
-            </tr>                                               
+                <th><?= Html::activeLabel($costolaboral, 'empleados_administrativos') ?>:</th>
+                <td><?= Html::encode($costolaboral->empleados_administrativos) ?></td>
+                <th><?= Html::activeLabel($costolaboral, 'empleados_operativos') ?>:</th>
+                <td><?= Html::encode($costolaboral->empleados_operativos) ?></td>
+                <th><?= Html::activeLabel($costolaboral, 'total_administracion') ?>:</th>
+                <td><?= Html::encode('$ ' . number_format($costolaboral->total_administracion)) ?></td>                
+            </tr>
+            <tr>                
+                <th><?= Html::activeLabel($costolaboral, 'total_administrativo') ?>:</th>
+                <td><?= Html::encode('$ ' . number_format($costolaboral->total_administrativo)) ?></td>
+                <th><?= Html::activeLabel($costolaboral, 'total_operativo') ?>:</th>
+                <td><?= Html::encode('$ ' . number_format($costolaboral->total_operativo)) ?></td>
+                <th><?= Html::activeLabel($costolaboral, 'total_general') ?>:</th>
+                <td><?= Html::encode('$ ' . number_format($costolaboral->total_general)) ?></td>
+            </tr>            
         </table>
     </div>
 </div>
@@ -68,7 +79,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                     <th scope="col">Tipo Cargo</th>
                     <th scope="col">% Arl</th>
                     <th scope="col">Salario</th>
-                    <th scope="col">Aux Transporte</th>
+                    <th scope="col">Transporte</th>
                     <th scope="col">Tiempo Extra</th>
                     <th scope="col">Bonificación</th>
                     <th scope="col">Arl</th>
@@ -86,23 +97,33 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
             <tbody>
                 <?php foreach ($costolaboraldetalle as $val): ?>
                     <tr>                    
-                        <td><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" required></td>
-                        <td><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...']) ?>
-                        <td><?= Html::dropDownList('id_arl[]', $val->id_arl, $arl, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...']) ?>    
-                        <td><input type="text" name="salario[]" value="<?= $val->salario ?>" size="6" required></td>
-                        <td><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="5" required></td>
-                        <td><input type="text" name="tiempo_extra[]" value="<?= $val->tiempo_extra ?>" size="5" required></td>
-                        <td><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="5" required></td>
-                        <td align="right"><?= '$ '.number_format($val->arl) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->pension) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->caja) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->prestaciones) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->vacaciones) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->ajuste_vac) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->subtotal) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->admon) ?></td>
-                        <td align="right"><?= '$ '.number_format($val->total) ?></td>
+                        <td><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                        <td><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...', 'required' => true]) ?>
+                        <td><?= Html::dropDownList('id_arl[]', $val->id_arl, $arl, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...', 'required' => true]) ?>    
+                        <td><input type="text" name="salario[]" value="<?= $val->salario ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td><input type="text" name="tiempo_extra[]" value="<?= $val->tiempo_extra ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td align="right"><?= '$ ' . number_format($val->arl) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->pension) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->caja) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->prestaciones) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->vacaciones) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->ajuste_vac) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->subtotal) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->admon) ?></td>
+                        <td align="right"><?= '$ ' . number_format($val->total) ?></td>
                         <td><input type="hidden" name="id_costo_laboral_detalle[]" value="<?= $val->id_costo_laboral_detalle ?>"></td>
+                        <td><?=
+                            Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $costolaboral->id_costo_laboral, 'iddetalle' => $val->id_costo_laboral_detalle], [
+                                'class' => '',
+                                'data' => [
+                                    'confirm' => 'Esta seguro de eliminar el registro?',
+                                    'method' => 'post',
+                                ],
+                            ])
+                            ?>
+                        </td>
                     </tr>
                 </tbody>
             <?php endforeach; ?>
@@ -116,3 +137,14 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
 
 <?php ActiveForm::end(); ?>
 
+<script type="text/javascript">
+    function esInteger(e) {
+        var charCode
+        charCode = e.keyCode
+        status = charCode
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false
+        }
+        return true
+    }
+</script>
