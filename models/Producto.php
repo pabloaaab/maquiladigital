@@ -20,11 +20,13 @@ use Yii;
  * @property string $fechaproceso
  * @property string $usuariosistema
  * @property int $idprendatipo
- *
+ * @property int $idtipo
+ * 
  * @property Facturaventadetalle[] $facturaventadetalles
  * @property Ordenproducciondetalle[] $ordenproducciondetalles
  * @property Cliente $cliente
  * @property Prendatipo $prendatipo
+ * @property Ordenproducciontipo $ordenproducciontipo
  */
 class Producto extends \yii\db\ActiveRecord
 {
@@ -50,8 +52,8 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'idprendatipo'], 'required', 'message' => 'Campo requerido'],
-            [['cantidad', 'stock', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
+            [['codigoproducto', 'producto', 'cantidad', 'costoconfeccion', 'vlrventa', 'idcliente', 'idprendatipo', 'idtipo'], 'required', 'message' => 'Campo requerido'],
+            [['cantidad', 'stock', 'idcliente', 'activo', 'idprendatipo', 'idtipo'], 'integer'],
             [['costoconfeccion','vlrventa'],'number'],
             [['observacion'], 'string'],
             [['fechaproceso'], 'safe'],
@@ -59,6 +61,7 @@ class Producto extends \yii\db\ActiveRecord
             [['producto'], 'string', 'max' => 40],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idprendatipo'], 'exist', 'skipOnError' => true, 'targetClass' => Prendatipo::className(), 'targetAttribute' => ['idprendatipo' => 'idprendatipo']],
+            [['idtipo'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciontipo::className(), 'targetAttribute' => ['idtipo' => 'idtipo']],
         ];
     }
 
@@ -81,6 +84,7 @@ class Producto extends \yii\db\ActiveRecord
             'fechaproceso' => 'Fecha Proceso',
             'usuariosistema' => 'Usuario Sistema',
             'idprendatipo' => 'Prenda Tipo',
+            'idtipo' => 'Tipo',
         ];
     }
 
@@ -114,6 +118,14 @@ class Producto extends \yii\db\ActiveRecord
     public function getPrendatipo()
     {
         return $this->hasOne(Prendatipo::className(), ['idprendatipo' => 'idprendatipo']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenproducciontipo()
+    {
+        return $this->hasOne(Ordenproducciontipo::className(), ['idtipo' => 'idtipo']);
     }
 
     public function getNombreProducto()

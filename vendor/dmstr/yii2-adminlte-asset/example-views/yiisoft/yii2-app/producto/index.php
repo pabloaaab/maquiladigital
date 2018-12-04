@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Cliente;
 use app\models\Producto;
+use app\models\Ordenproducciontipo;
 use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
@@ -38,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $productos = Producto::findOne($model->idproducto);
                     return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
                 },
-                'contentOptions' => ['class' => 'col-lg-3.1'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [
                 'attribute' => 'cantidad',
@@ -55,9 +56,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
-
+            [
+                'attribute' => 'idtipo',
+                'value' => function($model){
+                    $ordentipo = Ordenproducciontipo::findOne($model->idtipo);
+                    return $ordentipo->tipo;
+                },
+                'filter' => ArrayHelper::map(Ordenproducciontipo::find()->all(),'idtipo','tipo'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],            
             [
                 'class' => 'yii\grid\ActionColumn',
             ],

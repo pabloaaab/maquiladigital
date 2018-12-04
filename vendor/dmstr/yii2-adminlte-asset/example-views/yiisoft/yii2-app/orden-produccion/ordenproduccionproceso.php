@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
             <?= $formulario->field($form, 'idtipo')->widget(Select2::classname(), [
                 'data' => $ordenproducciontipos,
-                'options' => ['prompt' => 'Seleccione un cliente...'],
+                'options' => ['prompt' => 'Seleccione un tipo...'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],

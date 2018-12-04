@@ -69,6 +69,7 @@
                                 'items' => [
                                     ['label' => 'Costo Laboral', 'icon' => 'plus-square-o', 'url' => ['costo-laboral/costolaboraldetalle', 'id' => 1]],
                                     ['label' => 'Costo Fijo', 'icon' => 'plus-square-o', 'url' => ['costo-fijo/costofijodetalle', 'id' => 1]],
+                                    ['label' => 'Descargar Stock', 'icon' => 'plus-square-o', 'url' => ['producto/productostock']],
                                     ['label' => 'Otros', 'icon' => 'plus-square-o', 'url' => '#',],
                                 ],
                             ],

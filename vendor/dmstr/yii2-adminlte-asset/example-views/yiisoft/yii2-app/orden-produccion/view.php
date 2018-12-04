@@ -65,8 +65,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
-                    <td><?= Html::encode($model->ordenproduccion) ?></td>
+                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
+                    <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
@@ -79,10 +79,10 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                 <tr>
                     <th><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
                     <td><?= Html::encode($model->ponderacion) ?></td>
-                    <th></th>
-                    <td></td>
-                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
-                    <td><?= Html::encode($model->tipo->tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
+                    <td><?= Html::encode($model->ordenproduccion) ?></td>
+                    <th><?= Html::activeLabel($model, 'ordenproduccionext') ?>:</th>
+                    <td><?= Html::encode($model->ordenproduccionext) ?></td>                    
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'autorizado') ?>:</th>

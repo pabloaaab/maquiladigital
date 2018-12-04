@@ -51,8 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th scope="col">Id</th>
                     <th scope="col">Producto</th>
                     <th scope="col">Código</th>
+                    <th scope="col">Cantidad Producto</th>
                     <th scope="col">Cantidad Disponibles</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">Cantidad Ingresar</th>
                     <th scope="col">Costo</th>
                     <th scope="col"></th>
                 </tr>
@@ -64,7 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td><?= $val->nombreProducto ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
-                    <td><input type="text" name="cantidad[]" value="0" required></td>
+                    <td><?= $val->stock ?></td>
+                    <td><input type="text" name="stock[]" value="0" required></td>
                     <td><input type="text" name="vlrventa[]" value="<?= $val->vlrventa ?>" required></td>
                     <td><input type="hidden" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
                     <td><input type="hidden" name="idproducto[]" value="<?= $val->idproducto ?>"></td>

@@ -183,64 +183,73 @@ class OrdenProduccionController extends Controller
         }
     }
 
-    public function actionNuevodetalles($idordenproduccion,$idcliente)
-    {
-        $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->all();
+    public function actionNuevodetalles($idordenproduccion, $idcliente) {
+        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+        $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->andWhere(['=', 'idtipo', $ordenProduccion->idtipo])->andWhere(['>', 'stock', 0])->all();
+        foreach ($productosCliente as $value) {
+            if ($value->cantidad < $value->stock) {
+                Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
+            }
+        }
         $ponderacion = 0;
         $error = 0;
         if (isset($_POST["idproducto"])) {
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
-                if($_POST["cantidad"][$intIndice] > 0 ){
+                if ($_POST["stock"][$intIndice] > 0) {
                     $detalles = Ordenproducciondetalle::find()
-                        ->where(['=', 'idordenproduccion', $idordenproduccion])
-                        ->andWhere(['=', 'idproducto', $intCodigo])
-                        ->all();
+                            ->where(['=', 'idordenproduccion', $idordenproduccion])
+                            ->andWhere(['=', 'idproducto', $intCodigo])
+                            ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
                         $producto = Producto::findOne($intCodigo);
-                        if($_POST["cantidad"][$intIndice] <= $producto->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                            $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                            $table = new Ordenproducciondetalle();
-                            $table->idproducto = $_POST["idproducto"][$intIndice];
-                            $table->cantidad = $_POST["cantidad"][$intIndice];
-                            $table->vlrprecio = $_POST["vlrventa"][$intIndice];
-                            $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                            $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrventa"][$intIndice];
-                            $table->idordenproduccion = $idordenproduccion;
-                            $table->ponderacion = $ordenProduccion->ponderacion;
-                            $table->insert();
-                            $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                            $ordenProduccion->update();
-                        }else{
-                            $error = 1;                            
-                        }                        
+                        if ($_POST["stock"][$intIndice] <= $producto->cantidad) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible                            
+                            if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
+                                $error = 2;
+                            } else {
+                                $table = new Ordenproducciondetalle();
+                                $table->idproducto = $_POST["idproducto"][$intIndice];
+                                $table->cantidad = $_POST["stock"][$intIndice];
+                                $table->vlrprecio = $_POST["vlrventa"][$intIndice];
+                                $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                                $table->subtotal = $_POST["stock"][$intIndice] * $_POST["vlrventa"][$intIndice];
+                                $table->idordenproduccion = $idordenproduccion;
+                                $table->ponderacion = $ordenProduccion->ponderacion;
+                                $table->insert();
+                                $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                                $ordenProduccion->update();
+                            }
+                        } else {
+                            $error = 1;
+                        }
                     }
                 }
                 $intIndice++;
             }
-            if($error == 1){
-                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');                
-            }else{
-                $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]);
-            }            
+            if ($error == 1) {
+                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
+                if ($error == 2) {
+                    Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
+                }
+            } else {
+                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+            }
         }
 
         return $this->render('_formnuevodetalles', [
-            'productosCliente' => $productosCliente,
-            'idordenproduccion' => $idordenproduccion,
+                    'productosCliente' => $productosCliente,
+                    'idordenproduccion' => $idordenproduccion,
         ]);
     }
 
-    public function actionEditardetalle()
-    {
+    public function actionEditardetalle() {
         $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
         $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
+        $error = 0;
+        if (Yii::$app->request->post()) {
 
-        if(Yii::$app->request->post()){
-
-            if((int) $iddetalleorden)
-            {
+            if ((int) $iddetalleorden) {
                 $table = Ordenproducciondetalle::findOne($iddetalleorden);
                 $producto = Producto::findOne($table->idproducto);
                 if ($table) {
@@ -249,20 +258,26 @@ class OrdenProduccionController extends Controller
                     $table->vlrprecio = Html::encode($_POST["vlrprecio"]);
                     $table->subtotal = Html::encode($_POST["cantidad"]) * Html::encode($_POST["vlrprecio"]);
                     $table->idordenproduccion = Html::encode($_POST["idordenproduccion"]);
-                    
+
                     $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
-                    
-                    $ordenProduccion->totalorden =  $ordenProduccion->totalorden - Html::encode($_POST["subtotal"]);
+
+                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - Html::encode($_POST["subtotal"]);
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                    if(Html::encode($_POST["cantidad"]) <= $producto->cantidad){//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                       $table->update();
-                       $ordenProduccion->update();
-                       $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]); 
-                    }else{
-                       Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
-                       $this->redirect(["orden-produccion/view",'id' => $idordenproduccion]); 
+                    if (Html::encode($_POST["cantidad"]) <= $producto->stock) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                        if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
+                            $error = 2;
+                        } else {
+                            $table->update();
+                            $ordenProduccion->update();
+                            $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                        }
+                    } else {
+                        Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
+                        $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
                     }
-                    
+                    if ($error == 2) {
+                        Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
+                    }
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
                     $tipomsg = "danger";
@@ -290,9 +305,13 @@ class OrdenProduccionController extends Controller
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
                     $producto = Producto::findOne($intCodigo);
-                    if ($_POST["cantidad"][$intIndice] <= $table->cantidad) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                        $table->update();
-                        $ordenProduccion->update();
+                    if ($_POST["cantidad"][$intIndice] <= $table->stock) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
+                        if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
+                            $error = 2;
+                        } else {
+                            $table->update();
+                            $ordenProduccion->update();
+                        }
                     } else {
                         $error = 1;
                     }
@@ -301,8 +320,14 @@ class OrdenProduccionController extends Controller
             }
             if ($error == 1) {
                 Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
-            } else {
                 $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+            } else {
+                if ($error == 2) {
+                    Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                } else {
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                }
             }
         }
         return $this->render('_formeditardetalles', [

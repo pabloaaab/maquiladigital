@@ -9,8 +9,6 @@ use app\models\Municipio;
 use app\models\Departamento;
 
 class PDF extends FPDF {
-    
-    
 
     function Header() {
         $idrecibo = $GLOBALS['idrecibo'];
@@ -18,8 +16,7 @@ class PDF extends FPDF {
         $config = Matriculaempresa::findOne(901189320);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);
-        
-        //$factura = Facturaventa::findOne($recibo->id);
+
         //Logo
         $this->SetXY(53, 10);
         $this->Image('images/logos/logomaquila.png', 10, 10, 40, 29);
@@ -45,78 +42,76 @@ class PDF extends FPDF {
         $this->SetXY(10, 47);
         $this->SetFont('Arial', 'B', 15);
         $this->Cell(162, 7, utf8_decode("RECIBO CAJA"), 0, 0, 'l', 0);
-        $this->Cell(30, 7, utf8_decode('N°. '.str_pad($recibo->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
-        $this->SetFillColor(200, 200, 200);        
+        $this->Cell(30, 7, utf8_decode('N°. ' . str_pad($recibo->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
+        $this->SetFillColor(200, 200, 200);
         $this->SetXY(10, 59); //FILA 1
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(25, 8, utf8_decode("NIT:"), 0, 0, 'L');
+        $this->Cell(25, 6, utf8_decode("NIT:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 8, utf8_decode($recibo->cliente->nitmatricula.'-'.$recibo->cliente->dv), 0, 0, 'L');
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->nitmatricula . '-' . $recibo->cliente->dv), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 8, utf8_decode("TIPO RECIBO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("TIPO RECIBO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 8, utf8_decode($recibo->tiporecibo->concepto), 0, 0, 'L');
-        $this->SetXY(10, 67);//FILA 2
+        $this->Cell(50, 6, utf8_decode($recibo->tiporecibo->concepto), 0, 0, 'L');
+        $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(25, 8, utf8_decode("CLIENTE:"), 0, 0, 'c');
+        $this->Cell(25, 6, utf8_decode("CLIENTE:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 8, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 8, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 8, utf8_decode($recibo->fecharecibo), 0, 0, 'L');
-        $this->SetXY(10, 75);//FILA 3
+        $this->Cell(50, 6, utf8_decode($recibo->fecharecibo), 0, 0, 'L');
+        $this->SetXY(10, 70); //FILA 3
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(25, 8, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
+        $this->Cell(25, 6, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 8, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 8, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 8, utf8_decode($recibo->fechapago), 0, 0, 'L');
-        $this->SetXY(10, 83);//FILA 4
+        $this->Cell(50, 6, utf8_decode($recibo->fechapago), 0, 0, 'L');
+        $this->SetXY(10, 76); //FILA 4
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(25, 8, utf8_decode("CIUDAD:"), 0, 0, 'L');
+        $this->Cell(25, 6, utf8_decode("CIUDAD:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 8, utf8_decode($recibo->cliente->municipio->municipio." - ".$recibo->cliente->departamento->departamento), 0, 0, 'L');
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->municipio->municipio . " - " . $recibo->cliente->departamento->departamento), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 8, utf8_decode("VALOR PAGADO:"), 0, 0, 'L');
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(50, 8, utf8_decode(number_format($recibo->valorpagado)), 0, 0, 'L');
-        $this->SetXY(10, 91);//FILA 5
-        $this->SetFont('Arial', 'B', 10);
-        $this->Cell(25, 8, utf8_decode("TELÉFONO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("VALOR PAGADO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 8, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');
+        $this->Cell(50, 6, utf8_decode(number_format($recibo->valorpagado)), 0, 0, 'L');
+        $this->SetXY(10, 82); //FILA 5
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 8, utf8_decode("TOTAL:"), 0, 0, 'L');
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(50, 8, utf8_decode(number_format($recibo->valorpagado)), 0, 0, 'L');
-        $this->SetXY(10, 99);//FILA 6
+        $this->Cell(25, 6, utf8_decode("TELÉFONO:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 10);
-        $this->MultiCell(196, 8, utf8_decode('OBSERVACIÓN: '.$recibo->observacion),0,'J');
-        
+        $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 10);
+        $this->Cell(50, 6, utf8_decode(number_format($recibo->valorpagado)), 0, 0, 'L');
+        $this->SetXY(10, 88); //FILA 6
+        $this->SetFont('Arial', 'B', 10);
+        $this->MultiCell(30, 6, utf8_decode('OBSERVACIÓN:'), 0, 'J');
+        $this->SetXY(40, 88); //FILA 7
+        $this->SetFont('Arial', '', 10);
+        $this->MultiCell(162, 6, utf8_decode($recibo->observacion), 0, 'J');
         //Lineas del encabezado
-        $this->Line(10,115,10,200);//x1,y1,x2,y2
-        $this->Line(25,115,25,200);//x1,y1,x2,y2
-        $this->Line(40,115,40,200);//x1,y1,x2,y2        
-        $this->Line(67,115,67,200);//x1,y1,x2,y2
-        $this->Line(94,115,94,200);//x1,y1,x2,y2
-        $this->Line(121,115,121,200);//x1,y1,x2,y2
-        $this->Line(148,115,148,200);//x1,y1,x2,y2
-        $this->Line(175,115,175,200);//x1,y1,x2,y2
-        $this->Line(202,115,202,200);//x1,y1,x2,y2
-        $this->Line(10,200,202,200);//linea vertical inferior x1,y1,x2,y2
-                       
+        $this->Line(10, 102, 10, 150); //x1,y1,x2,y2        
+        $this->Line(26, 102, 26, 150); //x1,y1,x2,y2        
+        $this->Line(54, 102, 54, 150); //x1,y1,x2,y2
+        $this->Line(85, 102, 85, 150); //x1,y1,x2,y2
+        $this->Line(115, 102, 115, 150); //x1,y1,x2,y2
+        $this->Line(144, 102, 144, 150); //x1,y1,x2,y2
+        $this->Line(173, 102, 173, 150); //x1,y1,x2,y2
+        $this->Line(202, 102, 202, 150); //x1,y1,x2,y2
+        $this->Line(10, 150, 202, 150); //linea horizontal inferior x1,y1,x2,y2
         //Detalle factura
         $this->EncabezadoDetalles();
-        
-        
     }
 
     function EncabezadoDetalles() {
-        $this->Ln(7);
-        $header = array('ITEM', 'ID',utf8_decode('N° FACTURA'), 'VALOR ABONO', 'VALOR SALDO','RETE FUENTE' ,'RETE IVA', 'RETE ICA');
+        $this->Ln(3);
+        $header = array('ITEM', utf8_decode('N° FACTURA'), 'VALOR ABONO', 'VALOR SALDO', 'RETE FUENTE', 'RETE IVA', 'RETE ICA');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -124,7 +119,7 @@ class PDF extends FPDF {
         $this->SetFont('', 'B', 9);
 
         //creamos la cabecera de la tabla.
-        $w = array(15, 15, 27, 27, 27,27,27,27);
+        $w = array(16, 28, 31, 30, 29, 29, 29);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
@@ -138,25 +133,24 @@ class PDF extends FPDF {
         $this->Ln(5);
     }
 
-    function Body($pdf,$model) {
-        $detalles = Recibocajadetalle::find()->where(['=','idrecibo',$model->idrecibo])->all();
+    function Body($pdf, $model) {
+        $detalles = Recibocajadetalle::find()->where(['=', 'idrecibo', $model->idrecibo])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 9);
         $i = 0;
         foreach ($detalles as $detalle) {
             $i = $i + 1;
-            $pdf->Cell(15, 5, $i, 0, 0, 'L');
-            $pdf->Cell(15, 5, $detalle->iddetallerecibo, 0, 0, 'L');
-            $pdf->Cell(27, 5, $detalle->factura->nrofactura, 0, 0, 'L');
-            $pdf->Cell(27, 5, number_format($detalle->vlrabono, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(27, 5, number_format($detalle->vlrsaldo, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(27, 5, number_format($detalle->retefuente, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(27, 5, number_format($detalle->reteiva, 2, '.', ','), 0, 0, 'R');            
-            $pdf->Cell(27, 5, number_format($detalle->reteica, 2, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(16, 5, $i, 0, 0, 'L');
+            
+            $pdf->Cell(26, 5, $detalle->factura->nrofactura, 0, 0, 'L');
+            $pdf->Cell(31, 5, number_format($detalle->vlrabono, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(30, 5, number_format($detalle->vlrsaldo, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->retefuente, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->reteiva, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->reteica, 2, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
-                
     }
 
     function Footer() {
@@ -167,21 +161,20 @@ class PDF extends FPDF {
     }
 
 }
+
 global $idrecibo;
 $idrecibo = $model->idrecibo;
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->Body($pdf,$model);
+$pdf->Body($pdf, $model);
 $pdf->AliasNbPages();
 $pdf->SetFont('Times', '', 10);
 $pdf->Output("ReciboCaja$model->idrecibo.pdf", 'D');
 
 exit;
 
-
-function zero_fill ($valor, $long = 0)
-{
+function zero_fill($valor, $long = 0) {
     return str_pad($valor, $long, '0', STR_PAD_LEFT);
 }
 

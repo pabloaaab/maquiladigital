@@ -48,8 +48,8 @@ $this->params['breadcrumbs'][] = $model->idproducto;
                     <td><?= Html::encode($model->stock) ?></td>
                 </tr>
                 <tr>                    
-                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>
+                    <th><?= Html::activeLabel($model, 'idtipo') ?>:</th>
+                    <td><?= Html::encode($model->ordenproducciontipo->tipo) ?></td>
                     <th><?= Html::activeLabel($model, 'idcliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
                     <th><?= Html::activeLabel($model, 'costoconfeccion') ?>:</th>

@@ -4,6 +4,7 @@ use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Cliente;
 use app\models\Ordenproduccion;
+use app\models\Ordenproducciontipo;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenProduccionSearch */
@@ -24,7 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             [
-                'attribute' => 'idordenproduccion',
+                'attribute' => 'ordenproduccion',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'ordenproduccionext',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
@@ -34,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-2.5'],
+                'contentOptions' => ['class' => 'col-lg-2.2'],
             ],
             [               
                 'attribute' => 'fechallegada',
@@ -43,15 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return date("Y-m-d", strtotime("$ordenp->fechallegada"));
                 },
                 'contentOptions' => ['class' => 'col-lg-1'],
-            ],
-            [               
-                'attribute' => 'fechaprocesada',
-                'value' => function($model){
-                    $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
-                    return date("Y-m-d", strtotime("$ordenp->fechaprocesada"));
-                },
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+            ],            
             [               
             'attribute' => 'fechaentrega',
             'value' => function($model){
@@ -79,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(Ordenproduccion::find()->all(),'autorizado','autorizar'),
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
-                        [
+            [
                 'attribute' => 'facturado',
                 'value' => function($model){
                     $orden = Ordenproduccion::findOne($model->idordenproduccion);                    
@@ -88,6 +85,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(Ordenproduccion::find()->all(),'facturado','facturar'),
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
+            [
+                'attribute' => 'idtipo',
+                'value' => function($model){
+                    $ordentipo = Ordenproducciontipo::findOne($model->idtipo);
+                    return $ordentipo->tipo;
+                },
+                'filter' => ArrayHelper::map(Ordenproducciontipo::find()->all(),'idtipo','tipo'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],            
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

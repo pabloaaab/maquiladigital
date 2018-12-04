@@ -18,8 +18,8 @@ class OrdenproduccionSearch extends Ordenproduccion
     public function rules()
     {
         return [
-            [['idordenproduccion', 'idcliente'], 'integer'],
-            [['fechallegada', 'fechaprocesada', 'fechaentrega', 'totalorden', 'valorletras', 'observacion', 'estado', 'usuariosistema','autorizado','facturado'], 'safe'],
+            [['idordenproduccion', 'idcliente', 'idtipo'], 'integer'],
+            [['fechallegada', 'fechaprocesada', 'fechaentrega', 'totalorden', 'valorletras', 'observacion', 'estado', 'usuariosistema','autorizado','facturado','ordenproduccion','ordenproduccionext'], 'safe'],
         ];
     }
 
@@ -66,6 +66,7 @@ class OrdenproduccionSearch extends Ordenproduccion
             'fechaentrega' => $this->fechaentrega,
             'autorizado' => $this->autorizado,
             'facturado' => $this->facturado,
+            'idtipo' => $this->idtipo,
         ]);
 
         $query->andFilterWhere(['like', 'totalorden', $this->totalorden])

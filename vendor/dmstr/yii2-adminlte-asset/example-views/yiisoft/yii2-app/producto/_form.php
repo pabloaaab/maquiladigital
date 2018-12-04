@@ -23,7 +23,7 @@ use app\models\Prendatipo;
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Prenda Tipo</h4>
+        Información Prductos
     </div>
     <div class="panel-body">
         <div class="row">
@@ -45,6 +45,15 @@ use app\models\Prendatipo;
             <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
                 'data' => $clientes,
                 'options' => ['prompt' => 'Seleccione un cliente ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'idtipo')->widget(Select2::classname(), [
+                'data' => $ordentipos,
+                'options' => ['prompt' => 'Seleccione una prenda...'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],

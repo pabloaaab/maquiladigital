@@ -18,7 +18,7 @@ class ProductoSearch extends Producto
     public function rules()
     {
         return [
-            [['idproducto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo'], 'integer'],
+            [['idproducto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo', 'idtipo'], 'integer'],
             [['codigoproducto', 'producto', 'observacion', 'fechaproceso', 'usuariosistema'], 'safe'],
         ];
     }
@@ -68,6 +68,7 @@ class ProductoSearch extends Producto
             'activo' => $this->activo,
             'fechaproceso' => $this->fechaproceso,
             'idprendatipo' => $this->idprendatipo,
+            'idtipo' => $this->idtipo,
         ]);
 
         $query->andFilterWhere(['like', 'codigoproducto', $this->codigoproducto])

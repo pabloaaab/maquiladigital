@@ -39,7 +39,7 @@ use yii\helpers\ArrayHelper;
                         $table = Cliente::find()
                             ->andFilterWhere(['like', 'cedulanit', $cedulanit])
                             ->andFilterWhere(['like', 'nombrecorto', $nombrecorto])
-							->orderBy('idcliente desc');
+			    ->orderBy('idcliente desc');
                         $count = clone $table;
                         $to = $count->count();
                         $pages = new Pagination([

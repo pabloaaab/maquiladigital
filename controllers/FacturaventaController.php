@@ -546,8 +546,7 @@ class FacturaventaController extends Controller
     {        
         $detalles = Facturaventadetalle::find()->where(['idfactura' => $id])->all();
         foreach ($detalles as $dato) {
-            $producto = Producto::findOne($dato->idproducto);
-            $producto->cantidad = $producto->cantidad - $dato->cantidad;
+            $producto = Producto::findOne($dato->idproducto);            
             $producto->stock = $producto->stock - $dato->cantidad;
             $producto->update();
         }

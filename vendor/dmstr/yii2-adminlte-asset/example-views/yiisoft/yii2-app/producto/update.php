@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = 'Editar';
         'model' => $model,
         'clientes' => $clientes,
         'prendas' => $prendas,
+        'ordentipos' => $ordentipos,
     ]) ?>
 
 </div>

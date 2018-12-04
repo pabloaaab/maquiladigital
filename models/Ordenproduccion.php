@@ -18,6 +18,7 @@ use Yii;
  * @property int $estado
  * @property int $autorizado
  * @property string $ordenproduccion
+ * @property string $ordenproduccionext
  * @property int $idtipo
  * @property string $usuariosistema
  * @property int $facturado
@@ -46,7 +47,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion'], 'required', 'message' => 'Campo requerido'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext'], 'required', 'message' => 'Campo requerido'],
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
             [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad'], 'number'],
@@ -76,8 +77,9 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'estado' => 'Facturado',
             'proceso_control' => 'Control',
             'autorizado' => 'Autorizado',
-            'ordenproduccion' => 'Orden Produccion',
-            'idtipo' => 'Idtipo',
+            'ordenproduccion' => 'Orden Prod',
+            'ordenproduccionext' => 'Orden Prod Ext',
+            'idtipo' => 'Tipo',
             'usuariosistema' => 'Usuario Sistema',
             'porcentaje_proceso' => '% Proceso',
             'porcentaje_cantidad' => '% cantidad',
