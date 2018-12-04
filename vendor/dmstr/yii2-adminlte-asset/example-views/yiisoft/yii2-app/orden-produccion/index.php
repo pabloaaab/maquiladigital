@@ -39,16 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-2.2'],
-            ],
-            [               
-                'attribute' => 'fechallegada',
-                'value' => function($model){
-                    $ordenp = Ordenproduccion::findOne($model->idordenproduccion);
-                    return date("Y-m-d", strtotime("$ordenp->fechallegada"));
-                },
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],            
+                'contentOptions' => ['class' => 'col-lg-4'],
+            ],                    
             [               
             'attribute' => 'fechaentrega',
             'value' => function($model){

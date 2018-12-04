@@ -53,15 +53,15 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                 <th><?= Html::activeLabel($costolaboral, 'empleados_operativos') ?>:</th>
                 <td><?= Html::encode($costolaboral->empleados_operativos) ?></td>
                 <th><?= Html::activeLabel($costolaboral, 'total_administracion') ?>:</th>
-                <td><?= Html::encode('$ ' . number_format($costolaboral->total_administracion)) ?></td>                
+                <td><?= Html::encode('$' . number_format($costolaboral->total_administracion)) ?></td>                
             </tr>
             <tr>                
                 <th><?= Html::activeLabel($costolaboral, 'total_administrativo') ?>:</th>
-                <td><?= Html::encode('$ ' . number_format($costolaboral->total_administrativo)) ?></td>
+                <td><?= Html::encode('$' . number_format($costolaboral->total_administrativo)) ?></td>
                 <th><?= Html::activeLabel($costolaboral, 'total_operativo') ?>:</th>
-                <td><?= Html::encode('$ ' . number_format($costolaboral->total_operativo)) ?></td>
+                <td><?= Html::encode('$' . number_format($costolaboral->total_operativo)) ?></td>
                 <th><?= Html::activeLabel($costolaboral, 'total_general') ?>:</th>
-                <td><?= Html::encode('$ ' . number_format($costolaboral->total_general)) ?></td>
+                <td><?= Html::encode('$' . number_format($costolaboral->total_general)) ?></td>
             </tr>            
         </table>
     </div>
@@ -75,45 +75,46 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">N° Empleados</th>
+                    <th scope="col">N°</th>
                     <th scope="col">Tipo Cargo</th>
                     <th scope="col">% Arl</th>
                     <th scope="col">Salario</th>
-                    <th scope="col">Transporte</th>
-                    <th scope="col">Tiempo Extra</th>
-                    <th scope="col">Bonificación</th>
+                    <th scope="col">Transp</th>
+                    <th scope="col">T.Extra</th>
+                    <th scope="col">Bonific</th>
                     <th scope="col">Arl</th>
                     <th scope="col">Pensión</th>
                     <th scope="col">Caja</th>
-                    <th scope="col">Prestaciones</th>
-                    <th scope="col">Vacaciones</th>
-                    <th scope="col">Ajuste Vac</th>
+                    <th scope="col">Prest</th>
+                    <th scope="col">Vac</th>
+                    <th scope="col">A.V</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col">Admon</th>
                     <th scope="col">Total</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($costolaboraldetalle as $val): ?>
                     <tr>                    
-                        <td><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" onkeypress="return esInteger(event)" required></td>
-                        <td><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...', 'required' => true]) ?>
-                        <td><?= Html::dropDownList('id_arl[]', $val->id_arl, $arl, ['class' => 'col-sm-13', 'prompt' => 'Seleccione...', 'required' => true]) ?>    
-                        <td><input type="text" name="salario[]" value="<?= $val->salario ?>" size="5" onkeypress="return esInteger(event)" required></td>
-                        <td><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="5" onkeypress="return esInteger(event)" required></td>
-                        <td><input type="text" name="tiempo_extra[]" value="<?= $val->tiempo_extra ?>" size="5" onkeypress="return esInteger(event)" required></td>
-                        <td><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="5" onkeypress="return esInteger(event)" required></td>
-                        <td align="right"><?= '$ ' . number_format($val->arl) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->pension) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->caja) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->prestaciones) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->vacaciones) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->ajuste_vac) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->subtotal) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->admon) ?></td>
-                        <td align="right"><?= '$ ' . number_format($val->total) ?></td>
-                        <td><input type="hidden" name="id_costo_laboral_detalle[]" value="<?= $val->id_costo_laboral_detalle ?>"></td>
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 0;padding-right: 1;"><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Opción', 'required' => true]) ?>
+                        <td style="padding-left: 0;padding-right: 1;"><?= Html::dropDownList('id_arl[]', $val->id_arl, $arl, ['class' => 'col-sm-13', 'prompt' => 'Opción', 'required' => true]) ?>    
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="salario[]" value="<?= $val->salario ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="tiempo_extra[]" value="<?= $val->tiempo_extra ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->arl) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->pension) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->caja) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->prestaciones) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->vacaciones) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->ajuste_vac) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->subtotal) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->admon) ?></td>
+                        <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->total) ?></td>
+                        <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_costo_laboral_detalle[]" value="<?= $val->id_costo_laboral_detalle ?>"></td>
                         <td><?=
                             Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $costolaboral->id_costo_laboral, 'iddetalle' => $val->id_costo_laboral_detalle], [
                                 'class' => '',

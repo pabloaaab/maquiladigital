@@ -16,7 +16,7 @@ use kartik\select2\Select2;
 ?>
 
     <?php $form = ActiveForm::begin([
-		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+		'options' => ['class' => 'form-horizontal condensed ', 'role' => 'form'],
 	'fieldConfig' => [
                     'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
                     'labelOptions' => ['class' => 'col-sm-3 control-label'],
@@ -28,7 +28,7 @@ use kartik\select2\Select2;
  ?>
  <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Orden Producción</h4>
+        Información Orden Producción
     </div>
     <div class="panel-body">
         <div class="row">
@@ -75,6 +75,9 @@ use kartik\select2\Select2;
         </div>
         <div class="row">
             <?= $form->field($model, 'ordenproduccion')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'ordenproduccionext')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'ponderacion')->textInput(['maxlength' => true]) ?>
