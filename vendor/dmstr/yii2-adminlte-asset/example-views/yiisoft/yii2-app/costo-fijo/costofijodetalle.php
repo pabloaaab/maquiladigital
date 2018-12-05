@@ -78,7 +78,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title">Editar detalle <?= $val->id_detalle_costo_fijo ?></h4>
+                                                <h4 class="modal-title">Editar Costo Fijo</h4>
                                             </div>
                                             <?= Html::beginForm(Url::toRoute("costo-fijo/editardetalle"), "POST") ?>
                                             <div class="modal-body">
@@ -139,7 +139,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                        <h4 class="modal-title" align="left">Nuevo detalle</h4>
+                        <h4 class="modal-title" align="left">Nuevo Costo Fijo</h4>
                     </div>
                     <?= Html::beginForm(Url::toRoute("costo-fijo/nuevodetalle"), "POST") ?>
                     <div class="modal-body">

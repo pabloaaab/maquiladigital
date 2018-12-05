@@ -70,6 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         <input type="hidden" name="idarchivodir" value="<?= $val->idarchivodir ?>">
                                                         <input type="hidden" name="numero" value="<?= $numero ?>">
                                                         <input type="hidden" name="codigo" value="<?= $codigo ?>">
+                                                        <input type="hidden" name="view" value="<?= $view ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -81,15 +82,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-                    <a href="<?= Url::toRoute(["archivodir/borrar", "id" => $val->idarchivodir, 'numero' => $numero, 'codigo' => $codigo]) ?>" ><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="<?= Url::toRoute(["archivodir/borrar", "id" => $val->idarchivodir, 'numero' => $numero, 'codigo' => $codigo,'view' => $view]) ?>" ><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['notacredito/view', 'id' => $codigo], ['class' => 'btn btn-primary']); ?>
-            <?= Html::a('<span class="glyphicon glyphicon-upload"></span> Subir Archivo', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo], ['class' => 'btn btn-success']); ?>            
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', [$view.'/view', 'id' => $codigo], ['class' => 'btn btn-primary']); ?>
+            <?= Html::a('<span class="glyphicon glyphicon-upload"></span> Subir Archivo', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo,'view' =>$view], ['class' => 'btn btn-success']); ?>            
         </div>
     </div>
 </div>

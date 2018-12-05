@@ -26,6 +26,7 @@ CREATE TABLE `archivodir` (
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `numero` int(11) DEFAULT NULL,
   `iddirectorio` int(11) DEFAULT NULL,
+  `codigo` int(11) DEFAULT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `extension` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tipo` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
@@ -37,12 +38,23 @@ CREATE TABLE `archivodir` (
   KEY `iddirectorio` (`iddirectorio`),
   CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
   CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `archivodir` */
 
-insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`numero`,`iddirectorio`,`nombre`,`extension`,`tipo`,`tamaño`,`descripcion`,`comentarios`) values 
-(35,2,'2018-11-26 21:42:44',3,1,'94932961636718189996652759 (1).pdf','pdf','application/pdf',271821,'PRUEBA PDFFFCDCD',NULL);
+insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`numero`,`iddirectorio`,`codigo`,`nombre`,`extension`,`tipo`,`tamaño`,`descripcion`,`comentarios`) values 
+(39,3,'2018-12-05 14:37:09',3,1,7,'Factura8.pdf','pdf','application/pdf',394049,'FACTURA 8',NULL),
+(40,4,'2018-12-05 14:45:07',4,1,32,'dsds.pdf','pdf','application/pdf',1970,'DSDSD',NULL),
+(41,4,'2018-12-05 14:50:55',4,1,32,'96030503636773488595400190.pdf','pdf','application/pdf',272346,'AAAA',NULL),
+(42,1,'2018-12-05 15:05:48',1,1,4,'Factura8 (1).pdf','pdf','application/pdf',394049,'FACTURA',NULL),
+(43,1,'2018-12-05 15:11:41',1,1,4,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA 2',NULL),
+(44,1,'2018-12-05 15:12:04',1,1,4,'Factura8 (2).pdf','pdf','application/pdf',394049,'PRUEBA 3',NULL),
+(45,4,'2018-12-05 15:12:40',4,1,32,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA',NULL),
+(46,2,'2018-12-05 15:16:01',2,1,2,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA',NULL),
+(47,5,'2018-12-05 15:23:01',5,1,28,'94932961636718189996652759 (1).pdf','pdf','application/pdf',271821,'PRUEBA',NULL),
+(48,5,'2018-12-05 16:02:07',5,1,28,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA',NULL),
+(49,5,'2018-12-05 16:02:45',5,1,26,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA',NULL),
+(50,4,'2018-12-05 18:26:35',4,1,30,'dsds.pdf','pdf','application/pdf',1970,'PRUEBA',NULL);
 
 /*Table structure for table `arl` */
 
@@ -124,7 +136,7 @@ CREATE TABLE `cliente` (
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idtipo`) REFERENCES `tipodocumento` (`idtipo`),
   CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
   CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
@@ -230,7 +242,7 @@ CREATE TABLE `costo_laboral` (
 /*Data for the table `costo_laboral` */
 
 insert  into `costo_laboral`(`id_costo_laboral`,`total_otros`,`total_administrativo`,`total_administracion`,`total_operativo`,`total_general`,`empleados_operativos`,`empleados_administrativos`) values 
-(1,0,1259960,1466600,25909900,25909900,17,1);
+(1,0,1259960,1466600,24650000,25909900,17,1);
 
 /*Table structure for table `costo_laboral_detalle` */
 
@@ -262,7 +274,7 @@ CREATE TABLE `costo_laboral_detalle` (
   CONSTRAINT `costo_laboral_detalle_ibfk_1` FOREIGN KEY (`id_costo_laboral`) REFERENCES `costo_laboral` (`id_costo_laboral`),
   CONSTRAINT `costo_laboral_detalle_ibfk_2` FOREIGN KEY (`id_tipo_cargo`) REFERENCES `tipo_cargo` (`id_tipo_cargo`),
   CONSTRAINT `costo_laboral_detalle_ibfk_3` FOREIGN KEY (`id_arl`) REFERENCES `arl` (`id_arl`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `costo_laboral_detalle` */
 
@@ -1698,6 +1710,7 @@ CREATE TABLE `ordenproduccion` (
   `fechallegada` datetime NOT NULL,
   `fechaprocesada` datetime NOT NULL,
   `fechaentrega` datetime NOT NULL,
+  `cantidad` int(11) DEFAULT NULL,
   `totalorden` float DEFAULT '0',
   `valorletras` longtext,
   `observacion` longtext NOT NULL,
@@ -1721,20 +1734,20 @@ CREATE TABLE `ordenproduccion` (
 
 /*Data for the table `ordenproduccion` */
 
-insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`ordenproduccionext`) values 
-(30,2,'2018-11-05 00:00:00','2018-11-05 00:00:00','2018-11-05 00:00:00',2178600,NULL,'dfdfd',0,'414d',1,'71268830',0,0,0,0,0,0,'414d'),
-(32,3,'2018-11-20 00:00:00','2018-11-20 00:00:00','2018-11-20 00:00:00',397785,NULL,'dsd',0,'10879',1,'71268830',1,1,0,0,0,0,'10879'),
-(33,3,'2018-11-07 00:00:00','2018-11-07 00:00:00','2018-11-07 00:00:00',704483,NULL,'k',0,'l125',1,'71268830',1,0,0,0,0,0,'l125'),
-(34,3,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-20 00:00:00',278616,NULL,'fgfg',0,'5241ff',1,'71268830',1,0,0,0,0,0,'5241ff'),
-(35,3,'2018-10-29 00:00:00','2018-11-12 00:00:00','2018-11-12 00:00:00',2140.17,NULL,'cvfd',0,'414d',1,'71268830',1,0,0,0,0,0,'414d'),
-(36,26,'2018-10-29 00:00:00','2018-10-29 00:00:00','2018-11-29 00:00:00',703330,NULL,'as',0,'10879',1,'71268830',1,1,0,33,0,0,'10879'),
-(37,26,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-11-14 00:00:00',18300,NULL,'dfdf',0,'ddd3',1,'71268830',0,1,0,0,0,0,'ddd3'),
-(40,28,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',13200,NULL,'dfds',0,'414d',1,'71268830',0,0,0,0,10,0,'414d'),
-(41,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-21 00:00:00',2750000,NULL,'AS',0,'1545',1,'71268830',1,0,0,27.2727,10,2.27273,'1545'),
-(42,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',55760,NULL,'dgd',0,'414d',5,'71268830',1,1,0,0,10,0,'414d'),
-(43,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',94400,NULL,'dfd',0,'414d',1,'71268830',1,1,0,0,10,0,'414d'),
-(44,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-29 00:00:00',1.64,NULL,'sfks',0,'11533',5,'71268830',0,0,0,0,10,0,'11533'),
-(45,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-29 00:00:00',9713600,NULL,'asa',0,'11533',1,'71268830',1,1,0,0,10,0,'11533');
+insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`cantidad`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`ordenproduccionext`) values 
+(30,2,'2018-11-05 00:00:00','2018-11-05 00:00:00','2018-11-05 00:00:00',5650,2178600,NULL,'dfdfd prueba de impresion de la orden de produccion de la fecha de entrada y salida de produccion etc',0,'414d',1,'71268830',1,0,0,0,0,0,'414d'),
+(32,3,'2018-11-20 00:00:00','2018-11-20 00:00:00','2018-11-20 00:00:00',500,397785,NULL,'dsd',0,'10879',1,'71268830',1,1,0,0,0,0,'10879'),
+(33,3,'2018-11-07 00:00:00','2018-11-07 00:00:00','2018-11-07 00:00:00',500,704483,NULL,'k',0,'l125',1,'71268830',1,0,0,0,0,0,'l125'),
+(34,3,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-20 00:00:00',500,278616,NULL,'fgfg',0,'5241ff',1,'71268830',1,0,0,0,0,0,'5241ff'),
+(35,3,'2018-10-29 00:00:00','2018-11-12 00:00:00','2018-11-12 00:00:00',500,2140.17,NULL,'cvfd',0,'414d',1,'71268830',1,0,0,0,0,0,'414d'),
+(36,26,'2018-10-29 00:00:00','2018-10-29 00:00:00','2018-11-29 00:00:00',500,703330,NULL,'as',0,'10879',1,'71268830',1,1,0,33,0,0,'10879'),
+(37,26,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-11-14 00:00:00',500,18300,NULL,'dfdf',0,'ddd3',1,'71268830',0,1,0,0,0,0,'ddd3'),
+(40,28,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',500,13200,NULL,'dfds',0,'414d',1,'71268830',0,0,0,0,10,0,'414d'),
+(41,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-21 00:00:00',500,2750000,NULL,'AS',0,'1545',1,'71268830',1,0,0,27.2727,10,2.27273,'1545'),
+(42,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',500,55760,NULL,'dgd',0,'414d',5,'71268830',1,1,0,0,10,0,'414d'),
+(43,25,'2018-10-17 00:00:00','2018-10-17 00:00:00','2018-10-17 00:00:00',500,94400,NULL,'dfd',0,'414d',1,'71268830',1,1,0,0,10,0,'414d'),
+(44,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-29 00:00:00',500,1.64,NULL,'sfks',0,'11533',5,'71268830',0,0,0,0,10,0,'11533'),
+(45,26,'2018-10-29 00:00:00','2018-11-07 00:00:00','2018-11-29 00:00:00',500,9713600,NULL,'asa',0,'11533',1,'71268830',1,1,0,0,10,0,'11533');
 
 /*Table structure for table `ordenproducciondetalle` */
 

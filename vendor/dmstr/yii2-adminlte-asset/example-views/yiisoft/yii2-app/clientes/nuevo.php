@@ -131,7 +131,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
 ?>
 <div class="panel panel-success">
     <div class="panel-heading">
-        <h4>Información Cliente</h4>
+        Información Cliente
     </div>
     <div class="panel-body">
         <div class="row">

@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-3.5'],
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [               
                 'attribute' => 'idordenproduccion',

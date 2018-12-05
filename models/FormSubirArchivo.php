@@ -13,6 +13,7 @@ class FormSubirArchivo extends Model
     public $imageFile;
     public $numero;
     public $codigo;
+    public $view;
     
     public function rules()
     {
@@ -21,6 +22,7 @@ class FormSubirArchivo extends Model
             [['imageFile'], 'file', 'skipOnEmpty' => false, ],            
             ['numero', 'default'],
             ['codigo', 'default'],
+            ['view', 'default'],
             
         ];
     }
@@ -31,15 +33,24 @@ class FormSubirArchivo extends Model
             'imageFile' => 'Archivo:',            
             'numero' => '',
             'codigo' => '',
+            'view' => '',
         ];
     }
 
     public function upload()
     {
         if ($this->validate()) {
-
-            $this->imageFile->saveAs('Documentos/' . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            $carpeta = 'Documentos/'.$this->numero.'/'.$this->codigo.'/';
+            if (!file_exists($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
+            if(!file_exists($carpeta . $this->imageFile->baseName . '.' . $this->imageFile->extension)){
+                $this->imageFile->saveAs($carpeta . $this->imageFile->baseName . '.' . $this->imageFile->extension);
             return true;
+            }else{
+                return false;
+            }
+            
         } else {
             return false;
         }

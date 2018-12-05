@@ -30,6 +30,7 @@ use yii\filters\AccessControl;
 $this->title = 'Detalle Orden de Producción';
 $this->params['breadcrumbs'][] = ['label' => 'Ordenes de Producción', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
+$view = 'orden-produccion';
 ?>
 <div class="ordenproduccion-view">
 
@@ -50,6 +51,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         }
             else {
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);
+                echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
+                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);                                                         
             }
         ?>
     </p>

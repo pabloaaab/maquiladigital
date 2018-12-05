@@ -75,21 +75,21 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
-                    <th scope="col">N°</th>
+                    <th scope="col" title="N° Empleados">N°</th>
                     <th scope="col">Tipo Cargo</th>
                     <th scope="col">% Arl</th>
                     <th scope="col">Salario</th>
-                    <th scope="col">Transp</th>
-                    <th scope="col">T.Extra</th>
-                    <th scope="col">Bonific</th>
+                    <th scope="col" title="Auxilio Transporte">Transp</th>
+                    <th scope="col" title="Tiempo Extra">T.Extra</th>
+                    <th scope="col" title="Bonificaciones">Bonific</th>
                     <th scope="col">Arl</th>
                     <th scope="col">Pensión</th>
                     <th scope="col">Caja</th>
-                    <th scope="col">Prest</th>
-                    <th scope="col">Vac</th>
-                    <th scope="col">A.V</th>
+                    <th scope="col" title="Prestaciones">Prest</th>
+                    <th scope="col" title="Vacaciones">Vac</th>
+                    <th scope="col" title="Ajuste Vacaciones">A.V</th>
                     <th scope="col">Subtotal</th>
-                    <th scope="col">Admon</th>
+                    <th scope="col" title="Administración">Admon</th>
                     <th scope="col">Total</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -148,4 +148,9 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
         }
         return true
     }
+</script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
 </script>

@@ -9,8 +9,6 @@ use app\models\Municipio;
 use app\models\Departamento;
 
 class PDF extends FPDF {
-    
-    
 
     function Header() {
         $idnotacredito = $GLOBALS['idnotacredito'];
@@ -18,8 +16,8 @@ class PDF extends FPDF {
         $config = Matriculaempresa::findOne(901189320);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);
-        $detallesnotacredito = Notacreditodetalle::find()->where(['=','idnotacredito',$idnotacredito])->all();
-        foreach ($detallesnotacredito as $detalle){
+        $detallesnotacredito = Notacreditodetalle::find()->where(['=', 'idnotacredito', $idnotacredito])->all();
+        foreach ($detallesnotacredito as $detalle) {
             $idfactura = $detalle->idfactura;
         }
         $factura = Facturaventa::findOne($idfactura);
@@ -48,8 +46,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 47);
         $this->SetFont('Arial', 'B', 15);
         $this->Cell(162, 7, utf8_decode("NOTA CRÉDITO"), 0, 0, 'l', 0);
-        $this->Cell(30, 7, utf8_decode('N°. '.str_pad($notacredito->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
-        $this->SetFillColor(200, 200, 200);        
+        $this->Cell(30, 7, utf8_decode('N°. ' . str_pad($notacredito->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
+        $this->SetFillColor(200, 200, 200);
         $this->SetXY(10, 59); //FILA 1
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(29, 5, utf8_decode("FECHA FACTURA:"), 0, 0, 'L');
@@ -59,16 +57,16 @@ class PDF extends FPDF {
         $this->Cell(24, 5, utf8_decode("FECHA VCTO:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
         $this->Cell(70, 5, utf8_decode($factura->fechavcto), 0, 0, 'c');
-        $this->SetXY(10, 64);//FILA 2
+        $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(29, 5, utf8_decode("NIT:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 8);
-        $this->Cell(70, 5, utf8_decode($factura->cliente->nitmatricula.'-'.$factura->cliente->dv), 0, 0, 'L');
+        $this->Cell(70, 5, utf8_decode($factura->cliente->nitmatricula . '-' . $factura->cliente->dv), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("CLIENTE:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
         $this->Cell(70, 5, utf8_decode($factura->cliente->nombrecorto), 0, 0, 'c');
-        $this->SetXY(10, 69);//FILA 3
+        $this->SetXY(10, 69); //FILA 3
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(29, 5, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 8);
@@ -77,32 +75,29 @@ class PDF extends FPDF {
         $this->Cell(24, 5, utf8_decode("TELÉFONO:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
         $this->Cell(70, 5, utf8_decode($factura->cliente->telefonocliente), 0, 0, 'c');
-        $this->SetXY(10, 74);//FILA 4
+        $this->SetXY(10, 74); //FILA 4
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(29, 5, utf8_decode("FECHA PROCESO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 8);
         $this->Cell(70, 5, utf8_decode($notacredito->fechapago), 0, 0, 'L');
         $this->Cell(24, 5, utf8_decode(""), 0, 0, 'c');
-        $this->Cell(70, 5, utf8_decode(""), 0, 0, 'c');                       
+        $this->Cell(70, 5, utf8_decode(""), 0, 0, 'c');
         //Lineas del encabezado
-        $this->Line(10,85,10,170);
-        $this->Line(23,85,23,170);        
-        $this->Line(136,85,136,170);
-        $this->Line(156,85,156,170);
-        $this->Line(176,85,176,170);
-        $this->Line(201,85,201,170);
-        $this->Line(10,170,201,170);//linea vertical inferior x1,y1,x2,y2
+        $this->Line(10, 85, 10, 170);
+        $this->Line(23, 85, 23, 170);
+        $this->Line(136, 85, 136, 170);
+        $this->Line(156, 85, 156, 170);
+        $this->Line(176, 85, 176, 170);
+        $this->Line(201, 85, 201, 170);
+        $this->Line(10, 170, 201, 170); //linea vertical inferior x1,y1,x2,y2
         //Cuadro de la nota
-        $this->Line(10,180,156,180);//linea horizontal superior
+        $this->Line(10, 180, 156, 180); //linea horizontal superior
         //$this->Line(10,182,10,190);//linea vertical
-        $this->Line(10,188,156,188);//linea horizontal inferior
+        $this->Line(10, 188, 156, 188); //linea horizontal inferior
         //Linea de las observacines
-        $this->Line(10,180,10,204);//linea vertical
-               
+        $this->Line(10, 180, 10, 204); //linea vertical
         //Detalle factura
         $this->EncabezadoDetalles();
-        
-        
     }
 
     function EncabezadoDetalles() {
@@ -129,49 +124,48 @@ class PDF extends FPDF {
         $this->Ln(5);
     }
 
-    function Body($pdf,$model) {
-        $detalles = Notacreditodetalle::find()->where(['=','idnotacredito',$model->idnotacredito])->all();
+    function Body($pdf, $model) {
+        $detalles = Notacreditodetalle::find()->where(['=', 'idnotacredito', $model->idnotacredito])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 8);
-        foreach ($detalles as $detalle) {            
+        foreach ($detalles as $detalle) {
             $pdf->Cell(13, 4, 1, 0, 0, 'L');
             $pdf->Cell(113, 4, $model->conceptonota->concepto, 0, 0, 'L');
             $pdf->Cell(20, 4, $detalle->nrofactura, 0, 0, 'C');
-            $pdf->Cell(20, 4, number_format($detalle->valor, 2, '.', ','), 0, 0, 'R');            
-            $pdf->Cell(25, 4, number_format($detalle->valor, 2, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(20, 4, number_format($detalle->valor, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(25, 4, number_format($detalle->valor, 2, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
         $this->SetFillColor(200, 200, 200);
         $pdf->SetXY(10, 180);
         $this->SetFont('Arial', 'B', 8);
-        $pdf->MultiCell(146, 4, utf8_decode(valorEnLetras($model->total)),0,'J');
+        $pdf->MultiCell(146, 4, utf8_decode(valorEnLetras($model->total)), 0, 'J');
         $pdf->SetXY(156, 180);
-        $pdf->MultiCell(20, 8, 'SUBTOTAL:',1,'L');
+        $pdf->MultiCell(20, 8, 'SUBTOTAL:', 1, 'L');
         $pdf->SetXY(176, 180);
-        $pdf->MultiCell(25, 8, number_format($model->valor, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->valor, 2, '.', ','), 1, 'R');
         $pdf->SetXY(10, 188);
         $this->SetFont('Arial', 'B', 8);
-        $pdf->MultiCell(146, 4, utf8_decode('Observaciones: '.$model->observacion),0,'J');
+        $pdf->MultiCell(146, 4, utf8_decode('Observaciones: ' . $model->observacion), 0, 'J');
         $pdf->SetXY(156, 188);
-        $pdf->MultiCell(20, 8, 'IVA:',1,'L');
+        $pdf->MultiCell(20, 8, 'IVA:', 1, 'L');
         $pdf->SetXY(176, 188);
-        $pdf->MultiCell(25, 8, number_format($model->iva, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->iva, 2, '.', ','), 1, 'R');
         $pdf->SetXY(156, 196);
-        $pdf->MultiCell(20, 8, 'RETE IVA:',1,'L');
+        $pdf->MultiCell(20, 8, 'RETE IVA:', 1, 'L');
         $pdf->SetXY(176, 196);
-        $pdf->MultiCell(25, 8, number_format($model->reteiva, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->reteiva, 2, '.', ','), 1, 'R');
         $pdf->SetXY(156, 204);
-        $pdf->MultiCell(20, 8, 'RETE FTE:',1,'L');
+        $pdf->MultiCell(20, 8, 'RETE FTE:', 1, 'L');
         $pdf->SetXY(176, 204);
-        $pdf->MultiCell(25, 8, number_format($model->retefuente, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->retefuente, 2, '.', ','), 1, 'R');
         $pdf->SetXY(10, 204);
-        $pdf->MultiCell(146, 16, 'FIRMA Y SELLO',1,'J');
+        $pdf->MultiCell(146, 16, 'FIRMA Y SELLO', 1, 'J');
         $pdf->SetXY(156, 212);
-        $pdf->MultiCell(20, 8, 'TOTAL:',1,'L');
+        $pdf->MultiCell(20, 8, 'TOTAL:', 1, 'L');
         $pdf->SetXY(176, 212);
-        $pdf->MultiCell(25, 8, number_format($model->total, 2, '.', ','),1,'R');
-        
+        $pdf->MultiCell(25, 8, number_format($model->total, 2, '.', ','), 1, 'R');
     }
 
     function Footer() {
@@ -182,21 +176,20 @@ class PDF extends FPDF {
     }
 
 }
+
 global $idnotacredito;
 $idnotacredito = $model->idnotacredito;
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->Body($pdf,$model);
+$pdf->Body($pdf, $model);
 $pdf->AliasNbPages();
 $pdf->SetFont('Times', '', 10);
 $pdf->Output("NotaCredito$model->idnotacredito.pdf", 'D');
 
 exit;
 
-
-function zero_fill ($valor, $long = 0)
-{
+function zero_fill($valor, $long = 0) {
     return str_pad($valor, $long, '0', STR_PAD_LEFT);
 }
 

@@ -30,6 +30,7 @@ use yii\filters\AccessControl;
 $this->title = 'Detalle Nota de Crédito';
 $this->params['breadcrumbs'][] = ['label' => 'Notas Créditos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idnotacredito;
+$view = 'notacredito';
 ?>
 <div class="notacredito-view">
 
@@ -54,7 +55,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
                 echo Html::a('<span class="glyphicon glyphicon-check"></span> Generar', ['notacredito', 'id' => $model->idnotacredito], ['class' => 'btn btn-default']);                
                 if ($model->numero > 0){
                     echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idnotacredito], ['class' => 'btn btn-default']);            
-                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito], ['class' => 'btn btn-default']);                                                         
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 3, 'codigo' => $model->idnotacredito,'view' => $view], ['class' => 'btn btn-default']);                                                         
                 }
             }
         ?>
@@ -62,7 +63,7 @@ $this->params['breadcrumbs'][] = $model->idnotacredito;
 
     <div class="panel panel-success">
         <div class="panel-heading">
-            Orden de Producción
+            Nota crédito
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">

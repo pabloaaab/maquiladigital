@@ -19,18 +19,20 @@ use yii\bootstrap\Modal;
 $this->title = 'Detalle Cliente';
 $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$view = 'clientes';
 ?>
 
 <p>
     <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'idcliente' => $table->idcliente], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['eliminar', 'idcliente' => $table->idcliente], [
+    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $table->idcliente], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['eliminar', 'id' => $table->idcliente], [
         'class' => 'btn btn-danger',
         'data' => [
             'confirm' => 'Esta seguro de eliminar el registro?',
             'method' => 'post',
         ],
     ]) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 5, 'codigo' => $table->idcliente,'view' => $view], ['class' => 'btn btn-default']) ?>
 </p>
 
 <div class="panel panel-success">

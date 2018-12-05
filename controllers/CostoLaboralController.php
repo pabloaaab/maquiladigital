@@ -127,7 +127,7 @@ class CostoLaboralController extends Controller
                 }
                 if($val->id_tipo_cargo == 2){ //1 = operativo, 2 = administrativo
                     $totaladministrativo = $totaladministrativo + $val->total;
-                    $totaloperativo = $totaloperativo + $val->total;
+                    //$totaloperativo = $totaloperativo + $val->total;
                     $administrativos = $administrativos + $val->nro_empleados;
                 }                
                 $totaladministracion = $totaladministracion + $val->admon;

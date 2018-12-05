@@ -10,6 +10,7 @@ use yii\helpers\Url;
 $this->title = 'Detalle Recibo de Caja';
 $this->params['breadcrumbs'][] = ['label' => 'Recibos de Caja', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idrecibo;
+$view = 'recibocaja';
 ?>
 <div class="recibocaja-view">
 
@@ -32,7 +33,7 @@ $this->params['breadcrumbs'][] = $model->idrecibo;
             echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
             if ($model->numero > 0){
                     echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);            
-                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->idrecibo], ['class' => 'btn btn-default']);                                                         
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->idrecibo,'view' => $view], ['class' => 'btn btn-default']);                                                         
             }
         }
         ?>

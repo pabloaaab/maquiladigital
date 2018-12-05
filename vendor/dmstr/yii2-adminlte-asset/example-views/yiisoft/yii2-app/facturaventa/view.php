@@ -15,6 +15,7 @@ use yii\db\ActiveQuery;
 $this->title = 'Detalle Factura de Venta';
 $this->params['breadcrumbs'][] = ['label' => 'Facturas de ventas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idfactura;
+$view = 'facturaventa';
 ?>
 <div class="facturaventa-view">
 
@@ -36,7 +37,8 @@ $this->params['breadcrumbs'][] = $model->idfactura;
             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
             echo Html::a('<span class="glyphicon glyphicon-check"></span> Generar', ['generarnro', 'id' => $model->idfactura], ['class' => 'btn btn-default']);
             if (($model->nrofactura > 0)){
-            echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idfactura], ['class' => 'btn btn-default']);            
+                echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idfactura], ['class' => 'btn btn-default']);            
+                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 1, 'codigo' => $model->idfactura,'view' => $view], ['class' => 'btn btn-default']);                                                         
             }
         }
         ?>

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Archivodir;
 use app\models\Directorio;
+use app\models\Documentodir;
 use Yii;
 
 use yii\web\NotFoundHttpException;
@@ -27,14 +28,14 @@ use yii\filters\VerbFilter;
 class ArchivodirController extends \yii\web\Controller
 {
 
-    public function actionIndex($codigo,$numero)
+    public function actionIndex($codigo,$numero,$view)
     {
         //if (!Yii::$app->user->isGuest) {
 
-        $table = Archivodir::find();
+        $table = Archivodir::find()->where(['=','numero',$numero])->andWhere(['=','codigo',$codigo]);
         $count = clone $table;
         $pages = new Pagination([
-            'pageSize' => 10,
+            'pageSize' => 20,
             'totalCount' => $count->count(),
         ]);
         $model = $table
@@ -48,6 +49,7 @@ class ArchivodirController extends \yii\web\Controller
             'codigo' => $codigo,
             'numero' => $numero,
             'pagination' => $pages,
+            'view' => $view,
         ]);
         /* }else{
              return $this->redirect(["site/login"]);
@@ -57,11 +59,12 @@ class ArchivodirController extends \yii\web\Controller
     public function actionSubir()
     {
         $model = new FormSubirArchivo();
-        $msg = null;
-
+        $msg = null;        
         $codigo = Html::encode($_GET["codigo"]);
         $numero = Html::encode($_GET["numero"]);
+        $view = Html::encode($_GET["view"]);
         $descripcion = '';
+        $documentodir = Documentodir::findOne($numero);
         if ($model->load(Yii::$app->request->post()))
             
             {
@@ -77,38 +80,40 @@ class ArchivodirController extends \yii\web\Controller
                     $table->tipo = $model->imageFile->type;
                     $table->numero = $numero;
                     $table->descripcion = $descripcion;
-                    $table->iddocumentodir = 2;
+                    $table->codigo = $codigo;
+                    $table->iddocumentodir = $documentodir->iddocumentodir;
                     $table->iddirectorio = 1;
                     $table->insert();
 
-                    $this->redirect(["notacredito/view",'id' => $codigo]);
+                    $this->redirect([$view."/view",'id' => $codigo]);
                     // el archivo se subió exitosamente
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
                 }
+            }else{
+                Yii::$app->getSession()->setFlash('warning', 'Ya existe el nombre y la extesion del archivo que desea subir');
             }
         }
         if (Yii::$app->request->get("numero")) {
             $model->codigo = $codigo;
-            $model->numero = $numero;            
+            $model->numero = $numero;
+            $model->view = $view;
         }
 
-        return $this->render("Subir", ["model" => $model, "msg" => $msg]);
+        return $this->render("Subir", ["model" => $model, "msg" => $msg,'view' => $view]);
     }
 
     public function actionDescargar($id,$numero,$codigo)
     {
 
             $archivo = Archivodir::findOne($id);
-            $directorio = Directorio::findOne($archivo->iddirectorio);            
-            if (!$this->downloadFile('Documentos/', $archivo->nombre, ["pdf", "txt", "docx","xlsx","jpg","png"]))
+            $directorio = Directorio::findOne($archivo->iddirectorio);
+            $carpeta = 'Documentos/'.$numero.'/'.$codigo.'/';
+            if (!$this->downloadFile($carpeta, $archivo->nombre, ["pdf", "txt", "docx","xlsx","jpg","png"]))
             {
                 //Mensaje flash para mostrar el error
-                Yii::$app->getSession()->setFlash('error', 'Error en la descarga.');
-
-                //$this->redirect(["archivodir/index",'codigo' => $codigo,'numero' => $numero]);
+                Yii::$app->getSession()->setFlash('error', 'Error en la descarga.');                
             }
-
 
         return $this->render('index', [
             'codigo' => $codigo,
@@ -121,6 +126,7 @@ class ArchivodirController extends \yii\web\Controller
         $idarchivodir = Html::encode($_POST["idarchivodir"]);
         $numero = Html::encode($_POST["numero"]);
         $codigo = Html::encode($_POST["codigo"]);
+        $view = Html::encode($_POST["view"]);
         if(Yii::$app->request->post()){
             if((int) $idarchivodir)
             {
@@ -129,7 +135,7 @@ class ArchivodirController extends \yii\web\Controller
                 if ($table) {
                     $table->descripcion = Html::encode($_POST["descripcion"]);                                                                                
                     $table->update();                       
-                    $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo]); 
+                    $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo,'view' => $view]); 
                                         
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
@@ -140,17 +146,17 @@ class ArchivodirController extends \yii\web\Controller
         //return $this->render("_formeditardetalle", ["model" => $model,]);
     }
     
-    public function actionBorrar($id,$numero,$codigo)
+    public function actionBorrar($id,$numero,$codigo,$view)
     {
-
             $archivo = Archivodir::findOne($id);
             $directorio = Directorio::findOne($archivo->iddirectorio);            
             if ($archivo)
             {
-                $ruta = $directorio->ruta.$archivo->nombre;
+                $carpeta = $directorio->ruta.$numero.'/'.$codigo.'/';
+                $ruta = $carpeta.$archivo->nombre;
                 $archivo->delete();
                 unlink($ruta);
-                $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo,]);
+                $this->redirect(["archivodir/index",'numero' => $numero,'codigo' => $codigo,'view' => $view]);
             }
         
     }
