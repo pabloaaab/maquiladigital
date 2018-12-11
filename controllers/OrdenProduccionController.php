@@ -639,12 +639,13 @@ class OrdenProduccionController extends Controller {
         $tdetallesseg = 0;
         $ts = 0;
         foreach ($totaldetallesseg as $value) {
-            $tdetallesseg = $tdetallesseg + $value->totalsegundos;
+            $tdetallesseg = $tdetallesseg + $value->totalsegundos;            
             $procesosx = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $value->iddetalleorden])->all();
             foreach ($procesosx as $v) {
                 $ts = $ts + $v->totalproceso;
             }
         }
+        
         $orden = Ordenproduccion::findOne($idordenproduccion);
         if ($ts == 0) {
             $ts = 1;
@@ -683,8 +684,10 @@ class OrdenProduccionController extends Controller {
         $totaldetallesseg = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $tdetallesseg = 0;
         $ts = 0;
+        $segundosficha = 0;
         foreach ($totaldetallesseg as $value) {
             $tdetallesseg = $tdetallesseg + $value->totalsegundos;
+            $segundosficha = $segundosficha + $value->segundosficha;
             $procesosx = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $value->iddetalleorden])->all();
             foreach ($procesosx as $v) {
                 $ts = $ts + $v->totalproceso;
@@ -695,19 +698,27 @@ class OrdenProduccionController extends Controller {
             $ts = 1;
         }
         $orden->porcentaje_cantidad = 100 * $tdetallesseg / $ts;
+        $orden->segundosficha = $segundosficha;
         $orden->update();
     }
 
     protected function porcentajeproceso($iddetalleorden) {
+        $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
         $detallesprocesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();
         $totalproceso = 0;
         //suma de segundos de todos los procesos
         $totalsegundos = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
         $sumseg = $totalsegundos->where(['=', 'iddetalleorden', $iddetalleorden])->sum('totalproceso');
+        //suma de segundos por cada ficha
+        $totalsegundosficha = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
+        $sumsegficha = $totalsegundosficha->where(['=', 'iddetalleorden', $iddetalleorden])->sum('total');
+        $detalleorden->segundosficha = $sumsegficha;
+        $detalleorden->update();
         foreach ($detallesprocesos as $val) {
             $tabla = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
             $tabla->porcentajeproceso = $val->totalproceso / $sumseg * 100;
             $tabla->update();
+            
         }
     }
 

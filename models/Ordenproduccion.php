@@ -27,6 +27,7 @@ use Yii;
  * @property int $porcentaje_proceso
  * @property int $porcentaje_cantidad
  * @property int $ponderacion
+ * @property int $segundosficha
  *
  * @property Facturaventa[] $facturaventas
  * @property Cliente $cliente
@@ -51,7 +52,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext'], 'required', 'message' => 'Campo requerido'],
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
-            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad'], 'number'],
+            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha'], 'number'],
             [['valorletras', 'observacion'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],

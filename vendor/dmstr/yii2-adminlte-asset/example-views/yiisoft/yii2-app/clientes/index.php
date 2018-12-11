@@ -30,10 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
     "enableClientValidation" => true,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
-        'labelOptions' => ['class' => 'col-sm-2 control-label'],
-        'options' => [ 'tag' => false,]
-    ],
+                    'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                    'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                    'options' => []
+                ],
 
 ]);
 ?>

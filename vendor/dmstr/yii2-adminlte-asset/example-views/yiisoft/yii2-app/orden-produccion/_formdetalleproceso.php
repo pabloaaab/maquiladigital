@@ -65,7 +65,7 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><b>% proceso </b></td>
                             <td align="center"><b>Cant Operada </td>
                             <td align="center"><b>Estado</td>
-                            <td align="center"><input type="checkbox" name="todos[]" value=""></td>
+                            <td align="center"><input type="checkbox" onclick="marcar(this);"/></td>
                         </tr>
                         </thead>
                         <tbody>
@@ -114,3 +114,17 @@ use app\models\Ordenproducciondetalle;
         </div>
     </div>
 <?php ActiveForm::end(); ?>
+
+<script type="text/javascript">
+	function marcar(source) 
+	{
+		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
+		{
+			if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+			{
+				checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+			}
+		}
+	}
+</script>

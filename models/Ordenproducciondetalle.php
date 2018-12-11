@@ -22,6 +22,7 @@ use Yii;
  * @property int $cantidad_efectiva
  * @property int $cantidad_operada
  * @property int $totalsegundos
+ * @property int $segundosficha
  *
  * @property Producto $producto
  * @property Ordenproducciondetalleproceso[] $ordenproducciondetalleprocesos
@@ -44,7 +45,7 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
         return [
             [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
             [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado','cantidad_operada','cantidad_efectiva'], 'integer'],
-            [['vlrprecio', 'subtotal','ponderacion', 'porcentaje_proceso','porcentaje_cantidad','totalsegundos'], 'number'],
+            [['vlrprecio', 'subtotal','ponderacion', 'porcentaje_proceso','porcentaje_cantidad','totalsegundos','segundosficha'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
             [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
         ];
