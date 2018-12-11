@@ -45,12 +45,32 @@ class CostoLaboralHoraController extends Controller
             $detallescostolaboral = \app\models\CostoLaboralDetalle::find()->all();
             $totaldetalle = 0;
             $totalpersonal = 0;
+            $valorarl = 0;
+            $valorpension = 0;
+            $valorprestaciones = 0;
+            $valorvacaciones = 0;
+            $valorajustevac = 0;
+            $subtotal = 0;
+            $admon = 0;
+            $total = 0;
             foreach ($detallescostolaboral as $val){
-                $totaldetalle = $totaldetalle + $val->total - $val->bonificacion - $val->tiempo_extra;
+                $arl = \app\models\Arl::findOne($val->id_arl);
+                $parametros = \app\models\Parametros::findOne(1);
+                $valorarl = ($val->salario) * $arl->arl / 100;
+                $valorpension = ($val->salario) * $parametros->pension / 100;
+                $valorcaja = ($val->salario) * $parametros->caja / 100;
+                $valorprestaciones = ($val->salario + $val->auxilio_transporte) * $parametros->prestaciones / 100;
+                $valorvacaciones = $val->salario * $parametros->vacaciones / 100;
+                $valorajustevac = $valorvacaciones * $parametros->ajuste / 100;
+                $subtotal = $val->salario + $val->auxilio_transporte + $valorarl + $valorpension + $valorcaja + $valorprestaciones + $valorvacaciones + $valorajustevac;
+                $admon = ($subtotal * $parametros->admon) / 100;
+                $total = ($subtotal + $admon) * $val->nro_empleados;
+                $totaldetalle = $totaldetalle + $total;
+                
                 $totalpersonal = $totalpersonal + $val->nro_empleados;
             }
-            $subtotal = $totaldetalle / $totalpersonal;
-            $model->valor_dia = round($subtotal / $model->dia_mes, 1);
+            $totaldetalle = $totaldetalle / $totalpersonal;
+            $model->valor_dia = round($totaldetalle / $model->dia_mes, 1);
             $model->valor_hora = round($model->valor_dia / $model->dia, 1);
             $model->valor_minuto = round($model->valor_hora / $model->minutos, 1);
             $model->valor_segundo = round($model->valor_minuto / $model->segundos, 1);

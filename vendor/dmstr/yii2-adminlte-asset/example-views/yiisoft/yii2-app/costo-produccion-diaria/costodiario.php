@@ -93,7 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->dias_entrega ?></td>
                 <td><?= $val->costo_muestra_operaria ?></td>
                 <td><?= $val->costo_x_hora ?></td>
-                <td><a align="right" href="<?= Url::toRoute("costo-produccion-diaria/costodiario") ?>" title="Excel"><span class='glyphicon glyphicon-export'></span></a></td>
+                <td><?= Html::a('<span class="glyphicon glyphicon-export"></span>', ['excel', 'id' => $val->id_costo_produccion_diaria]); ?></td>
             </tr>
             </tbody>
             <?php endforeach; ?>
