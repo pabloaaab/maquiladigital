@@ -6,7 +6,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\web\Session;
+
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -26,6 +26,18 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
+    public function beforeAction($action)
+    {
+        if (parent::beforeAction($action)) {
+            // change layout for error action
+            if ($action->id=='login')
+                 $this->layout = 'login';
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function actions()
     {
         return [
@@ -197,6 +209,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        
         return $this->render('index');
     }
 
@@ -208,7 +221,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(["site/login"]);//$this->goHome();
+            return $this->redirect(["site/main-login"]);//$this->goHome();
         }
 
         $model = new LoginForm();
@@ -217,7 +230,7 @@ class SiteController extends Controller
         }
 
         $model->password = '';
-        return $this->render('login', [
+        return $this->render('main-login', [
             'model' => $model,
         ]);
     }
