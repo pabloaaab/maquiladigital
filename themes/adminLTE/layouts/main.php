@@ -5,7 +5,6 @@ use yii\helpers\Url;
 /* @var $content string */
 
 
-
 if (Yii::$app->user->isGuest) {
             return Yii::$app->response->redirect(['site/login']);
         }else{
