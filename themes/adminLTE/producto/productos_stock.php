@@ -108,11 +108,28 @@ $formulario = ActiveForm::begin([
                 <td>
                     <?php
                     $dato = 0;
-                    $factura = 0;
+                    $facturas = "";                   
+                    $idfactura = "";
+                    $nrofactura = "";                   
+                    $cantidad = 0;
+                    $idordenproduccion = "";
                     $facturas = Facturaventadetalle::find()->where(['=', 'idproducto', $val->idproducto])->orderBy('idfactura desc')->all();
                     foreach ($facturas as $value) {
-                        $factura = Facturaventa::findOne($value);                        
-                    }    
+                        $factura = Facturaventa::findOne($value);
+                        $idfactura = $factura->idfactura;
+                        $nrofactura = $factura->nrofactura;
+                        $idordenproduccion = $factura->idordenproduccion;
+                        if ($value){
+                            $cantidad = $cantidad + $value->cantidad;
+                        }else{
+                            $cantidad = 0;                            
+                        }
+                    }                    
+                    ?>
+                    <?php
+                    if ($facturas == null){?>                        
+                        <a href="#" onClick="alert('Para generar el descargue del producto, se debe generar la facturación')"><span class="glyphicon glyphicon-pencil"></span></a>
+                    <?php }else {
                     ?>
                     <a href="#" data-toggle="modal" data-target="#idproducto<?= $val->idproducto ?>"><span class="glyphicon glyphicon-pencil"></span></a>
                     <!-- Editar modal -->
@@ -132,13 +149,13 @@ $formulario = ActiveForm::begin([
                                         <div class="panel-body">
                                             <div class="row">
                                                 <div class="col-lg-3">
-                                                    <label>Última factura: <?= $factura->nrofactura ?></label>
+                                                    <label>Última factura: <?= $nrofactura ?></label>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <label>Cantidad: <?= $value->cantidad ?></label>
+                                                    <label>Cantidad: <?= $cantidad ?></label>
                                                 </div>
                                                 <div class="col-lg-4">
-                                                    <label>Orden Producción: <?= $factura->idordenproduccion ?></label>
+                                                    <label>Orden Producción: <?= $idordenproduccion ?></label>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -159,21 +176,22 @@ $formulario = ActiveForm::begin([
                                             </div>    
                                             <input type="hidden" name="idproducto" value="<?= $val->idproducto ?>">
                                             <input type="hidden" name="stock" value="<?= $val->stock ?>">
-                                            <input type="hidden" name="nrofactura" value="<?= $factura->nrofactura ?>">
-                                            <input type="hidden" name="idfactura" value="<?= $factura->idfactura ?>">
-                                            <input type="hidden" name="idordenproduccion" value="<?= $factura->idordenproduccion ?>">
+                                            <input type="hidden" name="nrofactura" value="<?= $nrofactura ?>">
+                                            <input type="hidden" name="idfactura" value="<?= $idfactura ?>">
+                                            <input type="hidden" name="idordenproduccion" value="<?= $idordenproduccion ?>">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>                                    
                                 </div>
                                 <?= Html::endForm() ?>
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
                 </td>
+                    <?php } ?>
             </tr>
         </tbody>
 <?php endforeach; ?>

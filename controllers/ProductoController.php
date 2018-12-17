@@ -198,7 +198,7 @@ class ProductoController extends Controller
             $pages = new Pagination([
                 'pageSize' => 200,
                 'totalCount' => $count->count(),
-            ]);
+            ]);           
             $model = $table
                     ->offset($pages->offset)
                     ->limit($pages->limit)

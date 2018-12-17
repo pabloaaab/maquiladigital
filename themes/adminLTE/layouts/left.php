@@ -86,7 +86,7 @@
                                     ['label' => 'Costo Fijo', 'icon' => 'plus-square-o', 'url' => ['costo-fijo/costofijodetalle', 'id' => 1]],
                                     ['label' => 'Costo Producción Diaria', 'icon' => 'plus-square-o', 'url' => ['costo-produccion-diaria/costodiario']],
                                     ['label' => 'Descargar Stock', 'icon' => 'plus-square-o', 'url' => ['producto/productostock']],
-                                    ['label' => 'Otros', 'icon' => 'plus-square-o', 'url' => '#',],
+                                    ['label' => 'Resumen Costos', 'icon' => 'plus-square-o', 'url' => '#',],
                                 ],
                             ],
                             [

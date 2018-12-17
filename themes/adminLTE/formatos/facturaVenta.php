@@ -183,7 +183,7 @@ class PDF extends FPDF {
         $pdf->Cell(64, 5, 'FECHA',0,'L');
         $pdf->Cell(63, 5, 'FIRMA DEL EMISOR',0,'L');
         $pdf->SetXY(10, 245);//nit,fecha,fecha,firma  
-        $pdf->MultiCell(191, 4, utf8_decode($config->declaracion),1,'C');
+        $pdf->MultiCell(191, 4, utf8_decode($config->declaracion),1,'J');
         $pdf->SetXY(10, 266);//tipo cuenta
         $pdf->Cell(191, 5, 'TIPO DE CUENTA: '.$config->tipocuenta.'  - NUMERO DE CUENTA: '.$config->numerocuenta.' - ENTIDAD BANCARIA: '.$config->banco,1,'C');
     }
