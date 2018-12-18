@@ -11,11 +11,10 @@ use yii\web\AssetBundle as BaseAdminLteAsset;
 class AdminLteAsset extends BaseAdminLteAsset
 {
     public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
-    public $css = [
-        'css/site.css',
-        'css/AdminLTE.min.css',
+    public $css = [                
         'css/skins/_all-skins.css/_all-skins.min.css',
-
+        'css/AdminLTE.min.css',
+        'css/site.css',
     ];
     public $js = [
         'js/adminlte.min.js',
