@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'idtipo',
-                'contentOptions' => ['class' => 'col-lg-2.2'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [                
                 'attribute' => 'tipo',

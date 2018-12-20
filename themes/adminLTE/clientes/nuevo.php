@@ -8,6 +8,7 @@ use app\models\Municipio;
 use app\models\Departamento;
 use app\models\TipoDocumento;
 use yii\widgets\LinkPager;
+use kartik\select2\Select2;
 
 $this->title = 'Nuevo Cliente';
 $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
@@ -139,7 +140,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
             <?= $form->field($model, 'cedulanit')->input('text', ['id' => 'cedulanit', 'onchange' => 'calcularDigitoVerificacion()']) ?>
             <?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'placeholder' => 'dv', 'style' => 'width:50px', 'readonly' => true]) ?>       
         </div>														   
-    </div>
+    
     <div class="row">
         <div id="nombrecliente" style="display:block"><?= $form->field($model, 'nombrecliente')->input("text") ?></div>
         <div id="apellidocliente" style="display:block"><?= $form->field($model, 'apellidocliente')->input("text") ?></div>    
@@ -157,7 +158,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
         <?= $form->field($model, 'direccioncliente')->input("text") ?>
     </div>
     <div class="row">
-        <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, ['class' => 'select-2', 'prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('clientes/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
+        <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, [ 'prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('clientes/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
             $( "#' . Html::getInputId($model, 'idmunicipio', ['required', 'class' => 'select-2']) . '" ).html( data ); });']); ?>
         <?= $form->field($model, 'idmunicipio')->dropDownList(['prompt' => 'Seleccione...']) ?>
     </div>
@@ -186,7 +187,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
             <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
         </div>
     </div> 	
-
+    </div>    
     <div class="panel-footer text-right">
 
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

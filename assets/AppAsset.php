@@ -20,15 +20,15 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
-        'css/skins/_all-skins.min.css',
-        'plugins/select-2/css/select2.min.css',
-        'plugins/font-awesome/css/font-awesome.min.css',
-        'login/style.ccs'
+        //'css/site.css',
+        //'css/skins/_all-skins.min.css',
+        //'plugins/select-2/css/select2.min.css',
+        //'plugins/font-awesome/css/font-awesome.min.css',
+        //'login/style.ccs'
     ];
     public $js = [
-        'js/main.js',
-        'js/commons.js',
+        //'js/main.js',
+        //'js/commons.js',
         'plugins/select-2/js/select2.min.js',
         'plugins/tinymce/tinymce.min.js',
     ];

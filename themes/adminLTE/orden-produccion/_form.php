@@ -30,27 +30,11 @@ $form = ActiveForm::begin([
         Información Orden Producción
     </div>
     <div class="panel-body">
-        <div class="row">
-            <?=
-            $form->field($model, 'idcliente')->widget(Select2::classname(), [
-                'data' => $clientes,
-                'options' => ['prompt' => 'Seleccione un cliente...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]);
-            ?>
+        <div class="row">                        
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
         </div>
         <div class="row">
-            <?=
-            $form->field($model, 'idtipo')->widget(Select2::classname(), [
-                'data' => $ordenproducciontipos,
-                'options' => ['prompt' => 'Seleccione un tipo ...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]);
-            ?>
+            <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>
         </div>
 
         <div class="row">

@@ -562,6 +562,7 @@ form.condensed .row{
 form.condensed .form-group{
     margin-bottom: 0px;
 }
+
 .col-sm-10 textarea.form-control {
     width: 97%;
 }
@@ -718,4 +719,8 @@ h4{
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 0;
+}
+
+.form-control {
+    border-radius: 5px;
 }

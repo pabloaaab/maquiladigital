@@ -31,7 +31,7 @@ use yii\app\models\Talla;
         </div>
         <div class="row">
             <?= $form->field($model, 'idtalla')->widget(Select2::classname(), [
-                'data' => $tallas,
+                'data' => $tallas,                
                 'options' => ['prompt' => 'Seleccione una talla...'],
                 'pluginOptions' => [
                     'allowClear' => true

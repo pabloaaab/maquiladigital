@@ -7,7 +7,7 @@ $this->title = 'Maquila';
 <div class="site-index">
 
     <div class="jumbotron">
-        <img src="images/logo.png" align="center" >
+        <img src="dist/images/logo.png" align="center" >
         <h1>Bienvenidos!</h1>
 
         <p class="lead">Maquila Digital.</p>

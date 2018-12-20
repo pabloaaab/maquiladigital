@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			[               
                 'attribute' => 'telefonobanco',
-                'contentOptions' => ['class' => 'col-lg-2.2 '],                
+                'contentOptions' => ['class' => 'col-lg-2'],                
             ],			
             [
                 'class' => 'yii\grid\ActionColumn',              

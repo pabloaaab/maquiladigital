@@ -34,34 +34,34 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
     </div>
     <div class="panel-body">        
         <div class="row">
-            <div class="col-sm-3 control-label">
+            <div class="col-sm-2 control-label">
                 <?= Html::activeLabel($model, 'costo_laboral') ?>:
             </div>
-            <div class="col-sm-1 control-label">
+            <div class="col-sm-2 control-label">
                 <?= "$ ".number_format(Html::encode($model->costo_laboral)) ?>
             </div>                
         </div>
         <div class="row">
-            <div class="col-sm-3 control-label">
+            <div class="col-sm-2 control-label">
                 <?= Html::activeLabel($model, 'costo_fijo') ?>:
             </div>
-            <div class="col-sm-1 control-label">
+            <div class="col-sm-2 control-label">
                 <?= "$ ".number_format(Html::encode($model->costo_fijo)) ?>
             </div>                
         </div>
         <div class="row">
-            <div class="col-sm-3 control-label">
+            <div class="col-sm-2 control-label">
                 <?= Html::activeLabel($model, 'total_costo') ?>:
             </div>
-            <div class="col-sm-1 control-label">
+            <div class="col-sm-2 control-label">
                 <?= "$ ".number_format(Html::encode($model->total_costo)) ?>
             </div>                
         </div>
         <div class="row">
-            <div class="col-sm-3 control-label">
+            <div class="col-sm-2 control-label">
                 <?= Html::activeLabel($model, 'costo_diario') ?>:
             </div>
-            <div class="col-sm-1 control-label">
+            <div class="col-sm-2 control-label">
                 <?= "$ ".number_format(Html::encode($model->costo_diario)) ?>
             </div>                
         </div>                        

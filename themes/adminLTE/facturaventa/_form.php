@@ -39,7 +39,7 @@ use kartik\depdrop\DepDrop;
                     'todayHighlight' => true]]) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['class' => 'select-2','prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('facturaventa/ordenp').'", { id: $(this).val() } ) .done(function( data ) {
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('facturaventa/ordenp').'", { id: $(this).val() } ) .done(function( data ) {
         $( "#'.Html::getInputId($model, 'idordenproduccion',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
