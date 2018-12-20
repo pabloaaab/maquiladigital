@@ -10,9 +10,12 @@ use yii\web\AssetBundle as BaseAdminLteAsset;
  */
 class AdminLteAsset extends BaseAdminLteAsset
 {
-    public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
+    
+    //public $sourcePath = '@vendor/almasaeed2010/adminlte/dist';
+    public $basePath = '@webroot';
+    public $baseUrl = '@web/dist';   
     public $css = [                
-        'css/skins/_all-skins.css/_all-skins.min.css',
+        'css/skins/_all-skins.min.css',
         'css/AdminLTE.min.css',
         'css/site.css',
     ];
@@ -26,7 +29,7 @@ class AdminLteAsset extends BaseAdminLteAsset
         'rmrevin\yii\fontawesome\AssetBundle',
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-        'yii\bootstrap\BootstrapPluginAsset',
+        'yii\bootstrap\BootstrapPluginAsset'
 
     ];
 
