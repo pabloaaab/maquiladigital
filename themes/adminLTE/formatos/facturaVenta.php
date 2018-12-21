@@ -17,7 +17,7 @@ class PDF extends FPDF {
         $departamento = Departamento::findOne($config->iddepartamento);
         //Logo
         $this->SetXY(53, 10);
-        $this->Image('images/logos/logomaquila.png', 10, 10, 40, 29);
+        $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
         $this->Cell(150, 7, utf8_decode("$config->razonsocialmatricula NIT: $config->nitmatricula-$config->dv"), 0, 0, 'C', 0);

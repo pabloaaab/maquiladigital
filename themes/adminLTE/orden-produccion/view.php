@@ -74,9 +74,9 @@ $view = 'orden-produccion';
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
+                    <th><?= Html::activeLabel($model, 'fechaprocesada') ?>:</th>
                     <td><?= Html::encode($model->fechaprocesada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
+                    <th><?= Html::activeLabel($model, 'fechaentrega') ?>:</th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
                 <tr>

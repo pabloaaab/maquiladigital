@@ -18,7 +18,7 @@ class PDF extends FPDF {
         $departamento = Departamento::findOne($config->iddepartamento);        
         //Logo
         $this->SetXY(53, 10);
-        $this->Image('images/logos/logomaquila.png', 10, 10, 40, 29);
+        $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
         $this->Cell(150, 7, utf8_decode("$config->razonsocialmatricula NIT: $config->nitmatricula-$config->dv"), 0, 0, 'C', 0);
@@ -148,7 +148,7 @@ class PDF extends FPDF {
         $pdf->SetXY(151, 140);
         $pdf->MultiCell(25, 8, 'SUBTOTAL:', 1, 'L');
         $pdf->SetXY(176, 140);
-        $pdf->MultiCell(25, 8, number_format($model->totalorden, 2, '.', ','), 1, 'R');
+        $pdf->MultiCell(25, 8, number_format($model->totalorden, 0, '.', ','), 1, 'R');
         $pdf->SetXY(10, 149);
         $this->SetFont('Arial', 'B', 10);
         $pdf->MultiCell(29, 6, 'Observaciones:', 0, 'J');
@@ -159,7 +159,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(25, 16, 'TOTAL:', 1, 'L');
         $pdf->SetXY(176, 148);
-        $pdf->MultiCell(25, 16, number_format($model->totalorden, 2, '.', ','), 1, 'R');
+        $pdf->MultiCell(25, 16, number_format($model->totalorden, 0, '.', ','), 0, 'R');
         
         
         

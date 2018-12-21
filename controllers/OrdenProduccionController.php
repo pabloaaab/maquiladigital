@@ -190,6 +190,7 @@ class OrdenProduccionController extends Controller {
         }
         $ponderacion = 0;
         $error = 0;
+        $totalorden = 0;
         if (isset($_POST["idproducto"])) {
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
@@ -214,8 +215,7 @@ class OrdenProduccionController extends Controller {
                                 $table->idordenproduccion = $idordenproduccion;
                                 $table->ponderacion = $ordenProduccion->ponderacion;
                                 $table->insert();
-                                $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                                $ordenProduccion->update();
+                                $totalorden = $totalorden + $table->subtotal;
                             }
                         } else {
                             $error = 1;
@@ -224,6 +224,8 @@ class OrdenProduccionController extends Controller {
                 }
                 $intIndice++;
             }
+            $ordenProduccion->totalorden = round($totalorden,0);
+            $ordenProduccion->update();
             if ($error == 1) {
                 Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
                 if ($error == 2) {
