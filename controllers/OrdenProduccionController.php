@@ -191,6 +191,7 @@ class OrdenProduccionController extends Controller {
         $ponderacion = 0;
         $error = 0;
         $totalorden = 0;
+        $cantidad = 0;
         if (isset($_POST["idproducto"])) {
             $intIndice = 0;
             foreach ($_POST["idproducto"] as $intCodigo) {
@@ -216,6 +217,7 @@ class OrdenProduccionController extends Controller {
                                 $table->ponderacion = $ordenProduccion->ponderacion;
                                 $table->insert();
                                 $totalorden = $totalorden + $table->subtotal;
+                                $cantidad = $cantidad + $table->cantidad;
                             }
                         } else {
                             $error = 1;
@@ -225,6 +227,7 @@ class OrdenProduccionController extends Controller {
                 $intIndice++;
             }
             $ordenProduccion->totalorden = round($totalorden,0);
+            $ordenProduccion->cantidad = $cantidad;
             $ordenProduccion->update();
             if ($error == 1) {
                 Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
@@ -295,14 +298,16 @@ class OrdenProduccionController extends Controller {
                 if ($_POST["cantidad"][$intIndice] > 0) {
                     $table = Ordenproducciondetalle::findOne($intCodigo);
                     $subtotal = $table->subtotal;
+                    $cantidad = $table->cantidad;
                     $table->cantidad = $_POST["cantidad"][$intIndice];
                     $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
-
                     $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
 
                     $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                    $ordenProduccion->cantidad = $ordenProduccion->cantidad - $cantidad;
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
+                    $ordenProduccion->cantidad = $ordenProduccion->cantidad - $table->cantidad;
                     $producto = Producto::findOne($intCodigo);
                     if ($_POST["cantidad"][$intIndice] <= $table->stock) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
                         if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
@@ -368,9 +373,14 @@ class OrdenProduccionController extends Controller {
                 foreach ($_POST["seleccion"] as $intCodigo) {
                     $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
                     $subtotal = $ordenProduccionDetalle->subtotal;
+                    $cantidad = $ordenProduccionDetalle->cantidad;
                     if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo])) {
                         $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
                         $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
+                        $ordenProduccion->cantidad = $ordenProduccion->cantidad - $cantidad;
+                        if ($ordenProduccion->totalorden < 0){
+                            $ordenProduccion->totalorden = 0;
+                        }
                         $ordenProduccion->update();
                     }
                 }

@@ -18,94 +18,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-<script language="JavaScript">
-    function calcularDigitoVerificacion() {
-        var vpri,
-            x,
-            y,
-            z;
 
-        // Se limpia el Nit
-        myNit = document.getElementById('cedulanit').value;
-        myNit = myNit.replace ( /\s/g, "" ) ; // Espacios
-        myNit = myNit.replace ( /,/g,  "" ) ; // Comas
-        myNit = myNit.replace ( /\./g, "" ) ; // Puntos
-        myNit = myNit.replace ( /-/g,  "" ) ; // Guiones
-        // Se valida el nit
-        if  ( isNaN ( myNit ) )  {
-            console.log ("El nit/cédula '" + myNit + "' no es válido(a).") ;
-            return "" ;
-        };
-        // Se valida el nit
-        if  ( isNaN ( myNit ) )  {
-            console.log ("El nit/cédula '" + myNit + "' no es válido(a).") ;
-            return "" ;
-        };
-
-        // Procedimiento
-        vpri = new Array(16) ;
-        z = myNit.length ;
-        vpri[1]  =  3 ;
-        vpri[2]  =  7 ;
-        vpri[3]  = 13 ;
-        vpri[4]  = 17 ;
-        vpri[5]  = 19 ;
-        vpri[6]  = 23 ;
-        vpri[7]  = 29 ;
-        vpri[8]  = 37 ;
-        vpri[9]  = 41 ;
-        vpri[10] = 43 ;
-        vpri[11] = 47 ;
-        vpri[12] = 53 ;
-        vpri[13] = 59 ;
-        vpri[14] = 67 ;
-        vpri[15] = 71 ;
-        x = 0 ;
-        y = 0 ;
-        for  ( var i = 0; i < z; i++ )  {
-            y = ( myNit.substr (i, 1 ) ) ;
-            // console.log ( y + "x" + vpri[z-i] + ":" ) ;
-
-            x += ( y * vpri [z-i] ) ;
-            // console.log ( x ) ;
-        }
-        y = x % 11 ;
-        // console.log ( y ) ;
-        //return ( y > 1 ) ? 11 - y : y ;
-        document.getElementById('dv').value = ( y > 1 ) ? 11 - y : y;
-    }
-</script>
-<script language="JavaScript">
-    function mostrar() {
-        idtipo = document.getElementById('idtipo').value;
-        if (idtipo == '1'){
-            razonsocial.style.display = "none";
-            nombrecliente.style.display = "block";
-            apellidocliente.style.display = "block";
-        }
-        else if (idtipo == '5') {
-            razonsocial.style.display = "block";
-            nombrecliente.style.display = "none";
-            apellidocliente.style.display = "none";
-        }
-    }
-</script>
-<script language="JavaScript">
-    function tregimen() {
-        idtiporegimen = document.getElementById('tiporegimen').value;
-        if (idtiporegimen == 1){
-            document.getElementById('retencionfuente').value = 1;
-        }
-    }
-</script>
-<script language="JavaScript">
-    function retener() {
-        auto = document.getElementById('autoretenedor').value;
-        if (auto == 1){
-            document.getElementById('retencioniva').value = 1;
-        }
-    }
-</script>
 <body onload= "mostrar()">
 <!--<h1>Editar Cliente</h1>-->
 <?php if ($tipomsg == "danger") { ?>
@@ -174,8 +87,8 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
                 <?= $form->field($model, 'nitmatricula')->input("text", ['readonly' => true]) ?>			
             </div>    
             <div class="row">
-                <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...']) ?>
-                <?= $form->field($model, 'plazopago')->input("text") ?>			
+                <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
+                <?= $form->field($model, 'plazopago')->input("text",['id' => 'plazopago']) ?>			
             </div>
             <div class="row">
                 <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...', 'onchange' => 'tregimen()', 'id' => 'tiporegimen']) ?>
