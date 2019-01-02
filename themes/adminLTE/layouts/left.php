@@ -73,6 +73,7 @@
                                         ],    
                                     ],
                                     ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/index']],                                    
+                                    ['label' => 'Proveedor', 'icon' => 'plus-square-o', 'url' => ['/proveedor/index']],                                    
                                     ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => ['/producto/index']],                                                                                                                                                
                                 ],
                             ],
