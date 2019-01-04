@@ -119,8 +119,9 @@ a.desc:after {
 
 /* Estilos personalizados. */
 table.kv-grid-table th, table.kv-grid-table th a {
-    color: white;
+    color: white;    
 }
+
 .panel-success .panel-heading{
     /*background-color: rgba(92, 184, 92, 0.6);*/
     background-color: #009999;
@@ -520,6 +521,10 @@ table.kv-grid-table th, .summary, .pagination li.active a{
     border-color: #009999;
 }
 
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td {
+    border: 1px solid #009999;
+}
+
 .nav-tabs li.active a, .nav-tabs li.active a:focus, .nav-tabs li.active a:active{
     background-color: rgba(0, 153, 153, 0.52);
     color: white;
@@ -723,4 +728,5 @@ h4{
 
 .form-control {
     border-radius: 5px;
+    border-color: #009999;
 }

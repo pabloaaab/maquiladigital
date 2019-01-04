@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
         ],
-        'tableOptions' => ['class' => 'table table-success'],
+        'tableOptions' => ['class' => 'table table-bordered table-success'],
         'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
 
         'layout' => '{summary}{items}</div><div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
@@ -97,4 +97,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
-

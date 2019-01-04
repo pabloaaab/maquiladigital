@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel-heading">
             Registros: <?= $pagination->totalCount ?>
         </div>
-        <table class="table table-hover">
+        <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th scope="col">Id Orden</th>
