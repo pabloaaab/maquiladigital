@@ -26,7 +26,7 @@ CREATE TABLE `banco` (
   `entidad` varchar(40) NOT NULL,
   `direccionbanco` varchar(40) NOT NULL,
   `telefonobanco` int(15) NOT NULL,
-  `producto` varchar(15) NOT NULL,
+  `producto` varchar(50) NOT NULL,
   `numerocuenta` varchar(25) NOT NULL,
   `nitmatricula` char(15) DEFAULT NULL,
   `activo` tinyint(1) NOT NULL,

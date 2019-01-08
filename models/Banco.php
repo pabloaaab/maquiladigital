@@ -48,7 +48,7 @@ class Banco extends \yii\db\ActiveRecord
         return [
             [['nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'activo'], 'required'],
             [['telefonobanco', 'activo'], 'integer'],
-            [['nitbanco', 'producto', 'nitmatricula'], 'string', 'max' => 15],
+            [['nitbanco', 'producto', 'nitmatricula'], 'string', 'max' => 50],
             [['entidad', 'direccionbanco'], 'string', 'max' => 40],
             [['numerocuenta'], 'string', 'max' => 25],
         ];
