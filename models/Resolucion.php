@@ -34,12 +34,9 @@ class Resolucion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nroresolucion', 'desde', 'hasta', 'fechavencimiento', 'nitmatricula'], 'required', 'message' => 'Campo requerido'],
-
+            [['nroresolucion', 'desde', 'hasta', 'fechavencimiento'], 'required', 'message' => 'Campo requerido'],
             ['fechavencimiento', 'default', 'value' => null],
-
-
-            ['fechavencimiento', 'integer'],
+            ['fechavencimiento', 'safe'],
             [['activo'], 'integer'],
             [['nroresolucion'], 'string', 'max' => 40],
             [['desde', 'hasta'], 'string', 'max' => 10],
@@ -58,8 +55,7 @@ class Resolucion extends \yii\db\ActiveRecord
             'nroresolucion' => 'Nro Resolución',
             'desde' => 'Desde',
             'hasta' => 'Hasta',
-            'fechavencimiento' => 'Fecha Vencimiento',
-            'nitmatricula' => 'Nit/Matricula',
+            'fechavencimiento' => 'Fecha Vencimiento',           
             'activo' => 'Activo',
         ];
     }

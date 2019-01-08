@@ -124,6 +124,7 @@
                                 'url' => '#',
                                 'items' => [
                                     ['label' => 'Configuración', 'icon' => 'cog', 'url' => ['parametros/parametros', 'id' => 1]],
+                                    ['label' => 'Empresa', 'icon' => 'cog', 'url' => ['empresa/empresa', 'id' => 901189320]],
                                 ],
                             ],
                         ],

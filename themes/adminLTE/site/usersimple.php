@@ -7,17 +7,12 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Users */
 
 $this->title = 'Detalle Usuario';
-$this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['users']];
+
 $this->params['breadcrumbs'][] = $model->codusuario;
 ?>
 <div class="users-view">
 
-    <!--<?= Html::encode($this->title) ?>-->
-
-    <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['users'], ['class' => 'btn btn-primary']) ?>
-	<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->codusuario], ['class' => 'btn btn-success']) ?>        
-    </p>
+    <!--<?= Html::encode($this->title) ?>-->    
     <div class="panel panel-success">
         <div class="panel-heading">
             Usuario

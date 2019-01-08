@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $model app\models\Users */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = 'Nuevo Usuario';
+$this->title = 'Editar Usuario';
 $this->params['breadcrumbs'][] = ['label' => 'Usuarios', 'url' => ['users']];
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -32,13 +32,7 @@ $form = ActiveForm::begin([
     <div class="panel-body">        														   		
         <div class="row">
             <?= $form->field($model, "username")->input("text") ?>                
-        </div>
-        <div class="row">
-            <?= $form->field($model, "password")->input("password") ?>                
-        </div>
-        <div class="row">
-            <?= $form->field($model, "password_repeat")->input("password") ?>                
-        </div>
+        </div>        
         <div class="row">            
             <?= $form->field($model, 'role')->dropdownList(['1' => 'USUARIO', '2' => 'ADMINISTRADOR'], ['prompt' => 'Seleccione el tipo de usuario para el sistema']) ?>
         </div>
@@ -50,6 +44,9 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?= $form->field($model, "documentousuario")->input("text") ?>    
+        </div>
+        <div class="row">            
+            <?= $form->field($model, 'activo')->dropdownList(['1' => 'ACTIVO', '0' => 'INACTIVO'], ['prompt' => 'Seleccione el estado del usuario']) ?>
         </div>
         <div class="panel-footer text-right">            
             <a href="<?= Url::toRoute("site/users") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>    

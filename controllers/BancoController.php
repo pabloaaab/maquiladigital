@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Banco;
+use app\models\Matriculaempresa;
 use app\models\BancoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -64,9 +65,12 @@ class BancoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Banco();
+        $model = new Banco;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $empresa = Matriculaempresa::find(901189320)->one();
+            $model->nitmatricula = $empresa->nitmatricula;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->idbanco]);
         }
 

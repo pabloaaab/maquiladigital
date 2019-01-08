@@ -28,15 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [                
                 'attribute' => 'nitbanco',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-1'],                
             ],
             [               
                 'attribute' => 'entidad',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],
+            [               
+                'attribute' => 'producto',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],
+            [               
+                'attribute' => 'numerocuenta',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
             ],
             [               
                 'attribute' => 'direccionbanco',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'contentOptions' => ['class' => 'col-lg-2 '],                
             ],
 			[               
                 'attribute' => 'telefonobanco',

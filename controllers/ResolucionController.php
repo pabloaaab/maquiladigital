@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Resolucion;
 use app\models\ResolucionSearch;
+use app\models\Matriculaempresa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,6 +71,9 @@ class ResolucionController extends Controller
         $model = new Resolucion();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $empresa = Matriculaempresa::find(901189320)->one();
+            $model->nitmatricula = $empresa->nitmatricula;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->idresolucion]);
         }
 

@@ -246,26 +246,29 @@ use yii\helpers\Url;
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-4 text-center">
-                                <a href="#"></a>
+                                <a href="#">Datos</a>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#"></a>
+                                <a href="#">otros</a>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#"></a>
+                                <a href="#">Config</a>
                             </div>
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                                <?php if (Yii::$app->user->identity->role == 2) { ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-user"></span> Perfil', ['site/users'], ['class' => 'btn btn-primary']) ?>
+                                <?php } else { ?>
+                                    <?= Html::a('Perfil', ['site/view', 'id' => Yii::$app->user->identity->codusuario], ['class' => 'btn btn-primary']) ?>
+                                <?php } ?>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(
-                                    'Cerrar Sesión',
-                                    
+                                    '<span class="glyphicon glyphicon-off"></span> Cerrar Sesión',                                    
                                     ['/site/logout'],
-                                    ['data-method' => 'post', 'class' => 'btn btn-default btn-flat']
+                                    ['data-method' => 'post', 'class' => 'btn btn-primary']
                                 ) ?>
                             </div>
                         </li>

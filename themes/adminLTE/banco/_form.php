@@ -37,25 +37,16 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?= $form->field($model, 'direccionbanco')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'telefonobanco')->textInput(['maxlength' => true]) ?>
-        </div>
+        </div>        
         <div class="row">
             <?= $form->field($model, 'producto')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'numerocuenta')->textInput(['maxlength' => true]) ?>
-        </div>
+        </div>        
         <div class="row">
-            <?= $form->field($model, 'nitmatricula')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'activo')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'nitmatricula')->textInput() ?>
-        </div>
+            <?= $form->field($model, 'activo')->dropdownList(['1' => 'Activo', '0' => 'Inactivo'], ['prompt' => 'Seleccione...']) ?>
+        </div>        
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("banco/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

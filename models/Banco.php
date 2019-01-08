@@ -7,15 +7,17 @@ use Yii;
 /**
  * This is the model class for table "banco".
  *
- * @property string $idbanco
+ * @property int $idbanco
  * @property string $nitbanco
  * @property string $entidad
  * @property string $direccionbanco
- * @property string $telefonobanco
+ * @property int $telefonobanco
  * @property string $producto
  * @property string $numerocuenta
  * @property string $nitmatricula
- * @property string $activo
+ * @property int $activo
+ *
+ * @property Matriculaempresa[] $matriculaempresas
  */
 class Banco extends \yii\db\ActiveRecord
 {
@@ -26,13 +28,15 @@ class Banco extends \yii\db\ActiveRecord
     {
         return 'banco';
     }
-
+    
     public function beforeSave($insert) {
-        if (!parent::beforeSave($insert)) {
+	if(!parent::beforeSave($insert)){
             return false;
         }
-        $this->entidad = strtoupper($this->entidad);
-        $this->direccionbanco = strtoupper($this->direccionbanco);
+	# ToDo: Cambiar a cliente cargada de configuración.    
+	$this->entidad = strtoupper($this->entidad);
+	$this->direccionbanco = strtoupper($this->direccionbanco);
+        $this->producto = strtoupper($this->producto);
         return true;
     }
 
@@ -42,12 +46,11 @@ class Banco extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idbanco', 'nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'nitmatricula', 'activo'], 'required', 'message' => 'Campo requerido'],
-            [['idbanco'], 'string', 'max' => 10],
-            [['nitbanco', 'telefonobanco', 'producto', 'numerocuenta', 'nitmatricula'], 'string', 'max' => 15],
+            [['nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'activo'], 'required'],
+            [['telefonobanco', 'activo'], 'integer'],
+            [['nitbanco', 'producto', 'nitmatricula'], 'string', 'max' => 15],
             [['entidad', 'direccionbanco'], 'string', 'max' => 40],
-            [['activo'], 'string', 'max' => 2],
-            [['idbanco'], 'unique'],
+            [['numerocuenta'], 'string', 'max' => 25],
         ];
     }
 
@@ -60,12 +63,19 @@ class Banco extends \yii\db\ActiveRecord
             'idbanco' => 'Id',
             'nitbanco' => 'Nit',
             'entidad' => 'Entidad',
-            'direccionbanco' => 'Dirección',
-            'telefonobanco' => 'Teléfono',
+            'direccionbanco' => 'Direccion',
+            'telefonobanco' => 'Telefono',
             'producto' => 'Producto',
-            'numerocuenta' => 'Número Cuenta',
-            'nitmatricula' => 'Nit Matricula',
+            'numerocuenta' => 'N° Cuenta',            
             'activo' => 'Activo',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMatriculaempresas()
+    {
+        return $this->hasMany(Matriculaempresa::className(), ['id_banco_factura' => 'idbanco']);
     }
 }

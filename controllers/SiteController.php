@@ -6,7 +6,6 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
@@ -16,30 +15,30 @@ use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use app\models\FormFiltroUsuario;
 use app\models\FormRegister;
+use app\models\FormEditRegister;
+use app\models\FormChangepassword;
 use app\models\Users;
 use app\models\User;
 
-class SiteController extends Controller
-{
+class SiteController extends Controller {
 
     /**
      * @inheritdoc
      */
-    public function beforeAction($action)
-    {
+    public function beforeAction($action) {
         if (parent::beforeAction($action)) {
             // change layout for error action
-            if ($action->id=='login')
-                 $this->layout = 'login';
+            if ($action->id == 'login')
+                $this->layout = 'login';
             return true;
         } else {
             return false;
         }
     }
-    
-    public function actions()
-    {
+
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -51,77 +50,145 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionUser()
-    {
+    public function actionUsers() {
+        //if (!Yii::$app->user->isGuest) {
+        $form = new FormFiltroUsuario;
+        $nombreusuario = null;
+        $documentousuario = null;
+        $nombrecompleto = null;
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $nombreusuario = Html::encode($form->nombreusuario);
+                $documentousuario = Html::encode($form->documentousuario);
+                $nombrecompleto = Html::encode($form->nombrecompleto);
+                $table = Users::find()
+                        ->andFilterWhere(['like', 'username', $nombreusuario])
+                        ->andFilterWhere(['like', 'documentousuario', $documentousuario])
+                        ->andFilterWhere(['like', 'nombrecompleto', $nombrecompleto])
+                        ->orderBy('codusuario desc');
+                $count = clone $table;
+                $to = $count->count();
+                $pages = new Pagination([
+                    'pageSize' => 30,
+                    'totalCount' => $count->count()
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+            } else {
+                $form->getErrors();
+            }
+        } else {
+            $table = Users::find()
+                    ->orderBy('codusuario desc');
+            $count = clone $table;
+            $pages = new Pagination([
+                'pageSize' => 30,
+                'totalCount' => $count->count(),
+            ]);
+            $model = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        }
+        $to = $count->count();
+        return $this->render('users', [
+                    'model' => $model,
+                    'form' => $form,
+                    'pagination' => $pages,
+        ]);
+        /* }else{
+          return $this->redirect(["site/login"]);
+          } */
+    }
+
+    public function actionView($id) {
+        if (Yii::$app->user->identity->role == 2) {
+            return $this->render('user', [
+                        'model' => $this->findModel($id),
+            ]);
+        } else {
+            return $this->render('usersimple', [
+                        'model' => $this->findModel($id),
+            ]);
+        }
+    }
+
+    protected function findModel($id) {
+        if (($model = Users::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionUser() {
         return $this->render('user');
     }
 
-    public function actionAdmin()
-    {
+    public function actionAdmin() {
         return $this->render('admin');
     }
 
-    private function randKey($str='', $long=0)
-    {
+    private function randKey($str = '', $long = 0) {
         $key = null;
         $str = str_split($str);
         $start = 0;
-        $limit = count($str)-1;
-        for($x=0; $x<$long; $x++)
-        {
+        $limit = count($str) - 1;
+        for ($x = 0; $x < $long; $x++) {
             $key .= $str[rand($start, $limit)];
         }
         return $key;
     }
 
-    /*public function actionConfirm() //confirmar en el correo la activacion
-    {
-        $table = new Users;
-        if (Yii::$app->request->get())
-        {
+    /* public function actionConfirm() //confirmar en el correo la activacion
+      {
+      $table = new Users;
+      if (Yii::$app->request->get())
+      {
 
-            //Obtenemos el valor de los parámetros get
-            $id = Html::encode($_GET["id"]);
-            $authKey = $_GET["authKey"];
+      //Obtenemos el valor de los parámetros get
+      $id = Html::encode($_GET["id"]);
+      $authKey = $_GET["authKey"];
 
-            if ((int) $id)
-            {
-                //Realizamos la consulta para obtener el registro
-                $model = $table
-                    ->find()
-                    ->where("id=:id", [":id" => $id])
-                    ->andWhere("authKey=:authKey", [":authKey" => $authKey]);
+      if ((int) $id)
+      {
+      //Realizamos la consulta para obtener el registro
+      $model = $table
+      ->find()
+      ->where("id=:id", [":id" => $id])
+      ->andWhere("authKey=:authKey", [":authKey" => $authKey]);
 
-                //Si el registro existe
-                if ($model->count() == 1)
-                {
-                    $activar = Users::findOne($id);
-                    $activar->activate = 1;
-                    if ($activar->update())
-                    {
-                        echo "Enhorabuena registro llevado a cabo correctamente, redireccionando ...";
-                        echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
-                    }
-                    else
-                    {
-                        echo "Ha ocurrido un error al realizar el registro, redireccionando ...";
-                        echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
-                    }
-                }
-                else //Si no existe redireccionamos a login
-                {
-                    return $this->redirect(["site/login"]);
-                }
-            }
-            else //Si id no es un número entero redireccionamos a login
-            {
-                return $this->redirect(["site/login"]);
-            }
-        }
-    }*/
+      //Si el registro existe
+      if ($model->count() == 1)
+      {
+      $activar = Users::findOne($id);
+      $activar->activate = 1;
+      if ($activar->update())
+      {
+      echo "Enhorabuena registro llevado a cabo correctamente, redireccionando ...";
+      echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
+      }
+      else
+      {
+      echo "Ha ocurrido un error al realizar el registro, redireccionando ...";
+      echo "<meta http-equiv='refresh' content='8; ".Url::toRoute("site/login")."'>";
+      }
+      }
+      else //Si no existe redireccionamos a login
+      {
+      return $this->redirect(["site/login"]);
+      }
+      }
+      else //Si id no es un número entero redireccionamos a login
+      {
+      return $this->redirect(["site/login"]);
+      }
+      }
+      } */
 
-    public function actionRegister()
-    {
+    public function actionRegister() {
         //Creamos la instancia con el model de validación
         $model = new FormRegister;
 
@@ -129,8 +196,7 @@ class SiteController extends Controller
         $msg = null;
 
         //Validación mediante ajax
-        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax)
-        {
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
@@ -139,10 +205,8 @@ class SiteController extends Controller
         //Esto sucede cuando la validación ajax se ha llevado a cabo correctamente
         //También previene por si el usuario tiene desactivado javascript y la
         //validación mediante ajax no puede ser llevada a cabo
-        if ($model->load(Yii::$app->request->post()))
-        {
-            if($model->validate())
-            {
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
                 //Preparamos la consulta para guardar el usuario
                 $table = new Users();
                 $table->username = $model->username;
@@ -160,27 +224,111 @@ class SiteController extends Controller
                 $table->activo = 1;
 
                 //Si el registro es guardado correctamente
-                if ($table->insert())
-                {
+                if ($table->insert()) {
                     $msg = "Registro realizado correctamente";
-                }
-                else
-                {
+                    return $this->redirect(['users']);
+                } else {
                     $msg = "Ha ocurrido un error al llevar a cabo tu registro";
                 }
-
-            }
-            else
-            {
+            } else {
                 $model->getErrors();
             }
         }
         return $this->render("register", ["model" => $model, "msg" => $msg]);
     }
 
+    public function actionEditar($id) {
+        $model = new FormEditRegister;
+        $msg = null;
 
-    public function behaviors()
-    {
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->validate()) {
+                $table = Users::find()->where(['codusuario' => $id])->one();
+                if ($table) {
+                    $table->username = $model->username;
+                    $table->nombrecompleto = $model->nombrecompleto;
+                    $table->role = $model->role;
+                    $table->documentousuario = $model->documentousuario;
+                    $table->emailusuario = $model->emailusuario;
+                    $table->activo = $model->activo;
+                    if ($table->update()) {
+                        $msg = "El registro ha sido actualizado correctamente";
+                        return $this->redirect(["site/users"]);
+                    } else {
+                        $msg = "El registro no sufrio ningun cambio";
+                        return $this->redirect(["site/users"]);
+                    }
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                }
+            } else {
+                $model->getErrors();
+            }
+        }
+
+        if (Yii::$app->request->get("id")) {
+            $table = Users::find()->where(['codusuario' => $id])->one();
+
+            if ($table) {
+                $model->username = $table->username;
+                $model->nombrecompleto = $table->nombrecompleto;
+                $model->role = $table->role;
+                $model->documentousuario = $table->documentousuario;
+                $model->emailusuario = $table->emailusuario;
+                $model->activo = $table->activo;
+            } else {
+                return $this->redirect(["site/users"]);
+            }
+        } else {
+            return $this->redirect(["site/users"]);
+        }
+        return $this->render("editregister", ["model" => $model, "msg" => $msg]);
+    }
+
+    public function actionChangepassword($id) {
+        $model = new FormChangepassword;
+        $msg = null;
+
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($model->validate()) {
+                $table = Users::find()->where(['codusuario' => $id])->one();
+                if ($table) {
+                    //Encriptamos el password
+                    $table->password = crypt($model->password, Yii::$app->params["salt"]);
+                    //Creamos una cookie para autenticar al usuario cuando decida recordar la sesión, esta misma
+                    //clave será utilizada para activar el usuario
+                    $table->authKey = $this->randKey("abcdef0123456789", 200);
+                    //Creamos un token de acceso único para el usuario
+                    $table->accessToken = $this->randKey("abcdef0123456789", 200);
+                    if ($table->update()) {
+                        $msg = "El registro ha sido actualizado correctamente";
+                        return $this->redirect(["site/users"]);
+                    } else {
+                        $msg = "El registro no sufrio ningun cambio";
+                        return $this->redirect(["site/users"]);
+                    }
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                }
+            } else {
+                $model->getErrors();
+            }
+        }
+
+        return $this->render("changepassword", ["model" => $model, "msg" => $msg]);
+    }
+
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -202,14 +350,13 @@ class SiteController extends Controller
         ];
     }
 
-     /**
+    /**
      * Displays homepage.
      *
      * @return string
      */
-    public function actionIndex()
-    {
-        
+    public function actionIndex() {
+
         return $this->render('index');
     }
 
@@ -218,10 +365,9 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
-            return $this->redirect(["site/main-login"]);//$this->goHome();
+            return $this->redirect(["site/main-login"]); //$this->goHome();
         }
 
         $model = new LoginForm();
@@ -231,7 +377,7 @@ class SiteController extends Controller
 
         $model->password = '';
         return $this->render('main-login', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -240,14 +386,11 @@ class SiteController extends Controller
      *
      * @return Response
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         //return $this->goHome();
         return $this->redirect(["site/login"]);
     }
-
-
 
 }
