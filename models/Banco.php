@@ -78,4 +78,9 @@ class Banco extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Matriculaempresa::className(), ['id_banco_factura' => 'idbanco']);
     }
+    
+    public function getNombreCuenta()
+    {
+        return "{$this->entidad} - {$this->producto} - {$this->numerocuenta}";
+    }
 }

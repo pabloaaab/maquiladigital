@@ -41,6 +41,16 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?=
+            $form->field($model, 'fechacreacion')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
+        </div>
+        <div class="row">
+            <?=
             $form->field($model, 'fechavencimiento')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
@@ -48,6 +58,12 @@ $form = ActiveForm::begin([
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
             ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'codigoactividad')->textInput(['maxlength' => true]) ?>  					
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>  					
         </div>
         <div class="row">
             <?= $form->field($model, 'activo')->dropdownList(['1' => 'Activo', '0' => 'Inactivo'], ['prompt' => 'Seleccione...']) ?>

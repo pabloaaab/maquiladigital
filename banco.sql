@@ -21,7 +21,7 @@ USE `maquiladigital`;
 DROP TABLE IF EXISTS `banco`;
 
 CREATE TABLE `banco` (
-  `idbanco` int(10) NOT NULL AUTO_INCREMENT,
+  `idbanco` int(11) NOT NULL AUTO_INCREMENT,
   `nitbanco` varchar(15) NOT NULL,
   `entidad` varchar(40) NOT NULL,
   `direccionbanco` varchar(40) NOT NULL,

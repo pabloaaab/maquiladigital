@@ -19,8 +19,9 @@ class ResolucionSearch extends Resolucion
     public function rules()
     {
         return [
-            [['idresolucion', 'activo'], 'integer'],
-            [['nroresolucion', 'desde', 'hasta', 'fechavencimiento', 'nitmatricula'], 'safe'],
+            [['idresolucion', 'activo','codigoactividad','descripcion'], 'integer'],
+            [['codigoactividad', 'descripcion'], 'string'],
+            [['nroresolucion', 'desde', 'hasta', 'fechacreacion','fechavencimiento', 'nitmatricula'], 'safe'],
         ];
     }
 
@@ -67,7 +68,11 @@ class ResolucionSearch extends Resolucion
         $query->andFilterWhere(['like', 'nroresolucion', $this->nroresolucion])
             ->andFilterWhere(['like', 'desde', $this->desde])
             ->andFilterWhere(['like', 'hasta', $this->hasta])
-            ->andFilterWhere(['like', 'nitmatricula', $this->nitmatricula]);
+            ->andFilterWhere(['like', 'nitmatricula', $this->nitmatricula])
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'codigoactividad', $this->codigoactividad])
+            ->andFilterWhere(['like', 'fechacreacion', $this->fechacreacion])
+            ->andFilterWhere(['like', 'fechavencimiento', $this->fechavencimiento]);
 
         return $dataProvider;
     }

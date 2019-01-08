@@ -44,10 +44,16 @@ $this->params['breadcrumbs'][] = $model->idresolucion;
                     <td><?= Html::encode($model->hasta) ?></td>                    
                 </tr>
                 <tr>
+                    <th><?= Html::activeLabel($model, 'fechacreacion') ?>:</th>
+                    <td><?= Html::encode($model->fechacreacion) ?></td>                    
                     <th><?= Html::activeLabel($model, 'fechavencimiento') ?>:</th>
                     <td><?= Html::encode($model->fechavencimiento) ?></td>                    
-                    <th><?= Html::activeLabel($model, 'nitmatricula') ?>:</th>
-                    <td><?= Html::encode($model->nitmatricula) ?></td>                    
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'codigoactividad') ?>:</th>
+                    <td><?= Html::encode($model->codigoactividad) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'descripcion') ?>:</th>
+                    <td><?= Html::encode($model->descripcion) ?></td>                    
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>

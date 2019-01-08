@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 use app\models\Banco;
 use app\models\Departamento;
 use app\models\Municipio;
+use app\models\TipoRegimen;
+use app\models\Resolucion;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Parametros */
@@ -28,7 +30,9 @@ $form = ActiveForm::begin([
         ]);
 ?>
 <?php
-$bancos = ArrayHelper::map(Banco::find()->all(), 'idbanco', 'entidad');
+$resoluciones = ArrayHelper::map(Resolucion::find()->all(), 'idresolucion', 'descripcion');
+$bancos = ArrayHelper::map(Banco::find()->all(), 'idbanco', 'nombrecuenta');
+$regimen = ArrayHelper::map(TipoRegimen::find()->all(), 'id_tipo_regimen', 'regimen');
 $departamento = ArrayHelper::map(Departamento::find()->all(), 'iddepartamento', 'departamento');
 $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipio');
 ?>
@@ -69,7 +73,7 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
                 $( "#' . Html::getInputId($model, 'idmunicipio', ['required', 'class' => 'select-2']) . '" ).html( data ); });']); ?>            
         </div>
         <div class="row">            
-            <?= $form->field($model, 'idmunicipio')->dropDownList(['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'idmunicipio')->dropDownList($municipio, ['prompt' => 'Seleccione...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'paginaweb')->textInput(['maxlength' => true]) ?>    
@@ -87,13 +91,16 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
             <?= $form->field($model, 'porcentajereteiva')->textInput(['maxlength' => true]) ?>    
         </div>
         <div class="row">
-            <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...', 'onchange' => 'tregimen()', 'id' => 'tiporegimen']) ?>
+            <?= $form->field($model, 'id_tipo_regimen')->dropDownList($regimen, ['prompt' => 'Seleccione un regimen...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'declaracion')->textArea(['maxlength' => true]) ?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'id_banco_factura')->dropDownList($bancos, ['prompt' => 'Seleccione un cliente...']) ?>
+        </div>
+        <div class="row">                        
+            <?= $form->field($model, 'idresolucion')->dropDownList($resoluciones, ['prompt' => 'Seleccione una resolucion...']) ?>
         </div>
         <div class="panel-footer text-right">			                        
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>

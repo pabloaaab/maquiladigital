@@ -68,7 +68,7 @@ insert  into `arl`(`id_arl`,`arl`) values
 DROP TABLE IF EXISTS `banco`;
 
 CREATE TABLE `banco` (
-  `idbanco` int(10) NOT NULL AUTO_INCREMENT,
+  `idbanco` int(11) NOT NULL AUTO_INCREMENT,
   `nitbanco` varchar(15) NOT NULL,
   `entidad` varchar(40) NOT NULL,
   `direccionbanco` varchar(40) NOT NULL,
@@ -503,18 +503,27 @@ CREATE TABLE `matriculaempresa` (
   `porcentajeretefuente` double NOT NULL DEFAULT '0',
   `retefuente` double NOT NULL DEFAULT '0',
   `porcentajereteiva` double NOT NULL DEFAULT '0',
-  `tiporegimen` varchar(100) NOT NULL,
+  `id_tipo_regimen` int(11) NOT NULL,
   `declaracion` text NOT NULL,
   `id_banco_factura` int(11) DEFAULT NULL,
+  `idresolucion` int(11) NOT NULL,
   PRIMARY KEY (`nitmatricula`),
   KEY `id_banco_factura` (`id_banco_factura`),
-  CONSTRAINT `matriculaempresa_ibfk_1` FOREIGN KEY (`id_banco_factura`) REFERENCES `banco` (`idbanco`)
+  KEY `id_tipo_regimen` (`id_tipo_regimen`),
+  KEY `iddepartamento` (`iddepartamento`),
+  KEY `idmunicipio` (`idmunicipio`),
+  KEY `idresolucion` (`idresolucion`),
+  CONSTRAINT `matriculaempresa_ibfk_1` FOREIGN KEY (`id_banco_factura`) REFERENCES `banco` (`idbanco`),
+  CONSTRAINT `matriculaempresa_ibfk_2` FOREIGN KEY (`id_tipo_regimen`) REFERENCES `tipo_regimen` (`id_tipo_regimen`),
+  CONSTRAINT `matriculaempresa_ibfk_3` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
+  CONSTRAINT `matriculaempresa_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`),
+  CONSTRAINT `matriculaempresa_ibfk_5` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `matriculaempresa` */
 
-insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`tiporegimen`,`declaracion`,`id_banco_factura`) values 
-('901189320',2,'MAQUILA DIGITAL SAS','JOSE GREGORIO','PULGARIN MORALES','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW-MAQUILA.COM',19,4,895000,15,'2','Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1015);
+insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`id_tipo_regimen`,`declaracion`,`id_banco_factura`,`idresolucion`) values 
+('901189320',2,'MAQUILA DIGITAL SAS','JOSE GREGORIO','PULGARIN MORALES','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW-MAQUILA.COM',19,4,895000,15,1,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1015,3);
 
 /*Table structure for table `municipio` */
 
@@ -2051,19 +2060,20 @@ CREATE TABLE `resolucion` (
   `nroresolucion` char(40) NOT NULL,
   `desde` char(10) NOT NULL,
   `hasta` char(10) NOT NULL,
+  `fechacreacion` datetime NOT NULL,
   `fechavencimiento` datetime NOT NULL,
-  `nitmatricula` char(11) NOT NULL,
+  `nitmatricula` char(11) DEFAULT NULL,
+  `codigoactividad` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idresolucion`),
   KEY `nitmatricula` (`nitmatricula`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `resolucion` */
 
-insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`) values 
-(3,'1112','1','1000','2018-10-10 00:00:00','901189320',1),
-(6,'254','1001','2000','2018-10-10 00:00:00','901189320',0),
-(8,'1451','10','20','2019-01-08 00:00:00','901189320',0);
+insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechacreacion`,`fechavencimiento`,`nitmatricula`,`codigoactividad`,`descripcion`,`activo`) values 
+(3,'18762009830025','1','1000','2018-08-24 00:00:00','2019-09-24 00:00:00','901189320',1410,'Confección de prendas de vestir',1);
 
 /*Table structure for table `resumen_costos` */
 
@@ -2142,6 +2152,22 @@ CREATE TABLE `tipo_cargo` (
 insert  into `tipo_cargo`(`id_tipo_cargo`,`tipo`) values 
 (1,'OPERATIVO'),
 (2,'ADMINISTRATIVO');
+
+/*Table structure for table `tipo_regimen` */
+
+DROP TABLE IF EXISTS `tipo_regimen`;
+
+CREATE TABLE `tipo_regimen` (
+  `id_tipo_regimen` int(11) NOT NULL AUTO_INCREMENT,
+  `regimen` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`id_tipo_regimen`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `tipo_regimen` */
+
+insert  into `tipo_regimen`(`id_tipo_regimen`,`regimen`) values 
+(1,'RÉGIMEN COMÚN'),
+(2,'RÉGIMEN SIMPLIFICADO');
 
 /*Table structure for table `tipodocumento` */
 

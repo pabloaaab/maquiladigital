@@ -26,20 +26,20 @@ class PDF extends FPDF {
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
-        $this->Cell(150, 7, utf8_decode("$config->razonsocialmatricula NIT: $config->nitmatricula-$config->dv"), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. "NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
         $this->SetXY(53, 15);
-        $this->Cell(150, 7, utf8_decode("$config->direccionmatricula Teléfono: $config->telefonomatricula"), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->direccionmatricula. "Teléfono:" .$config->telefonomatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 20);
-        $this->Cell(150, 7, utf8_decode("$municipio->municipio - $departamento->departamento"), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'C', 0);
         $this->SetXY(53, 25);
-        $this->Cell(150, 7, utf8_decode("$config->tiporegimen"), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->tipoRegimen->regimen), 0, 0, 'C', 0);
         $this->SetXY(53, 30);
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(150, 7, utf8_decode("Autorización Numeración de Facturación: Res. Dian No 18762009830025"), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode("Autorización Numeración de Facturación: Res. Dian N° " .$config->resolucion->nroresolucion), 0, 0, 'C', 0);
         $this->SetXY(53, 35);
-        $this->Cell(150, 7, utf8_decode("Fecha: 24-08-2018 Numeración: 1 AL 1000."), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode("Fecha: ". date('d-m-Y', strtotime($config->resolucion->fechacreacion)). " Numeración: ". $config->resolucion->desde. " AL ". $config->resolucion->hasta), 0, 0, 'C', 0);
         $this->SetXY(53, 40);
-        $this->Cell(150, 7, utf8_decode("Código Actividad: 1410 Descripción: Confección de prendas de vestir."), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode("Código Actividad: " .$config->resolucion->codigoactividad. " Descripción: ". $config->resolucion->descripcion), 0, 0, 'C', 0);
         $this->SetXY(10, 42);
         $this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________"), 0, 0, 'C', 0);
         //Factura

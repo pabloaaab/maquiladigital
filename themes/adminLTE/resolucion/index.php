@@ -24,19 +24,39 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'nroresolucion',
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-1.5'],
             ],
             [
                 'attribute' => 'desde',
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'hasta',
-                'contentOptions' => ['class' => 'col-lg-3 '],
+                'contentOptions' => ['class' => 'col-lg-1 '],
+            ],
+            [               
+            'attribute' => 'fechacreacion',
+            'value' => function($model){
+                $resolucion = \app\models\Resolucion::findOne($model->idresolucion);
+                return date("Y-m-d", strtotime("$resolucion->fechacreacion"));
+            },
+            'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [               
+            'attribute' => 'fechavencimiento',
+            'value' => function($model){
+                $resolucion = \app\models\Resolucion::findOne($model->idresolucion);
+                return date("Y-m-d", strtotime("$resolucion->fechavencimiento"));
+            },
+            'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
-                'attribute' => 'fechavencimiento',
-                'contentOptions' => ['class' => 'col-lg-3 '],
+                'attribute' => 'codigoactividad',
+                'contentOptions' => ['class' => 'col-lg-1 '],
+            ],
+            [
+                'attribute' => 'descripcion',
+                'contentOptions' => ['class' => 'col-lg-3.5 '],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

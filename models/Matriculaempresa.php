@@ -23,11 +23,16 @@ use Yii;
  * @property double $porcentajeretefuente
  * @property double $retefuente
  * @property double $porcentajereteiva
- * @property string $tiporegimen
+ * @property int $id_tipo_regimen
  * @property string $declaracion
  * @property int $id_banco_factura
+ * @property int $idresolucion
  *
  * @property Banco $bancoFactura
+ * @property TipoRegimen $tipoRegimen
+ * @property Departamento $departamento
+ * @property Municipio $municipio
+ * @property Resolucion $resolucion
  */
 class Matriculaempresa extends \yii\db\ActiveRecord
 {
@@ -45,15 +50,18 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'tiporegimen', 'declaracion'], 'required'],
-            [['dv', 'id_banco_factura'], 'integer'],
+            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion'], 'required'],
+            [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion'], 'integer'],
             [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
             [['declaracion'], 'string'],
             [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
-            [['tiporegimen'], 'string', 'max' => 100],
             [['nitmatricula'], 'unique'],
             [['id_banco_factura'], 'exist', 'skipOnError' => true, 'targetClass' => Banco::className(), 'targetAttribute' => ['id_banco_factura' => 'idbanco']],
+            [['id_tipo_regimen'], 'exist', 'skipOnError' => true, 'targetClass' => TipoRegimen::className(), 'targetAttribute' => ['id_tipo_regimen' => 'id_tipo_regimen']],
+            [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
+            [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
+            [['idresolucion'], 'exist', 'skipOnError' => true, 'targetClass' => Resolucion::className(), 'targetAttribute' => ['idresolucion' => 'idresolucion']],
         ];
     }
 
@@ -63,25 +71,26 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'nitmatricula' => 'Nit:',
+            'nitmatricula' => 'Nitmatricula',
             'dv' => 'Dv',
-            'razonsocialmatricula' => 'Razon Social:',
-            'nombrematricula' => 'Nombres:',
-            'apellidomatricula' => 'Apellidos:',
-            'direccionmatricula' => 'Dirección:',
-            'telefonomatricula' => 'Telefono:',
-            'celularmatricula' => 'Celular:',
-            'emailmatricula' => 'Email:',
-            'iddepartamento' => 'Departamento:',
-            'idmunicipio' => 'Municipio:',
-            'paginaweb' => 'Pagina Web:',
-            'porcentajeiva' => 'Porcentaje iva:',
-            'porcentajeretefuente' => 'Porcentaje Retefuente:',
-            'retefuente' => 'Rete Euente:',
-            'porcentajereteiva' => 'Porcentaje Reteiva:',
-            'tiporegimen' => 'Tipo Regimen:',
-            'declaracion' => 'Declaracion:',
-            'id_banco_factura' => 'Banco Factura:',
+            'razonsocialmatricula' => 'Razonsocialmatricula',
+            'nombrematricula' => 'Nombrematricula',
+            'apellidomatricula' => 'Apellidomatricula',
+            'direccionmatricula' => 'Direccionmatricula',
+            'telefonomatricula' => 'Telefonomatricula',
+            'celularmatricula' => 'Celularmatricula',
+            'emailmatricula' => 'Emailmatricula',
+            'iddepartamento' => 'Iddepartamento',
+            'idmunicipio' => 'Idmunicipio',
+            'paginaweb' => 'Paginaweb',
+            'porcentajeiva' => 'Porcentajeiva',
+            'porcentajeretefuente' => 'Porcentajeretefuente',
+            'retefuente' => 'Retefuente',
+            'porcentajereteiva' => 'Porcentajereteiva',
+            'id_tipo_regimen' => 'Id Tipo Regimen',
+            'declaracion' => 'Declaracion',
+            'id_banco_factura' => 'Id Banco Factura',
+            'idresolucion' => 'Idresolucion',
         ];
     }
 
@@ -91,5 +100,37 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     public function getBancoFactura()
     {
         return $this->hasOne(Banco::className(), ['idbanco' => 'id_banco_factura']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoRegimen()
+    {
+        return $this->hasOne(TipoRegimen::className(), ['id_tipo_regimen' => 'id_tipo_regimen']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartamento()
+    {
+        return $this->hasOne(Departamento::className(), ['iddepartamento' => 'iddepartamento']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMunicipio()
+    {
+        return $this->hasOne(Municipio::className(), ['idmunicipio' => 'idmunicipio']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getResolucion()
+    {
+        return $this->hasOne(Resolucion::className(), ['idresolucion' => 'idresolucion']);
     }
 }
