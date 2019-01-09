@@ -685,7 +685,7 @@ h4{
   text-decoration: none;
 }
 .skin-green .sidebar-menu .treeview-menu > li > a {
-  color: #8aa4af;
+  color: #8aa4af; /* 8aa4af */
 }
 .skin-green .sidebar-menu .treeview-menu > li.active > a,
 .skin-green .sidebar-menu .treeview-menu > li > a:hover {

@@ -142,9 +142,9 @@ class PDF extends FPDF {
             $pdf->Cell(13, 4, $detalle->producto->codigoproducto, 0, 0, 'L');
             $pdf->Cell(95, 4, $detalle->producto->nombreProducto, 0, 0, 'L');
             $pdf->Cell(18, 4, $detalle->cantidad, 0, 0, 'R');
-            $pdf->Cell(20, 4, number_format($detalle->preciounitario, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(20, 4, number_format(0, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(25, 4, number_format($detalle->total, 2, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(20, 4, number_format($detalle->preciounitario, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(20, 4, number_format(0, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(25, 4, number_format($detalle->total, 0, '.', ','), 0, 0, 'R');            
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
@@ -155,28 +155,28 @@ class PDF extends FPDF {
         $pdf->SetXY(156, 170);
         $pdf->MultiCell(20, 8, 'SUBTOTAL:',1,'C');
         $pdf->SetXY(176, 170);
-        $pdf->MultiCell(25, 8, number_format($model->subtotal, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->subtotal, 0, '.', ','),1,'R');
         $pdf->SetXY(10, 178);
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(146, 4, utf8_decode('Observaciones: '.$model->observacion),0,'J');
         $pdf->SetXY(156, 178);
         $pdf->MultiCell(20, 8, 'RETE FTE:',1,'C');
         $pdf->SetXY(176, 178);
-        $pdf->MultiCell(25, 8, number_format($model->retencionfuente, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->retencionfuente, 0, '.', ','),1,'R');
         $pdf->SetXY(156, 186);
         $pdf->MultiCell(20, 8, 'IVA:',1,'C');
         $pdf->SetXY(176, 186);
-        $pdf->MultiCell(25, 8, number_format($model->impuestoiva, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->impuestoiva, 0, '.', ','),1,'R');
         $pdf->SetXY(156, 194);
         $pdf->MultiCell(20, 8, 'RETE IVA:',1,'C');
         $pdf->SetXY(176, 194);
-        $pdf->MultiCell(25, 8, number_format($model->retencioniva, 2, '.', ','),1,'R');
+        $pdf->MultiCell(25, 8, number_format($model->retencioniva, 0, '.', ','),1,'R');
         $pdf->SetXY(10, 202);
         $pdf->MultiCell(146, 8, '',1,'J',1);
         $pdf->SetXY(156, 202);
         $pdf->MultiCell(20, 8, 'TOTAL:',1,'C',1);
         $pdf->SetXY(176, 202);
-        $pdf->MultiCell(25, 8, number_format($model->totalpagar, 2, '.', ','),1,'R',1);
+        $pdf->MultiCell(25, 8, number_format($model->totalpagar, 0, '.', ','),1,'R',1);
         $pdf->SetXY(10, 210);//recibido,aceptado        
         $pdf->Cell(64, 8, 'RECIBIDO POR',1,'J',1);        
         $pdf->Cell(64, 8, 'ACEPTADO POR',1,'J',1);

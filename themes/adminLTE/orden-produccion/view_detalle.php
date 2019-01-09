@@ -59,8 +59,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
                 <tr>
-                    <th></th>
-                    <td></td>
+                    <th><?= Html::activeLabel($model, 'cantidad') ?></th>
+                    <td><?= Html::encode($model->cantidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Progreso') ?></th>
                     <td><div class="progress"><b>Operación:&nbsp;</b>
                             <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>

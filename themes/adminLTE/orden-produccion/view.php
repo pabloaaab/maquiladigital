@@ -88,8 +88,8 @@ $view = 'orden-produccion';
                     <td><?= Html::encode($model->ordenproduccionext) ?></td>                    
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'autorizado') ?>:</th>
-                    <td><?= Html::encode($model->autorizado) ?></td>
+                    <th><?= Html::activeLabel($model, 'cantidad') ?>:</th>
+                    <td><?= Html::encode($model->cantidad) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'totalorden') ?>:</th>
