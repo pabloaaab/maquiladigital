@@ -48,6 +48,7 @@ class ReciboCajaSearch extends Recibocaja
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['idrecibo' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);

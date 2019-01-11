@@ -102,7 +102,7 @@ class PDF extends FPDF {
         $this->Line(42,218,42,245);//linea vertical x1,y1,x2,y2
         $this->Line(74,218,74,245);//linea vertical x1,y1,x2,y2
         $this->Line(138,218,138,245);//linea vertical x1,y1,x2,y2
-        $this->Line(201,218,201,245);//linea vertical x1,y1,x2,y2        
+        $this->Line(201,218,201,245);//linea vertical x1,y1,x2,y2                
         //Detalle factura
         $this->EncabezadoDetalles();
         
@@ -138,6 +138,7 @@ class PDF extends FPDF {
         $detalles = Facturaventadetalle::find()->where(['=','idfactura',$model->idfactura])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 8);
+        $cant = 0;
         foreach ($detalles as $detalle) {            
             $pdf->Cell(13, 4, $detalle->producto->codigoproducto, 0, 0, 'L');
             $pdf->Cell(95, 4, $detalle->producto->nombreProducto, 0, 0, 'L');
@@ -147,6 +148,7 @@ class PDF extends FPDF {
             $pdf->Cell(25, 4, number_format($detalle->total, 0, '.', ','), 0, 0, 'R');            
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
+            $cant = $cant + $detalle->cantidad;
         }
         $this->SetFillColor(200, 200, 200);
         $pdf->SetXY(10, 170);
@@ -172,8 +174,10 @@ class PDF extends FPDF {
         $pdf->SetXY(176, 194);
         $pdf->MultiCell(25, 8, number_format($model->retencioniva, 0, '.', ','),1,'R');
         $pdf->SetXY(10, 202);
-        $pdf->MultiCell(146, 8, '',1,'J',1);
-        $pdf->SetXY(156, 202);
+        $pdf->MultiCell(108, 8, '',1,'R',1);
+        $pdf->SetXY(118, 202);
+        $pdf->MultiCell(38, 8, 'TOTAL CANTIDAD: '.$cant,1,'C',1);
+        $pdf->SetXY(156, 202);           
         $pdf->MultiCell(20, 8, 'TOTAL:',1,'C',1);
         $pdf->SetXY(176, 202);
         $pdf->MultiCell(25, 8, number_format($model->totalpagar, 0, '.', ','),1,'R',1);

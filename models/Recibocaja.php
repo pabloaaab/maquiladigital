@@ -50,7 +50,7 @@ class Recibocaja extends \yii\db\ActiveRecord
     {
         return [
             [['fecharecibo', 'fechapago'], 'safe'],
-            [['idtiporecibo', 'idmunicipio', 'idcliente'], 'required'],
+            [['idtiporecibo', 'idmunicipio', 'idcliente','fechapago'], 'required'],
             [['valorpagado'], 'number'],
             [['valorletras', 'observacion'], 'string'],
             [['idcliente','estado','autorizado'], 'integer'],

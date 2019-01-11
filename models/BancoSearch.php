@@ -46,6 +46,7 @@ class BancoSearch extends Banco
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['idbanco' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);

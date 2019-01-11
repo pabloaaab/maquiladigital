@@ -19,7 +19,7 @@ class FormSubirArchivo extends Model
     {
         return [
             [['imageFile'], 'required', 'message' => 'Campo requerido'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, ],            
+            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf'],            
             ['numero', 'default'],
             ['codigo', 'default'],
             ['view', 'default'],

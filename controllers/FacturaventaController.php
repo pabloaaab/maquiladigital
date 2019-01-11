@@ -148,7 +148,7 @@ class FacturaventaController extends Controller
            Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         }
         else if($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idfactura]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
