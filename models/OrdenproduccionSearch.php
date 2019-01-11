@@ -47,6 +47,7 @@ class OrdenproduccionSearch extends Ordenproduccion
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['idordenproduccion' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);

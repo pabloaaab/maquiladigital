@@ -102,7 +102,7 @@ class PrendatipoController extends Controller
         $model = $this->findModel($id);
         $tallas = Talla::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idprendatipo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

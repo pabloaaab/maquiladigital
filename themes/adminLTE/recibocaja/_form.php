@@ -59,6 +59,14 @@ use yii\helpers\Url;
             ]); ?>
         </div>
         <div class="row">
+            <?= $form->field($model,'fechapago')->widget(DatePicker::className(),['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>
         </div>
         <div class="panel-footer text-right">            

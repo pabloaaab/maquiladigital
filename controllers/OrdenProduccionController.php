@@ -121,7 +121,7 @@ class OrdenProduccionController extends Controller {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->idordenproduccion]);
+                return $this->redirect(['index']);
             }
         }
         return $this->render('update', [
@@ -470,7 +470,8 @@ class OrdenProduccionController extends Controller {
 
     public function actionNuevo_detalle_proceso($id, $iddetalleorden) {
         $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
-        $procesos = ProcesoProduccion::find()->all();
+        $procesos = ProcesoProduccion::find()->orderBy('proceso asc')->all();
+        $cont = count($procesos);
         if (isset($_POST["idproceso"])) {
             $intIndice = 0;
             foreach ($_POST["idproceso"] as $intCodigo) {
@@ -535,15 +536,17 @@ class OrdenProduccionController extends Controller {
 
         return $this->renderAjax('_formnuevodetalleproceso', [
                     'procesos' => $procesos,
+                    'cont' => $cont,
                     'id' => $id,
                     'iddetalleorden' => $iddetalleorden,
         ]);
     }
 
     public function actionDetalle_proceso($idordenproduccion, $iddetalleorden) {
-        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->all();
+        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
         $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
         $error = 0;
+        $cont = count($procesos);
         if (Yii::$app->request->post()) {
             if (isset($_POST["editar"])) {
                 if (isset($_POST["iddetalleproceso1"])) {
@@ -605,6 +608,7 @@ class OrdenProduccionController extends Controller {
         }
         return $this->renderAjax('_formdetalleproceso', [
                     'procesos' => $procesos,
+                    'cont' => $cont,
                     'idordenproduccion' => $idordenproduccion,
                     'iddetalleorden' => $iddetalleorden,
         ]);
@@ -615,7 +619,7 @@ class OrdenProduccionController extends Controller {
         $modeldetalle = new Ordenproducciondetalle();
         return $this->render('view_detalle', [
                     'model' => $this->findModel($id),
-                    'modeldetalle' => $modeldetalle,
+                    'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
         ]);
     }        
@@ -675,12 +679,14 @@ class OrdenProduccionController extends Controller {
         $cantidadoperada = 0;
         $sumacantxoperar = 0;
         $totalsegxdetalle = 0;
+        $cont = count($procesos);
         foreach ($procesos as $val) {
-            if ($val->cantidad_operada > 0) {
+            if ($val->cantidad_operada > 0) {                
                 $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
-                $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;
+                $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;                
             }
         }
+        $cantidadoperada = $cantidadoperada /  $cont; 
         $tsegundosproceso = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
         $sumsegproc = $tsegundosproceso->where(['=', 'iddetalleorden', $iddetalleorden])->sum('totalproceso');
         $total = ($tabla->cantidad_operada * $totalprogresodetalle) / $tabla->cantidad;

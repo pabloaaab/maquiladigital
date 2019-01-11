@@ -122,7 +122,7 @@ class ProductoController extends Controller
             }else{
                 $model->stock = $model->cantidad;
                 $model->update();
-                return $this->redirect(['view', 'id' => $model->idproducto]);                
+                return $this->redirect(['index']);                
             }            
         }
 

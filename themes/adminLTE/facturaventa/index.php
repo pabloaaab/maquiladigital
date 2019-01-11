@@ -23,11 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin() ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [            
+        'filterModel' => $searchModel,        
+        'columns' => [                  
             [
                 'attribute' => 'nrofactura',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-1'],                
             ],
             [
                 'attribute' => 'idcliente',
@@ -84,7 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-1.5'],
             ],                     
             [
-                'class' => 'yii\grid\ActionColumn',              
+                'class' => 'yii\grid\ActionColumn',                
             ],
 			
         ],

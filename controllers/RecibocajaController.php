@@ -98,7 +98,7 @@ class RecibocajaController extends Controller
             $model->valorletras = "-";
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idrecibo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -415,7 +415,7 @@ class RecibocajaController extends Controller
                         $factura->update();
                     }
                     $model->valorpagado = $total;
-                    $model->fechapago = date('Y-m-d');
+                    //$model->fechapago = date('Y-m-d');
                     //generar consecutivo numero de la nota credito
                     $consecutivo = Consecutivo::findOne(3);//2 nota credito
                     $consecutivo->consecutivo = $consecutivo->consecutivo + 1;

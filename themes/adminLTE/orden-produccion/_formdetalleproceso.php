@@ -50,7 +50,7 @@ use app\models\Ordenproducciondetalle;
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                    Operacion de producción
+                    Operacion de producción: <?php echo $cont; ?>
                 </div>
                 <div class="panel-body">
                     <table class="table table-responsive">

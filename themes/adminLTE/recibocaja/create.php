@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Recibocaja */
 
-$this->title = 'Create Recibocaja';
-$this->params['breadcrumbs'][] = ['label' => 'Recibocajas', 'url' => ['index']];
+$this->title = 'Nuevo Recibo de Caja';
+$this->params['breadcrumbs'][] = ['label' => 'Recibos de cajas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="recibocaja-create">
