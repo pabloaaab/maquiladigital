@@ -660,71 +660,54 @@ class OrdenProduccionController extends Controller {
             foreach ($procesosx as $v) {
                 $ts = $ts + $v->totalproceso;
             }
-        }
-        
-        $orden = Ordenproduccion::findOne($idordenproduccion);
+        }                
         /*if ($ts == 0) {
             $ts = 1;
         }
         $orden->porcentaje_proceso = 100 * $tdetallesseg / $ts;
         $orden->update();*/
+        $orden = Ordenproduccion::findOne($idordenproduccion);
         $ordendetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
         $reg = count($ordendetalle);
         $porc = 0;
+        $porci = 0;
         foreach ($ordendetalle as $val){
-           $porc = $porc + $val->porcentaje_proceso; 
+            
+            $porci = $val->cantidad / $orden->cantidad * $val->porcentaje_proceso; 
+            $porc = $porc + $porci;
+            
         }
-       $orden->porcentaje_proceso = $porc / $reg;
-       $orden->update();
+        $orden->porcentaje_proceso = $porc;
+        $orden->update();
     }
 
     protected function progresocantidad($iddetalleorden, $idordenproduccion) {
         $tabla = Ordenproducciondetalle::findOne(['=', 'iddetalleorden', $iddetalleorden]);
-        $procesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();
-        $progreso = 0;
-        $totalprogresodetalle = 0;
-        $totalprocesodetalle = 0;
-        $cantidadoperada = 0;
-        $sumacantxoperar = 0;
-        $totalsegxdetalle = 0;
+        $procesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();                        
+        $cantidadoperada = 0;                
         $cont = count($procesos);
+        $valor = 0;
         foreach ($procesos as $val) {
             if ($val->cantidad_operada > 0) {                
                 $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
-                $totalprogresodetalle = $totalprogresodetalle + $val->porcentajeproceso;                
+                $valor++;
             }
         }
-        $cantidadoperada = $cantidadoperada /  $cont; 
-        $tsegundosproceso = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
-        $sumsegproc = $tsegundosproceso->where(['=', 'iddetalleorden', $iddetalleorden])->sum('totalproceso');
-        $total = ($tabla->cantidad_operada * $totalprogresodetalle) / $tabla->cantidad;
-        $tabla->porcentaje_cantidad = $total;
-        $sumacantxoperar = $tabla->cantidad * count($procesos);
-        if ($sumacantxoperar == 0) {
-            $sumacantxoperar = 1;
-        }
-        $totalsegxdetalle = ($sumsegproc * $cantidadoperada) / $sumacantxoperar;
-        $tabla->cantidad_operada = $cantidadoperada;
-        $tabla->totalsegundos = $totalsegxdetalle;
+        $cantidaddetalle = $tabla->cantidad * $cont;        
+        $porcentajecantidad = $cantidadoperada / $cantidaddetalle * 100;
+        $tabla->porcentaje_cantidad = $porcentajecantidad;
+        $tabla->cantidad_operada = $cantidadoperada / $valor;
         $tabla->update();
-        $totaldetallesseg = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
-        $tdetallesseg = 0;
-        $ts = 0;
-        $segundosficha = 0;
-        foreach ($totaldetallesseg as $value) {
-            $tdetallesseg = $tdetallesseg + $value->totalsegundos;
-            $segundosficha = $segundosficha + $value->segundosficha;
-            $procesosx = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $value->iddetalleorden])->all();
-            foreach ($procesosx as $v) {
-                $ts = $ts + $v->totalproceso;
-            }
-        }
         $orden = Ordenproduccion::findOne($idordenproduccion);
-        if ($ts == 0) {
-            $ts = 1;
+        $detalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $porc = 0;
+        $porci = 0;
+        foreach ($detalle as $val){
+            //$porcentajeorden = $porcentajeorden + $val->porcentaje_cantidad;
+            $porci = $val->cantidad_operada / $orden->cantidad * $val->porcentaje_cantidad; 
+            $porc = $porc + $porci;
         }
-        $orden->porcentaje_cantidad = 100 * $tdetallesseg / $ts;
-        $orden->segundosficha = $segundosficha;
+        $orden->porcentaje_cantidad = $porc;
         $orden->update();
     }
 
