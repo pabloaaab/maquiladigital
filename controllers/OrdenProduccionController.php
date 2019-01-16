@@ -663,11 +663,19 @@ class OrdenProduccionController extends Controller {
         }
         
         $orden = Ordenproduccion::findOne($idordenproduccion);
-        if ($ts == 0) {
+        /*if ($ts == 0) {
             $ts = 1;
         }
         $orden->porcentaje_proceso = 100 * $tdetallesseg / $ts;
-        $orden->update();
+        $orden->update();*/
+        $ordendetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $reg = count($ordendetalle);
+        $porc = 0;
+        foreach ($ordendetalle as $val){
+           $porc = $porc + $val->porcentaje_proceso; 
+        }
+       $orden->porcentaje_proceso = $porc / $reg;
+       $orden->update();
     }
 
     protected function progresocantidad($iddetalleorden, $idordenproduccion) {
