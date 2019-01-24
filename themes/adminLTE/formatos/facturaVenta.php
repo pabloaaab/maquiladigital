@@ -143,9 +143,9 @@ class PDF extends FPDF {
             $pdf->Cell(13, 4, $detalle->codigoproducto, 0, 0, 'L');
             $pdf->Cell(95, 4, $detalle->productodetalle->prendatipo->prenda.' / '.$detalle->productodetalle->prendatipo->talla->talla, 0, 0, 'L');
             $pdf->Cell(18, 4, $detalle->cantidad, 0, 0, 'R');
-            $pdf->Cell(20, 4, number_format($detalle->preciounitario, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(20, 4, number_format($detalle->preciounitario, 2, '.', ','), 0, 0, 'R');
             $pdf->Cell(20, 4, number_format(0, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(25, 4, number_format($detalle->total, 0, '.', ','), 0, 0, 'R');            
+            $pdf->Cell(25, 4, number_format($detalle->total, 2, '.', ','), 0, 0, 'R');            
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
             $cant = $cant + $detalle->cantidad;

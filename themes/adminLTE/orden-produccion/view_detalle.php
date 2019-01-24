@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>
                             <span><b><?= Html::encode(round($model->porcentaje_proceso,1)).' %' ?></b></span>
                             <b>&nbsp;Faltante:&nbsp;</b><progress id="html5" max="100" value="<?= 100 - $model->porcentaje_proceso ?>"></progress>
-                            <span><b><?= Html::encode(round(100 - $model->porcentaje_proceso)).' %' ?></b></span>
+                            <span><b><?= Html::encode(round(100 - $model->porcentaje_proceso,1)).' %' ?></b></span>
                         </div>
                         <div class="progress"><b>Cantidad:&nbsp;&nbsp;&nbsp;</b>
                             <progress id="html5" max="100" value="<?= $model->porcentaje_cantidad ?>"></progress>

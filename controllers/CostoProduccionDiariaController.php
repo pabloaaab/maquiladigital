@@ -27,7 +27,7 @@ class CostoProduccionDiariaController extends Controller {
 
     public function actionCostodiario() {
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',20])->all()){
-            $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->all();
+            $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 1])->all();
             $form = new FormGenerarCostoProduccionDiaria;
             $operarias = null;
             $horaslaboradas = null;

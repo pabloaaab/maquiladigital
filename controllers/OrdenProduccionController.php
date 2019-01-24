@@ -689,7 +689,11 @@ class OrdenProduccionController extends Controller {
         $cantidaddetalle = $tabla->cantidad * $cont;        
         $porcentajecantidad = $cantidadoperada / $cantidaddetalle * 100;
         $tabla->porcentaje_cantidad = $porcentajecantidad;
-        $tabla->cantidad_operada = $cantidadoperada / $valor;
+        if ($valor == 0){
+            $tabla->cantidad_operada = $cantidadoperada;
+        } else {
+            $tabla->cantidad_operada = $cantidadoperada / $valor;
+        }         
         $tabla->update();
         $orden = Ordenproduccion::findOne($idordenproduccion);
         $detalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();

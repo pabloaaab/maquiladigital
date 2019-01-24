@@ -147,8 +147,8 @@ $view = 'orden-produccion';
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
-                        <td><?= '$ '.number_format($val->vlrprecio,0) ?></td>
-                        <td><?= '$ '.number_format($val->subtotal,0) ?></td>
+                        <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                        <td><?= '$ '.number_format($val->subtotal,2) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
