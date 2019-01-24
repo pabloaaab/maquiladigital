@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
-
+use app\models\UsuarioDetalle;
 
 /**
  * RecibocajaController implements the CRUD actions for Recibocaja model.
@@ -55,13 +55,17 @@ class RecibocajaController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ReciboCajaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',23])->all()){
+            $searchModel = new ReciboCajaSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
     }
 
     /**

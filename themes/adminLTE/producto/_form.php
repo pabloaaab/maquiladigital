@@ -25,22 +25,7 @@ use app\models\Prendatipo;
     <div class="panel-heading">
         Información Prductos
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <?= $form->field($model, 'codigoproducto')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'producto')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'cantidad')->textInput(['maxlength' => true]) ?>
-        </div>        
-        <div class="row">
-            <?= $form->field($model, 'costoconfeccion')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'vlrventa')->textInput(['maxlength' => true]) ?>
-        </div>
+    <div class="panel-body">        
         <div class="row">
             <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
                 'data' => $clientes,
@@ -51,23 +36,8 @@ use app\models\Prendatipo;
             ]); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idtipo')->widget(Select2::classname(), [
-                'data' => $ordentipos,
-                'options' => ['prompt' => 'Seleccione una prenda...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'idprendatipo')->widget(Select2::classname(), [
-                'data' => $prendas,
-                'options' => ['prompt' => 'Seleccione una prenda...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
-        </div>
+            <?= $form->field($model, 'codigo')->textInput(['maxlength' => true]) ?>
+        </div>        
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea(['maxlength' => true]) ?>
         </div>

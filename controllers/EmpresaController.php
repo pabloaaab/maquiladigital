@@ -10,6 +10,7 @@ use app\models\MatriculaempresaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * ArlController implements the CRUD actions for Arl model.
@@ -41,15 +42,17 @@ class EmpresaController extends Controller
      */
     public function actionEmpresa($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id_parametros]);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',30])->all()){
+            $model = $this->findModel($id);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                //return $this->redirect(['view', 'id' => $model->id_parametros]);
+            }
+            return $this->render('empresa', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
         }
-
-        return $this->render('empresa', [
-            'model' => $model,
-        ]);
     }
     
 

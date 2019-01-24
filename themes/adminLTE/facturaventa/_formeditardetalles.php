@@ -57,7 +57,7 @@ use yii\db\ActiveQuery;
                 <?php foreach ($mds as $val): ?>
                 <tr>
                     <td><?= $val->iddetallefactura ?></td>
-                    <td><?= $val->producto->nombreProducto ?></td>
+                    <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><input type="text" name="cantidad[]" value="<?= $val->cantidad ?>" required></td>
                     <td><input type="text" name="preciounitario[]" value="<?= $val->preciounitario ?>" required></td>

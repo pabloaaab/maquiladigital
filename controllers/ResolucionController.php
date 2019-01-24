@@ -10,7 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-
+use app\models\UsuarioDetalle;
 
 
 /**
@@ -39,13 +39,17 @@ class ResolucionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ResolucionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',7])->all()){
+            $searchModel = new ResolucionSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
     }
 
     /**

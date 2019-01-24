@@ -8,6 +8,7 @@ use app\models\ParametrosSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * ArlController implements the CRUD actions for Arl model.
@@ -39,15 +40,18 @@ class ParametrosController extends Controller
      */
     public function actionParametros($id)
     {
-        $model = $this->findModel($id);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',29])->all()){
+            $model = $this->findModel($id);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                //return $this->redirect(['view', 'id' => $model->id_parametros]);
+            }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id_parametros]);
-        }
-
-        return $this->render('parametros', [
-            'model' => $model,
-        ]);
+            return $this->render('parametros', [
+                'model' => $model,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
     
 

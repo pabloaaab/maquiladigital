@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Producto;
 use app\models\ProductoSearch;
+use app\models\Productodetalle;
 use app\models\Cliente;
 use app\models\Prendatipo;
 use app\models\Ordenproducciontipo;
@@ -25,6 +26,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
+use app\models\UsuarioDetalle;
 
 /**
  * ProductoController implements the CRUD actions for Producto model.
@@ -52,13 +54,17 @@ class ProductoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',16])->all()){
+            $searchModel = new ProductoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
 
     /**
@@ -69,8 +75,35 @@ class ProductoController extends Controller
      */
     public function actionView($id)
     {
+        $modeldetalles = Productodetalle::find()->Where(['=', 'idproducto', $id])->all();
+        
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["idproductodetalle"])) {
+                    foreach ($_POST["idproductodetalle"] as $intCodigo) {
+                        try {
+                            $eliminar = Productodetalle::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["producto/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["producto/view", 'id' => $id]);
+                   }
+        }        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalles' => $modeldetalles,
         ]);
     }
 
@@ -83,20 +116,20 @@ class ProductoController extends Controller
     {
         $model = new Producto();
         $clientes = Cliente::find()->all();
-        $prendas = Prendatipo::find()->all();
-        $ordentipos = Ordenproducciontipo::find()->all();
+        //$prendas = Prendatipo::find()->all();
+        //$ordentipos = Ordenproducciontipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;
-            $model->stock = $model->cantidad;
-            $model->update();
+            //$model->stock = $model->cantidad;
+            //$model->update();
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 
         return $this->render('create', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
-            'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto'),
-            'ordentipos' => ArrayHelper::map($ordentipos,'idtipo','tipo')
+            //'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto'),
+            //'ordentipos' => ArrayHelper::map($ordentipos,'idtipo','tipo')
         ]);
     }
 
@@ -110,27 +143,28 @@ class ProductoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if($model->cantidad > $model->stock and $model->stock > 0){
+        /*if($model->cantidad > $model->stock and $model->stock > 0){
             Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó la orden completa, generar el descargue de las unidades');
-        }
+        }*/
         $clientes = Cliente::find()->all();
-        $prendas = Prendatipo::find()->all();
-        $ordentipos = Ordenproducciontipo::find()->all();
+        //$prendas = Prendatipo::find()->all();
+        //$ordentipos = Ordenproducciontipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if($model->cantidad > $model->stock and $model->stock > 0){
+            /*if($model->cantidad > $model->stock and $model->stock > 0){
                 Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó la orden completa, generar el descargue de las unidades');
             }else{
-                $model->stock = $model->cantidad;
-                $model->update();
-                return $this->redirect(['index']);                
-            }            
+                //$model->stock = $model->cantidad;
+                //$model->update();
+                                
+            } */
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
-            'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto'),
-            'ordentipos' => ArrayHelper::map($ordentipos,'idtipo','tipo')
+            //'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto'),
+            //'ordentipos' => ArrayHelper::map($ordentipos,'idtipo','tipo')
         ]);
     }
 
@@ -156,64 +190,100 @@ class ProductoController extends Controller
         }
     }
     
+    public function actionNuevodetalles($idproducto)
+    {
+        $prendas = Prendatipo::find()->orderBy('prenda asc')->all();
+        $mensaje = "";
+        if(Yii::$app->request->post()) {
+            if (isset($_POST["idprendatipo"])) {
+                $intIndice = 0;
+                foreach ($_POST["idprendatipo"] as $intCodigo) {
+                    $table = new Productodetalle();
+                    $prenda = Prendatipo::find()->where(['idprendatipo' => $intCodigo])->one();
+                    $detalles = Productodetalle::find()
+                        ->where(['=', 'idproducto', $idproducto])
+                        ->andWhere(['=', 'idprendatipo', $prenda->idprendatipo])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table->idprendatipo = $prenda->idprendatipo;
+                        $table->observacion = ".";
+                        $table->idproducto = $idproducto;
+                        $table->insert();                                                
+                    }
+                }
+                $this->redirect(["producto/view", 'id' => $idproducto]);
+            }else{
+                $mensaje = "Debe seleccionar al menos un registro";
+            }
+        }
+
+        return $this->render('_formnuevodetalles', [
+            'prendas' => $prendas,            
+            'mensaje' => $mensaje,
+            'idproducto' => $idproducto,
+
+        ]);
+    }
+    
     public function actionProductostock() {
-        //if (!Yii::$app->user->isGuest) {
-        $form = new FormFiltroProductoStock();
-        $idcliente = null;
-        $idproducto = null;
-        $idtipo = null;
-        $clientes = Cliente::find()->all();
-        $tipos = Ordenproducciontipo::find()->all();
-        if ($form->load(Yii::$app->request->get())) {
-            if ($form->validate()) {
-                $idcliente = Html::encode($form->idcliente);
-                $idtipo = Html::encode($form->idtipo);
-                $idproducto = Html::encode($form->idproducto);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',21])->all()){
+            $form = new FormFiltroProductoStock();
+            $idcliente = null;
+            $idproducto = null;
+            $idtipo = null;
+            $clientes = Cliente::find()->all();
+            $tipos = Ordenproducciontipo::find()->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $idtipo = Html::encode($form->idtipo);
+                    $idproducto = Html::encode($form->idproducto);
+                    $table = Producto::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['=', 'idtipo', $idtipo])
+                            ->andFilterWhere(['=', 'idproducto', $idproducto])
+                            //->andWhere("cantidad > stock")
+                            //->andWhere(['<>','stock', 0])                        
+                            ->orderBy('idproducto desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                } else {
+                    $form->getErrors();
+                }
+            } else {
                 $table = Producto::find()
-                        ->andFilterWhere(['=', 'idcliente', $idcliente])
-                        ->andFilterWhere(['=', 'idtipo', $idtipo])
-                        ->andFilterWhere(['=', 'idproducto', $idproducto])
-                        ->andWhere("cantidad > stock")
-                        ->andWhere(['<>','stock', 0])                        
-                        ->orderBy('idproducto desc');
+                    //->where("cantidad > stock")
+                    //->andWhere(['<>','stock', 0])    
+                    ->orderBy('idcliente desc');
                 $count = clone $table;
-                $to = $count->count();
                 $pages = new Pagination([
-                    'pageSize' => 40,
-                    'totalCount' => $count->count()
-                ]);
+                    'pageSize' => 200,
+                    'totalCount' => $count->count(),
+                ]);           
                 $model = $table
                         ->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-            } else {
-                $form->getErrors();
             }
-        } else {
-            $table = Producto::find()
-                ->where("cantidad > stock")
-                ->andWhere(['<>','stock', 0])    
-                ->orderBy('idcliente desc');
-            $count = clone $table;
-            $pages = new Pagination([
-                'pageSize' => 200,
-                'totalCount' => $count->count(),
-            ]);           
-            $model = $table
-                    ->offset($pages->offset)
-                    ->limit($pages->limit)
-                    ->all();
+        return $this->render('productos_stock', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                        'tipos' => ArrayHelper::map($tipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
         }
-    return $this->render('productos_stock', [
-                    'model' => $model,
-                    'form' => $form,
-                    'pagination' => $pages,
-                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
-                    'tipos' => ArrayHelper::map($tipos, "idtipo", "tipo"),
-        ]);
-        /* }else{
-          return $this->redirect(["site/login"]);
-          } */
     }
     
     public function actionDescargarstock() {

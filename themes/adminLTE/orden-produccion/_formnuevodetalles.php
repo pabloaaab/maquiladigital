@@ -50,26 +50,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Producto</th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Cantidad Producto</th>
-                    <th scope="col">Cantidad Disponibles</th>
-                    <th scope="col">Cantidad Ingresar</th>
-                    <th scope="col">Costo</th>
+                    <th scope="col">Código Producto</th>
+                    <th scope="col">Cantidad Producto</th>                    
+                    <th scope="col">Valor</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($productosCliente as $val): ?>
                 <tr>
-                    <td><?= $val->idproducto ?></td>
-                    <td><?= $val->nombreProducto ?></td>
-                    <td><?= $val->codigoproducto ?></td>
-                    <td><?= $val->cantidad ?></td>
-                    <td><?= $val->stock ?></td>
-                    <td><input type="text" name="stock[]" value="0" required></td>
-                    <td><input type="text" name="vlrventa[]" value="<?= $val->vlrventa ?>" required></td>
-                    <td><input type="hidden" name="codigoproducto[]" value="<?= $val->codigoproducto ?>"></td>
-                    <td><input type="hidden" name="idproducto[]" value="<?= $val->idproducto ?>"></td>
+                    <td><?= $val->idproductodetalle ?></td>
+                    <td><?= $val->prendatipo->prenda.' - '.$val->prendatipo->talla->talla ?></td>                                                           
+                    <td><input type="text" name="codigoproducto[]" value="<?= $ordenProduccion->codigoproducto ?>" readonly="true"></td>
+                    <td><input type="text" name="cantidad[]" value="0" required></td>
+                    <td><input type="text" name="vlrventa[]" value="0" required></td>                    
+                    <td><input type="hidden" name="idproductodetalle[]" value="<?= $val->idproductodetalle ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>

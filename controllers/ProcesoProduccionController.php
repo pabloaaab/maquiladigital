@@ -8,6 +8,7 @@ use app\models\ProcesoProduccionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * ProcesoProduccionController implements the CRUD actions for ProcesoProduccion model.
@@ -35,13 +36,17 @@ class ProcesoProduccionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProcesoProduccionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',28])->all()){
+            $searchModel = new ProcesoProduccionSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
 
     /**

@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Banco;
 use app\models\Matriculaempresa;
+use app\models\UsuarioDetalle;
 use app\models\BancoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,14 +36,19 @@ class BancoController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
-        $searchModel = new BancoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {                
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',1])->all()){
+            $searchModel = new BancoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        
     }
 
     /**

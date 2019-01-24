@@ -28,7 +28,7 @@ use yii\app\models\Talla;
 
         <div class="row">
             <?= $form->field($model, 'prenda')->textInput(['maxlength' => true]) ?>
-        </div>
+        </div>        
         <div class="row">
             <?= $form->field($model, 'idtalla')->widget(Select2::classname(), [
                 'data' => $tallas,                

@@ -37,9 +37,9 @@ use app\models\Ordenproducciondetalle;
                     </tr>
                     <tr>
                         <th><?= Html::activeLabel($model, 'Producto') ?></th>
-                        <td><?= Html::encode($modeldetalle->producto->nombreProducto) ?></td>
+                        <td><?= Html::encode($modeldetalle->productodetalle->prendatipo->prenda.' / '.$modeldetalle->productodetalle->prendatipo->talla->talla) ?></td>
                         <th><?= Html::activeLabel($model, 'codigo') ?></th>
-                        <td><?= Html::encode($modeldetalle->producto->codigoproducto) ?></td>
+                        <td><?= Html::encode($modeldetalle->codigoproducto) ?></td>
                         <th><?= Html::activeLabel($model, 'cantidad') ?></th>
                         <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>

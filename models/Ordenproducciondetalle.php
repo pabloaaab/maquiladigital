@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "ordenproducciondetalle".
  *
  * @property int $iddetalleorden
- * @property int $idproducto
+ * @property int $idproductodetalle
  * @property string $codigoproducto
  * @property int $cantidad
  * @property double $vlrprecio
@@ -24,7 +24,7 @@ use Yii;
  * @property int $totalsegundos
  * @property int $segundosficha
  *
- * @property Producto $producto
+ * @property Productodetalle $productodetalle
  * @property Ordenproducciondetalleproceso[] $ordenproducciondetalleprocesos
  */
 class Ordenproducciondetalle extends \yii\db\ActiveRecord
@@ -43,11 +43,11 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idproducto', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],
-            [['idproducto', 'cantidad', 'idordenproduccion', 'generado', 'facturado','cantidad_operada','cantidad_efectiva'], 'integer'],
+            [['idproductodetalle', 'codigoproducto', 'cantidad', 'vlrprecio', 'idordenproduccion'], 'required'],            
+            [['idproductodetalle', 'cantidad', 'idordenproduccion', 'generado', 'facturado','cantidad_operada','cantidad_efectiva'], 'integer'],
             [['vlrprecio', 'subtotal','ponderacion', 'porcentaje_proceso','porcentaje_cantidad','totalsegundos','segundosficha'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
-            [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
+            [['idproductodetalle'], 'exist', 'skipOnError' => true, 'targetClass' => Productodetalle::className(), 'targetAttribute' => ['idproductodetalle' => 'idproductodetalle']],
         ];
     }
 
@@ -58,7 +58,7 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return [
             'iddetalleorden' => 'Iddetalleorden',
-            'idproducto' => 'Idproducto',
+            'idproductodetalle' => 'idproductodetalle',
             'codigoproducto' => 'Codigoproducto',
             'cantidad' => 'Cantidad',
             'vlrprecio' => 'Vlrprecio',
@@ -78,9 +78,9 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducto()
+    public function getProductodetalle()
     {
-        return $this->hasOne(Producto::className(), ['idproducto' => 'idproducto']);
+        return $this->hasOne(Productodetalle::className(), ['idproductodetalle' => 'idproductodetalle']);
     }
 
     /**
@@ -90,4 +90,5 @@ class Ordenproducciondetalle extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Ordenproducciondetalleproceso::className(), ['iddetalleorden' => 'iddetalleorden']);
     }
+        
 }

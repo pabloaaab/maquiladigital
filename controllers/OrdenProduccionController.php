@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\FormFiltroOrdenProduccionProceso;
 use app\models\Producto;
+use app\models\Productodetalle;
 use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
@@ -28,6 +29,7 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
+use app\models\UsuarioDetalle;
 
 /**
  * OrdenProduccionController implements the CRUD actions for Ordenproduccion model.
@@ -53,13 +55,17 @@ class OrdenProduccionController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $searchModel = new OrdenproduccionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',25])->all()){
+            $searchModel = new OrdenproduccionSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
     }
 
     /**
@@ -72,6 +78,29 @@ class OrdenProduccionController extends Controller {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
         $mensaje = "";
+        if (isset($_POST["eliminar"])) {
+            if (isset($_POST["seleccion"])) {
+                foreach ($_POST["seleccion"] as $intCodigo) {
+                    try {
+                            $eliminar = Ordenproducciondetalle::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["orden-produccion/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                }
+                $this->Actualizartotal($id);
+                $this->Actualizarcantidad($id);
+                $this->redirect(["orden-produccion/view", 'id' => $id]);
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');                
+            }                        
+        }       
         return $this->render('view', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,
@@ -89,7 +118,7 @@ class OrdenProduccionController extends Controller {
         $model = new Ordenproduccion();
         $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-
+        $codigos = Producto::find()->all();        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
@@ -103,6 +132,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
         ]);
     }
 
@@ -117,6 +147,7 @@ class OrdenProduccionController extends Controller {
         $model = $this->findModel($id);
         $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
+        $codigos = Producto::find()->all();
         if (Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $id])->all() or $model->facturado == 1) {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
@@ -128,6 +159,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
         ]);
     }
 
@@ -182,66 +214,42 @@ class OrdenProduccionController extends Controller {
 
     public function actionNuevodetalles($idordenproduccion, $idcliente) {
         $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-        $productosCliente = Producto::find()->where(['=', 'idcliente', $idcliente])->andWhere(['=', 'idtipo', $ordenProduccion->idtipo])->andWhere(['>', 'stock', 0])->all();
-        foreach ($productosCliente as $value) {
-            if ($value->cantidad < $value->stock) {
-                Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
-            }
-        }
+        //$productosCliente = Productodetalle::find()->where(['=', 'idcliente', $idcliente])->andWhere(['=', 'idtipo', $ordenProduccion->idtipo])->andWhere(['>', 'stock', 0])->all();
+        $productocodigo = Producto::find()->where(['=','idcliente',$idcliente])->andWhere(['=','codigo',$ordenProduccion->codigoproducto])->one();        
+        $productosCliente = Productodetalle::find()->where(['=', 'idproducto', $productocodigo->idproducto])->all();            
         $ponderacion = 0;
         $error = 0;
         $totalorden = 0;
         $cantidad = 0;
-        if (isset($_POST["idproducto"])) {
+        if (isset($_POST["idproductodetalle"])) {
             $intIndice = 0;
-            foreach ($_POST["idproducto"] as $intCodigo) {
-                if ($_POST["stock"][$intIndice] > 0) {
-                    $detalles = Ordenproducciondetalle::find()
-                            ->where(['=', 'idordenproduccion', $idordenproduccion])
-                            ->andWhere(['=', 'idproducto', $intCodigo])
-                            ->all();
-                    $reg = count($detalles);
-                    if ($reg == 0) {
-                        $producto = Producto::findOne($intCodigo);
-                        if ($_POST["stock"][$intIndice] <= $producto->cantidad) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible                            
-                            if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
-                                $error = 2;
-                            } else {
-                                $table = new Ordenproducciondetalle();
-                                $table->idproducto = $_POST["idproducto"][$intIndice];
-                                $table->cantidad = $_POST["stock"][$intIndice];
-                                $table->vlrprecio = $_POST["vlrventa"][$intIndice];
-                                $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
-                                $table->subtotal = $_POST["stock"][$intIndice] * $_POST["vlrventa"][$intIndice];
-                                $table->idordenproduccion = $idordenproduccion;
-                                $table->ponderacion = $ordenProduccion->ponderacion;
-                                $table->insert();
-                                $totalorden = $totalorden + $table->subtotal;
-                                $cantidad = $cantidad + $table->cantidad;
-                            }
-                        } else {
-                            $error = 1;
-                        }
-                    }
+            foreach ($_POST["idproductodetalle"] as $intCodigo) {                   
+                $detalles = Ordenproducciondetalle::find()
+                        ->where(['=', 'idordenproduccion', $idordenproduccion])
+                        ->andWhere(['=', 'idproductodetalle', $intCodigo])
+                        ->all();
+                $reg = count($detalles);
+                if ($reg == 0) {                        
+                    $table = new Ordenproducciondetalle();
+                    $table->idproductodetalle = $_POST["idproductodetalle"][$intIndice];
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->vlrprecio = $_POST["vlrventa"][$intIndice];
+                    $table->codigoproducto = $_POST["codigoproducto"][$intIndice];
+                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrventa"][$intIndice];
+                    $table->idordenproduccion = $idordenproduccion;
+                    $table->ponderacion = $ordenProduccion->ponderacion;
+                    $table->insert();                    
                 }
-                $intIndice++;
-            }
-            $ordenProduccion->totalorden = round($totalorden,0);
-            $ordenProduccion->cantidad = $cantidad;
-            $ordenProduccion->update();
-            if ($error == 1) {
-                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
-                if ($error == 2) {
-                    Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
-                }
-            } else {
-                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-            }
-        }
-
+                  $intIndice++;  
+            }                    
+        $this->Actualizartotal($idordenproduccion);
+        $this->Actualizarcantidad($idordenproduccion);
+        $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]); 
+        }                                       
         return $this->render('_formnuevodetalles', [
                     'productosCliente' => $productosCliente,
                     'idordenproduccion' => $idordenproduccion,
+                    'ordenProduccion' => $ordenProduccion,
         ]);
     }
 
@@ -250,36 +258,24 @@ class OrdenProduccionController extends Controller {
         $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
         $error = 0;
         if (Yii::$app->request->post()) {
-
             if ((int) $iddetalleorden) {
                 $table = Ordenproducciondetalle::findOne($iddetalleorden);
-                $producto = Producto::findOne($table->idproducto);
+                $producto = Producto::findOne($table->idproductodetalle);
                 if ($table) {
-
                     $table->cantidad = Html::encode($_POST["cantidad"]);
                     $table->vlrprecio = Html::encode($_POST["vlrprecio"]);
                     $table->subtotal = Html::encode($_POST["cantidad"]) * Html::encode($_POST["vlrprecio"]);
                     $table->idordenproduccion = Html::encode($_POST["idordenproduccion"]);
 
                     $ordenProduccion = Ordenproduccion::findOne($table->idordenproduccion);
-
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden - Html::encode($_POST["subtotal"]);
                     $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                    if (Html::encode($_POST["cantidad"]) <= $producto->stock) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                        if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
-                            $error = 2;
-                        } else {
-                            $table->update();
-                            $ordenProduccion->update();
-                            $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-                        }
-                    } else {
-                        Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
-                        $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-                    }
-                    if ($error == 2) {
-                        Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
-                    }
+                                            
+                    $table->update();
+                    $ordenProduccion->update();
+                    $this->Actualizarcantidad($idordenproduccion);
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                                            
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
                     $tipomsg = "danger";
@@ -301,38 +297,14 @@ class OrdenProduccionController extends Controller {
                     $cantidad = $table->cantidad;
                     $table->cantidad = $_POST["cantidad"][$intIndice];
                     $table->vlrprecio = $_POST["vlrprecio"][$intIndice];
-                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];
-
-                    $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
-                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
-                    $ordenProduccion->cantidad = $ordenProduccion->cantidad - $cantidad;
-                    $ordenProduccion->totalorden = $ordenProduccion->totalorden + $table->subtotal;
-                    $ordenProduccion->cantidad = $ordenProduccion->cantidad - $table->cantidad;
-                    $producto = Producto::findOne($intCodigo);
-                    if ($_POST["cantidad"][$intIndice] <= $table->stock) {//se valida que la cantidad a ingresar no sea mayor a la cantidad disponible
-                        if ($producto->cantidad > $producto->stock and $producto->stock > 0) {
-                            $error = 2;
-                        } else {
-                            $table->update();
-                            $ordenProduccion->update();
-                        }
-                    } else {
-                        $error = 1;
-                    }
+                    $table->subtotal = $_POST["cantidad"][$intIndice] * $_POST["vlrprecio"][$intIndice];                    
+                    $table->update();                        
                 }
                 $intIndice++;
             }
-            if ($error == 1) {
-                Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad disponible');
-                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-            } else {
-                if ($error == 2) {
-                    Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó en la orden completa, generar el descargue de las unidades');
-                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-                } else {
-                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
-                }
-            }
+            $this->Actualizartotal($idordenproduccion);
+            $this->Actualizarcantidad($idordenproduccion);
+            $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);            
         }
         return $this->render('_formeditardetalles', [
                     'mds' => $mds,
@@ -348,10 +320,9 @@ class OrdenProduccionController extends Controller {
                 $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($iddetalleorden);
                 $subtotal = $ordenProduccionDetalle->subtotal;
                 if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden])) {
-                    $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
-                    $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
-                    $ordenProduccion->update();
-                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                    $this->Actualizartotal($idordenproduccion);
+                    $this->Actualizarcantidad($idordenproduccion);
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);                    
                 } else {
                     echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
                 }
@@ -411,61 +382,83 @@ class OrdenProduccionController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
+    protected function Actualizarcantidad($idordenproduccion) {
+        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+        $ordenproducciondetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $cantidad = 0;
+        foreach ($ordenproducciondetalle as $val) {
+            $cantidad = $cantidad + $val->cantidad;
+        }        
+        $ordenProduccion->cantidad = $cantidad;
+        $ordenProduccion->update();
+    }
+    
+    protected function Actualizartotal($idordenproduccion) {
+        $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
+        $ordenproducciondetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        $total = 0;
+        foreach ($ordenproducciondetalle as $val) {
+            $total = $total + $val->subtotal;
+        }        
+        $ordenProduccion->totalorden = round($total,0);
+        $ordenProduccion->update();
+    }
+    
     public function actionProceso() {
-        //if (!Yii::$app->user->isGuest) {
-        $form = new FormFiltroOrdenProduccionProceso();
-        $idcliente = null;
-        $ordenproduccion = null;
-        $idtipo = null;
-        $clientes = Cliente::find()->all();
-        $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        if ($form->load(Yii::$app->request->get())) {
-            if ($form->validate()) {
-                $idcliente = Html::encode($form->idcliente);
-                $ordenproduccion = Html::encode($form->ordenproduccion);
-                $idtipo = Html::encode($form->idtipo);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',28])->all()){
+            $form = new FormFiltroOrdenProduccionProceso();
+            $idcliente = null;
+            $ordenproduccion = null;
+            $idtipo = null;
+            $clientes = Cliente::find()->all();
+            $ordenproducciontipos = Ordenproducciontipo::find()->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $ordenproduccion = Html::encode($form->ordenproduccion);
+                    $idtipo = Html::encode($form->idtipo);
+                    $table = Ordenproduccion::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'idtipo', $idtipo])
+                            ->orderBy('idordenproduccion desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 10,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                } else {
+                    $form->getErrors();
+                }
+            } else {
                 $table = Ordenproduccion::find()
-                        ->andFilterWhere(['=', 'idcliente', $idcliente])
-                        ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
-                        ->andFilterWhere(['=', 'idtipo', $idtipo])
                         ->orderBy('idordenproduccion desc');
                 $count = clone $table;
-                $to = $count->count();
                 $pages = new Pagination([
                     'pageSize' => 10,
-                    'totalCount' => $count->count()
+                    'totalCount' => $count->count(),
                 ]);
                 $model = $table
                         ->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-            } else {
-                $form->getErrors();
             }
-        } else {
-            $table = Ordenproduccion::find()
-                    ->orderBy('idordenproduccion desc');
-            $count = clone $table;
-            $pages = new Pagination([
-                'pageSize' => 10,
-                'totalCount' => $count->count(),
-            ]);
-            $model = $table
-                    ->offset($pages->offset)
-                    ->limit($pages->limit)
-                    ->all();
-        }
 
-        return $this->render('ordenproduccionproceso', [
-                    'model' => $model,
-                    'form' => $form,
-                    'pagination' => $pages,
-                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
-                    'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-        ]);
-        /* }else{
-          return $this->redirect(["site/login"]);
-          } */
+            return $this->render('ordenproduccionproceso', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                        'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
     }
 
     public function actionNuevo_detalle_proceso($id, $iddetalleorden) {
@@ -728,6 +721,17 @@ class OrdenProduccionController extends Controller {
             $tabla->porcentajeproceso = $val->totalproceso / $sumseg * 100;
             $tabla->update();
             
+        }
+    }
+    
+    public function actionCodigo($id){
+        $rows = Producto::find()->where(['idcliente' => $id])->all();
+
+        echo "<option required>Seleccione...</option>";
+        if(count($rows)>0){
+            foreach($rows as $row){
+                echo "<option value='$row->codigo' required>$row->codigo</option>";
+            }
         }
     }
 

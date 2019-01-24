@@ -18,8 +18,8 @@ class ProductoSearch extends Producto
     public function rules()
     {
         return [
-            [['idproducto', 'cantidad', 'stock', 'costoconfeccion', 'vlrventa', 'idcliente', 'activo', 'idprendatipo', 'idtipo'], 'integer'],
-            [['codigoproducto', 'producto', 'observacion', 'fechaproceso', 'usuariosistema'], 'safe'],
+            [['idproducto', 'idcliente', 'activo'], 'integer'],
+            [['observacion', 'fechaproceso', 'usuariosistema','codigo'], 'safe'],
         ];
     }
 
@@ -61,21 +61,16 @@ class ProductoSearch extends Producto
         // grid filtering conditions
         $query->andFilterWhere([
             'idproducto' => $this->idproducto,
-            'cantidad' => $this->cantidad,
-            'stock' => $this->stock,
-            'costoconfeccion' => $this->costoconfeccion,
-            'vlrventa' => $this->vlrventa,
+            
             'idcliente' => $this->idcliente,
             'activo' => $this->activo,
             'fechaproceso' => $this->fechaproceso,
-            'idprendatipo' => $this->idprendatipo,
-            'idtipo' => $this->idtipo,
+            
         ]);
 
-        $query->andFilterWhere(['like', 'codigoproducto', $this->codigoproducto])
-            ->andFilterWhere(['like', 'producto', $this->producto])
-            ->andFilterWhere(['like', 'observacion', $this->observacion])
-            ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);
+        $query->andFilterWhere(['like', 'observacion', $this->observacion])
+              ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema])
+              ->andFilterWhere(['like', 'codigo', $this->usuariosistema]);
 
         return $dataProvider;
     }

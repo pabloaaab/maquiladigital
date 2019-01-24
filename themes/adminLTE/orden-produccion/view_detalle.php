@@ -104,7 +104,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetalleorden ?></td>
-                        <td><?= $val->producto->nombreProducto ?></td>
+                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
                         <td><div class="progress"><b>Operación:&nbsp;</b>

@@ -134,7 +134,7 @@ $view = 'facturaventa';
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetallefactura ?></td>
-                        <td><?= $val->producto->nombreProducto ?></td>
+                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
                         <td><?= '$ '.number_format($val->preciounitario,0) ?></td>

@@ -20,7 +20,9 @@ use app\models\FormRegister;
 use app\models\FormEditRegister;
 use app\models\FormChangepassword;
 use app\models\Users;
+use app\models\UsuarioDetalle;
 use app\models\User;
+use app\models\Permisos;
 
 class SiteController extends Controller {
 
@@ -104,15 +106,69 @@ class SiteController extends Controller {
     }
 
     public function actionView($id) {
+        $usuariodetalles = UsuarioDetalle::find()->where(['=','codusuario',$id])->all();
         if (Yii::$app->user->identity->role == 2) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["codusuario_detalle"])) {
+                    foreach ($_POST["codusuario_detalle"] as $intCodigo) {                        
+                        $eliminar = UsuarioDetalle::findOne($intCodigo);
+                        $eliminar->delete();
+                        $this->redirect(["view", 'id' => $id]);
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } 
             return $this->render('user', [
                         'model' => $this->findModel($id),
+                        'usuariodetalles' => $usuariodetalles
             ]);
         } else {
             return $this->render('usersimple', [
                         'model' => $this->findModel($id),
             ]);
         }
+    }
+    
+    public function actionNewpermiso($id) {
+        $permisos = Permisos::find()->all();
+        $mensaje = "";
+        if(Yii::$app->request->post()) {
+            if (isset($_POST["idpermiso"])) {
+                $intIndice = 0;
+                foreach ($_POST["idpermiso"] as $intCodigo) {
+                    $permiso = Permisos::findOne($intCodigo);
+                    $userspermisos = new UsuarioDetalle();                    
+                    $userspermisosdetalle = UsuarioDetalle::find()
+                            ->where(['=','codusuario',$id])
+                            ->andWhere(['=','id_permiso',$intCodigo])
+                            ->all();                    
+                    $reg = count($userspermisosdetalle);
+                    if ($reg == 0) {
+                        $userspermisos->id_permiso = $intCodigo;                        
+                        $userspermisos->codusuario = $id;
+                        $userspermisos->activo = 0;                        
+                        $userspermisos->insert();                        
+                    }
+                    $intIndice++;
+                }
+                $this->redirect(["site/view",'id' => $id]);
+            }else{
+                $mensaje = "Debe seleccionar al menos un registro";
+            }
+        }
+
+        return $this->render('newpermiso', [
+            'permisos' => $permisos,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+
+        ]);
+    }
+    
+    public function actionSinpermiso() {        
+        Yii::$app->getSession()->setFlash('danger', 'No tiene permiso para acceder a este menú, comuniquese con el administrador');
+        return $this->render('sinpermiso', [                    
+        ]);        
     }
 
     protected function findModel($id) {

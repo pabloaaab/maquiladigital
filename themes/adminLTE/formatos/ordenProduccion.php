@@ -132,7 +132,7 @@ class PDF extends FPDF {
         $pdf->SetFont('Arial', '', 9);
         $items = count($detalles);
         foreach ($detalles as $detalle) {
-            $pdf->Cell(120, 5, $detalle->producto->nombreProducto.'-'.$detalle->codigoproducto, 0, 0, 'J');          
+            $pdf->Cell(120, 5, $detalle->productodetalle->prendatipo->prenda.' '.$detalle->productodetalle->prendatipo->talla->talla.' - '.$detalle->codigoproducto, 0, 0, 'J');          
             $pdf->Cell(21, 5, $detalle->cantidad, 0, 0, 'R');
             $pdf->Cell(25, 4, number_format($detalle->vlrprecio, 2, '.', ','), 0, 0, 'R');
             $pdf->Cell(25, 4, number_format($detalle->subtotal, 2, '.', ','), 0, 0, 'R');
@@ -159,7 +159,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(25, 16, 'TOTAL:', 1, 'L');
         $pdf->SetXY(176, 148);
-        $pdf->MultiCell(25, 16, number_format($model->totalorden, 0, '.', ','), 0, 'R');
+        $pdf->MultiCell(25, 16, number_format($model->totalorden, 0, '.', ','), 1, 'R');
         
         
         

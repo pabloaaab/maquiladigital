@@ -27,28 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'idproducto',
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
-            [
-                'attribute' => 'codigoproducto',
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
-            [
-                'attribute' => 'producto',
-                'value' => function($model){
-                    $productos = Producto::findOne($model->idproducto);
-                    return "{$productos->prendatipo->prenda} - {$productos->prendatipo->talla->talla} - {$productos->prendatipo->talla->sexo}";
-                },
-                'contentOptions' => ['class' => 'col-lg-3'],
-            ],
-            [
-                'attribute' => 'cantidad',
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
-            [
-                'attribute' => 'stock',
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],            
             [
                 'attribute' => 'idcliente',
                 'value' => function($model){
@@ -56,17 +36,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-5'],
+            ],
+            [               
+                'attribute' => 'fechaproceso',
+                'value' => function($model){
+                    $producto = Producto::findOne($model->idproducto);
+                    return date("Y-m-d", strtotime("$producto->fechaproceso"));
+                },
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [
-                'attribute' => 'idtipo',
-                'value' => function($model){
-                    $ordentipo = Ordenproducciontipo::findOne($model->idtipo);
-                    return $ordentipo->tipo;
-                },
-                'filter' => ArrayHelper::map(Ordenproducciontipo::find()->all(),'idtipo','tipo'),
+                'attribute' => 'codigo',
                 'contentOptions' => ['class' => 'col-lg-1'],
-            ],            
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
             ],

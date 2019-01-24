@@ -28,6 +28,8 @@ use Yii;
  * @property int $porcentaje_cantidad
  * @property int $ponderacion
  * @property int $segundosficha
+ * @property string $codigoproducto
+ * @property string $duracion
  *
  * @property Facturaventa[] $facturaventas
  * @property Cliente $cliente
@@ -49,13 +51,13 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext'], 'required', 'message' => 'Campo requerido'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto'], 'required', 'message' => 'Campo requerido'],            
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
             [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha'], 'number'],
-            [['valorletras', 'observacion'], 'string'],
-            [['ordenproduccion'], 'string', 'max' => 25],
-            [['usuariosistema'], 'string', 'max' => 50],
+            [['valorletras', 'observacion','codigoproducto'], 'string'],
+            [['ordenproduccion','duracion'], 'string', 'max' => 25],
+            [['usuariosistema'], 'string', 'max' => 50],            
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idtipo'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciontipo::className(), 'targetAttribute' => ['idtipo' => 'idtipo']],
         ];
@@ -87,6 +89,8 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'porcentaje_proceso' => '% Proceso',
             'porcentaje_cantidad' => '% cantidad',
             'ponderacion' => 'Ponderación',
+            'codigoproducto' => 'Código Producto',
+            'duracion' => 'Duración',
         ];
     }
 
@@ -138,4 +142,5 @@ class Ordenproduccion extends \yii\db\ActiveRecord
         }
         return $facturar;
     }
+        
 }

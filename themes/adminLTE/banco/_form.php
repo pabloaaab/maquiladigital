@@ -29,9 +29,8 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'nitbanco')->textInput(['maxlength' => true]) ?>    
         </div>
         <div class="row">
-<?= $form->field($model, 'entidad')->textInput(['maxlength' => true]) ?>  					
+            <?= $form->field($model, 'entidad')->textInput(['maxlength' => true]) ?>  					
         </div>
-
         <div class="row">
             <?= $form->field($model, 'telefonobanco')->textInput(['maxlength' => true]) ?>
         </div>

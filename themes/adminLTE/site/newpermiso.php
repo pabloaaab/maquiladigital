@@ -3,26 +3,20 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use yii\bootstrap\Modal;
-use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Facturaventa;
-use app\models\Producto;
-use app\models\Facturaventadetalle;
-use app\models\FacturaventaSearch;
-use yii\web\Controller;
+use app\models\Matriculados;
+use app\models\Inscritos;
+use app\models\PagosPeriodo;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use kartik\select2\Select2;
 use yii\web\Session;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
+use kartik\date\DatePicker;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Ordenproduccion */
-/* @var $form yii\widgets\ActiveForm */
+$this->title = 'Nuevo Permiso';
 ?>
 
 <?php $form = ActiveForm::begin([
@@ -36,47 +30,41 @@ use yii\db\ActiveQuery;
 ]); ?>
 
 <?php
-    if ($mensaje != ""){
-        ?> <div class="alert alert-danger"><?= $mensaje ?></div> <?php
-    }
+if ($mensaje != ""){
+    ?> <div class="alert alert-danger"><?= $mensaje ?></div> <?php
+}
 ?>
 
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Eliminar detalle Factura Venta
+            Permisos
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Producto</th>
-                    <th scope="col">Código</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Costo</th>
-                    <th scope="col">Total</th>    
+                    <th scope="col">Menú Operación</th>
+                    <th scope="col">Permiso</th>                    
                     <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($mds as $val): ?>
-                <tr>
-                    <td><?= $val->iddetallefactura ?></td>
-                    <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
-                    <td><?= $val->codigoproducto ?></td>
-                    <td><?= $val->cantidad ?></td>
-                    <td><?= '$ '.number_format($val->preciounitario,0) ?></td>
-                    <td><?= '$ '.number_format($val->total,0) ?></td>
-                    <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallefactura ?>"></td>
+                <?php foreach ($permisos as $val): ?>
+                <tr>                    
+                    <td><?= $val->id_permiso ?></td>
+                    <td><?= $val->menu_operacion ?></td>
+                    <td><?= $val->permiso ?></td>                    
+                    <td><input type="checkbox" name="idpermiso[]" value="<?= $val->id_permiso ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['facturaventa/view', 'id' => $idfactura], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['site/view','id' => $id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
 
     </div>

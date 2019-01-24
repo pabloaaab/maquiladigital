@@ -11,6 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
+use app\models\UsuarioDetalle;
 
 /**
  * CostoFijoController implements the CRUD actions for CostoFijo model.
@@ -73,13 +74,16 @@ class CostoFijoController extends Controller
     }
     
     public function actionCostofijodetalle($id) {                
-                
-        $costofijo = CostoFijo::findOne($id);
-        $costofijodetalle = CostoFijoDetalle::find()->where(['=', 'id_costo_fijo', $id])->all();
-        return $this->render('costofijodetalle', [
-                    'costofijo' => $costofijo,
-                    'costofijodetalle' => $costofijodetalle,
-        ]);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',19])->all()){        
+            $costofijo = CostoFijo::findOne($id);
+            $costofijodetalle = CostoFijoDetalle::find()->where(['=', 'id_costo_fijo', $id])->all();
+            return $this->render('costofijodetalle', [
+                        'costofijo' => $costofijo,
+                        'costofijodetalle' => $costofijodetalle,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
           
     protected function Totales($id)

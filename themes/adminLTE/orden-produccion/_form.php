@@ -30,13 +30,16 @@ $form = ActiveForm::begin([
         Información Orden Producción
     </div>
     <div class="panel-body">
-        <div class="row">                        
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
+        <div class="row">
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('ordenproduccion/codigo').'", { id: $(this).val() } ) .done(function( data ) {
+        $( "#'.Html::getInputId($model, 'codigoproducto',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'codigoproducto')->dropDownList($codigos,['prompt' => 'Seleccione un codigo...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>
         </div>
-
         <div class="row">
             <?= $form->field($model, 'ordenproduccion')->textInput(['maxlength' => true]) ?>
         </div>
@@ -74,9 +77,11 @@ $form = ActiveForm::begin([
                     'todayHighlight' => true]])
             ?>
         </div>
-
         <div class="row">
             <?= $form->field($model, 'ponderacion')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'duracion')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>

@@ -17,6 +17,7 @@ use yii\web\UploadedFile;
 use app\models\Ordenproduccion;
 use app\models\Cliente;
 use app\models\Producto;
+use app\models\Productodetalle;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -92,17 +93,32 @@ $view = 'orden-produccion';
                     <td><?= Html::encode($model->cantidad) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
+                    <td><?= Html::encode($model->codigoproducto) ?></td>
+                    <th><?= Html::activeLabel($model, 'duracion') ?>:</th>
+                    <td><?= Html::encode($model->duracion) ?></td>
                     <th><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
+                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>                                        
                 </tr>
             </table>
         </div>
     </div>
-
+    <?php $form = ActiveForm::begin([
+    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-3 control-label'],
+        'options' => []
+    ],
+    ]); ?>
     <div class="table-responsive">
         <div class="panel panel-success ">
             <div class="panel-heading">
@@ -119,13 +135,16 @@ $view = 'orden-produccion';
                         <th scope="col">Precio</th>
                         <th scope="col">Subtotal</th>
                         <th></th>
+                        <?php if ($model->autorizado == 0){ ?>
+                            <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
+                        <?php } ?>    
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetalleorden ?></td>
-                        <td><?= $val->producto->nombreProducto ?></td>
+                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                         <td><?= $val->codigoproducto ?></td>
                         <td><?= $val->cantidad ?></td>
                         <td><?= '$ '.number_format($val->vlrprecio,0) ?></td>
@@ -198,6 +217,7 @@ $view = 'orden-produccion';
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
                             </td>
+                            <td><input type="checkbox" id="seleccion" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
                         <?php } ?>
                     </tr>
                     </tbody>
@@ -208,11 +228,24 @@ $view = 'orden-produccion';
                 <div class="panel-footer text-right">
                     <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger']) ?>
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger", 'name' => 'eliminar']) ?>
                 </div>
             <?php } ?>
         </div>
     </div>
-
-
+    <?php ActiveForm::end(); ?>
 </div>
+
+<script type="text/javascript">
+	function marcar(source) 
+	{
+		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
+		{
+			if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+			{
+				checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+			}
+		}
+	}
+</script>

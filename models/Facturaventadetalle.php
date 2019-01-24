@@ -9,13 +9,13 @@ use Yii;
  *
  * @property int $iddetallefactura
  * @property int $idfactura
- * @property int $idproducto
+ * @property int $idproductodetalle
  * @property string $codigoproducto
  * @property int $cantidad
  * @property double $preciounitario
  * @property double $total
  *
- * @property Producto $producto
+ * @property Productodetalle $productodetalle
  * @property Facturaventa $factura
  */
 class Facturaventadetalle extends \yii\db\ActiveRecord
@@ -34,11 +34,11 @@ class Facturaventadetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idfactura', 'idproducto', 'codigoproducto', 'cantidad', 'preciounitario', 'total'], 'required'],
-            [['idfactura', 'idproducto', 'cantidad'], 'integer'],
+            [['idfactura', 'idproductodetalle', 'codigoproducto', 'cantidad', 'preciounitario', 'total'], 'required'],
+            [['idfactura', 'idproductodetalle', 'cantidad'], 'integer'],
             [['preciounitario', 'total'], 'number'],
             [['codigoproducto'], 'string', 'max' => 15],
-            [['idproducto'], 'exist', 'skipOnError' => true, 'targetClass' => Producto::className(), 'targetAttribute' => ['idproducto' => 'idproducto']],
+            [['idproductodetalle'], 'exist', 'skipOnError' => true, 'targetClass' => Productodetalle::className(), 'targetAttribute' => ['idproductodetalle' => 'idproductodetalle']],
             [['idfactura'], 'exist', 'skipOnError' => true, 'targetClass' => Facturaventa::className(), 'targetAttribute' => ['idfactura' => 'idfactura']],
         ];
     }
@@ -51,7 +51,7 @@ class Facturaventadetalle extends \yii\db\ActiveRecord
         return [
             'iddetallefactura' => 'Iddetallefactura',
             'idfactura' => 'Idfactura',
-            'idproducto' => 'Idproducto',
+            'idproductodetalle' => 'Idproductodetalle',
             'codigoproducto' => 'Codigoproducto',
             'cantidad' => 'Cantidad',
             'preciounitario' => 'Preciounitario',
@@ -62,9 +62,9 @@ class Facturaventadetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProducto()
+    public function getProductodetalle()
     {
-        return $this->hasOne(Producto::className(), ['idproducto' => 'idproducto']);
+        return $this->hasOne(Productodetalle::className(), ['idproductodetalle' => 'idproductodetalle']);
     }
 
     /**

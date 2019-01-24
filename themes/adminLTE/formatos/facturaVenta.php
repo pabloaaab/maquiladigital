@@ -140,8 +140,8 @@ class PDF extends FPDF {
         $pdf->SetFont('Arial', '', 8);
         $cant = 0;
         foreach ($detalles as $detalle) {            
-            $pdf->Cell(13, 4, $detalle->producto->codigoproducto, 0, 0, 'L');
-            $pdf->Cell(95, 4, $detalle->producto->nombreProducto, 0, 0, 'L');
+            $pdf->Cell(13, 4, $detalle->codigoproducto, 0, 0, 'L');
+            $pdf->Cell(95, 4, $detalle->productodetalle->prendatipo->prenda.' / '.$detalle->productodetalle->prendatipo->talla->talla, 0, 0, 'L');
             $pdf->Cell(18, 4, $detalle->cantidad, 0, 0, 'R');
             $pdf->Cell(20, 4, number_format($detalle->preciounitario, 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(20, 4, number_format(0, 0, '.', ','), 0, 0, 'R');

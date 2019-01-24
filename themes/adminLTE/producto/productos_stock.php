@@ -90,10 +90,7 @@ $formulario = ActiveForm::begin([
             <thead>
                 <tr>
                     <th scope="col">Id Producto</th>                
-                    <th scope="col">Cliente</th>                
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Cantidad</th>
-                    <th scope="col">Stock</th>
+                    <th scope="col">Cliente</th>                                                        
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -101,10 +98,7 @@ $formulario = ActiveForm::begin([
     <?php foreach ($model as $val): ?>
             <tr>
                 <td><?= $val->idproducto ?></td>                
-                <td><?= $val->cliente->nombrecorto ?></td>
-                <td><?= $val->ordenproducciontipo->tipo ?></td>                
-                <td><?= $val->cantidad ?></td>
-                <td><?= $val->stock ?></td>                
+                <td><?= $val->cliente->nombrecorto ?></td>                                                              
                 <td>
                     <?php
                     $dato = 0;
@@ -113,7 +107,7 @@ $formulario = ActiveForm::begin([
                     $nrofactura = "";                   
                     $cantidad = 0;
                     $idordenproduccion = "";
-                    $facturas = Facturaventadetalle::find()->where(['=', 'idproducto', $val->idproducto])->orderBy('idfactura desc')->all();
+                    /*$facturas = Facturaventadetalle::find()->where(['=', 'idproductodetalle', $val->idproductodetalle])->orderBy('idfactura desc')->all();
                     foreach ($facturas as $value) {
                         $factura = Facturaventa::findOne($value);
                         $idfactura = $factura->idfactura;
@@ -124,7 +118,7 @@ $formulario = ActiveForm::begin([
                         }else{
                             $cantidad = 0;                            
                         }
-                    }                    
+                    }*/                    
                     ?>
                     <?php
                     if ($facturas == null){?>                        

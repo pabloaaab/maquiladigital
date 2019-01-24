@@ -30,6 +30,7 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
+use app\models\UsuarioDetalle;
 
 
 /**
@@ -58,13 +59,17 @@ class FacturaventaController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FacturaventaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',26])->all()){
+            $searchModel = new FacturaventaSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
 
     /**
@@ -201,11 +206,11 @@ class FacturaventaController extends Controller
                     $ordenProducciondetalle = Ordenproducciondetalle::find()->where(['iddetalleorden' => $intCodigo])->one();
                     $detalles = Facturaventadetalle::find()
                         ->where(['=', 'idfactura', $idfactura])
-                        ->andWhere(['=', 'idproducto', $ordenProducciondetalle->idproducto])
+                        ->andWhere(['=', 'idproductodetalle', $ordenProducciondetalle->idproductodetalle])
                         ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
-                        $table->idproducto = $ordenProducciondetalle->idproducto;
+                        $table->idproductodetalle = $ordenProducciondetalle->idproductodetalle;
                         $table->cantidad = $ordenProducciondetalle->cantidad;
                         $table->preciounitario = $ordenProducciondetalle->vlrprecio;
                         $table->codigoproducto = $ordenProducciondetalle->codigoproducto;
@@ -510,7 +515,7 @@ class FacturaventaController extends Controller
                 $consecutivo->update();
                 $ordenProduccion->facturado = 1;
                 $ordenProduccion->update();
-                $this->afectarcantidadfacturada($id);//se resta o descuenta las cantidades facturadas en los productos por cliente
+                //$this->afectarcantidadfacturada($id);//se resta o descuenta las cantidades facturadas en los productos por cliente
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{
                 Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado.');
