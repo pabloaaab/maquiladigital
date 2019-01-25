@@ -105,6 +105,7 @@ use app\models\Ordenproducciondetalle;
                 </div>
                 <div class="panel-footer text-right">
                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                    <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimirficha', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>
                     <?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir/Cerrar", ["class" => "btn btn-success", 'name' => 'ac']) ?>
                     <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Editar", ["class" => "btn btn-primary", 'name' => 'editar']) ?>
                     <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger", 'name' => 'eliminar']) ?>

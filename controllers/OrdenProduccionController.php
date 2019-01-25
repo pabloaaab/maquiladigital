@@ -374,6 +374,13 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
+    public function actionImprimirficha($id) {
+
+        return $this->render('../formatos/fichaOperaciones', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
+    
     protected function findModel($id) {
         if (($model = Ordenproduccion::findOne($id)) !== null) {
             return $model;
