@@ -99,4 +99,16 @@ class Producto extends \yii\db\ActiveRecord
         }
         return $activo;
     }
+    
+    public function getCodigonombre()
+    {
+        $productoprendas = Productodetalle::find()->where(['=','idproducto',$this->idproducto])->one();
+        if ($productoprendas){
+            return $nombreproducto = $this->codigo.' - '.$productoprendas->prendatipo->prenda;
+        }else{
+            return $nombreproducto = $this->codigo.' - '."sin detalles, por favor ingresar detalles al producto";
+            //$this->addError($attribute, "El producto no tiene detalles");
+        }
+    }
+        
 }

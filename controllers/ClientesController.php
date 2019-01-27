@@ -122,7 +122,7 @@ class ClientesController extends Controller {
                 }
 
                 if ($table->insert()) {
-                    $this->redirect(["clientes/view", 'id' => $table->idcliente]);
+                    $this->redirect(["clientes/index"]);
                 } else {
                     $msg = "error";
                 }
@@ -179,6 +179,7 @@ class ClientesController extends Controller {
                     }
                     if ($table->update()) {
                         $msg = "El registro ha sido actualizado correctamente";
+                        $this->redirect(["clientes/index"]);
                     } else {
                         $msg = "El registro no sufrio ningun cambio";
                         $tipomsg = "danger";

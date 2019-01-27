@@ -31,23 +31,21 @@ use yii\helpers\Url;
         <h4>Información Recibo Caja</h4>
     </div>
     <div class="panel-body">
-        <div class="row">
-            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
-                'data' => $clientes,
-                'options' => ['prompt' => 'Seleccione un cliente ...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
+        <div class="row">            
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
         </div>
+        <div class="row">                        
+            <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
+        </div>        
         <div class="row">
-            <?= $form->field($model, 'idtiporecibo')->widget(Select2::classname(), [
-                'data' => $tiporecibos,
-                'options' => ['prompt' => 'Seleccione un tipo de recibo ...'],
+            
+            <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
@@ -57,14 +55,6 @@ use yii\helpers\Url;
                     'allowClear' => true
                 ],
             ]); ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model,'fechapago')->widget(DatePicker::className(),['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>

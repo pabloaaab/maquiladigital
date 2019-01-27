@@ -421,7 +421,7 @@ class RecibocajaController extends Controller
                     $model->valorpagado = $total;
                     //$model->fechapago = date('Y-m-d');
                     //generar consecutivo numero de la nota credito
-                    $consecutivo = Consecutivo::findOne(3);//2 nota credito
+                    $consecutivo = Consecutivo::findOne(3);//2 recibo de caja
                     $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                     $model->numero = $consecutivo->consecutivo;
                     $model->update();

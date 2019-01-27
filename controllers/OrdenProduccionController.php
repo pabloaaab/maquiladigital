@@ -132,7 +132,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
         ]);
     }
 
@@ -159,7 +159,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
         ]);
     }
 
@@ -374,10 +374,11 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-    public function actionImprimirficha($id) {
+    public function actionImprimirficha($id,$iddetalleorden) {
 
         return $this->render('../formatos/fichaOperaciones', [
                     'model' => $this->findModel($id),
+                    'iddetalleorden' => $iddetalleorden
         ]);
     }
     
@@ -574,6 +575,37 @@ class OrdenProduccionController extends Controller {
                     }
                     $this->progresocantidad($iddetalleorden, $idordenproduccion);
                 }
+                //se replica los procesos a detalles que contengan el mismo codigo de producto, para agilizar la insercion de cada uno de las operaciones por detalle            
+                $detallesordenproduccion = Ordenproducciondetalle::find()
+                        ->where(['<>', 'iddetalleorden', $iddetalleorden])
+                        ->andWhere(['idordenproduccion' => $idordenproduccion])
+                        ->all();
+                foreach ($detallesordenproduccion as $dato) {
+                    if ($dato->codigoproducto == $detalle->codigoproducto) {
+                        $detallesprocesos = Ordenproducciondetalleproceso::find()->where(['iddetalleorden' => $dato->iddetalleorden])->all();
+                        foreach ($detallesprocesos as $val) {
+                            $detallesp = Ordenproducciondetalleproceso::find()
+                                    ->where(['=', 'idproceso', $val->idproceso])
+                                    ->andWhere(['=', 'iddetalleorden', $dato->iddetalleorden])
+                                    ->all();
+                            $reg2 = count($detallesp);
+                            if ($reg2!= 0) {
+                                $datoaguardar = Ordenproducciondetalleproceso::find()->where(['=','idproceso',$val->idproceso])->andWhere(['=','iddetalleorden',$iddetalleorden])->one();
+                                $tableprocesos = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
+                                //$tableprocesos->idproceso = $val->idproceso;
+                                //$tableprocesos->proceso = $val->proceso;
+                                $tableprocesos->duracion = $datoaguardar->duracion;
+                                $tableprocesos->ponderacion = $datoaguardar->ponderacion;
+                                $tableprocesos->total = $datoaguardar->total;
+                                //$tableprocesos->cantidad_operada = 0;
+                                $tableprocesos->totalproceso = $datoaguardar->totalproceso;
+                                //$tableprocesos->iddetalleorden = $dato->iddetalleorden;
+                                $tableprocesos->update();
+                            }
+                        }
+                //fin replicacion ediccion    
+                    }
+                }
             }
             if (isset($_POST["eliminar"])) {
                 if (isset($_POST["iddetalleproceso2"])) {
@@ -693,8 +725,14 @@ class OrdenProduccionController extends Controller {
                 $valor++;
             }
         }
-        $cantidaddetalle = $tabla->cantidad * $cont;        
-        $porcentajecantidad = $cantidadoperada / $cantidaddetalle * 100;
+        if ($cont == 0){
+            $cantidaddetalle = 0;        
+            $porcentajecantidad = 0;
+        }else{
+            $cantidaddetalle = $tabla->cantidad * $cont;        
+            $porcentajecantidad = $cantidadoperada / $cantidaddetalle * 100;
+        }
+        
         $tabla->porcentaje_cantidad = $porcentajecantidad;
         if ($valor == 0){
             $tabla->cantidad_operada = $cantidadoperada;
@@ -730,9 +768,11 @@ class OrdenProduccionController extends Controller {
         foreach ($detallesprocesos as $val) {
             $tabla = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
             $tabla->porcentajeproceso = $val->totalproceso / $sumseg * 100;
-            $tabla->update();
-            
+            $tabla->update();            
         }
+        $ordenproduccion = Ordenproduccion::findOne($detalleorden->idordenproduccion);
+        $ordenproduccion->segundosficha = $sumsegficha;
+        $ordenproduccion->update();
     }
     
     public function actionCodigo($id){
@@ -741,7 +781,7 @@ class OrdenProduccionController extends Controller {
         echo "<option required>Seleccione...</option>";
         if(count($rows)>0){
             foreach($rows as $row){
-                echo "<option value='$row->codigo' required>$row->codigo</option>";
+                echo "<option value='$row->codigo' required>$row->codigonombre</option>";
             }
         }
     }

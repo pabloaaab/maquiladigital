@@ -28,7 +28,7 @@ class FormRegister extends model{
             ['username', 'usuario_existe'],
 
             ['nombrecompleto', 'match', 'pattern' => "/^.{3,50}$/", 'message' => 'Mínimo 3 y máximo 50 caracteres'],
-            ['nombrecompleto', 'match', 'pattern' => "/^[a-z]+$/i", 'message' => 'Sólo se aceptan letras'],
+            ['nombrecompleto', 'match', 'pattern' => "/^[a-z ]+$/i", 'message' => 'Sólo se aceptan letras'],
 
             ['emailusuario', 'match', 'pattern' => "/^.{5,80}$/", 'message' => 'Mínimo 5 y máximo 80 caracteres'],
             ['emailusuario', 'email', 'message' => 'Formato no válido'],

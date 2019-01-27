@@ -7,12 +7,15 @@ use app\models\Producto;
 use app\models\Matriculaempresa;
 use app\models\Municipio;
 use app\models\Departamento;
+use app\models\Ordenproducciondetalleproceso;
 
 class PDF extends FPDF {
 
     function Header() {
         $idordenproduccion = $GLOBALS['idordenproduccion'];
+        $iddetalleorden = $GLOBALS['iddetalle'];
         $ordenproduccion = Ordenproduccion::findOne($idordenproduccion);
+        $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
         $config = Matriculaempresa::findOne(901189320);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);        
@@ -73,22 +76,20 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("PRODUCTO:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
-        $this->Cell(100, 5, utf8_decode(''), 0, 0, 'J');
+        $this->Cell(100, 5, utf8_decode($detalleorden->productodetalle->prendatipo->prenda.' / '.$detalleorden->productodetalle->prendatipo->talla->talla), 0, 0, 'J');
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(33, 5, utf8_decode("TIPO ORDEN:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
         $this->Cell(40, 5, utf8_decode($ordenproduccion->tipo->tipo), 0, 0, 'J');        
         //Lineas del encabezado
         $this->Line(10, 86, 10, 140);//x1,y1,x2,y2        
-        $this->Line(130, 86, 130, 140);
-        $this->Line(151, 86, 151, 140);
+        $this->Line(20, 86, 20, 140);
+        $this->Line(113, 86, 113, 140);
+        $this->Line(143, 86, 143, 140);
         $this->Line(176, 86, 176, 140);
         $this->Line(201, 86, 201, 140);
         $this->Line(10, 140, 201, 140); //linea horizontal inferior x1,y1,x2,y2
-        
-        //Linea de las observacines
-        $this->Line(10, 148, 10, 164); //linea vertical
-        $this->Line(10, 164, 151, 164); //linea horizontal inferior x1,y1,x2,y2
+                
         //Detalle factura
         $this->EncabezadoDetalles();
     }
@@ -103,7 +104,7 @@ class PDF extends FPDF {
         $this->SetFont('', 'B', 8);
 
         //creamos la cabecera de la tabla.
-        $w = array(10,  110, 21, 25, 25);
+        $w = array(10,  93, 30, 33, 25);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
@@ -117,16 +118,19 @@ class PDF extends FPDF {
         $this->Ln(5);
     }
 
-    function Body($pdf, $model) {
-        $detalles = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
+    function Body($pdf, $procesos) {
+        //$detalles = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 9);
-        $items = count($detalles);
-        foreach ($detalles as $detalle) {
-            $pdf->Cell(120, 5, $detalle->productodetalle->prendatipo->prenda.' '.$detalle->productodetalle->prendatipo->talla->talla.' - '.$detalle->codigoproducto, 0, 0, 'J');          
-            $pdf->Cell(21, 5, $detalle->cantidad, 0, 0, 'R');
-            $pdf->Cell(25, 4, number_format($detalle->vlrprecio, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(25, 4, number_format($detalle->subtotal, 2, '.', ','), 0, 0, 'R');
+        $items = count($procesos);
+        $totalsegundos = 0;
+        foreach ($procesos as $detalle) {
+            $totalsegundos = $totalsegundos + $detalle->total;
+            $pdf->Cell(10, 5, $detalle->iddetalleproceso, 0, 0, 'J');          
+            $pdf->Cell(93, 5, utf8_decode($detalle->proceso), 0, 0, 'L');
+            $pdf->Cell(30, 4, $detalle->duracion,0,0, 'R');
+            $pdf->Cell(33, 4, $detalle->ponderacion,0,0, 'R');
+            $pdf->Cell(25, 4, number_format($detalle->total,1),0,0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
@@ -135,22 +139,10 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(71, 8, 'ITEMS: '.$items, 1, 'J');
         $pdf->SetXY(81, 140);
-        $pdf->MultiCell(70, 8, 'CANTIDAD: '.$model->cantidad, 1, 'J');
-        $pdf->SetXY(151, 140);
-        $pdf->MultiCell(25, 8, 'SUBTOTAL:', 1, 'L');
-        $pdf->SetXY(176, 140);
-        $pdf->MultiCell(25, 8, number_format($model->totalorden, 0, '.', ','), 1, 'R');
-        $pdf->SetXY(10, 149);
-        $this->SetFont('Arial', 'B', 10);
-        $pdf->MultiCell(29, 6, 'Observaciones:', 0, 'J');
-        $pdf->SetXY(38, 150);
-        $this->SetFont('Arial', '', 8);
-        $pdf->MultiCell(112, 4, utf8_decode($model->observacion), 0, 'J');
-        $pdf->SetXY(151, 148);
-        $this->SetFont('Arial', 'B', 8);
-        $pdf->MultiCell(25, 16, 'TOTAL:', 1, 'L');
-        $pdf->SetXY(176, 148);
-        $pdf->MultiCell(25, 16, number_format($model->totalorden, 0, '.', ','), 1, 'R');
+        $pdf->MultiCell(62, 8, 'TOTAL SEGUNDOS: '.$totalsegundos, 1, 'J');
+        $pdf->SetXY(143, 140);        
+        $pdf->MultiCell(58, 8, 'TOTAL MINUTOS: '.(number_format($totalsegundos / 60 ,1)), 1, 'J');
+        
         
         
         
@@ -167,13 +159,16 @@ class PDF extends FPDF {
 }
 
 global $idordenproduccion;
+global $iddetalle;
 $idordenproduccion = $model->idordenproduccion;
+$iddetalle = $iddetalleorden;
+$procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalle])->orderBy('proceso asc')->all();
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->Body($pdf, $model);
+$pdf->Body($pdf, $procesos);
 $pdf->AliasNbPages();
 $pdf->SetFont('Times', '', 10);
-$pdf->Output("FichaOperaciones$model->idordenproduccion.pdf", 'D');
+$pdf->Output("FichaOperaciones$iddetalleorden.pdf", 'D');
 
 exit;

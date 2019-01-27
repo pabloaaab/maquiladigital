@@ -53,7 +53,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
         return [
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto'], 'required', 'message' => 'Campo requerido'],            
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad'], 'integer'],
-            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],
+            [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],            
             [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha'], 'number'],
             [['valorletras', 'observacion','codigoproducto'], 'string'],
             [['ordenproduccion','duracion'], 'string', 'max' => 25],
@@ -141,6 +141,6 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             $facturar = "NO";
         }
         return $facturar;
-    }
+    }           
         
 }
