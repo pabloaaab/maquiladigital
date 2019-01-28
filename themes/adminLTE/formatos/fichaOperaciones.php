@@ -82,13 +82,13 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 8);
         $this->Cell(40, 5, utf8_decode($ordenproduccion->tipo->tipo), 0, 0, 'J');        
         //Lineas del encabezado
-        $this->Line(10, 86, 10, 140);//x1,y1,x2,y2        
-        $this->Line(20, 86, 20, 140);
-        $this->Line(113, 86, 113, 140);
-        $this->Line(143, 86, 143, 140);
-        $this->Line(176, 86, 176, 140);
-        $this->Line(201, 86, 201, 140);
-        $this->Line(10, 140, 201, 140); //linea horizontal inferior x1,y1,x2,y2
+        $this->Line(10, 86, 10, 220);//x1,y1,x2,y2        
+        $this->Line(20, 86, 20, 220);
+        $this->Line(113, 86, 113, 220);
+        $this->Line(143, 86, 143, 220);
+        $this->Line(176, 86, 176, 220);
+        $this->Line(201, 86, 201, 220);
+        //$this->Line(10, 200, 201, 140); //linea horizontal inferior x1,y1,x2,y2
                 
         //Detalle factura
         $this->EncabezadoDetalles();
@@ -135,12 +135,12 @@ class PDF extends FPDF {
             $pdf->SetAutoPageBreak(true, 20);
         }
         $this->SetFillColor(200, 200, 200);
-        $pdf->SetXY(10, 140);
+        $pdf->SetXY(10, 220);
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(71, 8, 'ITEMS: '.$items, 1, 'J');
-        $pdf->SetXY(81, 140);
+        $pdf->SetXY(81, 220);
         $pdf->MultiCell(62, 8, 'TOTAL SEGUNDOS: '.$totalsegundos, 1, 'J');
-        $pdf->SetXY(143, 140);        
+        $pdf->SetXY(143, 220);        
         $pdf->MultiCell(58, 8, 'TOTAL MINUTOS: '.(number_format($totalsegundos / 60 ,1)), 1, 'J');
         
         
