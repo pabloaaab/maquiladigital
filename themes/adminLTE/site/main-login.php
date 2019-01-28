@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use app\models\Matriculaempresa;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
@@ -21,7 +22,8 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <a href="#"><b>Maquila</b>Digital</a>
+        <?php $empresa = Matriculaempresa::findOne(901189320) ;?>
+        <a href="#"><b><?= $empresa->nombresistema ?></a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -67,4 +69,9 @@ $fieldOptions2 = [
 
     </div>
     <!-- /.login-box-body -->
+    
 </div><!-- /.login-box -->
+
+<div align="center">
+    <img src="dist/images/logos/logomaquila.png" align="center" width="12%" height="12%">
+</div>

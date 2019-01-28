@@ -56,7 +56,7 @@ class CostoProduccionDiariaController extends Controller {
                                     $costodiario->cantidad_diaria = round(($costodiario->cantidad_x_hora * $horaslaboradas) * $operarias,2);
                                     $costodiario->tiempo_entrega_dias = round($costodiario->cantidad / $costodiario->cantidad_diaria,2);
                                     $costodiario->nro_horas = round($horaslaboradas * $costodiario->tiempo_entrega_dias,2);
-                                    $costodiario->dias_entrega = round($costodiario->nro_horas / 8,2);
+                                    $costodiario->dias_entrega = round($costodiario->nro_horas / $horaslaboradas);
                                     $costodiario->costo_muestra_operaria = round($ordenproduccion->segundosficha / 60 * $costolaboralhora->valor_minuto,0);
                                     $costodiario->costo_x_hora = round($costodiario->costo_muestra_operaria * $costodiario->cantidad_x_hora,0);
                                     $costodiario->update();

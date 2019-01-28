@@ -1,16 +1,19 @@
 <?php
-
+use app\models\Matriculaempresa;
 /* @var $this yii\web\View */
 
-$this->title = 'Maquila';
+
+
 ?>
+<?php $empresa = Matriculaempresa::findOne(901189320) ;
+$this->title = $empresa->nombresistema; ?>
 <div class="site-index">
 
     <div class="jumbotron">
         <img src="dist/images/logo.png" align="center" >
         <h1>Bienvenidos!</h1>
 
-        <p class="lead">Maquila Digital.</p>
+        <p class="lead"><?= $empresa->nombresistema ?></p>
 
 
     </div>
