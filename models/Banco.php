@@ -83,4 +83,14 @@ class Banco extends \yii\db\ActiveRecord
     {
         return "{$this->entidad} - {$this->producto} - {$this->numerocuenta}";
     }
+    
+    public function getEstado()
+    {
+        if ($this->activo == 1){
+            $activo = "SI";
+        }else{
+            $activo = "NO";
+        }
+        return $activo;
+    }
 }

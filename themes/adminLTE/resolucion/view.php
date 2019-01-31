@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $model->idresolucion;
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>                    
+                    <td><?= Html::encode($model->estado) ?></td>                    
                     <th></th>
                     <td></td>                    
                 </tr>

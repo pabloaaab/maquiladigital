@@ -74,6 +74,10 @@ class OrdenproduccionSearch extends Ordenproduccion
             ->andFilterWhere(['like', 'valorletras', $this->valorletras])
             ->andFilterWhere(['like', 'observacion', $this->observacion])
             ->andFilterWhere(['like', 'estado', $this->estado])
+            ->andFilterWhere(['like', 'ordenproduccion', $this->ordenproduccion])
+            ->andFilterWhere(['like', 'ordenproduccionext', $this->ordenproduccionext])
+            ->andFilterWhere(['like', 'fechaentrega', $this->fechaentrega])
+            ->andFilterWhere(['like', 'totalorden', $this->totalorden])
             ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);
 
         return $dataProvider;

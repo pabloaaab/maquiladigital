@@ -514,7 +514,7 @@ class FacturaventaController extends Controller
                 $factura->update();
                 $consecutivo->update();
                 $ordenProduccion->facturado = 1;
-                $ordenProduccion->update();
+                $ordenProduccion->save(false);
                 //$this->afectarcantidadfacturada($id);//se resta o descuenta las cantidades facturadas en los productos por cliente
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{

@@ -56,7 +56,12 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'idrecibo') ?>:</th>
                     <td><?= Html::encode($model->idrecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
-                    <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
+                    <?php if ($model->idcliente){ ?>
+                        <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
+                    <?php } else { ?>
+                        <td><?= Html::encode($model->clienterazonsocial) ?></td>
+                    <?php } ?>
+                    
                     <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
                     <td><?= Html::encode($model->tiporecibo->concepto) ?></td>
                 </tr>
@@ -107,7 +112,12 @@ $view = 'recibocaja';
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <td><?= $val->iddetallerecibo ?></td>
-                        <td><?= $val->idfactura ?></td>
+                        <?php if($val->idfactura){ ?>
+                            <td><?= $val->idfactura ?></td>
+                        <?php }else{ ?>
+                            <td><?= "No Aplica" ?></td>
+                        <?php } ?>
+                        
                         <td><?= $val->retefuente ?></td>
                         <td><?= $val->reteiva ?></td>
                         <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
@@ -127,7 +137,7 @@ $view = 'recibocaja';
                                             <div class="modal-body">
                                                 <div class="panel panel-success">
                                                     <div class="panel-heading">
-                                                        <h4>Información Recibo Caja Detalle</h4>
+                                                        Información Recibo Caja Detalle
                                                     </div>
                                                     <div class="panel-body">
                                                         <div class="col-lg-2">
@@ -182,9 +192,29 @@ $view = 'recibocaja';
             </div>
             <?php if ($model->autorizado == 0) { ?>
                 <div class="panel-footer text-right">
-                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['recibocaja/nuevodetalles', 'idrecibo' => $model->idrecibo,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['recibocaja/editardetalles', 'idrecibo' => $model->idrecibo],[ 'class' => 'btn btn-success']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['recibocaja/eliminardetalles', 'idrecibo' => $model->idrecibo], ['class' => 'btn btn-danger']) ?>
+                    <?php if ($model->libre == 1){ ?>
+                        <!-- Inicio Nuevo Detalle proceso -->
+                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo Libre',
+                            ['/recibocaja/nuevodetallelibre','id' => $model->idrecibo],
+                            [
+                                'title' => 'Nuevo Detalle Recibo de Caja',
+                                'data-toggle'=>'modal',
+                                'data-target'=>'#modaldetallenuevolibre',
+                                'class' => 'btn btn-success'
+                            ])                                    
+
+                        ?>
+                        <div class="modal remote fade" id="modaldetallenuevolibre">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+                        <!-- Fin Nuevo Detalle proceso -->
+                    <?php  }else{ ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['recibocaja/nuevodetalles', 'idrecibo' => $model->idrecibo,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['recibocaja/editardetalles', 'idrecibo' => $model->idrecibo],[ 'class' => 'btn btn-success']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['recibocaja/eliminardetalles', 'idrecibo' => $model->idrecibo], ['class' => 'btn btn-danger']) ?>                    
+                    <?php } ?>                                                            
                 </div>
             <?php } ?>
         </div>

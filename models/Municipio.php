@@ -84,4 +84,14 @@ class Municipio extends \yii\db\ActiveRecord
     {
         return "{$this->municipio} - {$this->departamento->departamento}";
     }
+    
+    public function getEstado()
+    {
+        if ($this->activo == 1){
+            $activo = "SI";
+        }else{
+            $activo = "NO";
+        }
+        return $activo;
+    }
 }

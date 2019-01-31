@@ -64,13 +64,14 @@ class ProductoSearch extends Producto
             
             'idcliente' => $this->idcliente,
             'activo' => $this->activo,
-            'fechaproceso' => $this->fechaproceso,
+            //'fechaproceso' => $this->fechaproceso,
             
         ]);
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion])
               ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema])
-              ->andFilterWhere(['like', 'codigo', $this->usuariosistema]);
+              ->andFilterWhere(['like', 'fechaproceso', $this->fechaproceso])
+              ->andFilterWhere(['like', 'codigo', $this->codigo]);
 
         return $dataProvider;
     }

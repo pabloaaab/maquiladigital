@@ -65,4 +65,14 @@ class Departamento extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Municipio::className(), ['iddepartamento' => 'iddepartamento']);
     }
+    
+    public function getEstado()
+    {
+        if ($this->activo == 1){
+            $activo = "SI";
+        }else{
+            $activo = "NO";
+        }
+        return $activo;
+    }
 }

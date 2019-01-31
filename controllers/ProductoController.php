@@ -121,7 +121,7 @@ class ProductoController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;
             //$model->stock = $model->cantidad;
-            //$model->update();
+            $model->update();
             return $this->redirect(['view', 'id' => $model->idproducto]);
         }
 
@@ -209,6 +209,7 @@ class ProductoController extends Controller
                         $table->idprendatipo = $prenda->idprendatipo;
                         $table->observacion = ".";
                         $table->idproducto = $idproducto;
+                        $table->usuariosistema = Yii::$app->user->identity->username;
                         $table->insert();                                                
                     }
                 }

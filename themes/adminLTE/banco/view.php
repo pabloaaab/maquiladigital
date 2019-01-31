@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $model->idbanco;
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>
+                    <td><?= Html::encode($model->estado) ?></td>
                     <th><?= Html::activeLabel($model, 'numerocuenta') ?>:</th>
                     <td><?= Html::encode($model->numerocuenta) ?></td>
                     <th><?= Html::activeLabel($model, 'nitmatricula') ?>:</th>

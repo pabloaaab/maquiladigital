@@ -27,6 +27,7 @@ use Yii;
  * @property string $declaracion
  * @property int $id_banco_factura
  * @property int $idresolucion
+ * @property string $nombresistema
  *
  * @property Banco $bancoFactura
  * @property TipoRegimen $tipoRegimen
@@ -53,7 +54,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion'], 'required'],
             [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion'], 'integer'],
             [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
-            [['declaracion'], 'string'],
+            [['declaracion','nombresistema'], 'string'],
             [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
             [['nitmatricula'], 'unique'],
@@ -91,6 +92,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             'declaracion' => 'Declaración:',
             'id_banco_factura' => 'Banco Factura:',
             'idresolucion' => 'Resolución:',
+            'nombresistema' => 'Nombre Sistema:',
         ];
     }
 

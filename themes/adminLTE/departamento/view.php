@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $model->iddepartamento;
                     <th><?= Html::activeLabel($model, 'departamento') ?>:</th>
                     <td><?= Html::encode($model->departamento) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>                    
+                    <td><?= Html::encode($model->estado) ?></td>                    
                 </tr>                
             </table>
         </div>

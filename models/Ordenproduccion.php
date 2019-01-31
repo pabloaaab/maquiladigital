@@ -79,7 +79,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'valorletras' => 'Valor Letras',
             'observacion' => 'Observacion',
             'estado' => 'Estado',
-            'estado' => 'Facturado',
+            'facturado' => 'Facturado',
             'proceso_control' => 'Control',
             'autorizado' => 'Autorizado',
             'ordenproduccion' => 'Orden Prod',

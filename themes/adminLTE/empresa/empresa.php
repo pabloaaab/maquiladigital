@@ -102,6 +102,9 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
         <div class="row">                        
             <?= $form->field($model, 'idresolucion')->dropDownList($resoluciones, ['prompt' => 'Seleccione una resolucion...']) ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'nombresistema')->textInput(['maxlength' => true]) ?>    
+        </div>
         <div class="panel-footer text-right">			                        
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
         </div>

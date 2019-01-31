@@ -28,6 +28,8 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use app\models\UsuarioDetalle;
+use app\models\FormRecibocajalibre;
+use app\models\FormRecibocajanuevodetallelibre;
 
 /**
  * RecibocajaController implements the CRUD actions for Recibocaja model.
@@ -91,7 +93,7 @@ class RecibocajaController extends Controller
      * Creates a new Recibocaja model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
-     */
+     */        
     public function actionCreate()
     {
         $model = new Recibocaja();
@@ -112,6 +114,37 @@ class RecibocajaController extends Controller
             'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
         ]);
     }
+    
+    public function actionCreatelibre()
+    {
+        $model = new FormRecibocajalibre;
+        $clientes = Cliente::find()->all();
+        $municipios = Municipio::find()->all();
+        $tipoRecibos = TipoRecibo::find()->all();
+        if ($model->load(Yii::$app->request->post())) {
+            $table = new Recibocaja;
+            $table->nitcedula = $model->nitcedula;
+            $table->clienterazonsocial = $model->clienterazonsocial;
+            $table->telefono = $model->telefono;
+            $table->direccion = $model->direccion;
+            $table->observacion = $model->observacion;
+            $table->fechapago = $model->fechapago;
+            $table->idtiporecibo = $model->idtiporecibo;
+            $table->idmunicipio = $model->idmunicipio;
+            $table->valorletras = "-";
+            $table->usuariosistema = Yii::$app->user->identity->username;
+            $table->libre = 1;
+            $table->insert();
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('_formlibre', [
+            'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
+            'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
+            'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+        ]);
+    }
 
     /**
      * Updates an existing Recibocaja model.
@@ -126,14 +159,85 @@ class RecibocajaController extends Controller
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
+        if($model->libre == 1){
+                return $this->redirect(['updatelibre', 'id' => $id]);
+            }
         if(Recibocajadetalle::find()->where(['=', 'idrecibo', $id])->all() or $model->estado <> 0){
            Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         }
-        else if($model->load(Yii::$app->request->post()) && $model->save()) {
+        else             
+            if($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idrecibo]);
         }
 
         return $this->render('update', [
+            'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
+            'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
+            'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+        ]);
+    }
+    
+    public function actionUpdatelibre($id) {
+        $model = new FormRecibocajalibre;
+        $clientes = Cliente::find()->all();
+        $municipios = Municipio::find()->all();
+        $tipoRecibos = TipoRecibo::find()->all();
+        $table = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if(Recibocajadetalle::find()->where(['=', 'idrecibo', $id])->all() or $table->estado <> 0){
+           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+           //return $this->redirect(['updatelibre', 'id' => $id]);
+        }
+        else{
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                
+                if ($table) {
+                    $table->nitcedula = $model->nitcedula;
+                    $table->clienterazonsocial = $model->clienterazonsocial;
+                    $table->telefono = $model->telefono;
+                    $table->direccion = $model->direccion;
+                    $table->observacion = $model->observacion;
+                    $table->fechapago = $model->fechapago;
+                    $table->idtiporecibo = $model->idtiporecibo;
+                    $table->idmunicipio = $model->idmunicipio;
+                    if ($table->update()) {
+                        $msg = "El registro ha sido actualizado correctamente";
+                        return $this->redirect(["index"]);
+                    } else {
+                        $msg = "El registro no sufrio ningun cambio";
+                        return $this->redirect(["index"]);
+                    }
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                }
+            } else {
+                $model->getErrors();
+            }
+        }
+        }
+        if (Yii::$app->request->get("id")) {
+            $table = $this->findModel($id);
+            if ($table) {
+                $model->nitcedula = $table->nitcedula;
+                $model->clienterazonsocial = $table->clienterazonsocial;
+                $model->fechapago = $table->fechapago;
+                $model->telefono = $table->telefono;
+                $model->direccion = $table->direccion;
+                $model->observacion = $table->observacion;
+                $model->idmunicipio = $table->idmunicipio;
+                $model->idtiporecibo = $table->idtiporecibo;
+            } else {
+                return $this->redirect(["index"]);
+            }
+        } else {
+            return $this->redirect(["index"]);
+        }
+        return $this->render('_formlibre', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
@@ -173,7 +277,6 @@ class RecibocajaController extends Controller
 
     public function actionNuevodetalles($idcliente,$idrecibo)
     {
-
         $reciboFactura = Facturaventa::find()
             ->where(['=', 'idcliente', $idcliente])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'nrofactura', 0])
@@ -216,12 +319,29 @@ class RecibocajaController extends Controller
 
         ]);
     }
+    
+    public function actionNuevodetallelibre($id) {
+        $model = new FormRecibocajanuevodetallelibre;        
+        if ($model->load(Yii::$app->request->post())) {
+            $table = new Recibocajadetalle();
+            $table->vlrabono = $model->vlrabono;
+            $table->idrecibo = $id;
+            $table->vlrsaldo = 0;
+            $table->retefuente = 0;
+            $table->reteiva = 0;
+            $table->reteica = 0;
+            $table->save(false);
+            return $this->redirect(['view','id' => $id]);
+        }
+        return $this->renderAjax('_formnuevodetallelibre', [
+            'model' => $model,            
+        ]);        
+    }
 
     public function actionEditardetalle()
     {
         $iddetallerecibo = Html::encode($_POST["iddetallerecibo"]);
         $idrecibo = Html::encode($_POST["idrecibo"]);
-
         if(Yii::$app->request->post()){
 
             if((int) $iddetallerecibo)
@@ -230,15 +350,8 @@ class RecibocajaController extends Controller
                 if ($table) {
 
                     $table->vlrabono = Html::encode($_POST["vlrabono"]);
-
                     $table->idrecibo = Html::encode($_POST["idrecibo"]);
                     $table->update();
-
-                    /*$recibo = Recibocaja::findOne($table->idrecibo);
-                    $recibo->valorpagado = $recibo->valorpagado - Html::encode($_POST["total"]);
-                    $recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
-                    $recibo->update();*/
-
                     $this->redirect(["recibocaja/view",'id' => $idrecibo]);
 
                 } else {
@@ -290,11 +403,7 @@ class RecibocajaController extends Controller
                 $reciboDetalle = Recibocajadetalle::findOne($iddetallerecibo);
                 $total = $reciboDetalle->vlrabono;
                 if(Recibocajadetalle::deleteAll("iddetallerecibo=:iddetallerecibo", [":iddetallerecibo" => $iddetallerecibo]))
-                {
-                    /*$recibo = Recibocaja::findOne($idrecibo);
-                    $recibo->valorpagado = $recibo->valorpagado - $total;
-                    $recibo->update();*/
-
+                {                   
                     $this->redirect(["recibocaja/view",'id' => $idrecibo]);
                 }
                 else
@@ -356,11 +465,15 @@ class RecibocajaController extends Controller
             $reg = count($detalles);
             if ($reg <> 0) {
                 $error = 0;
-                foreach ($detalles as $dato){
-                    if ($dato->vlrabono > $dato->vlrsaldo){
-                        $error = 1;
+                if($model->libre == 1){
+                    $error = 0;
+                }else{
+                    foreach ($detalles as $dato){
+                        if ($dato->vlrabono > $dato->vlrsaldo){
+                            $error = 1;
+                        }
                     }
-                }
+                }               
                 if ($error == 0){
                     $model->autorizado = 1;
                     $model->update();
@@ -369,12 +482,10 @@ class RecibocajaController extends Controller
                     Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
                     $this->redirect(["recibocaja/view",'id' => $id]);
                 }
-
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener facturas relacionados en el recibo de caja.');
                 $this->redirect(["recibocaja/view",'id' => $id]);
             }
-
         } else {
             if ($model->valorpagado <> 0) {
                 Yii::$app->getSession()->setFlash('error', 'No se puede desautorizar el registro, ya fue pagado.');
@@ -398,40 +509,58 @@ class RecibocajaController extends Controller
                     ->all();
                 $total = 0;
                 $error = 0;
-                foreach ($recibodetalles as $dato){
-                    if ($dato->vlrabono > $dato->vlrsaldo){
-                        $error = 1;
-                    }
-                }
-                if ($error == 0){
-                    foreach ($recibodetalles as $val) {
-                        $recibodetalle = Recibocajadetalle::findOne($val->iddetallerecibo);
-                        $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
-                        $total = $total + $val->vlrabono;
-                        $recibodetalle->update();
-                        $factura = Facturaventa::findOne($val->idfactura);
-                        $factura->saldo = $recibodetalle->vlrsaldo;
-                        if($factura->saldo <= 0){
-                            $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura), estado 4 = descuento por nota credito
-                        }elseif ($factura->saldo >= 0){
-                            $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura), estado 4 = descuento por nota credito
+                if ($model->libre == 0){
+                    foreach ($recibodetalles as $dato){
+                        if ($dato->vlrabono > $dato->vlrsaldo){
+                            $error = 1;
                         }
-                        $factura->update();
                     }
-                    $model->valorpagado = $total;
-                    //$model->fechapago = date('Y-m-d');
-                    //generar consecutivo numero de la nota credito
-                    $consecutivo = Consecutivo::findOne(3);//2 recibo de caja
-                    $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
-                    $model->numero = $consecutivo->consecutivo;
-                    $model->update();
-                    $consecutivo->update();
-                    //fin generar consecutivo
-                    $this->redirect(["recibocaja/view",'id' => $id]);
-                    } else {
-                        Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
+                }else{
+                    $error = 0;
+                }                
+                if ($error == 0){
+                    if ($model->libre == 0){
+                        foreach ($recibodetalles as $val) {
+                            $recibodetalle = Recibocajadetalle::findOne($val->iddetallerecibo);
+                            $recibodetalle->vlrsaldo = ($recibodetalle->vlrsaldo) - ($recibodetalle->vlrabono);
+                            $total = $total + $val->vlrabono;
+                            $recibodetalle->update();
+                            $factura = Facturaventa::findOne($val->idfactura);
+                            $factura->saldo = $recibodetalle->vlrsaldo;
+                            if($factura->saldo <= 0){
+                                $factura->estado = 2; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura), estado 4 = descuento por nota credito
+                            }elseif ($factura->saldo >= 0){
+                                $factura->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura), estado 4 = descuento por nota credito
+                            }
+                            $factura->update();
+                        }
+                        $model->valorpagado = $total;
+                        //$model->fechapago = date('Y-m-d');
+                        //generar consecutivo numero de la nota credito
+                        $consecutivo = Consecutivo::findOne(3);//2 recibo de caja
+                        $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                        $model->numero = $consecutivo->consecutivo;
+                        $model->update();
+                        $consecutivo->update();
+                        //fin generar consecutivo
+                        $this->redirect(["recibocaja/view",'id' => $id]);
+                    }else{
+                        foreach ($recibodetalles as $val) {                            
+                            $total = $total + $val->vlrabono;                            
+                        }
+                        $model->valorpagado = $total;                        
+                        $consecutivo = Consecutivo::findOne(3);//2 recibo de caja
+                        $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                        $model->numero = $consecutivo->consecutivo;
+                        $model->save(false);
+                        $consecutivo->update();
+                        //fin generar consecutivo
                         $this->redirect(["recibocaja/view",'id' => $id]);
                     }
+                } else {
+                    Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
+                    $this->redirect(["recibocaja/view",'id' => $id]);
+                }
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Ya se realizo el pago del recibo de caja.');
                 $this->redirect(["recibocaja/view",'id' => $id]);

@@ -48,7 +48,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("NIT:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 6, utf8_decode($recibo->cliente->nitmatricula . '-' . $recibo->cliente->dv), 0, 0, 'L');
+        if ($recibo->libre == 0){
+            $this->Cell(90, 6, utf8_decode($recibo->cliente->nitmatricula . '-' . $recibo->cliente->dv), 0, 0, 'L');
+        }else{
+            $this->Cell(90, 6, utf8_decode($recibo->nitcedula), 0, 0, 'L');
+        }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("TIPO RECIBO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -57,7 +61,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("CLIENTE:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 6, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');
+        if ($recibo->libre == 0){
+            $this->Cell(90, 6, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');
+        }else{
+            $this->Cell(90, 6, utf8_decode($recibo->clienterazonsocial), 0, 0, 'L');
+        }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -66,7 +74,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 6, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');
+        if ($recibo->libre == 0){
+            $this->Cell(90, 6, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');
+        }else{
+            $this->Cell(90, 6, utf8_decode($recibo->direccion), 0, 0, 'L');
+        }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -75,7 +87,13 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("CIUDAD:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 6, utf8_decode($recibo->cliente->municipio->municipio . " - " . $recibo->cliente->departamento->departamento), 0, 0, 'L');
+        if ($recibo->libre == 0){
+            $this->Cell(90, 6, utf8_decode($recibo->cliente->municipio->municipio . " - " . $recibo->cliente->departamento->departamento), 0, 0, 'L');
+        }else{
+            $municipio = Municipio::find()->where(['=','idmunicipio',$recibo->idmunicipio])->one();
+            $departamento = Departamento::find()->where(['=','iddepartamento',$municipio->iddepartamento])->one();
+            $this->Cell(90, 6, utf8_decode($municipio->municipio . " - " . $departamento->departamento), 0, 0, 'L');
+        }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("VALOR PAGADO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -84,7 +102,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("TELÉFONO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(90, 6, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');
+        if ($recibo->libre == 0){
+            $this->Cell(90, 6, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');
+        }else{
+            $this->Cell(90, 6, utf8_decode($recibo->telefono), 0, 0, 'L');
+        }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -141,8 +163,11 @@ class PDF extends FPDF {
         foreach ($detalles as $detalle) {
             $i = $i + 1;
             $pdf->Cell(16, 5, $i, 0, 0, 'L');
-            
-            $pdf->Cell(26, 5, $detalle->factura->nrofactura, 0, 0, 'L');
+            if ($model->libre == 0){
+                $pdf->Cell(26, 5, $detalle->factura->nrofactura, 0, 0, 'L');
+            }else{
+                $pdf->Cell(26, 5, 'No Aplica', 0, 0, 'L');
+            }            
             $pdf->Cell(31, 5, number_format($detalle->vlrabono, 2, '.', ','), 0, 0, 'R');
             $pdf->Cell(30, 5, number_format($detalle->vlrsaldo, 2, '.', ','), 0, 0, 'R');
             $pdf->Cell(29, 5, number_format($detalle->retefuente, 2, '.', ','), 0, 0, 'R');

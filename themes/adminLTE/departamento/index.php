@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\Departamento;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\DepartamentoSearch */
@@ -30,8 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-5'],
             ],
             [               
-                'attribute' => 'activo',
-                'contentOptions' => ['class' => 'col-lg-4 '],                
+            'attribute' => 'activo',
+            'value' => function($model){
+                $departamento = Departamento::findOne($model->iddepartamento);
+                if ($departamento->activo == 1){$estado = "SI";}else{$estado = "NO";}
+                return $estado;
+            },
+            'contentOptions' => ['class' => 'col-lg-4'],
             ],            			
             [
                 'class' => 'yii\grid\ActionColumn',              

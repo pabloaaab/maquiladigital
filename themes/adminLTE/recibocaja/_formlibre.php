@@ -32,7 +32,10 @@ use yii\helpers\Url;
     </div>
     <div class="panel-body">
         <div class="row">            
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
+            <?= $form->field($model, 'nitcedula')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">            
+            <?= $form->field($model, 'clienterazonsocial')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
@@ -55,6 +58,12 @@ use yii\helpers\Url;
                     'allowClear' => true
                 ],
             ]); ?>
+        </div>
+        <div class="row">            
+            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">            
+            <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>

@@ -46,9 +46,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [               
-                'attribute' => 'activo',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
-            ],					
+            'attribute' => 'activo',
+            'value' => function($model){
+                $municipio = Municipio::findOne($model->idmunicipio);
+                if ($municipio->activo == 1){$estado = "SI";}else{$estado = "NO";}
+                return $estado;
+            },
+            'contentOptions' => ['class' => 'col-lg-2'],
+            ], 					
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],
