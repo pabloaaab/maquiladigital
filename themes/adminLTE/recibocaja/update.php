@@ -19,13 +19,6 @@ $this->params['breadcrumbs'][] = 'Editar';
         'municipios' => $municipios,
         'tiporecibos' => $tiporecibos,
         'clientes' => $clientes,
-    ]) ?>
-    
-    <?= $this->render('_formlibre', [
-        'model' => $model,
-        'municipios' => $municipios,
-        'tiporecibos' => $tiporecibos,
-        'clientes' => $clientes,
-    ]) ?>
+    ]) ?>        
 
 </div>
