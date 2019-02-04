@@ -569,7 +569,7 @@ class OrdenProduccionController extends Controller {
                         $intIndice++;
                     }
                     if ($error == 1) {
-                        Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad operada');
+                        Yii::$app->getSession()->setFlash('error', 'El valor de la cantidad no puede ser mayor a la cantidad operada '.$detalle->cantidad);
                     } else {
                         $this->redirect(["orden-produccion/view_detalle", 'id' => $idordenproduccion]);
                     }
@@ -716,29 +716,25 @@ class OrdenProduccionController extends Controller {
     protected function progresocantidad($iddetalleorden, $idordenproduccion) {
         $tabla = Ordenproducciondetalle::findOne(['=', 'iddetalleorden', $iddetalleorden]);
         $procesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();                        
-        $cantidadoperada = 0;                
-        $cont = count($procesos);
-        $valor = 0;
+        $cantidadoperada = 0;                        
+        $porcentaje = 0;
+        $porcentajesuma = 0;
+        $cont = 0;        
         foreach ($procesos as $val) {
             if ($val->cantidad_operada > 0) {                
                 $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
-                $valor++;
-            }
+                $porcentaje = $val->total * $val->cantidad_operada / $tabla->totalsegundos * 100;
+                $porcentajesuma = $porcentajesuma + $porcentaje;
+                $cont++;
+            }            
         }
+        $porcentajecantidad = $porcentajesuma;
+        $tabla->porcentaje_cantidad = $porcentajecantidad;        
         if ($cont == 0){
-            $cantidaddetalle = 0;        
-            $porcentajecantidad = 0;
-        }else{
-            $cantidaddetalle = $tabla->cantidad * $cont;        
-            $porcentajecantidad = $cantidadoperada / $cantidaddetalle * 100;
-        }
-        
-        $tabla->porcentaje_cantidad = $porcentajecantidad;
-        if ($valor == 0){
             $tabla->cantidad_operada = $cantidadoperada;
         } else {
-            $tabla->cantidad_operada = $cantidadoperada / $valor;
-        }         
+            $tabla->cantidad_operada = $cantidadoperada / $cont;
+        } 
         $tabla->update();
         $orden = Ordenproduccion::findOne($idordenproduccion);
         $detalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
