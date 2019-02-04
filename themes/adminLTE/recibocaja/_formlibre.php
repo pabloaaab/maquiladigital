@@ -14,7 +14,10 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Recibocaja */
 /* @var $form yii\widgets\ActiveForm */
-?>
+
+$this->title = 'Nuevo Recibo de Caja';
+$this->params['breadcrumbs'][] = ['label' => 'Recibos de cajas', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;?>
 
 
     <?php $form = ActiveForm::begin([

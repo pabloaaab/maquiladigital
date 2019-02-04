@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $factura = Facturaventa::findOne($model->idfactura);                    
                     return $factura->estados;
                 },
-                'filter' => ArrayHelper::map(Facturaventa::find()->all(),'estados','estados'),
+                'filter' => ArrayHelper::map(Facturaventa::find()->all(),'estado','estados'),
                 'contentOptions' => ['class' => 'col-lg-1.5'],
             ],                     
             [

@@ -36,17 +36,7 @@ use yii\helpers\Url;
         </div>
         <div class="row">                        
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
-        </div>        
-        <div class="row">
-            
-            <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]])
-            ?>
-        </div>
+        </div>                
         <div class="row">
             <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
                 'data' => $municipios,
@@ -55,6 +45,15 @@ use yii\helpers\Url;
                     'allowClear' => true
                 ],
             ]); ?>
+        </div>
+        <div class="row">            
+            <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>

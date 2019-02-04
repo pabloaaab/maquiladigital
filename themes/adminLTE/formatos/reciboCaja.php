@@ -55,7 +55,7 @@ class PDF extends FPDF {
         }        
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("TIPO RECIBO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode($recibo->tiporecibo->concepto), 0, 0, 'L');
         $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 10);

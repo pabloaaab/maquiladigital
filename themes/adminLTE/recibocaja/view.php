@@ -109,7 +109,9 @@ $view = 'recibocaja';
                     </tr>
                     </thead>
                     <tbody>
+                        <?php $calculo = 0; ?>
                     <?php foreach ($modeldetalles as $val): ?>
+                        <?php $calculo = $calculo + $val->vlrabono; ?>
                     <tr>
                         <td><?= $val->iddetallerecibo ?></td>
                         <?php if($val->idfactura){ ?>
@@ -185,9 +187,17 @@ $view = 'recibocaja';
                                 </div><!-- /.modal -->
                             </td>
                         <?php } ?>
-                    </tr>
+                    </tr>                    
                     </tbody>
                     <?php endforeach; ?>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>                        
+                        <td align="right"><b>Total:</b></td>
+                        <td><?= '$ '.number_format($calculo,0); ?></td>
+                    </tr>
                 </table>
             </div>
             <?php if ($model->autorizado == 0) { ?>
