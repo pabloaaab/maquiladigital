@@ -168,11 +168,11 @@ class PDF extends FPDF {
             }else{
                 $pdf->Cell(26, 5, 'No Aplica', 0, 0, 'L');
             }            
-            $pdf->Cell(31, 5, number_format($detalle->vlrabono, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(30, 5, number_format($detalle->vlrsaldo, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->retefuente, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->reteiva, 2, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->reteica, 2, '.', ','), 0, 0, 'R');
+            $pdf->Cell(31, 5, number_format($detalle->vlrabono, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(30, 5, number_format($detalle->vlrsaldo, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->retefuente, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->reteiva, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(29, 5, number_format($detalle->reteica, 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
