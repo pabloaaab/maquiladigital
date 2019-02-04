@@ -682,7 +682,7 @@ class OrdenProduccionController extends Controller {
         $totalsegxdetalle = ($sumsegproc * $cantidadefectiva) / $sumacantxoperar;
         $tabla->cantidad_efectiva = $cantidadefectiva;
         $tabla->totalsegundos = $totalsegxdetalle;
-        $tabla->update();
+        $tabla->save(false);
         $totaldetallesseg = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $tdetallesseg = 0;
         $ts = 0;
@@ -710,7 +710,7 @@ class OrdenProduccionController extends Controller {
             
         }
         $orden->porcentaje_proceso = $porc;
-        $orden->update();
+        $orden->save(false);
     }
 
     protected function progresocantidad($iddetalleorden, $idordenproduccion) {
@@ -719,11 +719,15 @@ class OrdenProduccionController extends Controller {
         $cantidadoperada = 0;                        
         $porcentaje = 0;
         $porcentajesuma = 0;
-        $cont = 0;        
+        $cont = 0;
+        $totalsegundosgeneral = 0;
+        foreach ($procesos as $val) {
+            $totalsegundosgeneral = $totalsegundosgeneral + $val->totalproceso;
+        }
         foreach ($procesos as $val) {
             if ($val->cantidad_operada > 0) {                
                 $cantidadoperada = $cantidadoperada + $val->cantidad_operada;
-                $porcentaje = $val->total * $val->cantidad_operada / $tabla->totalsegundos * 100;
+                $porcentaje = $val->total * $val->cantidad_operada / $totalsegundosgeneral * 100;
                 $porcentajesuma = $porcentajesuma + $porcentaje;
                 $cont++;
             }            
@@ -735,7 +739,7 @@ class OrdenProduccionController extends Controller {
         } else {
             $tabla->cantidad_operada = $cantidadoperada / $cont;
         } 
-        $tabla->update();
+        $tabla->save(false);
         $orden = Ordenproduccion::findOne($idordenproduccion);
         $detalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
         $porc = 0;
@@ -746,7 +750,7 @@ class OrdenProduccionController extends Controller {
             $porc = $porc + $porci;
         }
         $orden->porcentaje_cantidad = $porc;
-        $orden->update();
+        $orden->save(false);
     }
 
     protected function porcentajeproceso($iddetalleorden) {
@@ -760,15 +764,15 @@ class OrdenProduccionController extends Controller {
         $totalsegundosficha = (new \yii\db\Query())->from('ordenproducciondetalleproceso');
         $sumsegficha = $totalsegundosficha->where(['=', 'iddetalleorden', $iddetalleorden])->sum('total');
         $detalleorden->segundosficha = $sumsegficha;
-        $detalleorden->update();
+        $detalleorden->save(false);
         foreach ($detallesprocesos as $val) {
             $tabla = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
             $tabla->porcentajeproceso = $val->totalproceso / $sumseg * 100;
-            $tabla->update();            
+            $tabla->save(false);            
         }
         $ordenproduccion = Ordenproduccion::findOne($detalleorden->idordenproduccion);
         $ordenproduccion->segundosficha = $sumsegficha;
-        $ordenproduccion->update();
+        $ordenproduccion->save(false);
     }
     
     public function actionCodigo($id){
