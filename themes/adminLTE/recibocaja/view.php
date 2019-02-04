@@ -118,8 +118,8 @@ $view = 'recibocaja';
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
                         
-                        <td><?= $val->retefuente ?></td>
-                        <td><?= $val->reteiva ?></td>
+                        <td><?= '$ '.number_format($val->retefuente,0) ?></td>
+                        <td><?= '$ '.number_format($val->reteiva,0) ?></td>
                         <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
                         <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
