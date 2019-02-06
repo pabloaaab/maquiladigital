@@ -49,7 +49,7 @@ class FormCliente extends Model
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],            
             [['dv'], 'string', 'max' => 1],
-            ['razonsocial', 'match', 'pattern' => '/^[0-9a-záéíóúñ-._/\s ]+$/i', 'message' => 'Sólo se aceptan letras'],
+            ['razonsocial', 'match', 'pattern' => '/^[.-0-9a-záéíóúñ\s ]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombrecliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidocliente', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],

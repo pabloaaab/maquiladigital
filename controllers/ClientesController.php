@@ -13,6 +13,7 @@ use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\Matriculaempresa;
 use app\models\Cliente;
 use app\models\Municipio;
 use app\models\Departamentos;
@@ -77,6 +78,7 @@ class ClientesController extends Controller {
     }
 
     public function actionNuevo() {
+        $matriculaempresa = Matriculaempresa::findOne(901189320);
         $model = new FormCliente();
         $msg = null;
         $tipomsg = null;
@@ -105,7 +107,7 @@ class ClientesController extends Controller {
                 $table->celularcontacto = $model->celularcontacto;
                 $table->formapago = $model->formapago;
                 $table->plazopago = $model->plazopago;
-                $table->nitmatricula = $model->cedulanit;
+                $table->nitmatricula = $matriculaempresa->nitmatricula;
                 $table->tiporegimen = $model->tiporegimen;
                 $table->autoretenedor = $model->autoretenedor;
                 $table->retencionfuente = $model->retencionfuente;
@@ -134,6 +136,7 @@ class ClientesController extends Controller {
     }
 
     public function actionEditar($id) {
+        $matriculaempresa = Matriculaempresa::findOne(901189320);
         $model = new FormCliente();
         $msg = null;
         $tipomsg = null;
@@ -162,7 +165,7 @@ class ClientesController extends Controller {
                     $table->celularcontacto = $model->celularcontacto;
                     $table->formapago = $model->formapago;
                     $table->plazopago = $model->plazopago;
-                    $table->nitmatricula = $model->cedulanit;
+                    $table->nitmatricula = $matriculaempresa->nitmatricula;
                     $table->tiporegimen = $model->tiporegimen;
                     $table->autoretenedor = $model->autoretenedor;
                     $table->retencionfuente = $model->retencionfuente;
