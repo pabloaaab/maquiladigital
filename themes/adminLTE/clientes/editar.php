@@ -84,7 +84,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
             </div>	
             <div class="row">
                 <?= $form->field($model, 'celularcontacto')->input("text") ?>
-                <?= $form->field($model, 'nitmatricula')->input("text", ['readonly' => true]) ?>			
+                			
             </div>    
             <div class="row">
                 <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
