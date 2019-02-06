@@ -27,6 +27,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use app\models\UsuarioDetalle;
+use app\models\FormProductosDetallesNuevo;
 
 /**
  * ProductoController implements the CRUD actions for Producto model.
@@ -193,9 +194,30 @@ class ProductoController extends Controller
     public function actionNuevodetalles($idproducto)
     {
         $prendas = Prendatipo::find()->orderBy('prenda asc')->all();
-        $mensaje = "";
-        if(Yii::$app->request->post()) {
-            if (isset($_POST["idprendatipo"])) {
+        $form = new FormProductosDetallesNuevo;
+        $q = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $q = Html::encode($form->q);                                
+                if ($q){
+                    //$model = Notas::find()->where(['identificacion' => $identificacion])->andWhere(['<>','matricula',0])->all();
+                    $prendas = Prendatipo::find()
+                            ->where(['like','prenda',$q])
+                            ->orwhere(['like','idprendatipo',$q])
+                            ->orderBy('prenda asc')
+                            ->all();
+                            
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+                    
+                       
+        } else {
+            $prendas = Prendatipo::find()->orderBy('prenda asc')->all();
+        }
+        if (isset($_POST["idprendatipo"])) {
                 $intIndice = 0;
                 foreach ($_POST["idprendatipo"] as $intCodigo) {
                     $table = new Productodetalle();
@@ -215,14 +237,13 @@ class ProductoController extends Controller
                 }
                 $this->redirect(["producto/view", 'id' => $idproducto]);
             }else{
-                $mensaje = "Debe seleccionar al menos un registro";
+                
             }
-        }
-
         return $this->render('_formnuevodetalles', [
             'prendas' => $prendas,            
             'mensaje' => $mensaje,
             'idproducto' => $idproducto,
+            'form' => $form,
 
         ]);
     }

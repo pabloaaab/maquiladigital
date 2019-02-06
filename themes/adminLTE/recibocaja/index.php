@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             [
-                'attribute' => 'idrecibo',
+                'attribute' => 'numero',
                 'contentOptions' => ['class' => 'col-lg-1 '],
             ],
             [               

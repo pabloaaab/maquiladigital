@@ -21,17 +21,60 @@ use yii\db\ActiveQuery;
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventadetalle */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->title = 'Nuevo Producto Detalle';
+$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
-<?php $form = ActiveForm::begin([
+<?php $formulario = ActiveForm::begin([
+    "method" => "get",
+    "action" => Url::toRoute(["producto/nuevodetalles", 'idproducto' => $idproducto]),
+    "enableClientValidation" => true,
+    'options' => ['class' => 'form-horizontal'],
+    
+	'fieldConfig' => [
+                    'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                    'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                    'options' => []
+                ],
+    
 
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-]); ?>
+]);
+?>
+
+<div class="panel panel-success panel-filters">
+    <div class="panel-heading">
+        Parametros de entrada
+    </div>
+	
+    <div class="panel-body" id="costodiario">
+        <div class="row" >
+            <?= $formulario->field($form, "q")->input("search") ?>            
+        </div>
+        <div class="panel-footer text-right">
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
+            <a align="right" href="<?= Url::toRoute(["producto/nuevodetalles", 'idproducto' => $idproducto]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+        </div>
+    </div>
+</div>
+
+<?php $formulario->end() ?>
+
+<?php
+$form = ActiveForm::begin([
+            "method" => "post",
+            'id' => 'formulario',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => true,
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+                'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                'options' => []
+            ],
+        ]);
+?>
 
 <?php
 if ($mensaje != ""){
@@ -73,7 +116,8 @@ if ($mensaje != ""){
 
     </div>
 </div>
-<?php ActiveForm::end(); ?>
+
+<?php $form->end() ?>    
 
 <script type="text/javascript">
 	function marcar(source) 

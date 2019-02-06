@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $model->idtiporecibo;
                     <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
                     <td><?= Html::encode($model->concepto) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>                    
+                    <td><?= Html::encode($model->estado) ?></td>                    
                 </tr>                
             </table>
         </div>

@@ -47,6 +47,7 @@ class TipoReciboSearch extends TipoRecibo
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['concepto' => SORT_ASC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);

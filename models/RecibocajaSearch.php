@@ -18,7 +18,7 @@ class ReciboCajaSearch extends Recibocaja
     public function rules()
     {
         return [
-            [['idrecibo', 'idcliente','autorizado'], 'integer'],
+            [['idrecibo', 'idcliente','autorizado','numero'], 'integer'],
             [['fecharecibo', 'fechapago', 'idtiporecibo', 'idmunicipio', 'valorletras', 'observacion', 'usuariosistema'], 'safe'],
             [['valorpagado'], 'number'],
         ];
@@ -48,7 +48,7 @@ class ReciboCajaSearch extends Recibocaja
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['idrecibo' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
+            'sort'=> ['defaultOrder' => ['numero' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);
@@ -62,6 +62,7 @@ class ReciboCajaSearch extends Recibocaja
         // grid filtering conditions
         $query->andFilterWhere([
             'idrecibo' => $this->idrecibo,
+            'numero' => $this->numero,
             'fecharecibo' => $this->fecharecibo,
             'fechapago' => $this->fechapago,
             'valorpagado' => $this->valorpagado,
@@ -73,6 +74,7 @@ class ReciboCajaSearch extends Recibocaja
             ->andFilterWhere(['like', 'idmunicipio', $this->idmunicipio])
             ->andFilterWhere(['like', 'valorletras', $this->valorletras])
             ->andFilterWhere(['like', 'observacion', $this->observacion])
+            ->andFilterWhere(['like', 'numero', $this->numero])
             ->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);
 
         return $dataProvider;

@@ -36,11 +36,10 @@ class TipoRecibo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idtiporecibo', 'concepto'], 'required', 'message' => 'Campo requerido'],
-            [['activo'], 'integer'],
-            [['idtiporecibo'], 'string', 'max' => 10],
-            [['concepto'], 'string', 'max' => 30],
-            [['idtiporecibo'], 'unique'],
+            [['concepto'], 'required', 'message' => 'Campo requerido'],
+            ['idtiporecibo', 'default'],            
+            [['activo'], 'integer'],            
+            [['concepto'], 'string', 'max' => 30],            
         ];
     }
 
@@ -49,10 +48,20 @@ class TipoRecibo extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
-            'idtiporecibo' => 'Id',
+        return [            
             'concepto' => 'Concepto',
             'activo' => 'Activo',
+            'idtiporecibo' => 'Id',
         ];
+    }
+    
+    public function getEstado()
+    {
+        if($this->activo == 1){
+            $estado = "SI";
+        }else{
+            $estado = "NO";
+        }
+        return $estado;
     }
 }

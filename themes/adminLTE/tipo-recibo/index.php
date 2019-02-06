@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use app\models\TipoRecibo;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TipoReciboSearch */
@@ -30,9 +31,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'concepto',
                 'contentOptions' => ['class' => 'col-lg-5'],                
             ],
-            [               
+            [
                 'attribute' => 'activo',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'value' => function($model){
+                    $orden = TipoRecibo::findOne($model->idtiporecibo);                    
+                    return $orden->estado;
+                },
+                'filter' => ArrayHelper::map(TipoRecibo::find()->all(),'activo','estado'),
+                'contentOptions' => ['class' => 'col-lg-3'],
             ],                                   
             [
                 'class' => 'yii\grid\ActionColumn',              

@@ -35,24 +35,11 @@ $this->params['breadcrumbs'][] = $this->title;?>
     </div>
     <div class="panel-body">
         <div class="row">            
-            <?= $form->field($model, 'nitcedula')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">            
-            <?= $form->field($model, 'clienterazonsocial')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
-        </div>        
-        <div class="row">
-            
-            <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
-                'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
-                'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
-                    'todayHighlight' => true]])
-            ?>
-        </div>
+        </div>                
         <div class="row">
             <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
                 'data' => $municipios,
@@ -63,10 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;?>
             ]); ?>
         </div>
         <div class="row">            
-            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">            
-            <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>
+            <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>

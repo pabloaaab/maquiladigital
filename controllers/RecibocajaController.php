@@ -123,10 +123,7 @@ class RecibocajaController extends Controller
         $tipoRecibos = TipoRecibo::find()->all();
         if ($model->load(Yii::$app->request->post())) {
             $table = new Recibocaja;
-            $table->nitcedula = $model->nitcedula;
-            $table->clienterazonsocial = $model->clienterazonsocial;
-            $table->telefono = $model->telefono;
-            $table->direccion = $model->direccion;
+            $table->idcliente = $model->idcliente;            
             $table->observacion = $model->observacion;
             $table->fechapago = $model->fechapago;
             $table->idtiporecibo = $model->idtiporecibo;

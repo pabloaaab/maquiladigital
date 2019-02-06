@@ -47,12 +47,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 59); //FILA 1
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("NIT:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
-        if ($recibo->libre == 0){
-            $this->Cell(90, 6, utf8_decode($recibo->cliente->nitmatricula . '-' . $recibo->cliente->dv), 0, 0, 'L');
-        }else{
-            $this->Cell(90, 6, utf8_decode($recibo->nitcedula), 0, 0, 'L');
-        }        
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->nitmatricula . '-' . $recibo->cliente->dv), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("TIPO RECIBO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 8);
@@ -60,12 +56,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("CLIENTE:"), 0, 0, 'c');
-        $this->SetFont('Arial', '', 10);
-        if ($recibo->libre == 0){
-            $this->Cell(90, 6, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');
-        }else{
-            $this->Cell(90, 6, utf8_decode($recibo->clienterazonsocial), 0, 0, 'L');
-        }        
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->nombrecorto), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -73,12 +65,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 70); //FILA 3
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
-        if ($recibo->libre == 0){
-            $this->Cell(90, 6, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');
-        }else{
-            $this->Cell(90, 6, utf8_decode($recibo->direccion), 0, 0, 'L');
-        }        
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->direccioncliente), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -86,14 +74,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 76); //FILA 4
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("CIUDAD:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
-        if ($recibo->libre == 0){
-            $this->Cell(90, 6, utf8_decode($recibo->cliente->municipio->municipio . " - " . $recibo->cliente->departamento->departamento), 0, 0, 'L');
-        }else{
-            $municipio = Municipio::find()->where(['=','idmunicipio',$recibo->idmunicipio])->one();
-            $departamento = Departamento::find()->where(['=','iddepartamento',$municipio->iddepartamento])->one();
-            $this->Cell(90, 6, utf8_decode($municipio->municipio . " - " . $departamento->departamento), 0, 0, 'L');
-        }        
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->municipio->municipio . " - " . $recibo->cliente->departamento->departamento), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("VALOR PAGADO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -101,12 +83,8 @@ class PDF extends FPDF {
         $this->SetXY(10, 82); //FILA 5
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("TELÉFONO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
-        if ($recibo->libre == 0){
-            $this->Cell(90, 6, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');
-        }else{
-            $this->Cell(90, 6, utf8_decode($recibo->telefono), 0, 0, 'L');
-        }        
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->cliente->telefonocliente), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
@@ -118,15 +96,15 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 10);
         $this->MultiCell(162, 6, utf8_decode($recibo->observacion), 0, 'J');
         //Lineas del encabezado
-        $this->Line(10, 102, 10, 150); //x1,y1,x2,y2        
-        $this->Line(26, 102, 26, 150); //x1,y1,x2,y2        
-        $this->Line(54, 102, 54, 150); //x1,y1,x2,y2
-        $this->Line(85, 102, 85, 150); //x1,y1,x2,y2
-        $this->Line(115, 102, 115, 150); //x1,y1,x2,y2
-        $this->Line(144, 102, 144, 150); //x1,y1,x2,y2
-        $this->Line(173, 102, 173, 150); //x1,y1,x2,y2
-        $this->Line(202, 102, 202, 150); //x1,y1,x2,y2
-        $this->Line(10, 150, 202, 150); //linea horizontal inferior x1,y1,x2,y2
+        $this->Line(10, 102, 10, 138); //x1,y1,x2,y2        
+        $this->Line(26, 102, 26, 138); //x1,y1,x2,y2        
+        $this->Line(54, 102, 54, 138); //x1,y1,x2,y2
+        $this->Line(85, 102, 85, 138); //x1,y1,x2,y2
+        $this->Line(115, 102, 115, 138); //x1,y1,x2,y2
+        $this->Line(144, 102, 144, 138); //x1,y1,x2,y2
+        $this->Line(173, 102, 173, 138); //x1,y1,x2,y2
+        $this->Line(202, 102, 202, 138); //x1,y1,x2,y2
+        $this->Line(10, 138, 202, 138); //linea horizontal inferior x1,y1,x2,y2
         //Detalle factura
         $this->EncabezadoDetalles();
     }

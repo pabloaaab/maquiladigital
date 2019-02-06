@@ -9,22 +9,18 @@ use yii\base\Model;
  * ContactForm is the model behind the contact form.
  */
 class FormRecibocajalibre extends Model
-{    
-    public $nitcedula;
+{        
     public $fechapago;
-    public $clienterazonsocial;
+    public $idcliente;
     public $idtiporecibo;
     public $idmunicipio;
-    public $observacion;
-    public $telefono;
-    public $direccion;
+    public $observacion;    
     
     public function rules()
     {
         return [            
-            [['idtiporecibo', 'idmunicipio','fechapago','nitcedula','clienterazonsocial'], 'required'],            
-            [['observacion','direccion','clienterazonsocial'], 'string'],
-            [['telefono','nitcedula'], 'integer'],
+            [['idtiporecibo', 'idmunicipio','fechapago','idcliente'], 'required'],            
+            [['observacion'], 'string'],            
             [['idtiporecibo','idmunicipio'], 'string', 'max' => 15],            
         ];
     }
@@ -35,11 +31,8 @@ class FormRecibocajalibre extends Model
             'fechapago' => 'Fecha Pago',
             'idtiporecibo' => 'Tipo Recibo',
             'idmunicipio' => 'Municipio',            
-            'clienterazonsocial' => 'Cliente',
-            'nitcedula' => 'Nit/Cedula',            
-            'observacion' => 'Observacion',
-            'direccion' => 'Dirección',
-            'telefono' => 'Teléfono',
+            'idcliente' => 'Cliente',                        
+            'observacion' => 'Observacion',            
         ];
     }
     
