@@ -14,12 +14,13 @@ class FormRecibocajalibre extends Model
     public $idcliente;
     public $idtiporecibo;
     public $idmunicipio;
+    public $idbanco;
     public $observacion;    
     
     public function rules()
     {
         return [            
-            [['idtiporecibo', 'idmunicipio','fechapago','idcliente'], 'required'],            
+            [['idtiporecibo', 'idmunicipio','fechapago','idcliente','idbanco'], 'required'],            
             [['observacion'], 'string'],            
             [['idtiporecibo','idmunicipio'], 'string', 'max' => 15],            
         ];
@@ -32,6 +33,7 @@ class FormRecibocajalibre extends Model
             'idtiporecibo' => 'Tipo Recibo',
             'idmunicipio' => 'Municipio',            
             'idcliente' => 'Cliente',                        
+            'idbanco' => 'Banco',
             'observacion' => 'Observacion',            
         ];
     }

@@ -38,9 +38,36 @@ CREATE TABLE `archivodir` (
   KEY `iddirectorio` (`iddirectorio`),
   CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
   CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `archivodir` */
+
+insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`numero`,`iddirectorio`,`codigo`,`nombre`,`extension`,`tipo`,`tamaño`,`descripcion`,`comentarios`) values 
+(14,4,'2019-01-11 15:45:45',4,1,7,'OrdenProduccion14201.pdf','pdf','application/pdf',435045,'ORDEN PRODUCCION 14201',NULL),
+(15,4,'2019-01-12 15:59:16',4,1,8,'OPExterna13031.pdf','pdf','application/pdf',11508,'ORDEN TERMINACION',NULL),
+(16,1,'2019-01-12 16:05:00',1,1,5,'Factura20.pdf','pdf','application/pdf',394268,'FACTURA 20',NULL),
+(17,1,'2019-01-12 16:14:27',1,1,6,'Factura21.pdf','pdf','application/pdf',394271,'ORDEN DE TERMINACION 13031',NULL),
+(18,4,'2019-01-17 16:47:39',4,1,9,'OrdeConfeccion227.pdf','pdf','application/pdf',254916,'ORDEN DE CONFECCION 227',NULL),
+(19,4,'2019-01-17 17:16:41',4,1,10,'OrdeConfeccion527.pdf','pdf','application/pdf',433232,'ORDEN DE CONFECCION 527',NULL),
+(20,1,'2019-01-19 15:22:26',1,1,7,'Factura22.pdf','pdf','application/pdf',394294,'FACTURA 22',NULL),
+(21,4,'2019-01-19 15:35:50',4,1,11,'OrdenTerminacion13340.pdf','pdf','application/pdf',11533,'ORDEN DE TERMINACION 13340',NULL),
+(22,1,'2019-01-19 15:40:51',1,1,8,'Factura23.pdf','pdf','application/pdf',394303,'FACTURA 23',NULL),
+(23,5,'2019-01-20 18:28:53',5,1,1,'CuentaBancaria.pdf','pdf','application/pdf',55301,'CUENTA BANCARIA',NULL),
+(24,5,'2019-01-20 18:29:10',5,1,1,'RUT DE TENNIS S.A.en Reorganizacion .pdf','pdf','application/pdf',683429,'RUT',NULL),
+(25,4,'2019-01-24 09:31:08',4,1,12,'OrdenTerminacion14341.pdf','pdf','application/pdf',17209,'ORDEN TERMINACION 14341',NULL),
+(26,1,'2019-01-24 09:37:19',1,1,9,'Factura24.pdf','pdf','application/pdf',394235,'FACTURA 24',NULL),
+(27,1,'2019-01-24 09:42:15',1,1,10,'Factura25.pdf','pdf','application/pdf',394249,'FACTURA 25',NULL),
+(28,1,'2019-01-28 11:45:22',1,1,1,'Factura16.pdf','pdf','application/pdf',394305,'FACTURA 16',NULL),
+(29,1,'2019-01-28 11:46:28',1,1,2,'Factura17.pdf','pdf','application/pdf',394288,'FACTURA 17',NULL),
+(30,4,'2019-01-28 12:28:50',4,1,2,'OrdenProduccion2.pdf','pdf','application/pdf',393138,'ORDEN PRODUCCION 2',NULL),
+(31,4,'2019-01-28 12:29:28',4,1,3,'OrdenProduccion3.pdf','pdf','application/pdf',393124,'ORDEN DE CONFECCION 3',NULL),
+(32,4,'2019-01-28 12:39:39',4,1,4,'OrdenProduccion4.pdf','pdf','application/pdf',393115,'ORDEN DE CONFECCION 4',NULL),
+(33,4,'2019-01-28 12:40:34',4,1,5,'OrdenProduccion5 (1).pdf','pdf','application/pdf',393153,'ORDEN DE CONFECCION 5',NULL),
+(34,4,'2019-01-28 12:41:37',4,1,6,'OrdenProduccion6.pdf','pdf','application/pdf',393133,'ORDEN DE CONFECCION 6',NULL),
+(35,4,'2019-01-29 12:36:03',4,1,13,'OrdenConfecciion14962.pdf','pdf','application/pdf',309009,'ORDEN DE CONFECCION 14962',NULL),
+(36,1,'2019-01-29 14:07:08',1,1,11,'Factura26.pdf','pdf','application/pdf',394295,'FACTURA 26',NULL),
+(37,4,'2019-01-29 14:51:52',4,1,14,'OrdeTerminacio527.pdf','pdf','application/pdf',11539,'ORDEN DE TERMINACION 527',NULL),
+(38,1,'2019-01-29 15:04:05',1,1,12,'Factura27.pdf','pdf','application/pdf',394269,'FACTURA 27',NULL);
 
 /*Table structure for table `arl` */
 
@@ -64,24 +91,25 @@ insert  into `arl`(`id_arl`,`arl`) values
 DROP TABLE IF EXISTS `banco`;
 
 CREATE TABLE `banco` (
-  `idbanco` char(10) NOT NULL,
+  `idbanco` int(11) NOT NULL AUTO_INCREMENT,
   `nitbanco` char(15) NOT NULL,
   `entidad` char(40) NOT NULL,
   `direccionbanco` char(40) NOT NULL,
   `telefonobanco` char(15) NOT NULL,
-  `producto` char(15) NOT NULL,
-  `numerocuenta` char(15) NOT NULL,
+  `producto` char(30) NOT NULL,
+  `numerocuenta` char(20) NOT NULL,
   `nitmatricula` char(15) NOT NULL,
   `activo` char(2) NOT NULL,
   PRIMARY KEY (`idbanco`),
   KEY `nitmatricula` (`nitmatricula`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1023 DEFAULT CHARSET=latin1;
 
 /*Data for the table `banco` */
 
 insert  into `banco`(`idbanco`,`nitbanco`,`entidad`,`direccionbanco`,`telefonobanco`,`producto`,`numerocuenta`,`nitmatricula`,`activo`) values 
-('1015','900456778','BANCO DAVIVIEND','CL 45 -56 56','4448120','CORRIENTE','257-41830918','901189320','SI'),
-('1020','8909212121','BANCOLOMBIA SA','CL 45 -56 -56','4448120','AHORROO','102045645645','901189320','SI');
+(1,'5555','TGGG','TTG','555','CUENTA CORRIENTE','5555','','1'),
+(1021,'860035827','BANCO AVVILLAS SA','CC LOS SAUCES MEDELLIN','8672359','CUENTA DE AHORROS','502217367','901189320','1'),
+(1022,'5555','5545RRFF','FFF','444','CUENTA DE AHORROS','44444','901189320','1');
 
 /*Table structure for table `cliente` */
 
@@ -122,12 +150,13 @@ CREATE TABLE `cliente` (
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`idtipo`) REFERENCES `tipodocumento` (`idtipo`),
   CONSTRAINT `cliente_ibfk_2` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
   CONSTRAINT `cliente_ibfk_3` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `cliente` */
 
 insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nombrecliente`,`apellidocliente`,`nombrecorto`,`direccioncliente`,`telefonocliente`,`celularcliente`,`emailcliente`,`contacto`,`telefonocontacto`,`celularcontacto`,`formapago`,`plazopago`,`iddepartamento`,`idmunicipio`,`nitmatricula`,`tiporegimen`,`autoretenedor`,`retencioniva`,`retencionfuente`,`observacion`,`fechaingreso`) values 
-(1,5,890920043,3,'TENNIS SA','','','TENNIS SA','CALLE 39 SUR # 26-09','3390000','3207880793','fvillegas@tennis.com.co','FREDY VILLEGAS','3390000','3207880793','1',0,'05','05266','890920043','1',1,1,1,'ESTE CLIENTE LE MAQUILAMOS Y LE REALIZAMOS TERMINACIÓN','2018-12-20 15:57:48');
+(1,5,890920043,3,'TENNIS SA  EN REORGANIZACION','','','TENNIS SA  EN REORGANIZACION','CALLE 39 SUR # 26-09','3390000','3207880793','fvillegas@tennis.com.co','FREDY VILLEGAS','3390000','3207880793','2',15,'05','05266','901189320','1',1,1,1,'ESTE CLIENTE LE MAQUILAMOS Y LE REALIZAMOS TERMINACIÓN','2019-02-06 16:26:18'),
+(2,5,3333333,8,'SSSSSS.','AAAAA','AA','SSSSSS.','CALLE 39 SUR # 26-09','4444','301','fvillegase@tennis.com.co','DDDD','3333','433','1',0,'05','05001','901189320','1',1,1,1,'EEEE','2019-02-06 17:19:05');
 
 /*Table structure for table `conceptonota` */
 
@@ -159,9 +188,9 @@ CREATE TABLE `consecutivo` (
 /*Data for the table `consecutivo` */
 
 insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values 
-(1,'FACTURA DE VENTA',16),
+(1,'FACTURA DE VENTA',31),
 (2,'NOTA CREDITO',1),
-(3,'RECIBO CAJA',1);
+(3,'RECIBO CAJA',5);
 
 /*Table structure for table `costo_fijo` */
 
@@ -176,7 +205,7 @@ CREATE TABLE `costo_fijo` (
 /*Data for the table `costo_fijo` */
 
 insert  into `costo_fijo`(`id_costo_fijo`,`valor`) values 
-(1,5028000);
+(1,5628000);
 
 /*Table structure for table `costo_fijo_detalle` */
 
@@ -198,7 +227,7 @@ insert  into `costo_fijo_detalle`(`id_detalle_costo_fijo`,`id_costo_fijo`,`descr
 (4,1,'ARRIENDO LOCAL',2050000),
 (6,1,'INTERNET Y TELEFONíA',140000),
 (7,1,'SERVICIOS PUBLICOS',450000),
-(8,1,'CAJA MENOR',400000),
+(8,1,'CAJA MENOR',1000000),
 (9,1,'CONTADORA',600000),
 (10,1,'TRANSPORTE',300000),
 (11,1,'MANTENIMIENTOS MAQUINAS',100000),
@@ -223,7 +252,7 @@ CREATE TABLE `costo_laboral` (
 /*Data for the table `costo_laboral` */
 
 insert  into `costo_laboral`(`id_costo_laboral`,`total_otros`,`total_administrativo`,`total_administracion`,`total_operativo`,`total_general`,`empleados_operativos`,`empleados_administrativos`) values 
-(1,0,1259960,1466600,24650000,25909900,17,1);
+(1,0,2779290,1589560,25302900,28082200,16,2);
 
 /*Table structure for table `costo_laboral_detalle` */
 
@@ -255,14 +284,15 @@ CREATE TABLE `costo_laboral_detalle` (
   CONSTRAINT `costo_laboral_detalle_ibfk_1` FOREIGN KEY (`id_costo_laboral`) REFERENCES `costo_laboral` (`id_costo_laboral`),
   CONSTRAINT `costo_laboral_detalle_ibfk_2` FOREIGN KEY (`id_tipo_cargo`) REFERENCES `tipo_cargo` (`id_tipo_cargo`),
   CONSTRAINT `costo_laboral_detalle_ibfk_3` FOREIGN KEY (`id_arl`) REFERENCES `arl` (`id_arl`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `costo_laboral_detalle` */
 
 insert  into `costo_laboral_detalle`(`id_costo_laboral_detalle`,`id_costo_laboral`,`nro_empleados`,`salario`,`auxilio_transporte`,`tiempo_extra`,`bonificacion`,`arl`,`pension`,`caja`,`prestaciones`,`vacaciones`,`ajuste_vac`,`subtotal`,`admon`,`total`,`id_tipo_cargo`,`id_arl`) values 
-(1,1,1,1000000,88211,1600000,100000,27144,312000,104000,474738,45000,1800,3752890,225174,3978070,1,2),
-(2,1,16,800000,88211,0,0,8352,96000,32000,156858,36000,1440,19501800,1170110,20671900,1,2),
-(3,1,1,781242,88211,0,0,4078,93749,31250,153545,35156,1406,1188640,71318,1259960,2,1);
+(1,1,1,1000000,88211,2600000,0,37584,432000,144000,651338,45000,1800,4999930,299996,5299930,1,2),
+(2,1,15,828116,88211,0,0,8646,99374,33125,161823,37265,1491,18870800,1132250,20003000,1,2),
+(3,1,1,828116,88211,0,0,8646,99374,33125,161823,37265,1491,1258050,75483,1333530,2,2),
+(4,1,1,900000,97032,0,0,4698,108000,36000,176076,40500,1620,1363930,81836,1445760,2,1);
 
 /*Table structure for table `costo_laboral_hora` */
 
@@ -285,7 +315,7 @@ CREATE TABLE `costo_laboral_hora` (
 /*Data for the table `costo_laboral_hora` */
 
 insert  into `costo_laboral_hora`(`id_costo_laboral_hora`,`dia`,`hora`,`minutos`,`segundos`,`dia_mes`,`valor_dia`,`valor_hora`,`valor_minuto`,`valor_segundo`) values 
-(1,8,60,60,60,26,51730.6,6466.3,107.8,1.8);
+(1,8,60,60,60,26,52170,6521.3,108.7,1.8);
 
 /*Table structure for table `costo_produccion_diaria` */
 
@@ -312,7 +342,7 @@ CREATE TABLE `costo_produccion_diaria` (
 /*Data for the table `costo_produccion_diaria` */
 
 insert  into `costo_produccion_diaria`(`id_costo_produccion_diaria`,`idcliente`,`idordenproduccion`,`cantidad`,`ordenproduccion`,`ordenproduccionext`,`idtipo`,`cantidad_x_hora`,`cantidad_diaria`,`tiempo_entrega_dias`,`nro_horas`,`dias_entrega`,`costo_muestra_operaria`,`costo_x_hora`) values 
-(1,2,30,5650,'414d','414d',1,4.2,420,13.45,134.5,16.81,1541.54,6474.47);
+(1,1,3,1971,'12676','10676',1,1.22,73.2,26.93,269.3,27,5334,6507);
 
 /*Table structure for table `departamento` */
 
@@ -401,6 +431,62 @@ insert  into `documentodir`(`iddocumentodir`,`codigodocumento`,`nombre`) values
 (5,5,'CLIENTE'),
 (6,6,'PROVEEDOR');
 
+/*Table structure for table `empleado` */
+
+DROP TABLE IF EXISTS `empleado`;
+
+CREATE TABLE `empleado` (
+  `id_empleado` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empleado_tipo` int(11) DEFAULT NULL,
+  `identificacion` int(15) NOT NULL,
+  `dv` tinyint(1) DEFAULT NULL,
+  `nombre1` varchar(20) DEFAULT NULL,
+  `nombre2` varchar(20) DEFAULT NULL,
+  `apellido1` varchar(20) DEFAULT NULL,
+  `apellido2` varchar(20) DEFAULT NULL,
+  `nombrecorto` varchar(100) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `celular` varchar(20) DEFAULT NULL,
+  `email` varchar(60) DEFAULT NULL,
+  `iddepartamento` varchar(15) DEFAULT NULL,
+  `idmunicipio` varchar(15) DEFAULT NULL,
+  `contrato` tinyint(1) DEFAULT NULL,
+  `observacion` text,
+  `fechaingreso` date DEFAULT NULL,
+  `fecharetiro` date DEFAULT NULL,
+  `fechacreacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_empleado`),
+  KEY `id_empleado_tipo` (`id_empleado_tipo`),
+  KEY `iddepartamento` (`iddepartamento`),
+  KEY `idmunicipio` (`idmunicipio`),
+  CONSTRAINT `empleado_ibfk_1` FOREIGN KEY (`id_empleado_tipo`) REFERENCES `empleado_tipo` (`id_empleado_tipo`),
+  CONSTRAINT `empleado_ibfk_2` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
+  CONSTRAINT `empleado_ibfk_3` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `empleado` */
+
+insert  into `empleado`(`id_empleado`,`id_empleado_tipo`,`identificacion`,`dv`,`nombre1`,`nombre2`,`apellido1`,`apellido2`,`nombrecorto`,`direccion`,`telefono`,`celular`,`email`,`iddepartamento`,`idmunicipio`,`contrato`,`observacion`,`fechaingreso`,`fecharetiro`,`fechacreacion`) values 
+(1,1,71268830,6,'PABLO','ANDRES','ARANZAZU','ATUESTA','PABLO ANDRES ARANZAZU ATUESTA','CALLE DD','258896','3013333','paul6126@hotmail.com','05','05001',1,'AAA','2019-02-13','2019-02-14','2019-02-12 22:33:49'),
+(2,1,71268831,3,'JUAN','PEDRO','LOPEZ','GALEANO','JUAN PEDRO LOPEZ GALEANO','CRA2','1','2','f@hotmail.com','50','50350',1,'HOLA','2019-02-15','2019-02-16','2019-02-12 23:11:20');
+
+/*Table structure for table `empleado_tipo` */
+
+DROP TABLE IF EXISTS `empleado_tipo`;
+
+CREATE TABLE `empleado_tipo` (
+  `id_empleado_tipo` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`id_empleado_tipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `empleado_tipo` */
+
+insert  into `empleado_tipo`(`id_empleado_tipo`,`tipo`) values 
+(1,'OPERATIVO'),
+(2,'ADMINISTRATIVO');
+
 /*Table structure for table `facturaventa` */
 
 DROP TABLE IF EXISTS `facturaventa`;
@@ -437,12 +523,24 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
 insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`fechacreacion`,`formapago`,`plazopago`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`totalpagar`,`valorletras`,`idcliente`,`idordenproduccion`,`usuariosistema`,`idresolucion`,`estado`,`autorizado`,`observacion`) values 
-(1,16,'2018-12-22','2018-12-22','2018-12-20 16:54:53','1',0,19,4,15,16813785,672551,3194619,479193,18856660,18856660,'-',1,1,'71268830',3,0,1,'ENTREGA TOTAL DE LA REFERENCIA 108, SEGúN REMISIóN DE ENTREGA N° 00009');
+(1,16,'2018-12-22','2018-12-22','2018-12-20 16:54:53','1',0,19,4,15,16813785,672551,3194619,479193,18856660,18856660,'-',1,1,'71268830',3,0,1,'ENTREGA TOTAL DE LA REFERENCIA 108, SEGúN REMISIóN DE ENTREGA N° 00009'),
+(2,17,'2018-12-22','2018-12-22','2019-01-03 14:03:13','1',0,19,4,15,1015101,40604,192869,28930,1138436,1138436,'-',1,2,'71268830',3,0,1,'ENTREGA TOTAL DE LA REFERENCIA 108, SEGúN REMISIóN DE ENTREGA # 00009'),
+(3,18,'2019-01-08','2019-01-08','2019-01-07 16:00:29','1',0,19,4,15,9556039,382242,1815647,272347,10717097,10717097,'-',1,3,'71268830',3,0,1,'SE ENTREGA LA REFENCIA N 133 EN LA REMISION DE ENTREGA N 00010'),
+(4,19,'2019-01-08','2019-01-08','2019-01-08 15:10:49','1',0,19,4,15,2662338.638,106493.54552,505844.34122,75876.651183,0,2985812.782517,'-',1,4,'71268830',3,2,1,'SE ENTREGA LA REFERENCIA N. 133 EN LA REMISION DE ENTREGA N.00010'),
+(5,20,'2019-01-13','2019-01-13','2019-01-11 12:55:16','1',0,19,4,15,10473572.52,418942.9008,1989978.7788,298496.81682,11746111.58118,11746111.58118,'-',1,5,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 536 EN LA REMISION DE ENTREGA NRO 00011'),
+(6,21,'2019-01-13','2019-01-13','2019-01-12 16:07:40','1',0,19,4,15,1092821.25,43712.85,207636.0375,31145.405625,1225599.031875,1225599.031875,'-',1,8,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA TERMINACION DE LA REF. 536 EN LA REMISION DE ENTREGA 00011'),
+(7,22,'2019-01-19','2019-01-19','2019-01-19 15:19:58','1',0,19,4,15,11280039,451202,2143207,321481,12650563,12650563,'-',1,7,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFE. 271 EN LA REMISION DE ENTREGA NO 00012'),
+(8,23,'2019-01-19','2019-01-19','2019-01-19 15:39:12','1',0,19,4,15,1059439,42378,201293,30194,1188160,1188160,'-',1,11,'ADMINISTRADOR',3,0,1,'SE HACE ENTREGA DE TERMINACION DE LA REFERENCIA NO 271 EN LA REMISION DE ENTREGA NO 00012'),
+(9,24,'2019-01-24','2019-02-08','2019-01-24 09:33:13','2',15,19,0,15,515496.5678,0,97944.347882,14691.6521823,598749.2634997,598749.2634997,'-',1,12,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013'),
+(10,25,'2019-01-24','2019-02-08','2019-01-24 09:39:55','2',15,19,4,15,5632774,225311,1070227,160534,6317156,6317156,'-',1,6,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013'),
+(11,26,'2019-01-29','2019-02-13','2019-01-29 14:05:03','2',15,19,4,15,8482958,339318,1611762,241764,9513638,9513638,'-',1,10,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA REFERENCIA 527 EN LA ORDEN DE REMSION DE ENTREGA N  0014'),
+(12,27,'2019-01-29','2019-02-13','2019-01-29 14:53:01','2',15,19,4,15,717639,0,136351,20453,833537,833537,'-',1,14,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA TERMINACION DE LA REFERENCIA 527'),
+(13,31,'2019-01-30','2019-02-14','2019-01-30 15:03:35','2',15,19,4,15,10915686,436627,2073980,311097,12241942,12241942,'-',1,9,'71268830',3,0,1,'ASAS');
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -451,26 +549,119 @@ DROP TABLE IF EXISTS `facturaventadetalle`;
 CREATE TABLE `facturaventadetalle` (
   `iddetallefactura` int(11) NOT NULL AUTO_INCREMENT,
   `idfactura` int(15) NOT NULL,
-  `idproducto` int(11) NOT NULL,
+  `idproductodetalle` int(11) NOT NULL,
   `codigoproducto` char(15) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `preciounitario` double NOT NULL,
   `total` double NOT NULL,
   PRIMARY KEY (`iddetallefactura`),
-  KEY `idproducto` (`idproducto`),
   KEY `nrofactura` (`idfactura`),
-  CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
+  KEY `idproductodetalle` (`idproductodetalle`),
+  CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproductodetalle`) REFERENCES `productodetalle` (`idproductodetalle`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
 
-insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproducto`,`codigoproducto`,`cantidad`,`preciounitario`,`total`) values 
+insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproductodetalle`,`codigoproducto`,`cantidad`,`preciounitario`,`total`) values 
 (6,1,1,'108',459,8526.26,3913553.34),
 (7,1,2,'108',611,8526.26,5209544.86),
 (8,1,3,'108',510,8526.26,4348392.6),
 (9,1,4,'108',240,8526.26,2046302.4),
-(10,1,5,'108',152,8526.26,1295991.52);
+(10,1,5,'108',152,8526.26,1295991.52),
+(11,2,1,'108',459,514.757,236273.463),
+(12,2,2,'108',611,514.757,314516.527),
+(13,2,3,'108',510,514.757,262526.07),
+(14,2,4,'108',240,514.757,123541.68),
+(15,2,5,'108',152,514.757,78243.064),
+(16,3,11,'133',227,4848.32,1100568.64),
+(17,3,12,'133',511,4848.32,2477491.52),
+(18,3,13,'133',638,4848.32,3093228.16),
+(19,3,14,'133',595,4848.32,2884750.4),
+(20,4,11,'133',227,1351.441,306777.107),
+(21,4,12,'133',511,1351.441,690586.351),
+(22,4,13,'133',638,1351.441,862219.358),
+(23,4,14,'133',594,1351.441,802755.954),
+(29,5,19,'536',392,8106.48,3177740.16),
+(30,5,23,'536',393,8106.48,3185846.64),
+(31,5,22,'536',125,8106.48,1013310),
+(32,5,21,'536',234,8106.48,1896916.32),
+(33,5,20,'536',148,8106.48,1199759.04),
+(34,6,20,'536',148,845.836,125183.728),
+(35,6,21,'536',234,845.836,197925.624),
+(36,6,22,'536',125,845.83,105728.75),
+(37,6,23,'536',393,845.836,332413.548),
+(38,6,19,'536',392,845.836,331567.712),
+(39,7,31,'271',141,9527.06,1343315.46),
+(40,7,28,'271',313,9527.06,2981969.78),
+(41,7,29,'271',92,9527.06,876489.52),
+(42,7,30,'271',365,9527.06,3477376.9),
+(43,7,32,'271',273,9527.06,2600887.38),
+(44,8,31,'271',141,894.796,126166.236),
+(45,8,28,'271',313,894.7968,280071.3984),
+(46,8,29,'271',365,894.796,326600.54),
+(47,8,30,'271',92,894.7968,82321.3056),
+(48,8,32,'271',273,894.7968,244279.5264),
+(49,9,26,'147',285,519.655,148101.675),
+(50,9,25,'147',367,519.6544,190713.1648),
+(51,9,27,'147',246,519.6544,127834.9824),
+(52,9,24,'147',94,519.6544,48847.5136),
+(53,10,26,'147',285,5678.2,1618287),
+(54,10,25,'147',367,5678.2,2083899.4),
+(55,10,27,'147',246,5678.2,1396837.2),
+(56,10,24,'147',94,5678.2,533750.8),
+(57,11,44,'527',96,7244.2,695443.2),
+(58,11,45,'527',363,7244.2,2629644.6),
+(59,11,46,'527',267,7244.2,1934201.4),
+(60,11,47,'527',305,7244.2,2209481),
+(61,11,48,'527',140,7244.2,1014188),
+(67,12,45,'527',267,612.843,163629.081),
+(68,12,46,'527',96,612.843,58832.928),
+(69,12,47,'527',363,612.843,222462.009),
+(70,12,48,'527',305,612.843,186917.115),
+(71,12,44,'527',140,612.843,85798.02),
+(72,13,38,'227',296,9659.9,2859330.4),
+(73,13,39,'227',296,9659.9,2859330.4),
+(74,13,40,'227',538,9659.9,5197026.2);
+
+/*Table structure for table `fichatiempo` */
+
+DROP TABLE IF EXISTS `fichatiempo`;
+
+CREATE TABLE `fichatiempo` (
+  `id_ficha_tiempo` int(11) NOT NULL AUTO_INCREMENT,
+  `id_empleado` int(11) NOT NULL,
+  `cumplimiento` float DEFAULT NULL,
+  `observacion` text COLLATE utf8_spanish_ci,
+  `fechacreacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_ficha_tiempo`),
+  KEY `id_empleado` (`id_empleado`),
+  CONSTRAINT `fichatiempo_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `fichatiempo` */
+
+/*Table structure for table `fichatiempodetalle` */
+
+DROP TABLE IF EXISTS `fichatiempodetalle`;
+
+CREATE TABLE `fichatiempodetalle` (
+  `id_ficha_tiempo_detalle` int(11) NOT NULL AUTO_INCREMENT,
+  `id_ficha_tiempo` int(11) DEFAULT NULL,
+  `dia` date DEFAULT NULL,
+  `desde` time DEFAULT NULL,
+  `hasta` time DEFAULT NULL,
+  `total_segundos` float DEFAULT NULL,
+  `total_operacion` float DEFAULT NULL,
+  `realizadas` float DEFAULT NULL,
+  `cumplimiento` float DEFAULT NULL,
+  `observacion` text COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`id_ficha_tiempo_detalle`),
+  KEY `id_ficha_tiempo` (`id_ficha_tiempo`),
+  CONSTRAINT `fichatiempodetalle_ibfk_1` FOREIGN KEY (`id_ficha_tiempo`) REFERENCES `fichatiempo` (`id_ficha_tiempo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `fichatiempodetalle` */
 
 /*Table structure for table `matriculaempresa` */
 
@@ -493,18 +684,28 @@ CREATE TABLE `matriculaempresa` (
   `porcentajeretefuente` double NOT NULL DEFAULT '0',
   `retefuente` double NOT NULL DEFAULT '0',
   `porcentajereteiva` double NOT NULL DEFAULT '0',
-  `tiporegimen` varchar(100) NOT NULL,
+  `id_tipo_regimen` int(11) NOT NULL,
   `declaracion` text NOT NULL,
-  `tipocuenta` varchar(100) NOT NULL,
-  `numerocuenta` int(30) NOT NULL,
-  `banco` varchar(100) NOT NULL,
-  PRIMARY KEY (`nitmatricula`)
+  `id_banco_factura` int(11) DEFAULT NULL,
+  `idresolucion` int(11) NOT NULL,
+  `nombresistema` varchar(50) NOT NULL,
+  PRIMARY KEY (`nitmatricula`),
+  KEY `id_banco_factura` (`id_banco_factura`),
+  KEY `id_tipo_regimen` (`id_tipo_regimen`),
+  KEY `iddepartamento` (`iddepartamento`),
+  KEY `idmunicipio` (`idmunicipio`),
+  KEY `idresolucion` (`idresolucion`),
+  CONSTRAINT `matriculaempresa_ibfk_2` FOREIGN KEY (`id_tipo_regimen`) REFERENCES `tipo_regimen` (`id_tipo_regimen`),
+  CONSTRAINT `matriculaempresa_ibfk_3` FOREIGN KEY (`iddepartamento`) REFERENCES `departamento` (`iddepartamento`),
+  CONSTRAINT `matriculaempresa_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`),
+  CONSTRAINT `matriculaempresa_ibfk_5` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`),
+  CONSTRAINT `matriculaempresa_ibfk_6` FOREIGN KEY (`id_banco_factura`) REFERENCES `banco` (`idbanco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `matriculaempresa` */
 
-insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`tiporegimen`,`declaracion`,`tipocuenta`,`numerocuenta`,`banco`) values 
-('901189320',2,'MAQUILA DIGITAL SAS','JOSE GREGORIO','PULGARIN MORALES','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW-MAQUILA.COM',19,4,895000,15,'RÉGIMEN COMÚN','Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.','CUENTA DE AHORROS',502217367,'BANCO AVVILLAS');
+insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`id_tipo_regimen`,`declaracion`,`id_banco_factura`,`idresolucion`,`nombresistema`) values 
+('901189320',2,'MAQUILA DIGITAL SAS','MAQUILA','MAQUILA','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW.MAQUILA.COM',19,4,925000,15,1,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1021,3,'SYSTIME');
 
 /*Table structure for table `municipio` */
 
@@ -1702,6 +1903,7 @@ DROP TABLE IF EXISTS `ordenproduccion`;
 CREATE TABLE `ordenproduccion` (
   `idordenproduccion` int(11) NOT NULL AUTO_INCREMENT,
   `idcliente` int(11) NOT NULL,
+  `codigoproducto` varchar(25) NOT NULL,
   `fechallegada` datetime NOT NULL,
   `fechaprocesada` datetime NOT NULL,
   `fechaentrega` datetime NOT NULL,
@@ -1721,17 +1923,31 @@ CREATE TABLE `ordenproduccion` (
   `porcentaje_cantidad` float DEFAULT '0',
   `ordenproduccionext` char(25) DEFAULT NULL,
   `segundosficha` float DEFAULT '0',
+  `duracion` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`idordenproduccion`),
   KEY `idcliente` (`idcliente`),
   KEY `idtipo` (`idtipo`),
   CONSTRAINT `ordenproduccion_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `ordenproduccion_ibfk_2` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproduccion` */
 
-insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`cantidad`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`ordenproduccionext`,`segundosficha`) values 
-(1,1,'2018-12-11 00:00:00','2018-12-11 00:00:00','2018-12-22 00:00:00',1972,16813785,NULL,'este lote fue recogido en un cliente, y no lleva lavandería',0,'12679',1,'71268830',1,1,0,0,0,0,'11091',0);
+insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`codigoproducto`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`cantidad`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`ordenproduccionext`,`segundosficha`,`duracion`) values 
+(1,1,'','2018-12-11 00:00:00','2018-12-11 00:00:00','2018-12-22 00:00:00',1972,16813785,NULL,'este lote fue recogido en un cliente, y no lleva lavandería',0,'12679',1,'71268830',1,1,0,0,0,0,'11091',0,NULL),
+(2,1,'','2018-12-21 00:00:00','2018-12-21 00:00:00','2018-12-22 00:00:00',1972,1015101,NULL,'Lote recogido en el cliente',0,'12679',2,'71268830',1,1,0,0,0,0,'12517',0,NULL),
+(3,1,'','2018-12-13 00:00:00','2018-12-26 00:00:00','2019-01-08 00:00:00',1971,9556039,NULL,'este lote lleva lavanderia',0,'12676',1,'71268830',1,1,0,0,0,30.1877,'10676',2944,NULL),
+(4,1,'','2019-01-03 00:00:00','2019-01-03 00:00:00','2019-01-09 00:00:00',1970,2662338.559,NULL,'Esta prenda llevo lavanderia',0,'12676',2,'71268830',1,1,0,0,0,0,'12902',0,NULL),
+(5,1,'','2018-12-27 00:00:00','2019-01-03 00:00:00','2019-01-11 00:00:00',1293,10481679,NULL,'Esta referencia no lleva lavanderia',0,'13980',1,'ADMINISTRADOR',1,1,0,11.092,0,11.092,'12233',5830,NULL),
+(6,1,'','2019-01-11 00:00:00','2019-01-14 00:00:00','2019-01-19 00:00:00',992,5632774,NULL,'Esta orden de produccion no lleva lavanderia',0,'14341',1,'ADMINISTRADOR',1,1,0,36.996,0,0,'12971',2688,NULL),
+(7,1,'','2018-12-28 00:00:00','2019-01-09 00:00:00','2019-01-19 00:00:00',1184,11280039,NULL,'ESTA PRENDA NO MANEJA LAVANDERIA',0,'14201',1,'ADMINISTRADOR',1,1,0,12.6113,0,12.6113,'12696',6100,NULL),
+(8,1,'','2019-01-09 00:00:00','2019-01-09 00:00:00','2019-01-14 00:00:00',1292,1092820,NULL,'la talla m vino incompleta',0,'13980',2,'ADMINISTRADOR',1,1,0,0,0,0,'13031',0,NULL),
+(9,1,'','2019-01-17 00:00:00','2019-01-23 00:00:00','2019-01-29 00:00:00',1130,10915687,NULL,'esta prenda no lleva lavanderia',0,'14634',1,'facturacion',1,1,0,8.73155,0,8.73155,'13223',600,NULL),
+(10,1,'','2019-01-17 00:00:00','2019-01-23 00:00:00','2019-01-29 00:00:00',1171,8482958,NULL,'no lleva lavanderia',0,'14633',1,'facturacion',1,1,0,0,0,0,'13224',0,NULL),
+(11,1,'','2019-01-19 00:00:00','2019-01-19 00:00:00','2019-01-19 00:00:00',1184,1059438.6464,NULL,'proceso de terminacion',0,'14201',2,'ADMINISTRADOR',1,1,0,0,0,0,'13340',0,NULL),
+(12,1,'','2019-01-21 00:00:00','2019-01-21 00:00:00','2019-01-24 00:00:00',992,515497,NULL,'Terminacion de prenda',0,'14341',2,'ADMINISTRADOR',1,1,0,0,0,0,'13468',0,NULL),
+(13,1,'220','2019-01-29 00:00:00','2019-02-05 00:00:00','2019-02-09 00:00:00',1090,8215439,NULL,'esta prenda lleva lavanderia',0,'14962',1,'ADMINISTRADOR',1,0,0,6.2103,0,6.2103,'13659',650,'26'),
+(14,1,'527','2019-01-24 00:00:00','2019-01-24 00:00:00','2019-01-29 00:00:00',1171,717639.02,NULL,'terminacion',0,'14633',2,'ADMINISTRADOR',1,1,0,4.28591,0,4.28591,'13695',532,'2.6');
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -1739,7 +1955,7 @@ DROP TABLE IF EXISTS `ordenproducciondetalle`;
 
 CREATE TABLE `ordenproducciondetalle` (
   `iddetalleorden` int(11) NOT NULL AUTO_INCREMENT,
-  `idproducto` int(11) NOT NULL,
+  `idproductodetalle` int(11) NOT NULL,
   `codigoproducto` char(15) NOT NULL,
   `cantidad` int(11) NOT NULL,
   `vlrprecio` double NOT NULL,
@@ -1755,19 +1971,75 @@ CREATE TABLE `ordenproducciondetalle` (
   `totalsegundos` float DEFAULT NULL,
   `segundosficha` float DEFAULT '0',
   PRIMARY KEY (`iddetalleorden`),
-  KEY `idproducto` (`idproducto`),
-  KEY `idordenproduccion` (`idordenproduccion`),
-  CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  KEY `idproductodetalle` (`idproductodetalle`),
+  CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproductodetalle`) REFERENCES `productodetalle` (`idproductodetalle`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
-insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproducto`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`,`generado`,`facturado`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`cantidad_efectiva`,`cantidad_operada`,`totalsegundos`,`segundosficha`) values 
+insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproductodetalle`,`codigoproducto`,`cantidad`,`vlrprecio`,`subtotal`,`idordenproduccion`,`generado`,`facturado`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`cantidad_efectiva`,`cantidad_operada`,`totalsegundos`,`segundosficha`) values 
 (1,1,'108',459,8526.26,3913553.34,1,NULL,NULL,0,0,0,0,0,NULL,0),
 (2,2,'108',611,8526.26,5209544.86,1,NULL,NULL,0,0,0,0,0,NULL,0),
 (3,3,'108',510,8526.26,4348392.6,1,NULL,NULL,0,0,0,0,0,NULL,0),
 (4,4,'108',240,8526.26,2046302.4,1,NULL,NULL,0,0,0,0,0,NULL,0),
-(5,5,'108',152,8526.26,1295991.52,1,NULL,NULL,0,0,0,0,0,NULL,0);
+(5,5,'108',152,8526.26,1295991.52,1,NULL,NULL,0,0,0,0,0,NULL,0),
+(11,1,'108',459,514.757,236273.463,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(12,2,'108',611,514.757,314516.527,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(13,3,'108',510,514.757,262526.07,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(14,4,'108',240,514.757,123541.68,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(15,5,'108',152,514.757,78243.064,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(20,11,'133',227,4848.32,1100568.64,3,NULL,NULL,100,0,0,3178,0,0,736),
+(21,12,'133',511,4848.32,2477491.52,3,NULL,NULL,100,0,0,7154,0,0,736),
+(22,13,'133',638,4848.32,3093228.16,3,NULL,NULL,100,0,0,8932,0,0,736),
+(23,14,'133',595,4848.32,2884750.4,3,NULL,NULL,0,0,1400,0,8330,437920,736),
+(24,11,'133',227,1351.441,306777.107,4,NULL,NULL,0,0,0,0,0,NULL,0),
+(25,12,'133',511,1351.441,690586.351,4,NULL,NULL,0,0,0,0,0,NULL,0),
+(26,13,'133',638,1351.44,862218.72,4,NULL,NULL,0,0,0,0,0,NULL,0),
+(27,14,'133',594,1351.441,802755.954,4,NULL,NULL,0,0,0,0,0,NULL,0),
+(28,19,'536',393,8106.48,3185846.64,5,NULL,NULL,0,0,0,0,0,0,1262),
+(29,23,'536',393,8106.48,3185846.64,5,NULL,NULL,0,0,0,0,0,0,1142),
+(30,22,'536',125,8106.48,1013310,5,NULL,NULL,0,0,0,0,0,0,1142),
+(31,21,'536',234,8106.48,1896916.32,5,NULL,NULL,0,0,0,0,0,0,1142),
+(32,20,'536',148,8106.48,1199759.04,5,NULL,NULL,100,0,100,2812,148,169016,1142),
+(33,26,'147',285,5678.2,1618287,6,NULL,NULL,0,0,0,0,0,0,672),
+(34,25,'147',367,5678.2,2083899.4,6,NULL,NULL,100,0,0,4771,0,0,672),
+(35,27,'147',246,5678.2,1396837.2,6,NULL,NULL,100,0,0,3198,0,0,672),
+(36,24,'147',94,5678.2,533750.8,6,NULL,NULL,100,0,0,1222,0,0,672),
+(37,31,'271',141,9527.06,1343315.46,7,NULL,NULL,40.9016,0,0,1128,0,161927,1220),
+(38,29,'271',313,9527.06,2981969.78,7,NULL,NULL,100,0,0,6886,0,445300,1220),
+(39,29,'271',92,9527.06,876489.52,7,NULL,NULL,0,0,0,0,0,0,1220),
+(40,30,'271',365,9527.06,3477376.9,7,NULL,NULL,0,0,0,0,0,0,1220),
+(41,32,'271',273,9527.06,2600887.38,7,NULL,NULL,0,0,0,0,0,0,1220),
+(42,20,'536',148,845.836,125183.728,8,NULL,NULL,0,0,0,0,0,NULL,0),
+(43,21,'536',234,845.836,197925.624,8,NULL,NULL,0,0,0,0,0,NULL,0),
+(44,22,'536',125,845.836,105729.5,8,NULL,NULL,0,0,0,0,0,NULL,0),
+(45,23,'536',393,845.836,332413.548,8,NULL,NULL,0,0,0,0,0,NULL,0),
+(46,19,'536',392,845.836,331567.712,8,NULL,NULL,0,0,0,0,0,NULL,0),
+(47,38,'227',296,9659.9,2859330.4,9,NULL,NULL,33.3333,0,33.3333,296,296,59200,600),
+(48,39,'227',296,9659.9,2859330.4,9,NULL,NULL,0,0,0,0,0,0,600),
+(49,40,'227',538,9659.9,5197026.2,9,NULL,NULL,0,0,0,0,0,0,600),
+(50,44,'527',96,7244.2,695443.2,10,NULL,NULL,0,0,0,0,0,NULL,0),
+(51,45,'527',363,7244.2,2629644.6,10,NULL,NULL,0,0,0,0,0,NULL,0),
+(52,46,'527',267,7244.2,1934201.4,10,NULL,NULL,0,0,0,0,0,NULL,0),
+(53,47,'527',305,7244.2,2209481,10,NULL,NULL,0,0,0,0,0,NULL,0),
+(54,48,'527',140,7244.2,1014188,10,NULL,NULL,0,0,0,0,0,NULL,0),
+(55,31,'271',141,894.796,126166.236,11,NULL,NULL,0,0,0,0,0,NULL,0),
+(56,28,'271',313,894.7968,280071.3984,11,NULL,NULL,0,0,0,0,0,NULL,0),
+(57,29,'271',365,894.796,326600.54,11,NULL,NULL,0,0,0,0,0,NULL,0),
+(58,30,'271',92,894.7968,82321.3056,11,NULL,NULL,0,0,0,0,0,NULL,0),
+(59,32,'271',273,894.7968,244279.5264,11,NULL,NULL,0,0,0,0,0,NULL,0),
+(60,26,'147',285,519.654,148101.39,12,NULL,NULL,0,0,0,0,0,NULL,0),
+(61,25,'147',367,519.654,190713.018,12,NULL,NULL,0,0,0,0,0,NULL,0),
+(62,27,'147',246,519.654,127834.884,12,NULL,NULL,0,0,0,0,0,NULL,0),
+(63,24,'147',94,519.654,48847.476,12,NULL,NULL,0,0,0,0,0,NULL,0),
+(64,49,'220',440,7537.1,3316324,13,NULL,NULL,15.3846,0,15.3846,440,440,71500,650),
+(65,50,'220',423,7537.1,3188193.3,13,NULL,NULL,0,0,0,0,0,0,650),
+(66,51,'220',227,7537.1,1710921.7,13,NULL,NULL,0,0,0,0,0,0,650),
+(73,45,'527',267,612.843,163629.081,14,NULL,NULL,18.797,0,18.797,267,267,35511,532),
+(74,46,'527',96,612.843,58832.928,14,NULL,NULL,0,0,0,0,0,0,532),
+(75,47,'527',363,612.843,222462.009,14,NULL,NULL,0,0,0,0,0,0,532),
+(76,48,'527',305,612.843,186917.115,14,NULL,NULL,0,0,0,0,0,0,532),
+(77,44,'527',140,612.843,85798.02,14,NULL,NULL,0,0,0,0,0,0,532);
 
 /*Table structure for table `ordenproducciondetalleproceso` */
 
@@ -1790,9 +2062,365 @@ CREATE TABLE `ordenproducciondetalleproceso` (
   KEY `iddetalleorden` (`iddetalleorden`),
   CONSTRAINT `ordenproducciondetalleproceso_ibfk_1` FOREIGN KEY (`idproceso`) REFERENCES `proceso_produccion` (`idproceso`),
   CONSTRAINT `ordenproducciondetalleproceso_ibfk_2` FOREIGN KEY (`iddetalleorden`) REFERENCES `ordenproducciondetalle` (`iddetalleorden`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=372 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `ordenproducciondetalleproceso` */
+
+insert  into `ordenproducciondetalleproceso`(`iddetalleproceso`,`proceso`,`duracion`,`ponderacion`,`total`,`totalproceso`,`porcentajeproceso`,`idproceso`,`estado`,`iddetalleorden`,`cantidad_operada`) values 
+(1,'ENRESORTAR ESPALDA',72,0,72,16344,9.78261,1,1,20,0),
+(2,'ARMAR TIRA LIBRE',37,0,37,8399,5.02717,2,1,20,0),
+(3,'ASENTAR TIRA LIBRE',51,0,51,11577,6.92935,3,1,20,0),
+(4,'SESGAR ESPALDA',16,0,16,3632,2.17391,14,1,20,0),
+(5,'SESGAR FRENTE X 2',23,0,23,5221,3.125,15,1,20,0),
+(6,'SESGAR SISAS X 2',32,0,32,7264,4.34783,16,1,20,0),
+(7,'ASENTAR PERILLA',83,0,83,18841,11.2772,17,1,20,0),
+(8,'CERRAR COSTADOS X 2',54,0,54,12258,7.33696,18,1,20,0),
+(9,'MONTAR TIRAS A HOMBRO X 4',68,0,68,15436,9.23913,19,1,20,0),
+(10,'ASENTAR COMPLETO',115,0,115,26105,15.625,20,1,20,0),
+(11,'PINZA ESPALDA',10,0,10,2270,1.3587,21,1,20,0),
+(12,'MARQUILLA ESPALDA',17,0,17,3859,2.30978,22,1,20,0),
+(13,'RUEDO BAJO',100,0,100,22700,13.587,23,1,20,0),
+(14,'OJAL X 8',58,0,58,13166,7.88043,24,1,20,0),
+(15,'ENRESORTAR ESPALDA',72,0,72,36792,9.78261,1,1,21,0),
+(16,'ARMAR TIRA LIBRE',37,0,37,18907,5.02717,2,1,21,0),
+(17,'ASENTAR TIRA LIBRE',51,0,51,26061,6.92935,3,1,21,0),
+(18,'SESGAR ESPALDA',16,0,16,8176,2.17391,14,1,21,0),
+(19,'SESGAR FRENTE X 2',23,0,23,11753,3.125,15,1,21,0),
+(20,'SESGAR SISAS X 2',32,0,32,16352,4.34783,16,1,21,0),
+(21,'ASENTAR PERILLA',83,0,83,42413,11.2772,17,1,21,0),
+(22,'CERRAR COSTADOS X 2',54,0,54,27594,7.33696,18,1,21,0),
+(23,'MONTAR TIRAS A HOMBRO X 4',68,0,68,34748,9.23913,19,1,21,0),
+(24,'ASENTAR COMPLETO',115,0,115,58765,15.625,20,1,21,0),
+(25,'PINZA ESPALDA',10,0,10,5110,1.3587,21,1,21,0),
+(26,'MARQUILLA ESPALDA',17,0,17,8687,2.30978,22,1,21,0),
+(27,'RUEDO BAJO',100,0,100,51100,13.587,23,1,21,0),
+(28,'OJAL X 8',58,0,58,29638,7.88043,24,1,21,0),
+(29,'ENRESORTAR ESPALDA',72,0,72,45936,9.78261,1,1,22,0),
+(30,'ARMAR TIRA LIBRE',37,0,37,23606,5.02717,2,1,22,0),
+(31,'ASENTAR TIRA LIBRE',51,0,51,32538,6.92935,3,1,22,0),
+(32,'SESGAR ESPALDA',16,0,16,10208,2.17391,14,1,22,0),
+(33,'SESGAR FRENTE X 2',23,0,23,14674,3.125,15,1,22,0),
+(34,'SESGAR SISAS X 2',32,0,32,20416,4.34783,16,1,22,0),
+(35,'ASENTAR PERILLA',83,0,83,52954,11.2772,17,1,22,0),
+(36,'CERRAR COSTADOS X 2',54,0,54,34452,7.33696,18,1,22,0),
+(37,'MONTAR TIRAS A HOMBRO X 4',68,0,68,43384,9.23913,19,1,22,0),
+(38,'ASENTAR COMPLETO',115,0,115,73370,15.625,20,1,22,0),
+(39,'PINZA ESPALDA',10,0,10,6380,1.3587,21,1,22,0),
+(40,'MARQUILLA ESPALDA',17,0,17,10846,2.30978,22,1,22,0),
+(41,'RUEDO BAJO',100,0,100,63800,13.587,23,1,22,0),
+(42,'OJAL X 8',58,0,58,37004,7.88043,24,1,22,0),
+(43,'ENRESORTAR ESPALDA',72,0,72,42840,9.78261,1,0,23,595),
+(44,'ARMAR TIRA LIBRE',37,0,37,22015,5.02717,2,0,23,595),
+(45,'ASENTAR TIRA LIBRE',51,0,51,30345,6.92935,3,0,23,595),
+(46,'SESGAR ESPALDA',16,0,16,9520,2.17391,14,0,23,595),
+(47,'SESGAR FRENTE X 2',23,0,23,13685,3.125,15,0,23,595),
+(48,'SESGAR SISAS X 2',32,0,32,19040,4.34783,16,0,23,595),
+(49,'ASENTAR PERILLA',83,0,83,49385,11.2772,17,0,23,595),
+(50,'CERRAR COSTADOS X 2',54,0,54,32130,7.33696,18,0,23,595),
+(51,'MONTAR TIRAS A HOMBRO X 4',68,0,68,40460,9.23913,19,0,23,595),
+(52,'ASENTAR COMPLETO',115,0,115,68425,15.625,20,0,23,595),
+(53,'PINZA ESPALDA',10,0,10,5950,1.3587,21,0,23,595),
+(54,'MARQUILLA ESPALDA',17,0,17,10115,2.30978,22,0,23,595),
+(55,'RUEDO BAJO',100,0,100,59500,13.587,23,0,23,595),
+(56,'OJAL X 8',58,0,58,34510,7.88043,24,0,23,595),
+(57,'ASENTAR COMPLETO',60,0,60,23580,4.75436,20,0,28,0),
+(58,'PREPARAR BANDA CUELLO',41,0,41,16113,3.24881,25,0,28,0),
+(59,'ARMAR CUELLO',50,0,50,19650,3.96197,27,0,28,0),
+(60,'ASENTAR COMPLETO',60,0,60,23580,5.25394,20,0,29,0),
+(61,'PREPARAR BANDA CUELLO',41,0,41,16113,3.59019,25,0,29,0),
+(62,'ARMAR CUELLO',50,0,50,19650,4.37828,27,0,29,0),
+(63,'ASENTAR COMPLETO',60,0,60,7500,5.25394,20,0,30,0),
+(64,'PREPARAR BANDA CUELLO',41,0,41,5125,3.59019,25,0,30,0),
+(65,'ARMAR CUELLO',50,0,50,6250,4.37828,27,0,30,0),
+(66,'ASENTAR COMPLETO',60,0,60,14040,5.25394,20,0,31,0),
+(67,'PREPARAR BANDA CUELLO',41,0,41,9594,3.59019,25,0,31,0),
+(68,'ARMAR CUELLO',50,0,50,11700,4.37828,27,0,31,0),
+(69,'ASENTAR COMPLETO',60,0,60,8880,5.25394,20,1,32,148),
+(70,'PREPARAR BANDA CUELLO',41,0,41,6068,3.59019,25,1,32,148),
+(71,'ARMAR CUELLO',50,0,50,7400,4.37828,27,1,32,148),
+(72,'ARMAR PUÑO POR 2',58,0,58,22794,4.59588,12,0,28,0),
+(73,'PREPARAR BANDA PUñO',30,0,30,11790,2.37718,28,0,28,0),
+(74,'ARMAR PUÑO POR 2',58,0,58,22794,5.07881,12,0,29,0),
+(75,'PREPARAR BANDA PUñO',30,0,30,11790,2.62697,28,0,29,0),
+(76,'ARMAR PUÑO POR 2',58,0,58,7250,5.07881,12,0,30,0),
+(77,'PREPARAR BANDA PUñO',30,0,30,3750,2.62697,28,0,30,0),
+(78,'ARMAR PUÑO POR 2',58,0,58,13572,5.07881,12,0,31,0),
+(79,'PREPARAR BANDA PUñO',30,0,30,7020,2.62697,28,0,31,0),
+(80,'ARMAR PUÑO POR 2',58,0,58,8584,5.07881,12,1,32,148),
+(81,'PREPARAR BANDA PUñO',30,0,30,4440,2.62697,28,1,32,148),
+(82,'MONTAR MANGAS POR 2',87,0,87,34191,6.89382,7,0,28,0),
+(83,'CERRAR COSTADOS X 2',82,0,82,32226,6.49762,18,0,28,0),
+(84,'ACENTAR PUñO',170,0,170,66810,13.4707,29,0,28,0),
+(85,'MONTAR MANGAS POR 2',87,0,87,34191,7.61821,7,0,29,0),
+(86,'CERRAR COSTADOS X 2',82,0,82,32226,7.18039,18,0,29,0),
+(87,'ACENTAR PUñO',50,0,50,19650,4.37828,29,0,29,0),
+(88,'MONTAR MANGAS POR 2',87,0,87,10875,7.61821,7,0,30,0),
+(89,'CERRAR COSTADOS X 2',82,0,82,10250,7.18039,18,0,30,0),
+(90,'ACENTAR PUñO',50,0,50,6250,4.37828,29,0,30,0),
+(91,'MONTAR MANGAS POR 2',87,0,87,20358,7.61821,7,0,31,0),
+(92,'CERRAR COSTADOS X 2',82,0,82,19188,7.18039,18,0,31,0),
+(93,'ACENTAR PUñO',50,0,50,11700,4.37828,29,0,31,0),
+(94,'MONTAR MANGAS POR 2',87,0,87,12876,7.61821,7,1,32,148),
+(95,'CERRAR COSTADOS X 2',82,0,82,12136,7.18039,18,1,32,148),
+(96,'ACENTAR PUñO',50,0,50,7400,4.37828,29,1,32,148),
+(97,'MONTAR CUELLO A CUERPO',75,0,75,29475,5.94295,30,0,28,0),
+(98,'ACENTAR CUELLO A CUERPO',63,0,63,24759,4.99208,31,0,28,0),
+(99,'MONTAR CUELLO A CUERPO',75,0,75,29475,6.56743,30,0,29,0),
+(100,'ACENTAR CUELLO A CUERPO',63,0,63,24759,5.51664,31,0,29,0),
+(101,'MONTAR CUELLO A CUERPO',75,0,75,9375,6.56743,30,0,30,0),
+(102,'ACENTAR CUELLO A CUERPO',63,0,63,7875,5.51664,31,0,30,0),
+(103,'MONTAR CUELLO A CUERPO',75,0,75,17550,6.56743,30,0,31,0),
+(104,'ACENTAR CUELLO A CUERPO',63,0,63,14742,5.51664,31,0,31,0),
+(105,'MONTAR CUELLO A CUERPO',75,0,75,11100,6.56743,30,1,32,148),
+(106,'ACENTAR CUELLO A CUERPO',63,0,63,9324,5.51664,31,1,32,148),
+(107,'SESGAR FRENTE X 2',36,0,36,14148,2.85261,15,0,28,0),
+(108,'MARQUILLA ESPALDA',13,0,13,5109,1.03011,22,0,28,0),
+(109,'RUEDO BAJO',182,0,182,71526,14.4216,23,0,28,0),
+(110,'PUNTEAR X4',25,0,25,9825,1.98098,26,0,28,0),
+(111,'SESGAR MANGA X 2',34,0,34,13362,2.69414,32,0,28,0),
+(112,'PINZA A PUñO',30,0,30,11790,2.37718,33,0,28,0),
+(113,'BOTON X 4',56,0,56,22008,4.4374,34,0,28,0),
+(114,'OJAL X 4',45,0,45,17685,3.56577,35,0,28,0),
+(115,'MONTAR PUñO X 2',125,0,125,49125,9.90491,36,0,28,0),
+(116,'SESGAR FRENTE X 2',36,0,36,14148,3.15236,15,0,29,0),
+(117,'MARQUILLA ESPALDA',13,0,13,5109,1.13835,22,0,29,0),
+(118,'RUEDO BAJO',182,0,182,71526,15.937,23,0,29,0),
+(119,'PUNTEAR X4',25,0,25,9825,2.18914,26,0,29,0),
+(120,'SESGAR MANGA X 2',34,0,34,13362,2.97723,32,0,29,0),
+(121,'PINZA A PUñO',30,0,30,11790,2.62697,33,0,29,0),
+(122,'BOTON X 4',56,0,56,22008,4.90368,34,0,29,0),
+(123,'OJAL X 4',45,0,45,17685,3.94046,35,0,29,0),
+(124,'MONTAR PUñO X 2',125,0,125,49125,10.9457,36,0,29,0),
+(125,'SESGAR FRENTE X 2',36,0,36,4500,3.15236,15,0,30,0),
+(126,'MARQUILLA ESPALDA',13,0,13,1625,1.13835,22,0,30,0),
+(127,'RUEDO BAJO',182,0,182,22750,15.937,23,0,30,0),
+(128,'PUNTEAR X4',25,0,25,3125,2.18914,26,0,30,0),
+(129,'SESGAR MANGA X 2',34,0,34,4250,2.97723,32,0,30,0),
+(130,'PINZA A PUñO',30,0,30,3750,2.62697,33,0,30,0),
+(131,'BOTON X 4',56,0,56,7000,4.90368,34,0,30,0),
+(132,'OJAL X 4',45,0,45,5625,3.94046,35,0,30,0),
+(133,'MONTAR PUñO X 2',125,0,125,15625,10.9457,36,0,30,0),
+(134,'SESGAR FRENTE X 2',36,0,36,8424,3.15236,15,0,31,0),
+(135,'MARQUILLA ESPALDA',13,0,13,3042,1.13835,22,0,31,0),
+(136,'RUEDO BAJO',182,0,182,42588,15.937,23,0,31,0),
+(137,'PUNTEAR X4',25,0,25,5850,2.18914,26,0,31,0),
+(138,'SESGAR MANGA X 2',34,0,34,7956,2.97723,32,0,31,0),
+(139,'PINZA A PUñO',30,0,30,7020,2.62697,33,0,31,0),
+(140,'BOTON X 4',56,0,56,13104,4.90368,34,0,31,0),
+(141,'OJAL X 4',45,0,45,10530,3.94046,35,0,31,0),
+(142,'MONTAR PUñO X 2',125,0,125,29250,10.9457,36,0,31,0),
+(143,'SESGAR FRENTE X 2',36,0,36,5328,3.15236,15,1,32,0),
+(144,'MARQUILLA ESPALDA',13,0,13,1924,1.13835,22,1,32,148),
+(145,'RUEDO BAJO',182,0,182,26936,15.937,23,1,32,0),
+(146,'PUNTEAR X4',25,0,25,3700,2.18914,26,1,32,0),
+(147,'SESGAR MANGA X 2',34,0,34,5032,2.97723,32,1,32,0),
+(148,'PINZA A PUñO',30,0,30,4440,2.62697,33,1,32,148),
+(149,'BOTON X 4',56,0,56,8288,4.90368,34,1,32,148),
+(150,'OJAL X 4',45,0,45,6660,3.94046,35,1,32,148),
+(151,'MONTAR PUñO X 2',125,0,125,18500,10.9457,36,1,32,148),
+(152,'ACENTAR PUñO',50,0,50,18250,4.09836,29,1,37,0),
+(153,'ARMAR CUELLO',50,0,50,18250,4.09836,27,1,37,0),
+(154,'ARMAR PERILLA A FRENTE DOBLE',71,0,71,25915,5.81967,39,1,37,0),
+(155,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',62,0,62,22630,5.08197,40,1,37,0),
+(156,'ARMAR PUÑO POR 2',58,0,58,21170,4.7541,12,1,37,0),
+(157,'BOTON X 9',47,0,47,17155,3.85246,42,0,37,0),
+(158,'CERRAR COSTADOS X 2',64,0,64,23360,5.2459,18,0,37,0),
+(159,'MARQUILLA ESPALDA',13,0,13,4745,1.06557,22,0,37,0),
+(160,'MONTAR CUELLO A CUERPO',60,0,60,21900,4.91803,30,0,37,0),
+(161,'MONTAR MANGAS POR 2',57,0,57,20805,4.67213,7,0,37,0),
+(162,'OJAL X 9',58,0,58,21170,4.7541,41,0,37,0),
+(163,'PREPARAR BANDA CUELLO',41,0,41,14965,3.36066,25,0,37,0),
+(164,'PREPARAR BANDA PUñO',30,0,30,10950,2.45902,28,0,37,0),
+(165,'RUEDO BAJO',82,0,82,29930,6.72131,23,0,37,0),
+(166,'RUEDO BOLSILLO',20,0,20,7300,1.63934,37,0,37,0),
+(167,'SESGAR MANGA X 2',34,0,34,12410,2.78689,32,0,37,0),
+(168,'UNIR HOMBROS POR 2',25,0,25,9125,2.04918,6,0,37,0),
+(169,'ACENTAR PUñO',50,0,50,18250,4.09836,29,1,38,0),
+(170,'ARMAR CUELLO',50,0,50,18250,4.09836,27,1,38,0),
+(171,'ARMAR PERILLA A FRENTE DOBLE',71,0,71,25915,5.81967,39,1,38,0),
+(172,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',62,0,62,22630,5.08197,40,1,38,0),
+(173,'ARMAR PUÑO POR 2',58,0,58,21170,4.7541,12,1,38,0),
+(174,'BOTON X 9',47,0,47,17155,3.85246,42,1,38,0),
+(175,'CERRAR COSTADOS X 2',64,0,64,23360,5.2459,18,1,38,0),
+(176,'MARQUILLA ESPALDA',13,0,13,4745,1.06557,22,1,38,0),
+(177,'MONTAR CUELLO A CUERPO',60,0,60,21900,4.91803,30,1,38,0),
+(178,'MONTAR MANGAS POR 2',57,0,57,20805,4.67213,7,1,38,0),
+(179,'OJAL X 9',58,0,58,21170,4.7541,41,1,38,0),
+(180,'PREPARAR BANDA CUELLO',41,0,41,14965,3.36066,25,1,38,0),
+(181,'PREPARAR BANDA PUñO',30,0,30,10950,2.45902,28,1,38,0),
+(182,'RUEDO BAJO',82,0,82,29930,6.72131,23,1,38,0),
+(183,'RUEDO BOLSILLO',20,0,20,7300,1.63934,37,1,38,0),
+(184,'SESGAR MANGA X 2',34,0,34,12410,2.78689,32,1,38,0),
+(185,'UNIR HOMBROS POR 2',25,0,25,9125,2.04918,6,1,38,0),
+(186,'ACENTAR PUñO',50,0,50,18250,4.09836,29,0,39,0),
+(187,'ARMAR CUELLO',50,0,50,18250,4.09836,27,0,39,0),
+(188,'ARMAR PERILLA A FRENTE DOBLE',71,0,71,25915,5.81967,39,0,39,0),
+(189,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',62,0,62,22630,5.08197,40,0,39,0),
+(190,'ARMAR PUÑO POR 2',58,0,58,21170,4.7541,12,0,39,0),
+(191,'BOTON X 9',47,0,47,17155,3.85246,42,0,39,0),
+(192,'CERRAR COSTADOS X 2',64,0,64,23360,5.2459,18,0,39,0),
+(193,'MARQUILLA ESPALDA',13,0,13,4745,1.06557,22,0,39,0),
+(194,'MONTAR CUELLO A CUERPO',60,0,60,21900,4.91803,30,0,39,0),
+(195,'MONTAR MANGAS POR 2',57,0,57,20805,4.67213,7,0,39,0),
+(196,'OJAL X 9',58,0,58,21170,4.7541,41,0,39,0),
+(197,'PREPARAR BANDA CUELLO',41,0,41,14965,3.36066,25,0,39,0),
+(198,'PREPARAR BANDA PUñO',30,0,30,10950,2.45902,28,0,39,0),
+(199,'RUEDO BAJO',82,0,82,29930,6.72131,23,0,39,0),
+(200,'RUEDO BOLSILLO',20,0,20,7300,1.63934,37,0,39,0),
+(201,'SESGAR MANGA X 2',34,0,34,12410,2.78689,32,0,39,0),
+(202,'UNIR HOMBROS POR 2',25,0,25,9125,2.04918,6,0,39,0),
+(203,'ACENTAR PUñO',50,0,50,18250,4.09836,29,0,40,0),
+(204,'ARMAR CUELLO',50,0,50,18250,4.09836,27,0,40,0),
+(205,'ARMAR PERILLA A FRENTE DOBLE',71,0,71,25915,5.81967,39,0,40,0),
+(206,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',62,0,62,22630,5.08197,40,0,40,0),
+(207,'ARMAR PUÑO POR 2',58,0,58,21170,4.7541,12,0,40,0),
+(208,'BOTON X 9',47,0,47,17155,3.85246,42,0,40,0),
+(209,'CERRAR COSTADOS X 2',64,0,64,23360,5.2459,18,0,40,0),
+(210,'MARQUILLA ESPALDA',13,0,13,4745,1.06557,22,0,40,0),
+(211,'MONTAR CUELLO A CUERPO',60,0,60,21900,4.91803,30,0,40,0),
+(212,'MONTAR MANGAS POR 2',57,0,57,20805,4.67213,7,0,40,0),
+(213,'OJAL X 9',58,0,58,21170,4.7541,41,0,40,0),
+(214,'PREPARAR BANDA CUELLO',41,0,41,14965,3.36066,25,0,40,0),
+(215,'PREPARAR BANDA PUñO',30,0,30,10950,2.45902,28,0,40,0),
+(216,'RUEDO BAJO',82,0,82,29930,6.72131,23,0,40,0),
+(217,'RUEDO BOLSILLO',20,0,20,7300,1.63934,37,0,40,0),
+(218,'SESGAR MANGA X 2',34,0,34,12410,2.78689,32,0,40,0),
+(219,'UNIR HOMBROS POR 2',25,0,25,9125,2.04918,6,0,40,0),
+(220,'ACENTAR PUñO',50,0,50,18250,4.09836,29,0,41,0),
+(221,'ARMAR CUELLO',50,0,50,18250,4.09836,27,0,41,0),
+(222,'ARMAR PERILLA A FRENTE DOBLE',71,0,71,25915,5.81967,39,0,41,0),
+(223,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',62,0,62,22630,5.08197,40,0,41,0),
+(224,'ARMAR PUÑO POR 2',58,0,58,21170,4.7541,12,0,41,0),
+(225,'BOTON X 9',47,0,47,17155,3.85246,42,0,41,0),
+(226,'CERRAR COSTADOS X 2',64,0,64,23360,5.2459,18,0,41,0),
+(227,'MARQUILLA ESPALDA',13,0,13,4745,1.06557,22,0,41,0),
+(228,'MONTAR CUELLO A CUERPO',60,0,60,21900,4.91803,30,0,41,0),
+(229,'MONTAR MANGAS POR 2',57,0,57,20805,4.67213,7,0,41,0),
+(230,'OJAL X 9',58,0,58,21170,4.7541,41,0,41,0),
+(231,'PREPARAR BANDA CUELLO',41,0,41,14965,3.36066,25,0,41,0),
+(232,'PREPARAR BANDA PUñO',30,0,30,10950,2.45902,28,0,41,0),
+(233,'RUEDO BAJO',82,0,82,29930,6.72131,23,0,41,0),
+(234,'RUEDO BOLSILLO',20,0,20,7300,1.63934,37,0,41,0),
+(235,'SESGAR MANGA X 2',34,0,34,12410,2.78689,32,0,41,0),
+(236,'UNIR HOMBROS POR 2',25,0,25,9125,2.04918,6,0,41,0),
+(237,'ARMAR  CUELLO CON BANDA',87,0,87,31755,7.13115,43,1,37,0),
+(238,'ASENTAR CUELLO',60,0,60,21900,4.91803,44,1,37,0),
+(239,'ASENTAR CUELLO CON BANDA',61,0,61,22265,5,47,1,37,0),
+(240,'MONTAR PUñO A MANGA',70,0,70,25550,5.7377,45,0,37,0),
+(241,'ARMAR  CUELLO CON BANDA',87,0,87,31755,7.13115,43,1,38,0),
+(242,'ASENTAR CUELLO',60,0,60,21900,4.91803,44,1,38,0),
+(243,'ASENTAR CUELLO CON BANDA',61,0,61,22265,5,47,1,38,0),
+(244,'MONTAR PUñO A MANGA',70,0,70,25550,5.7377,45,1,38,0),
+(245,'ARMAR  CUELLO CON BANDA',87,0,87,31755,7.13115,43,0,39,0),
+(246,'ASENTAR CUELLO',60,0,60,21900,4.91803,44,0,39,0),
+(247,'ASENTAR CUELLO CON BANDA',61,0,61,22265,5,47,0,39,0),
+(248,'MONTAR PUñO A MANGA',70,0,70,25550,5.7377,45,0,39,0),
+(249,'ARMAR  CUELLO CON BANDA',87,0,87,31755,7.13115,43,0,40,0),
+(250,'ASENTAR CUELLO',60,0,60,21900,4.91803,44,0,40,0),
+(251,'ASENTAR CUELLO CON BANDA',61,0,61,22265,5,47,0,40,0),
+(252,'MONTAR PUñO A MANGA',70,0,70,25550,5.7377,45,0,40,0),
+(253,'ARMAR  CUELLO CON BANDA',87,0,87,31755,7.13115,43,0,41,0),
+(254,'ASENTAR CUELLO',60,0,60,21900,4.91803,44,0,41,0),
+(255,'ASENTAR CUELLO CON BANDA',61,0,61,22265,5,47,0,41,0),
+(256,'MONTAR PUñO A MANGA',70,0,70,25550,5.7377,45,0,41,0),
+(257,'ASENTAR PUñO A MANGA',120,0,120,43800,9.83607,46,0,37,0),
+(258,'ASENTAR PUñO A MANGA',120,0,120,43800,9.83607,46,1,38,0),
+(259,'ASENTAR PUñO A MANGA',120,0,120,43800,9.83607,46,0,39,0),
+(260,'ASENTAR PUñO A MANGA',120,0,120,43800,9.83607,46,0,40,0),
+(261,'ASENTAR PUñO A MANGA',120,0,120,43800,9.83607,46,0,41,0),
+(262,'ARMAR TIRA X 2',21,0,21,5985,3.125,48,0,33,0),
+(263,'ASENTAR ELASTICO ESPALDA',56,0,56,15960,8.33333,53,0,33,0),
+(264,'ASENTAR ELASTICO FRENTE',47,0,47,13395,6.99405,54,0,33,0),
+(265,'ASENTAR SISAS X 2',78,0,78,22230,11.6071,55,0,33,0),
+(266,'ASENTAR TIRA X 2',41,0,41,11685,6.10119,49,0,33,0),
+(267,'CERRAR COSTADOS X 2',80,0,80,22800,11.9048,18,0,33,0),
+(268,'ENTALEGAR TITAS X 4',80,0,80,22800,11.9048,52,0,33,0),
+(269,'MARQUILLA ESPALDA',17,0,17,4845,2.52976,22,0,33,0),
+(270,'MONTAR ELASTICO ESPALDA',68,0,68,19380,10.119,51,0,33,0),
+(271,'MONTAR ELASTICO FRENTE',29,0,29,8265,4.31548,50,0,33,0),
+(272,'RUEDO BAJO',73,0,73,20805,10.8631,23,0,33,0),
+(273,'SESGAR SISAS X 2',56,0,56,15960,8.33333,16,0,33,0),
+(274,'ARMAR TIRA X 2',21,0,21,7707,3.125,48,1,34,0),
+(275,'ASENTAR ELASTICO ESPALDA',56,0,56,20552,8.33333,53,1,34,0),
+(276,'ASENTAR ELASTICO FRENTE',47,0,47,17249,6.99405,54,1,34,0),
+(277,'ASENTAR SISAS X 2',78,0,78,28626,11.6071,55,1,34,0),
+(278,'ASENTAR TIRA X 2',41,0,41,15047,6.10119,49,1,34,0),
+(279,'CERRAR COSTADOS X 2',80,0,80,29360,11.9048,18,1,34,0),
+(280,'ENTALEGAR TITAS X 4',80,0,80,29360,11.9048,52,1,34,0),
+(281,'MARQUILLA ESPALDA',17,0,17,6239,2.52976,22,1,34,0),
+(282,'MONTAR ELASTICO ESPALDA',68,0,68,24956,10.119,51,1,34,0),
+(283,'MONTAR ELASTICO FRENTE',29,0,29,10643,4.31548,50,1,34,0),
+(284,'RUEDO BAJO',73,0,73,26791,10.8631,23,1,34,0),
+(285,'SESGAR SISAS X 2',56,0,56,20552,8.33333,16,1,34,0),
+(286,'ARMAR TIRA X 2',21,0,21,5166,3.125,48,1,35,0),
+(287,'ASENTAR ELASTICO ESPALDA',56,0,56,13776,8.33333,53,1,35,0),
+(288,'ASENTAR ELASTICO FRENTE',47,0,47,11562,6.99405,54,1,35,0),
+(289,'ASENTAR SISAS X 2',78,0,78,19188,11.6071,55,1,35,0),
+(290,'ASENTAR TIRA X 2',41,0,41,10086,6.10119,49,1,35,0),
+(291,'CERRAR COSTADOS X 2',80,0,80,19680,11.9048,18,1,35,0),
+(292,'ENTALEGAR TITAS X 4',80,0,80,19680,11.9048,52,1,35,0),
+(293,'MARQUILLA ESPALDA',17,0,17,4182,2.52976,22,1,35,0),
+(294,'MONTAR ELASTICO ESPALDA',68,0,68,16728,10.119,51,1,35,0),
+(295,'MONTAR ELASTICO FRENTE',29,0,29,7134,4.31548,50,1,35,0),
+(296,'RUEDO BAJO',73,0,73,17958,10.8631,23,1,35,0),
+(297,'SESGAR SISAS X 2',56,0,56,13776,8.33333,16,1,35,0),
+(298,'ARMAR TIRA X 2',21,0,21,1974,3.125,48,1,36,0),
+(299,'ASENTAR ELASTICO ESPALDA',56,0,56,5264,8.33333,53,1,36,0),
+(300,'ASENTAR ELASTICO FRENTE',47,0,47,4418,6.99405,54,1,36,0),
+(301,'ASENTAR SISAS X 2',78,0,78,7332,11.6071,55,1,36,0),
+(302,'ASENTAR TIRA X 2',41,0,41,3854,6.10119,49,1,36,0),
+(303,'CERRAR COSTADOS X 2',80,0,80,7520,11.9048,18,1,36,0),
+(304,'ENTALEGAR TITAS X 4',80,0,80,7520,11.9048,52,1,36,0),
+(305,'MARQUILLA ESPALDA',17,0,17,1598,2.52976,22,1,36,0),
+(306,'MONTAR ELASTICO ESPALDA',68,0,68,6392,10.119,51,1,36,0),
+(307,'MONTAR ELASTICO FRENTE',29,0,29,2726,4.31548,50,1,36,0),
+(308,'RUEDO BAJO',73,0,73,6862,10.8631,23,1,36,0),
+(309,'SESGAR SISAS X 2',56,0,56,5264,8.33333,16,1,36,0),
+(310,'UNIR ESPALDA',26,0,26,7410,3.86905,56,0,33,0),
+(311,'UNIR ESPALDA',26,0,26,9542,3.86905,56,1,34,0),
+(312,'UNIR ESPALDA',26,0,26,6396,3.86905,56,1,35,0),
+(313,'UNIR ESPALDA',26,0,26,2444,3.86905,56,1,36,0),
+(318,'ARMAR  CUELLO CON BANDA',100,0,100,26700,18.797,43,0,74,0),
+(319,'ARMAR CINTURON',200,0,200,53400,37.594,11,0,74,0),
+(320,'ARMAR CORTE BAJO',82,0,82,21894,15.4135,9,0,74,0),
+(321,'ARMAR CUELLO',150,0,150,40050,28.1955,27,0,74,0),
+(322,'ARMAR  CUELLO CON BANDA',100,0,100,26700,18.797,43,0,75,0),
+(323,'ARMAR CINTURON',200,0,200,53400,37.594,11,0,75,0),
+(324,'ARMAR CORTE BAJO',82,0,82,21894,15.4135,9,0,75,0),
+(325,'ARMAR CUELLO',150,0,150,40050,28.1955,27,0,75,0),
+(326,'ARMAR  CUELLO CON BANDA',100,0,100,26700,18.797,43,0,76,0),
+(327,'ARMAR CINTURON',200,0,200,53400,37.594,11,0,76,0),
+(328,'ARMAR CORTE BAJO',82,0,82,21894,15.4135,9,0,76,0),
+(329,'ARMAR CUELLO',150,0,150,40050,28.1955,27,0,76,0),
+(330,'ARMAR  CUELLO CON BANDA',100,0,100,26700,18.797,43,0,77,0),
+(331,'ARMAR CINTURON',200,0,200,53400,37.594,11,0,77,0),
+(332,'ARMAR CORTE BAJO',82,0,82,21894,15.4135,9,0,77,0),
+(333,'ARMAR CUELLO',150,0,150,40050,28.1955,27,0,77,0),
+(338,'ARMAR  CUELLO CON BANDA',100,0,100,26700,18.797,43,1,73,267),
+(339,'ARMAR CINTURON',200,0,200,53400,37.594,11,0,73,0),
+(340,'ARMAR CORTE BAJO',82,0,82,21894,15.4135,9,0,73,0),
+(341,'ARMAR CUELLO',150,0,150,40050,28.1955,27,0,73,0),
+(351,'ARMAR  CUELLO CON BANDA',200,0,200,59200,33.3333,43,1,47,296),
+(352,'ARMAR CINTURON',250,0,250,74000,41.6667,11,0,47,0),
+(353,'ARMAR CORTE BAJO',150,0,150,44400,25,9,0,47,0),
+(354,'ARMAR  CUELLO CON BANDA',200,0,200,59200,33.3333,43,0,48,0),
+(355,'ARMAR CINTURON',250,0,250,74000,41.6667,11,0,48,0),
+(356,'ARMAR CORTE BAJO',150,0,150,44400,25,9,0,48,0),
+(357,'ARMAR  CUELLO CON BANDA',200,0,200,59200,33.3333,43,0,49,0),
+(358,'ARMAR CINTURON',250,0,250,74000,41.6667,11,0,49,0),
+(359,'ARMAR CORTE BAJO',150,0,150,44400,25,9,0,49,0),
+(360,'ARMAR  CUELLO CON BANDA',100,0,100,44000,15.3846,43,1,64,440),
+(361,'ARMAR CINTURON',200,0,200,88000,30.7692,11,0,64,0),
+(362,'ARMAR CORTE BAJO',250,0,250,110000,38.4615,9,0,64,0),
+(363,'ARMAR CUELLO',100,0,100,44000,15.3846,27,0,64,0),
+(364,'ARMAR  CUELLO CON BANDA',100,0,100,44000,15.3846,43,0,65,0),
+(365,'ARMAR CINTURON',200,0,200,88000,30.7692,11,0,65,0),
+(366,'ARMAR CORTE BAJO',250,0,250,110000,38.4615,9,0,65,0),
+(367,'ARMAR CUELLO',100,0,100,44000,15.3846,27,0,65,0),
+(368,'ARMAR  CUELLO CON BANDA',100,0,100,44000,15.3846,43,0,66,0),
+(369,'ARMAR CINTURON',200,0,200,88000,30.7692,11,0,66,0),
+(370,'ARMAR CORTE BAJO',250,0,250,110000,38.4615,9,0,66,0),
+(371,'ARMAR CUELLO',100,0,100,44000,15.3846,27,0,66,0);
 
 /*Table structure for table `ordenproducciontipo` */
 
@@ -1834,7 +2462,54 @@ CREATE TABLE `parametros` (
 /*Data for the table `parametros` */
 
 insert  into `parametros`(`id_parametros`,`auxilio_transporte`,`pension`,`caja`,`prestaciones`,`vacaciones`,`ajuste`,`salario_minimo`,`id_arl`,`admon`) values 
-(1,88211,12,4,17.66,4.5,4,781242,1,6);
+(1,97032,12,4,17.66,4.5,4,828116,2,6);
+
+/*Table structure for table `permisos` */
+
+DROP TABLE IF EXISTS `permisos`;
+
+CREATE TABLE `permisos` (
+  `id_permiso` int(11) NOT NULL AUTO_INCREMENT,
+  `permiso` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `menu_operacion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`id_permiso`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `permisos` */
+
+insert  into `permisos`(`id_permiso`,`permiso`,`menu_operacion`) values 
+(1,'BANCO','ADMINISTRACION'),
+(2,'ARL','ADMINISTRACION'),
+(3,'TIPO DOCUMENTO','ADMINISTRACION'),
+(4,'TIPO RECIBO','ADMINISTRACION'),
+(5,'DEPARTAMENTO','ADMINISTRACION'),
+(6,'MUNICIPIO','ADMINISTRACION'),
+(7,'RESOLUCION','ADMINISTRACION'),
+(8,'CONCEPTOS NOTAS','ADMINISTRACION'),
+(9,'TIPO CARGO','ADMINISTRACION'),
+(10,'PRENDA','ADMINISTRACION'),
+(11,'TALLA','ADMINISTRACION'),
+(12,'OPERACION PRODUCCION','ADMINISTRACION'),
+(13,'TIPO ORDEN PRODUCCION','ADMINISTRACION'),
+(14,'CLIENTE','ADMINISTRACION'),
+(15,'PROVEEDOR','ADMINISTRACION'),
+(16,'PRODUCTO','ADMINISTRACION'),
+(17,'COSTO LABORAL','UTILIDADES'),
+(18,'COSTO LABORAL HORA','UTILIDADES'),
+(19,'COSTO FIJO','UTILIDADES'),
+(20,'COSTO PRODUCCION DIARIA','UTILIDADES'),
+(21,'DESCARGAR STOCK','UTILIDADES'),
+(22,'RESUMEN COSTOS','UTILIDADES'),
+(23,'RECIBO DE CAJA','MOVIMIENTOS'),
+(24,'COMPROBANTE DE EGRESO','MOVIMIENTOS'),
+(25,'ORDEN DE PRODUCCION','MOVIMIENTOS'),
+(26,'FACTURA DE VENTA','MOVIMIENTOS'),
+(27,'NOTA CREDITO','MOVIMIENTOS'),
+(28,'FICHA OPERACIONES','MOVIMIENTOS'),
+(29,'CONFIGURACION','GENERAL'),
+(30,'EMPRESA','GENERAL'),
+(31,'EMPLEADO','ADMINISTRACION'),
+(32,'FICHA TIEMPO','UTILIDADES');
 
 /*Table structure for table `prendatipo` */
 
@@ -1847,7 +2522,7 @@ CREATE TABLE `prendatipo` (
   PRIMARY KEY (`idprendatipo`),
   KEY `idtalla` (`idtalla`),
   CONSTRAINT `prendatipo_ibfk_1` FOREIGN KEY (`idtalla`) REFERENCES `talla` (`idtalla`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `prendatipo` */
 
@@ -1856,7 +2531,36 @@ insert  into `prendatipo`(`idprendatipo`,`prenda`,`idtalla`) values
 (2,'KIMONO LARGO BLANCO',2),
 (3,'KIMONO LARGO BLANCO',3),
 (4,'KIMONO LARGO BLANCO',4),
-(5,'KIMONO LARGO BLANCO',5);
+(5,'KIMONO LARGO BLANCO',5),
+(6,'VESTIDOS CORTO ESTAMPADO',4),
+(7,'VESTIDOS CORTO ESTAMPADO',3),
+(8,'VESTIDOS CORTO ESTAMPADO',2),
+(9,'VESTIDOS CORTO ESTAMPADO',1),
+(10,'CAMISA ENTERO LARGA',3),
+(11,'CAMISA ENTERO LARGA',2),
+(12,'CAMISA ENTERO LARGA',5),
+(13,'CAMISA ENTERO LARGA',1),
+(14,'CAMISA ENTERO LARGA',4),
+(15,'VESTIDO LARGO ESTAMPADO',1),
+(16,'VESTIDO LARGO ESTAMPADO',2),
+(17,'VESTIDO LARGO ESTAMPADO',3),
+(18,'VESTIDO LARGO ESTAMPADO',4),
+(19,'CAMISAS ENTERO MANGA',4),
+(20,'CAMISAS ENTERO MANGA',3),
+(21,'CAMISAS ENTERO MANGA',2),
+(22,'CAMISAS ENTERO MANGA',5),
+(23,'CAMISAS ENTERO MANGA',1),
+(26,'KIMONO ESTAMPADO FLORES',4),
+(27,'KIMONO ESTAMPADO FLORES	',2),
+(28,'KIMONO ESTAMPADO FLORES	',3),
+(29,'CAMISA ESTAMPADA MANGA',5),
+(30,'CAMISA ESTAMPADA MANGA',2),
+(31,'CAMISA ESTAMPADA MANGA',1),
+(32,'CAMISA ESTAMPADA MANGA',3),
+(33,'CAMISA ESTAMPADA MANGA',4),
+(34,'ESTAMPADO ANIMAL PRINT',2),
+(35,'ESTAMPADO ANIMAL PRINT',3),
+(36,'ESTAMPADO ANIMAL PRINT',4);
 
 /*Table structure for table `proceso_produccion` */
 
@@ -1867,14 +2571,14 @@ CREATE TABLE `proceso_produccion` (
   `proceso` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `estado` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`idproceso`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `proceso_produccion` */
 
 insert  into `proceso_produccion`(`idproceso`,`proceso`,`estado`) values 
-(1,'UNIR CORTE PERRILLA',0),
-(2,'CERRAR CORTE PERRILLA',0),
-(3,'ARMAR CUELLO',0),
+(1,'ENRESORTAR ESPALDA',0),
+(2,'ARMAR TIRA LIBRE',0),
+(3,'ASENTAR TIRA LIBRE',0),
 (4,'MONTAR PERILLA CUELLO',0),
 (5,'PRESPUNTAR PERILLA',0),
 (6,'UNIR HOMBROS POR 2',0),
@@ -1884,7 +2588,50 @@ insert  into `proceso_produccion`(`idproceso`,`proceso`,`estado`) values
 (10,'ARMAR SEGUNDA MANGA',0),
 (11,'ARMAR CINTURON',0),
 (12,'ARMAR PUÑO POR 2',0),
-(13,'MONTAR PUÑO SEGUNDA MANGA',0);
+(13,'MONTAR PUÑO SEGUNDA MANGA',0),
+(14,'SESGAR ESPALDA',0),
+(15,'SESGAR FRENTE X 2',0),
+(16,'SESGAR SISAS X 2',0),
+(17,'ASENTAR PERILLA',0),
+(18,'CERRAR COSTADOS X 2',0),
+(19,'MONTAR TIRAS A HOMBRO X 4',0),
+(20,'ASENTAR COMPLETO',0),
+(21,'PINZA ESPALDA',0),
+(22,'MARQUILLA ESPALDA',0),
+(23,'RUEDO BAJO',0),
+(24,'OJAL X 8',0),
+(25,'PREPARAR BANDA CUELLO',0),
+(26,'PUNTEAR X4',0),
+(27,'ARMAR CUELLO',0),
+(28,'PREPARAR BANDA PUñO',0),
+(29,'ASENTAR PUñO',0),
+(30,'MONTAR CUELLO A CUERPO',0),
+(31,'ASENTAR CUELLO A CUERPO',0),
+(32,'SESGAR MANGA X 2',0),
+(33,'PINZA A PUñO',0),
+(34,'BOTON X 4',0),
+(35,'OJAL X 4',0),
+(36,'MONTAR PUñO X 2',0),
+(37,'RUEDO BOLSILLO',0),
+(38,'RUEDO BANDA CUELLO',0),
+(39,'ARMAR PERILLA A FRENTE DOBLE',0),
+(40,'ARMAR PERILLA A FRENTE SEGUNDA PARTE',0),
+(41,'OJAL X 9',0),
+(42,'BOTON X 9',0),
+(43,'ARMAR  CUELLO CON BANDA',0),
+(44,'ASENTAR CUELLO',0),
+(45,'MONTAR PUñO A MANGA',0),
+(46,'ASENTAR PUñO A MANGA',0),
+(47,'ASENTAR CUELLO CON BANDA',0),
+(48,'ARMAR TIRA X 2',0),
+(49,'ASENTAR TIRA X 2',0),
+(50,'MONTAR ELASTICO FRENTE',0),
+(51,'MONTAR ELASTICO ESPALDA',0),
+(52,'ENTALEGAR TITAS X 4',0),
+(53,'ASENTAR ELASTICO ESPALDA',0),
+(54,'ASENTAR ELASTICO FRENTE',0),
+(55,'ASENTAR SISAS X 2',0),
+(56,'UNIR ESPALDA',0);
 
 /*Table structure for table `producto` */
 
@@ -1892,36 +2639,88 @@ DROP TABLE IF EXISTS `producto`;
 
 CREATE TABLE `producto` (
   `idproducto` int(11) NOT NULL AUTO_INCREMENT,
-  `codigoproducto` char(15) NOT NULL,
-  `producto` char(40) NOT NULL,
-  `cantidad` int(11) NOT NULL,
-  `stock` int(11) DEFAULT NULL,
-  `costoconfeccion` float NOT NULL,
-  `vlrventa` float NOT NULL,
   `idcliente` int(11) NOT NULL,
   `observacion` longtext NOT NULL,
   `activo` tinyint(1) DEFAULT '0',
   `fechaproceso` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `usuariosistema` char(15) DEFAULT NULL,
-  `idprendatipo` int(11) NOT NULL,
-  `idtipo` int(15) NOT NULL,
+  `codigo` varchar(20) NOT NULL,
   PRIMARY KEY (`idproducto`),
   KEY `idcliente` (`idcliente`),
-  KEY `idprendatipo` (`idprendatipo`),
-  KEY `idtipo` (`idtipo`),
-  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
-  CONSTRAINT `producto_ibfk_2` FOREIGN KEY (`idprendatipo`) REFERENCES `prendatipo` (`idprendatipo`),
-  CONSTRAINT `producto_ibfk_3` FOREIGN KEY (`idtipo`) REFERENCES `ordenproducciontipo` (`idtipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  CONSTRAINT `producto_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `producto` */
 
-insert  into `producto`(`idproducto`,`codigoproducto`,`producto`,`cantidad`,`stock`,`costoconfeccion`,`vlrventa`,`idcliente`,`observacion`,`activo`,`fechaproceso`,`usuariosistema`,`idprendatipo`,`idtipo`) values 
-(1,'108','KIMONO LARGO BLANCO',459,0,3141,8526.26,1,'',0,'2018-12-20 16:08:33','71268830',1,1),
-(2,'108','KIMONO LARGO BLANCO',611,0,3141,8526.26,1,'',0,'2018-12-20 16:10:02','71268830',2,1),
-(3,'108','KIMONO LARGO BLANCO',510,0,3141,8526.26,1,'',0,'2018-12-20 16:12:46','71268830',3,1),
-(4,'108','KIMONO LARGO BLANCO',240,0,3141,8526.26,1,'',0,'2018-12-20 16:13:29','71268830',4,1),
-(5,'108','KIMONO LARGO BLANCO',152,0,3141,8526.26,1,'',0,'2018-12-20 16:14:02','71268830',5,1);
+insert  into `producto`(`idproducto`,`idcliente`,`observacion`,`activo`,`fechaproceso`,`usuariosistema`,`codigo`) values 
+(7,1,'referencia 108',0,'2019-01-26 15:00:00',NULL,'108'),
+(8,1,'108',0,'2019-01-28 09:55:53',NULL,'133'),
+(9,1,'536',0,'2019-01-28 10:12:10',NULL,'536'),
+(10,1,'147',0,'2019-01-28 10:15:27',NULL,'147'),
+(11,1,'271',0,'2019-01-28 10:19:18',NULL,'271'),
+(12,1,'227',0,'2019-01-28 10:33:04',NULL,'227'),
+(13,1,'527',0,'2019-01-28 10:40:45',NULL,'527'),
+(14,1,'ESTA PRENDA LLEVA LAVANDERIA',0,'2019-01-29 12:19:59',NULL,'220');
+
+/*Table structure for table `productodetalle` */
+
+DROP TABLE IF EXISTS `productodetalle`;
+
+CREATE TABLE `productodetalle` (
+  `idproductodetalle` int(11) NOT NULL AUTO_INCREMENT,
+  `idproducto` int(11) NOT NULL,
+  `observacion` text COLLATE utf8_spanish_ci NOT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `fechaproceso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `usuariosistema` varchar(20) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `idprendatipo` int(11) NOT NULL,
+  PRIMARY KEY (`idproductodetalle`),
+  KEY `idproducto` (`idproducto`),
+  KEY `idprendatipo` (`idprendatipo`),
+  CONSTRAINT `productodetalle_ibfk_1` FOREIGN KEY (`idproducto`) REFERENCES `producto` (`idproducto`),
+  CONSTRAINT `productodetalle_ibfk_2` FOREIGN KEY (`idprendatipo`) REFERENCES `prendatipo` (`idprendatipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `productodetalle` */
+
+insert  into `productodetalle`(`idproductodetalle`,`idproducto`,`observacion`,`activo`,`fechaproceso`,`usuariosistema`,`idprendatipo`) values 
+(1,7,'.',1,'2019-01-28 09:39:31',NULL,2),
+(2,7,'.',1,'2019-01-28 09:39:31',NULL,1),
+(3,7,'.',1,'2019-01-28 09:39:31',NULL,3),
+(4,7,'.',1,'2019-01-28 09:39:31',NULL,4),
+(5,7,'.',1,'2019-01-28 09:39:31',NULL,5),
+(11,8,'.',1,'2019-01-28 10:04:24',NULL,6),
+(12,8,'.',1,'2019-01-28 10:04:24',NULL,8),
+(13,8,'.',1,'2019-01-28 10:04:24',NULL,9),
+(14,8,'.',1,'2019-01-28 10:04:24',NULL,7),
+(19,9,'.',1,'2019-01-28 10:12:52',NULL,10),
+(20,9,'.',1,'2019-01-28 10:12:52',NULL,14),
+(21,9,'.',1,'2019-01-28 10:12:52',NULL,13),
+(22,9,'.',1,'2019-01-28 10:12:52',NULL,12),
+(23,9,'.',1,'2019-01-28 10:12:52',NULL,11),
+(24,10,'.',1,'2019-01-28 10:15:45',NULL,6),
+(25,10,'.',1,'2019-01-28 10:15:45',NULL,8),
+(26,10,'.',1,'2019-01-28 10:15:45',NULL,9),
+(27,10,'.',1,'2019-01-28 10:15:45',NULL,7),
+(28,11,'.',1,'2019-01-28 10:18:26',NULL,20),
+(29,11,'.',1,'2019-01-28 10:18:26',NULL,21),
+(30,11,'.',1,'2019-01-28 10:18:26',NULL,22),
+(31,11,'.',1,'2019-01-28 10:18:26',NULL,19),
+(32,11,'.',1,'2019-01-28 10:18:26',NULL,23),
+(38,12,'.',1,'2019-01-28 10:33:40',NULL,28),
+(39,12,'.',1,'2019-01-28 10:33:41',NULL,27),
+(40,12,'.',1,'2019-01-28 10:33:41',NULL,26),
+(44,13,'.',1,'2019-01-28 10:41:55',NULL,33),
+(45,13,'.',1,'2019-01-28 10:41:55',NULL,31),
+(46,13,'.',1,'2019-01-28 10:41:55',NULL,29),
+(47,13,'.',1,'2019-01-28 10:41:55',NULL,30),
+(48,13,'.',1,'2019-01-28 10:41:55',NULL,32),
+(49,14,'.',1,'2019-01-29 12:20:41',NULL,34),
+(50,14,'.',1,'2019-01-29 12:20:41',NULL,35),
+(51,14,'.',1,'2019-01-29 12:20:41',NULL,36),
+(52,14,'.',1,'2019-02-05 20:56:23','71268830',11),
+(53,14,'.',1,'2019-02-05 20:57:16','71268830',13),
+(54,14,'.',1,'2019-02-05 20:58:49','71268830',30);
 
 /*Table structure for table `proveedor` */
 
@@ -1977,26 +2776,45 @@ CREATE TABLE `recibocaja` (
   `idrecibo` int(11) NOT NULL AUTO_INCREMENT,
   `fecharecibo` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fechapago` date DEFAULT NULL,
-  `numero` int(11) DEFAULT NULL,
-  `idtiporecibo` char(10) NOT NULL,
+  `numero` int(11) DEFAULT '0',
+  `idtiporecibo` int(10) NOT NULL,
   `idmunicipio` varchar(15) NOT NULL,
   `valorpagado` double DEFAULT '0',
   `valorletras` longtext,
-  `idcliente` int(11) NOT NULL,
+  `idcliente` int(11) DEFAULT NULL,
   `observacion` longtext,
   `usuariosistema` char(15) DEFAULT NULL,
   `estado` tinyint(1) DEFAULT '0',
   `autorizado` tinyint(1) DEFAULT '0',
+  `libre` tinyint(1) DEFAULT '0',
+  `telefono` int(20) DEFAULT NULL,
+  `direccion` varchar(30) DEFAULT NULL,
+  `nitcedula` int(20) DEFAULT NULL,
+  `clienterazonsocial` varchar(60) DEFAULT NULL,
+  `idbanco` int(11) DEFAULT NULL,
   PRIMARY KEY (`idrecibo`),
   KEY `idcliente` (`idcliente`),
   KEY `idtiporecibo` (`idtiporecibo`),
   KEY `idmunicipio` (`idmunicipio`),
-  CONSTRAINT `recibocaja_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`),
+  KEY `idbanco` (`idbanco`),
   CONSTRAINT `recibocaja_ibfk_3` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
-  CONSTRAINT `recibocaja_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  CONSTRAINT `recibocaja_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`),
+  CONSTRAINT `recibocaja_ibfk_5` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`),
+  CONSTRAINT `recibocaja_ibfk_6` FOREIGN KEY (`idbanco`) REFERENCES `banco` (`idbanco`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocaja` */
+
+insert  into `recibocaja`(`idrecibo`,`fecharecibo`,`fechapago`,`numero`,`idtiporecibo`,`idmunicipio`,`valorpagado`,`valorletras`,`idcliente`,`observacion`,`usuariosistema`,`estado`,`autorizado`,`libre`,`telefono`,`direccion`,`nitcedula`,`clienterazonsocial`,`idbanco`) values 
+(3,'2019-01-30 15:32:21','2019-01-30',2,1,'05001',2985812.782517,'-',1,'AAA','71268830',0,1,0,NULL,NULL,NULL,NULL,1022),
+(4,'2019-01-30 18:15:22','2019-01-30',0,1,'05001',0,NULL,1,NULL,NULL,0,0,0,NULL,NULL,NULL,NULL,1021),
+(5,'2019-01-30 18:18:21','2019-01-30',0,1,'05001',0,'-',1,'AAA','71268830',0,0,0,NULL,NULL,NULL,NULL,1),
+(6,'2019-01-30 21:30:04','2019-01-30',3,13,'05002',20000,'-',1,'PRUEBA 2','71268830',0,1,1,123456,'cra prueba',123,'prueba recibo',1),
+(7,'2019-02-01 11:33:43','2019-02-01',4,1,'05001',250000,'-',1,'FDF','71268830',0,1,1,222,'cra 3',147,'prueba 3',1),
+(8,'2019-02-05 18:48:30','2019-02-06',5,11,'05001',222332,'-',1,'AAAAA','71268830',0,1,1,NULL,NULL,NULL,NULL,1),
+(9,'2019-02-11 19:30:51','2019-02-11',0,1,'05001',0,'-',1,'DSDSDSD','71268830',0,0,1,NULL,NULL,NULL,NULL,1),
+(10,'2019-02-12 09:02:47','2019-02-12',0,3,'05001',0,'-',2,'FFFF','71268830',0,0,1,NULL,NULL,NULL,NULL,1022),
+(11,'2019-02-12 09:05:27','2019-02-12',0,6,'05001',0,'-',2,'CCCC','71268830',0,0,0,NULL,NULL,NULL,NULL,1);
 
 /*Table structure for table `recibocajadetalle` */
 
@@ -2004,7 +2822,7 @@ DROP TABLE IF EXISTS `recibocajadetalle`;
 
 CREATE TABLE `recibocajadetalle` (
   `iddetallerecibo` int(11) NOT NULL AUTO_INCREMENT,
-  `idfactura` int(15) NOT NULL,
+  `idfactura` int(15) DEFAULT NULL,
   `vlrabono` double DEFAULT NULL,
   `vlrsaldo` double DEFAULT NULL,
   `retefuente` double DEFAULT NULL,
@@ -2017,9 +2835,87 @@ CREATE TABLE `recibocajadetalle` (
   KEY `idfactura` (`idfactura`),
   CONSTRAINT `recibocajadetalle_ibfk_2` FOREIGN KEY (`idrecibo`) REFERENCES `recibocaja` (`idrecibo`),
   CONSTRAINT `recibocajadetalle_ibfk_3` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocajadetalle` */
+
+insert  into `recibocajadetalle`(`iddetallerecibo`,`idfactura`,`vlrabono`,`vlrsaldo`,`retefuente`,`reteiva`,`reteica`,`idrecibo`,`observacion`) values 
+(1,4,2985812.782517,0,106493.54552,75876.651183,NULL,3,NULL),
+(3,NULL,20000,0,0,0,0,6,NULL),
+(4,NULL,250000,0,0,0,0,7,NULL),
+(5,12,833537,833537,0,20453,NULL,5,NULL),
+(6,13,12241942,12241942,436627,311097,NULL,5,NULL),
+(7,7,12650563,12650563,451202,321481,NULL,5,NULL),
+(8,8,1188160,1188160,42378,30194,NULL,5,NULL),
+(9,9,598749.2634997,598749.2634997,0,14691.6521823,NULL,5,NULL),
+(10,NULL,222332,0,0,0,0,8,NULL);
+
+/*Table structure for table `remision` */
+
+DROP TABLE IF EXISTS `remision`;
+
+CREATE TABLE `remision` (
+  `id_remision` int(11) NOT NULL AUTO_INCREMENT,
+  `idordenproduccion` int(11) DEFAULT NULL,
+  `numero` int(20) DEFAULT NULL,
+  `total_tulas` int(11) DEFAULT NULL,
+  `total_exportacion` float DEFAULT NULL,
+  `totalsegundas` float DEFAULT NULL,
+  `total_colombia` float DEFAULT NULL,
+  `total_confeccion` float DEFAULT NULL,
+  `total_despachadas` float DEFAULT NULL,
+  PRIMARY KEY (`id_remision`),
+  KEY `idordenproduccion` (`idordenproduccion`),
+  CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `remision` */
+
+/*Table structure for table `remisiondetalle` */
+
+DROP TABLE IF EXISTS `remisiondetalle`;
+
+CREATE TABLE `remisiondetalle` (
+  `id_remision_detalle` int(11) NOT NULL AUTO_INCREMENT,
+  `id_remision` int(11) DEFAULT NULL,
+  `color` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `oc` tinyint(1) DEFAULT '0',
+  `tula` int(2) DEFAULT NULL,
+  `xs` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `s` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `m` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `l` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `xl` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `28` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `30` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `32` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `34` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `38` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `40` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `42` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `44` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `c_xs` int(11) DEFAULT NULL,
+  `c_s` int(11) DEFAULT NULL,
+  `c_m` int(11) DEFAULT NULL,
+  `c_l` int(11) DEFAULT NULL,
+  `c_xl` int(11) DEFAULT NULL,
+  `c_28` int(11) DEFAULT NULL,
+  `c_30` int(11) DEFAULT NULL,
+  `c_32` int(11) DEFAULT NULL,
+  `c_34` int(11) DEFAULT NULL,
+  `c_36` int(11) DEFAULT NULL,
+  `c_38` int(11) DEFAULT NULL,
+  `c_40` int(11) DEFAULT NULL,
+  `c_42` int(11) DEFAULT NULL,
+  `c_44` int(11) DEFAULT NULL,
+  `estado` tinyint(1) DEFAULT '0',
+  `unidades` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id_remision_detalle`),
+  KEY `id_remision` (`id_remision`),
+  CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `remisiondetalle` */
 
 /*Table structure for table `resolucion` */
 
@@ -2033,16 +2929,18 @@ CREATE TABLE `resolucion` (
   `fechavencimiento` datetime NOT NULL,
   `nitmatricula` char(11) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
+  `fechacreacion` date DEFAULT NULL,
+  `codigoactividad` varchar(20) DEFAULT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idresolucion`),
   KEY `nitmatricula` (`nitmatricula`),
   CONSTRAINT `resolucion_ibfk_1` FOREIGN KEY (`nitmatricula`) REFERENCES `matriculaempresa` (`nitmatricula`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `resolucion` */
 
-insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`) values 
-(3,'1112','1','1000','2018-10-10 00:00:00','901189320',1),
-(6,'254','1001','2000','2018-10-10 00:00:00','901189320',0);
+insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`,`fechacreacion`,`codigoactividad`,`descripcion`) values 
+(3,'18762009830025','1','1000','2020-08-23 00:00:00','901189320',1,'2018-08-24','1410','Confección de prendas de vestir');
 
 /*Table structure for table `resumen_costos` */
 
@@ -2060,7 +2958,7 @@ CREATE TABLE `resumen_costos` (
 /*Data for the table `resumen_costos` */
 
 insert  into `resumen_costos`(`id_resumen_costos`,`costo_laboral`,`costo_fijo`,`total_costo`,`costo_diario`) values 
-(1,25909900,5028000,30937900,1189920);
+(1,28082200,5628000,33710200,1296550);
 
 /*Table structure for table `stockdescargas` */
 
@@ -2122,6 +3020,22 @@ insert  into `tipo_cargo`(`id_tipo_cargo`,`tipo`) values
 (1,'OPERATIVO'),
 (2,'ADMINISTRATIVO');
 
+/*Table structure for table `tipo_regimen` */
+
+DROP TABLE IF EXISTS `tipo_regimen`;
+
+CREATE TABLE `tipo_regimen` (
+  `id_tipo_regimen` int(11) NOT NULL AUTO_INCREMENT,
+  `regimen` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`id_tipo_regimen`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `tipo_regimen` */
+
+insert  into `tipo_regimen`(`id_tipo_regimen`,`regimen`) values 
+(1,'RÉGIMEN COMÚN'),
+(2,'RÉGIMEN SIMPLIFICADO');
+
 /*Table structure for table `tipodocumento` */
 
 DROP TABLE IF EXISTS `tipodocumento`;
@@ -2147,28 +3061,28 @@ insert  into `tipodocumento`(`idtipo`,`tipo`,`descripcion`) values
 DROP TABLE IF EXISTS `tiporecibo`;
 
 CREATE TABLE `tiporecibo` (
-  `idtiporecibo` char(10) NOT NULL,
+  `idtiporecibo` int(10) NOT NULL AUTO_INCREMENT,
   `concepto` char(30) NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idtiporecibo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 /*Data for the table `tiporecibo` */
 
 insert  into `tiporecibo`(`idtiporecibo`,`concepto`,`activo`) values 
-('1','RECIBO DE CAJA',0),
-('10','ABONO DE BANCO',0),
-('11','ABONO DE FACTURA',0),
-('12','APORTES DE SOCIO',0),
-('13','REGALO NAVIDEÑO',0),
-('14','REGISTRO DE ENTRADA',0),
-('2','RECIBO DE CAJA',0),
-('3','TERCERO',0),
-('4','PRESTAMO BANACRIA',0),
-('5','TERCERO EN APORTES',0),
-('6','PRUEBA PRUEBA',0),
-('7','TERCERO',0),
-('9','RECIBO DE TEMPORALIDAD',0);
+(1,'RECIBO DE CAJA',0),
+(2,'RECIBO DE CAJA',0),
+(3,'TERCERO',0),
+(4,'PRESTAMO BANACRIA',0),
+(5,'TERCERO EN APORTES',0),
+(6,'PRUEBA PRUEBA',0),
+(7,'TERCERO',0),
+(9,'RECIBO DE TEMPORALIDAD',0),
+(10,'ABONO DE BANCO',0),
+(11,'ABONO DE FACTURA',0),
+(12,'APORTES DE SOCIO',0),
+(13,'REGALO NAVIDEÑO',0),
+(14,'REGISTRO DE ENTRADA',0);
 
 /*Table structure for table `usuario` */
 
@@ -2187,12 +3101,96 @@ CREATE TABLE `usuario` (
   `authKey` varchar(250) NOT NULL,
   `accessToken` varchar(250) NOT NULL,
   PRIMARY KEY (`codusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `usuario` */
 
 insert  into `usuario`(`codusuario`,`role`,`username`,`password`,`documentousuario`,`nombrecompleto`,`emailusuario`,`activo`,`fechaproceso`,`authKey`,`accessToken`) values 
-(11,2,'71268830','fsvcwST6rx8GU','71268830','Pablo Andres Aranzazu A','paul6126q@hotmail.com',1,'2018-11-07 20:50:15','bb602ba143bab0f2862a5fa73f6bb39d0c3ba78db764d8260da30233cab5f170ba6471b8796d4eb8e37b041dc36caec1c7fab951a9c312a926b173641a81a96021df5047278743f7c855401adff5016dfa2244ac13bad3a3c7576b1de2c6c8c820d3a66f','5d3ac1bd25b7f48f53f5ed81b5e2667ff5182d25e065ec4f329360a8a75f75fe0b65d6fb0a80217c6f8e502df81af1ca6f0fee2f810ad4f80ad79f01a643db05310754b167e2e5e2f39f3c42b3d9039e517e28a1aa2855295aa437e12dcea994df3259f0');
+(1,2,'71268830','fsvcwST6rx8GU','71268830','Pablo Andres Aranzazu A','paul6126q@hotmail.com',1,'2019-01-08 19:52:50','bb602ba143bab0f2862a5fa73f6bb39d0c3ba78db764d8260da30233cab5f170ba6471b8796d4eb8e37b041dc36caec1c7fab951a9c312a926b173641a81a96021df5047278743f7c855401adff5016dfa2244ac13bad3a3c7576b1de2c6c8c820d3a66f','5d3ac1bd25b7f48f53f5ed81b5e2667ff5182d25e065ec4f329360a8a75f75fe0b65d6fb0a80217c6f8e502df81af1ca6f0fee2f810ad4f80ad79f01a643db05310754b167e2e5e2f39f3c42b3d9039e517e28a1aa2855295aa437e12dcea994df3259f0'),
+(2,2,'ADMINISTRADOR','fsNzvvKC7dV0Y','70854409','JOSE GREGORIO PULGARIN','jgpmorales1975@hotmail.com',1,'2019-01-08 19:54:11','777d588d9d8b1f2d719f8b87cf44477a646620bf0cb2e10451f3462531d60ccc4836eec751bf99c2283df7a8795da705f1eb72b58ba22675c45e7ff197ab27139176ec799c6a9aff5754dc309bef8e0816e74d238319e45ecf302f5575f9bbd2613f73b3','509e13940de3484035f9dd93a36c8f2a030919bf328b4721dbced629ba7f8166ac4a05c14c093ce8578ab596b86959981b70d6a92d6ef885b91c79e99b3807a0607d8e66f3a899f80194142145edac9e9b601c0a90c820512fe29530e4791652ac298f93'),
+(3,1,'facturacion','fsoeOgaYDvnqM','43186015','SandraMilenaGonzalez','jgpmoralles1975@hotmail.com',1,'2019-01-17 16:19:35','9cc88d44740f40a458256c40d4f69ee5e32f924f1379343a4eb32071229832a289d316b81042873ea39f4301de9724dd9df6e77e7b78389056e9d3fff8f58467fe671793340d37407681b14b60b0424ece36a4165bffa46fe587fef436ca6e93eb73aff7','d1407febc1fba81c6a41e746770ef935b4fea8b5fcbda182fc27bf485107a0e2050b3efd95ed0756ed6af5b7a85ec5eda46513948b6bcb873b0c99845e133945a13e6688e057fe17e70b9baf51260a0c0c6417eaa3917e05f169fb38c3973921c5f926aa');
+
+/*Table structure for table `usuario_detalle` */
+
+DROP TABLE IF EXISTS `usuario_detalle`;
+
+CREATE TABLE `usuario_detalle` (
+  `codusuario_detalle` int(11) NOT NULL AUTO_INCREMENT,
+  `codusuario` int(11) NOT NULL,
+  `id_permiso` int(11) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`codusuario_detalle`),
+  KEY `codusuario` (`codusuario`),
+  KEY `id_permiso` (`id_permiso`),
+  CONSTRAINT `usuario_detalle_ibfk_1` FOREIGN KEY (`codusuario`) REFERENCES `usuario` (`codusuario`),
+  CONSTRAINT `usuario_detalle_ibfk_2` FOREIGN KEY (`id_permiso`) REFERENCES `permisos` (`id_permiso`)
+) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `usuario_detalle` */
+
+insert  into `usuario_detalle`(`codusuario_detalle`,`codusuario`,`id_permiso`,`activo`) values 
+(121,1,1,0),
+(122,1,2,0),
+(123,1,3,0),
+(124,1,4,0),
+(125,1,5,0),
+(126,1,6,0),
+(127,1,7,0),
+(128,1,8,0),
+(129,1,9,0),
+(130,1,10,0),
+(131,1,11,0),
+(132,1,12,0),
+(133,1,13,0),
+(134,1,14,0),
+(135,1,15,0),
+(136,1,16,0),
+(137,1,17,0),
+(138,1,18,0),
+(139,1,19,0),
+(140,1,20,0),
+(141,1,21,0),
+(142,1,22,0),
+(143,1,23,0),
+(144,1,24,0),
+(145,1,25,0),
+(146,1,26,0),
+(147,1,27,0),
+(148,1,28,0),
+(149,1,29,0),
+(150,1,30,0),
+(151,2,1,0),
+(152,2,2,0),
+(153,2,3,0),
+(154,2,4,0),
+(155,2,5,0),
+(156,2,6,0),
+(157,2,7,0),
+(158,2,8,0),
+(159,2,9,0),
+(160,2,10,0),
+(161,2,11,0),
+(162,2,12,0),
+(163,2,13,0),
+(164,2,14,0),
+(165,2,15,0),
+(166,2,16,0),
+(167,2,17,0),
+(168,2,18,0),
+(169,2,19,0),
+(170,2,20,0),
+(171,2,21,0),
+(172,2,22,0),
+(173,2,23,0),
+(174,2,24,0),
+(175,2,25,0),
+(176,2,26,0),
+(177,2,27,0),
+(178,2,28,0),
+(179,2,29,0),
+(180,2,30,0),
+(181,1,31,0),
+(182,1,32,0);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

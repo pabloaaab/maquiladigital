@@ -28,6 +28,7 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use app\models\UsuarioDetalle;
+use app\models\Banco;
 use app\models\FormRecibocajalibre;
 use app\models\FormRecibocajanuevodetallelibre;
 
@@ -99,6 +100,7 @@ class RecibocajaController extends Controller
         $model = new Recibocaja();
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
+        $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->valorletras = "-";
@@ -112,6 +114,7 @@ class RecibocajaController extends Controller
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
             'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+            'bancos' => ArrayHelper::map($bancos, "idbanco", "entidad"),
         ]);
     }
     
@@ -120,10 +123,12 @@ class RecibocajaController extends Controller
         $model = new FormRecibocajalibre;
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
+        $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
         if ($model->load(Yii::$app->request->post())) {
             $table = new Recibocaja;
-            $table->idcliente = $model->idcliente;            
+            $table->idcliente = $model->idcliente;
+            $table->idbanco = $model->idbanco;            
             $table->observacion = $model->observacion;
             $table->fechapago = $model->fechapago;
             $table->idtiporecibo = $model->idtiporecibo;
@@ -140,6 +145,7 @@ class RecibocajaController extends Controller
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
             'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+            'bancos' => ArrayHelper::map($bancos, "idbanco", "entidad"),
         ]);
     }
 
@@ -155,6 +161,7 @@ class RecibocajaController extends Controller
         $model = $this->findModel($id);
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
+        $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
         if($model->libre == 1){
                 return $this->redirect(['updatelibre', 'id' => $id]);
@@ -172,6 +179,7 @@ class RecibocajaController extends Controller
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
             'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+            'bancos' => ArrayHelper::map($bancos, "idbanco", "entidad"),
         ]);
     }
     
@@ -179,6 +187,7 @@ class RecibocajaController extends Controller
         $model = new FormRecibocajalibre;
         $clientes = Cliente::find()->all();
         $municipios = Municipio::find()->all();
+        $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
         $table = $this->findModel($id);
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
@@ -194,10 +203,8 @@ class RecibocajaController extends Controller
             if ($model->validate()) {
                 
                 if ($table) {
-                    $table->nitcedula = $model->nitcedula;
-                    $table->clienterazonsocial = $model->clienterazonsocial;
-                    $table->telefono = $model->telefono;
-                    $table->direccion = $model->direccion;
+                    $table->idcliente = $model->idcliente;
+                    $table->idbanco = $model->idbanco;                    
                     $table->observacion = $model->observacion;
                     $table->fechapago = $model->fechapago;
                     $table->idtiporecibo = $model->idtiporecibo;
@@ -220,11 +227,9 @@ class RecibocajaController extends Controller
         if (Yii::$app->request->get("id")) {
             $table = $this->findModel($id);
             if ($table) {
-                $model->nitcedula = $table->nitcedula;
-                $model->clienterazonsocial = $table->clienterazonsocial;
-                $model->fechapago = $table->fechapago;
-                $model->telefono = $table->telefono;
-                $model->direccion = $table->direccion;
+                $model->idcliente = $table->idcliente;
+                $model->idbanco = $table->idbanco;
+                $model->fechapago = $table->fechapago;                
                 $model->observacion = $table->observacion;
                 $model->idmunicipio = $table->idmunicipio;
                 $model->idtiporecibo = $table->idtiporecibo;
@@ -239,6 +244,7 @@ class RecibocajaController extends Controller
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'tiporecibos' => ArrayHelper::map($tipoRecibos, "idtiporecibo", "concepto"),
             'municipios' => ArrayHelper::map($municipios, "idmunicipio", "municipioCompleto"),
+            'bancos' => ArrayHelper::map($bancos, "idbanco", "entidad"),
         ]);
     }
 

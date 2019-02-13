@@ -91,8 +91,17 @@ class PDF extends FPDF {
         $this->Cell(50, 6, utf8_decode(number_format($recibo->valorpagado)), 0, 0, 'L');
         $this->SetXY(10, 88); //FILA 6
         $this->SetFont('Arial', 'B', 10);
+        $this->Cell(25, 6, utf8_decode("BANCO:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($recibo->banco->entidad), 0, 0, 'L');                
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(35, 6, utf8_decode("PRODUCTO:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 9);
+        $this->Cell(50, 6, utf8_decode($recibo->banco->producto), 0, 0, 'L');
+        $this->SetXY(10, 93); //FILA 7
+        $this->SetFont('Arial', 'B', 10);
         $this->MultiCell(30, 6, utf8_decode('OBSERVACIÓN:'), 0, 'J');
-        $this->SetXY(40, 88); //FILA 7
+        $this->SetXY(40, 93); //FILA 7
         $this->SetFont('Arial', '', 10);
         $this->MultiCell(162, 6, utf8_decode($recibo->observacion), 0, 'J');
         //Lineas del encabezado
@@ -159,8 +168,8 @@ class PDF extends FPDF {
     function Footer() {
 
         $this->SetFont('Arial', '', 8);
-        $this->Text(10, 290, utf8_decode('Nuestra compañía, en favor del medio ambiente.'));
-        $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
+        //$this->Text(10, 290, utf8_decode('Nuestra compañía, en favor del medio ambiente.'));
+        //$this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
     }
 
 }

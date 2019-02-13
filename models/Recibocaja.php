@@ -23,6 +23,7 @@ use Yii;
  * @property Tiporecibo $tiporecibo
  * @property Cliente $cliente
  * @property Municipio $municipio
+ * @property Banco $banco
  * @property Recibocajadetalle[] $recibocajadetalles
  */
 class Recibocaja extends \yii\db\ActiveRecord
@@ -59,6 +60,7 @@ class Recibocaja extends \yii\db\ActiveRecord
             [['idtiporecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Tiporecibo::className(), 'targetAttribute' => ['idtiporecibo' => 'idtiporecibo']],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
+            [['idbanco'], 'exist', 'skipOnError' => true, 'targetClass' => Banco::className(), 'targetAttribute' => ['idbanco' => 'idbanco']],
         ];
     }
 
@@ -76,6 +78,7 @@ class Recibocaja extends \yii\db\ActiveRecord
             'valorpagado' => 'Valor Pagado',
             'valorletras' => 'Valor Letras',
             'idcliente' => 'Cliente',
+            'idbanco' => 'Banco',
             'estado' => 'Estado',
             'autorizado' => 'Autorizado',
             'observacion' => 'Observacion',
@@ -113,6 +116,14 @@ class Recibocaja extends \yii\db\ActiveRecord
     public function getRecibocajadetalles()
     {
         return $this->hasMany(Recibocajadetalle::className(), ['idrecibo' => 'idrecibo']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBanco()
+    {
+        return $this->hasOne(Banco::className(), ['idbanco' => 'idbanco']);
     }
     
     public function getAutorizar()

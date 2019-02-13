@@ -39,15 +39,9 @@ $this->params['breadcrumbs'][] = $this->title;?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
-        </div>                
-        <div class="row">
-            <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
-                'data' => $municipios,
-                'options' => ['prompt' => 'Seleccione un municipio ...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
+        </div>                                        
+        <div class="row">            
+            <?= $form->field($model, 'idbanco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>
         </div>
         <div class="row">            
             <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
@@ -57,6 +51,15 @@ $this->params['breadcrumbs'][] = $this->title;?>
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
             ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
+                'data' => $municipios,
+                'options' => ['prompt' => 'Seleccione un municipio ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>

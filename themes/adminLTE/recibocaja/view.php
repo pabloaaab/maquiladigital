@@ -65,14 +65,21 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
                     <td><?= Html::encode($model->tiporecibo->concepto) ?></td>
                 </tr>
-
+                <tr>
+                    <th><?= Html::activeLabel($model, 'idbanco') ?>:</th>
+                    <td><?= Html::encode($model->banco->entidad) ?></td>
+                    <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
+                    <td><?= Html::encode($model->banco->producto) ?></td>
+                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <td><?= Html::encode($model->numero) ?></td>                    
+                </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fecharecibo') ?>:</th>
                     <td><?= Html::encode($model->fecharecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
                     <td><?= Html::encode($model->municipio->municipioCompleto) ?></td>
-                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
-                    <td><?= Html::encode($model->numero) ?></td>
+                    <th></th>
+                    <td></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
