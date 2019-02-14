@@ -73,7 +73,7 @@ class RemisionController extends Controller
             $table->total_colombia = 0;
             $table->total_confeccion = 0;
             $table->total_despachadas = 0;
-            $table->fechacreacion = date();
+            $table->fechacreacion = date('Y-m-d');
             $table->insert();
             $model = Remision::findOne($table->id_remision);
             $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
