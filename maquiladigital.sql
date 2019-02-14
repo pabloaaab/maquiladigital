@@ -158,6 +158,27 @@ insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nomb
 (1,5,890920043,3,'TENNIS SA  EN REORGANIZACION','','','TENNIS SA  EN REORGANIZACION','CALLE 39 SUR # 26-09','3390000','3207880793','fvillegas@tennis.com.co','FREDY VILLEGAS','3390000','3207880793','2',15,'05','05266','901189320','1',1,1,1,'ESTE CLIENTE LE MAQUILAMOS Y LE REALIZAMOS TERMINACIÓN','2019-02-06 16:26:18'),
 (2,5,3333333,8,'SSSSSS.','AAAAA','AA','SSSSSS.','CALLE 39 SUR # 26-09','4444','301','fvillegase@tennis.com.co','DDDD','3333','433','1',0,'05','05001','901189320','1',1,1,1,'EEEE','2019-02-06 17:19:05');
 
+/*Table structure for table `color` */
+
+DROP TABLE IF EXISTS `color`;
+
+CREATE TABLE `color` (
+  `color` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
+  PRIMARY KEY (`color`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `color` */
+
+insert  into `color`(`color`) values 
+('Amarillo'),
+('Azul'),
+('Blanco'),
+('Naranja'),
+('Negro'),
+('Rojo'),
+('Rosado'),
+('Verde');
+
 /*Table structure for table `conceptonota` */
 
 DROP TABLE IF EXISTS `conceptonota`;
@@ -183,14 +204,15 @@ CREATE TABLE `consecutivo` (
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `consecutivo` int(20) NOT NULL,
   PRIMARY KEY (`consecutivo_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `consecutivo` */
 
 insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values 
 (1,'FACTURA DE VENTA',31),
 (2,'NOTA CREDITO',1),
-(3,'RECIBO CAJA',5);
+(3,'RECIBO CAJA',5),
+(4,'REMISION',2);
 
 /*Table structure for table `costo_fijo` */
 
@@ -2857,19 +2879,23 @@ DROP TABLE IF EXISTS `remision`;
 CREATE TABLE `remision` (
   `id_remision` int(11) NOT NULL AUTO_INCREMENT,
   `idordenproduccion` int(11) DEFAULT NULL,
-  `numero` int(20) DEFAULT NULL,
+  `numero` int(20) DEFAULT '0',
   `total_tulas` int(11) DEFAULT NULL,
   `total_exportacion` float DEFAULT NULL,
   `totalsegundas` float DEFAULT NULL,
   `total_colombia` float DEFAULT NULL,
   `total_confeccion` float DEFAULT NULL,
   `total_despachadas` float DEFAULT NULL,
+  `fechacreacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id_remision`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remision` */
+
+insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`) values 
+(2,14,2,12,227,90,903,1130,1130,'2019-02-13 15:50:58');
 
 /*Table structure for table `remisiondetalle` */
 
@@ -2879,43 +2905,43 @@ CREATE TABLE `remisiondetalle` (
   `id_remision_detalle` int(11) NOT NULL AUTO_INCREMENT,
   `id_remision` int(11) DEFAULT NULL,
   `color` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `oc` tinyint(1) DEFAULT '0',
-  `tula` int(2) DEFAULT NULL,
-  `xs` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `s` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `m` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `l` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `xl` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `28` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `30` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `32` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `34` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `38` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `40` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `42` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `44` varchar(2) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `c_xs` int(11) DEFAULT NULL,
-  `c_s` int(11) DEFAULT NULL,
-  `c_m` int(11) DEFAULT NULL,
-  `c_l` int(11) DEFAULT NULL,
-  `c_xl` int(11) DEFAULT NULL,
-  `c_28` int(11) DEFAULT NULL,
-  `c_30` int(11) DEFAULT NULL,
-  `c_32` int(11) DEFAULT NULL,
-  `c_34` int(11) DEFAULT NULL,
-  `c_36` int(11) DEFAULT NULL,
-  `c_38` int(11) DEFAULT NULL,
-  `c_40` int(11) DEFAULT NULL,
-  `c_42` int(11) DEFAULT NULL,
-  `c_44` int(11) DEFAULT NULL,
-  `estado` tinyint(1) DEFAULT '0',
-  `unidades` int(10) DEFAULT NULL,
+  `oc` tinyint(1) DEFAULT NULL,
+  `tula` int(2) DEFAULT '0',
+  `xs` int(2) DEFAULT '0',
+  `s` int(2) DEFAULT '0',
+  `m` int(2) DEFAULT '0',
+  `l` int(2) DEFAULT '0',
+  `xl` int(2) DEFAULT '0',
+  `28` int(2) DEFAULT '0',
+  `30` int(2) DEFAULT '0',
+  `32` int(2) DEFAULT '0',
+  `34` int(2) DEFAULT '0',
+  `38` int(2) DEFAULT '0',
+  `40` int(2) DEFAULT '0',
+  `42` int(2) DEFAULT '0',
+  `44` int(2) DEFAULT '0',
+  `estado` tinyint(1) DEFAULT NULL,
+  `unidades` int(10) DEFAULT '0',
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
+
+insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,`tula`,`xs`,`s`,`m`,`l`,`xl`,`28`,`30`,`32`,`34`,`38`,`40`,`42`,`44`,`estado`,`unidades`) values 
+(5,2,'Rojo',1,1,0,60,0,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,60),
+(6,2,'Rojo',1,1,0,0,107,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,107),
+(7,2,'Rojo',1,1,0,0,0,60,0,0,0,0,0,0,0,0,0,0,60),
+(8,2,'Rojo',0,1,0,0,0,120,0,0,0,0,0,0,0,0,0,0,120),
+(9,2,'Rojo',0,1,0,0,0,86,0,0,0,0,0,0,0,0,0,0,86),
+(10,2,'Rojo',0,1,0,0,120,0,0,0,0,0,0,0,0,0,0,0,120),
+(11,2,'Rojo',0,1,0,0,120,0,0,0,0,0,0,0,0,0,0,0,120),
+(12,2,'Rojo',0,1,0,0,120,0,0,0,0,0,0,0,0,0,0,0,120),
+(13,2,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,33),
+(14,2,'Rojo',0,1,0,120,0,0,0,0,0,0,0,0,0,0,0,0,120),
+(15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,94),
+(16,2,'Rojo',0,1,0,22,38,30,0,0,0,0,0,0,0,0,0,1,90);
 
 /*Table structure for table `resolucion` */
 
