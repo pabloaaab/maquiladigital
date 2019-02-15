@@ -47,6 +47,14 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
                     <td><?= Html::encode($model->cumplimiento) ?></td>
                 </tr>
                 <tr>
+                    <th><?= Html::activeLabel($model, 'referencia') ?>:</th>
+                    <td><?= Html::encode($model->referencia) ?></td>
+                    <th><?= Html::activeLabel($model, 'desde') ?>:</th>
+                    <td><?= Html::encode($model->desde) ?></td>
+                    <th><?= Html::activeLabel($model, 'hasta') ?>:</th>
+                    <td><?= Html::encode($model->hasta) ?></td>
+                </tr>
+                <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>                    
                 </tr>                                                
@@ -101,9 +109,9 @@ $form = ActiveForm::begin([
                         <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="5" required></td>                        
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="5" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="5" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="10" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->total_operacion ?></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="18" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->cumplimiento ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->observacion ?></td>                        
                         <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_ficha_tiempo_detalle[]" value="<?= $val->id_ficha_tiempo_detalle ?>"></td>
@@ -123,6 +131,7 @@ $form = ActiveForm::begin([
         </table>
     </div>
     <div class="panel-footer text-right">
+        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
     </div>
@@ -134,7 +143,9 @@ $form = ActiveForm::begin([
         var charCode
         charCode = e.keyCode
         status = charCode
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if (charCode != 46 && charCode > 31 
+ 
+      && (charCode < 48 || charCode > 57)) {
             return false
         }
         return true

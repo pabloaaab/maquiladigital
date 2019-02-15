@@ -19,7 +19,8 @@ class FichatiempoSearch extends Fichatiempo
         return [
             [['id_ficha_tiempo', 'id_empleado'], 'integer'],
             [['cumplimiento'], 'number'],
-            [['observacion'], 'safe'],
+            [['desde','hasta'], 'safe'],
+            [['observacion','referencia'], 'string'],
         ];
     }
 
@@ -62,9 +63,14 @@ class FichatiempoSearch extends Fichatiempo
             'id_ficha_tiempo' => $this->id_ficha_tiempo,
             'id_empleado' => $this->id_empleado,
             'cumplimiento' => $this->cumplimiento,
+            'desde' => $this->desde,
+            'hasta' => $this->hasta,
         ]);
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion]);
+        $query->andFilterWhere(['like', 'desde', $this->desde]);
+        $query->andFilterWhere(['like', 'hasta', $this->hasta]);
+        $query->andFilterWhere(['like', 'referencia', $this->referencia]);
 
         return $dataProvider;
     }

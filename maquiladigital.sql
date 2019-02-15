@@ -364,7 +364,7 @@ CREATE TABLE `costo_produccion_diaria` (
 /*Data for the table `costo_produccion_diaria` */
 
 insert  into `costo_produccion_diaria`(`id_costo_produccion_diaria`,`idcliente`,`idordenproduccion`,`cantidad`,`ordenproduccion`,`ordenproduccionext`,`idtipo`,`cantidad_x_hora`,`cantidad_diaria`,`tiempo_entrega_dias`,`nro_horas`,`dias_entrega`,`costo_muestra_operaria`,`costo_x_hora`) values 
-(1,1,3,1971,'12676','10676',1,1.22,73.2,26.93,269.3,27,5334,6507);
+(1,1,14,1171,'14633','13695',2,6.77,108.32,10.81,43.24,11,964,6526);
 
 /*Table structure for table `departamento` */
 
@@ -656,12 +656,18 @@ CREATE TABLE `fichatiempo` (
   `cumplimiento` float DEFAULT NULL,
   `observacion` text COLLATE utf8_spanish_ci,
   `fechacreacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `desde` date DEFAULT NULL,
+  `hasta` date DEFAULT NULL,
+  `referencia` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`id_ficha_tiempo`),
   KEY `id_empleado` (`id_empleado`),
   CONSTRAINT `fichatiempo_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempo` */
+
+insert  into `fichatiempo`(`id_ficha_tiempo`,`id_empleado`,`cumplimiento`,`observacion`,`fechacreacion`,`desde`,`hasta`,`referencia`) values 
+(1,1,14.07,'No cumple con el perfil de la empresa','2019-02-13 22:36:05',NULL,NULL,'001');
 
 /*Table structure for table `fichatiempodetalle` */
 
@@ -681,9 +687,13 @@ CREATE TABLE `fichatiempodetalle` (
   PRIMARY KEY (`id_ficha_tiempo_detalle`),
   KEY `id_ficha_tiempo` (`id_ficha_tiempo`),
   CONSTRAINT `fichatiempodetalle_ibfk_1` FOREIGN KEY (`id_ficha_tiempo`) REFERENCES `fichatiempo` (`id_ficha_tiempo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempodetalle` */
+
+insert  into `fichatiempodetalle`(`id_ficha_tiempo_detalle`,`id_ficha_tiempo`,`dia`,`desde`,`hasta`,`total_segundos`,`total_operacion`,`realizadas`,`cumplimiento`,`observacion`) values 
+(1,1,'2019-02-14','00:00:00','01:00:00',30.1,119.6,15,12.54,'No cumple con el perfil de la empresa'),
+(2,1,'2019-02-15','00:00:00','01:00:00',31.2,115.38,18,15.6,'No cumple con el perfil de la empresa');
 
 /*Table structure for table `matriculaempresa` */
 
@@ -2925,7 +2935,7 @@ CREATE TABLE `remisiondetalle` (
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
 

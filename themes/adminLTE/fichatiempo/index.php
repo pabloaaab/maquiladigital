@@ -36,8 +36,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [               
+                'attribute' => 'referencia',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],
+            [               
+                'attribute' => 'desde',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],
+            [               
+                'attribute' => 'hasta',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],            
+            [               
                 'attribute' => 'cumplimiento',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],                
             ],
             [               
                 'attribute' => 'observacion',

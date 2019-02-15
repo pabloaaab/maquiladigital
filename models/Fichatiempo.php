@@ -30,10 +30,11 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado'], 'required'],
+            [['id_empleado','referencia'], 'required'],
             [['id_empleado'], 'integer'],
             [['cumplimiento'], 'number'],
-            [['observacion'], 'string'],
+            [['observacion','referencia'], 'string'],
+            [['desde','hasta'], 'safe'],
             [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],
         ];
     }
@@ -48,6 +49,9 @@ class Fichatiempo extends \yii\db\ActiveRecord
             'id_empleado' => 'Empleado',
             'cumplimiento' => 'Cumplimiento',
             'observacion' => 'Observacion',
+            'desde' => 'Desde',
+            'hasta' => 'Hasta',
+            'referencia' => 'Referencia',
         ];
     }
 

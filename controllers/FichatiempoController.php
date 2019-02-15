@@ -9,6 +9,8 @@ use app\models\FichatiempoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use moonland\phpexcel\Excel;
 use app\models\UsuarioDetalle;
 
 /**
@@ -183,8 +185,8 @@ class FichatiempoController extends Controller
         if ($totalsegundos == 0){
             $totalsegundos = 1;
         }
-        $table->total_operacion = round((60 /$totalsegundos) * 60);
-        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion);
+        $table->total_operacion = round((60 /$totalsegundos) * 60,2);
+        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,2);
         if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
@@ -210,7 +212,7 @@ class FichatiempoController extends Controller
             $cont++;
         }        
         $table = Fichatiempo::findOne($id);
-        $table->cumplimiento = round($sumacumplimiento / $cont);
+        $table->cumplimiento = round($sumacumplimiento / $cont,2);
         if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
@@ -224,5 +226,93 @@ class FichatiempoController extends Controller
             $table->observacion = 'Su Salario es 850,000 mil pesos mensuales'; 
         }
         $table->update();
+    }
+    
+    public function actionExcel($id) {
+        $ficha = Fichatiempo::findOne($id);
+        $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('2')->getFont()->setBold(true);        
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        
+        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":I".(1));
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'RESULTADO DE LA PRUEBA TECNICA')
+                    ->setCellValue('A2', 'Documento')
+                    ->setCellValue('B2', 'Empleado')
+                    ->setCellValue('C2', 'Dia')
+                    ->setCellValue('D2', 'Hora')
+                    ->setCellValue('E2', 'Total Segundos')
+                    ->setCellValue('F2', 'Total Operacion')
+                    ->setCellValue('G2', 'OP. Realizadas')
+                    ->setCellValue('H2', 'Cumplimiento')
+                    ->setCellValue('I2', 'Estado');
+        $j = 3;
+        
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $j, $ficha->empleado->identificacion)
+                    ->setCellValue('B' . $j, $ficha->empleado->nombrecorto);
+
+        $i = 3;
+        
+        foreach ($model as $val) {
+            
+            /*$cliente = "";
+            if ($costoproducciondiario->idcliente){
+                $arCliente = \app\models\Cliente::findOne($costoproducciondiario->idcliente);
+                $cliente = $arCliente->nombrecorto;
+            }*/            
+            
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('C' . $i, $val->dia)
+                    ->setCellValue('D' . $i, $val->desde.' - ' .$val->hasta)
+                    ->setCellValue('E' . $i, $val->total_segundos)
+                    ->setCellValue('F' . $i, $val->total_operacion)
+                    ->setCellValue('G' . $i, $val->realizadas)
+                    ->setCellValue('H' . $i, $val->cumplimiento)
+                    ->setCellValue('I' . $i, $val->observacion);
+            $i++;
+        }        
+        $bold = $i;
+        $objPHPExcel->getActiveSheet()->getStyle($bold)->getFont()->setBold(true);        
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('H' . $i, $ficha->cumplimiento)
+                    ->setCellValue('I' . $i, $ficha->observacion);
+
+        $objPHPExcel->getActiveSheet()->setTitle('Ficha_Tiempo');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Ficha_Tiempo.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;	    
     }
 }
