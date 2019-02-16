@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'observacion',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],            			
             [
                 'class' => 'yii\grid\ActionColumn',              

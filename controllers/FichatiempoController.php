@@ -6,6 +6,7 @@ use Yii;
 use app\models\Fichatiempo;
 use app\models\Fichatiempodetalle;
 use app\models\FichatiempoSearch;
+use app\models\Fichatiempocalificacion;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -63,8 +64,7 @@ class FichatiempoController extends Controller
         $fichatiempodetalle = Fichatiempodetalle::find()->where(['=', 'id_ficha_tiempo', $id])->all();
         if (isset($_POST["id_ficha_tiempo_detalle"])) {
             $intIndice = 0;
-            foreach ($_POST["id_ficha_tiempo_detalle"] as $intCodigo) {
-                
+            foreach ($_POST["id_ficha_tiempo_detalle"] as $intCodigo) {                
                 $table = Fichatiempodetalle::findOne($intCodigo);
                 $table->dia = $_POST["dia"][$intIndice];
                 $table->desde = $_POST["horadesde"][$intIndice];
@@ -72,8 +72,7 @@ class FichatiempoController extends Controller
                 $table->total_segundos = $_POST["totalsegundos"][$intIndice];
                 $table->realizadas = $_POST["realizadas"][$intIndice];                
                 $table->save(false);
-                $this->Calculos($table);
-                
+                $this->Calculos($table);                
                 $intIndice++;
             }
             $this->totales($id);
@@ -132,10 +131,18 @@ class FichatiempoController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    {        
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["fichatiempo/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["fichatiempo/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la ficha, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la ficha, tiene registros asociados en otros procesos');
+            $this->redirect(["fichatiempo/index"]);
+        }
     }
 
     /**
@@ -187,7 +194,7 @@ class FichatiempoController extends Controller
         }
         $table->total_operacion = round((60 /$totalsegundos) * 60,2);
         $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,2);
-        if ($table->cumplimiento < 80){
+        /*if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
         if ($table->cumplimiento > 80 && $table->cumplimiento < 90){
@@ -198,6 +205,12 @@ class FichatiempoController extends Controller
         }
         if ($table->cumplimiento > 100){
             $table->observacion = 'Su Salario es 850,000 mil pesos mensuales'; 
+        }*/
+        $calificacion = Fichatiempocalificacion::find()->all();
+        foreach ($calificacion as $val){
+            if ($table->cumplimiento > $val->rango1 && $table->cumplimiento < $val->rango2){
+                $table->observacion = $val->observacion;
+            }            
         }
         $table->update();
     }
@@ -208,23 +221,25 @@ class FichatiempoController extends Controller
         $sumacumplimiento = 0;
         $cont = 0;
         foreach ($detalles as $val){
-            $sumacumplimiento = $sumacumplimiento + $val->cumplimiento;
+            $sumacumplimiento = $sumacumplimiento + $val->cumplimiento;            
+            if ($val === reset($detalles)) { // primer elemento
+                $desde = $val->dia;
+            }
+            if ($val === end($detalles)) {// ultimo elemento
+                $hasta = $val->dia;
+            }
             $cont++;
         }        
         $table = Fichatiempo::findOne($id);
         $table->cumplimiento = round($sumacumplimiento / $cont,2);
-        if ($table->cumplimiento < 80){
-            $table->observacion = 'No cumple con el perfil de la empresa'; 
+        $calificacion = Fichatiempocalificacion::find()->all();
+        foreach ($calificacion as $val){
+            if ($table->cumplimiento > $val->rango1 && $table->cumplimiento < $val->rango2){
+                $table->observacion = $val->observacion;
+            }            
         }
-        if ($table->cumplimiento > 80 && $table->cumplimiento < 90){
-            $table->observacion = 'Cumple con el perfil de la empresa'; 
-        }
-        if ($table->cumplimiento > 90 && $table->cumplimiento < 100){
-            $table->observacion = 'Gana bonificacion de 15000 pesos mensual'; 
-        }
-        if ($table->cumplimiento > 100){
-            $table->observacion = 'Su Salario es 850,000 mil pesos mensuales'; 
-        }
+        $table->desde = $desde;
+        $table->hasta = $hasta;
         $table->update();
     }
     
@@ -252,25 +267,26 @@ class FichatiempoController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
-        
-        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":I".(1));
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":j".(1));
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'RESULTADO DE LA PRUEBA TECNICA')
-                    ->setCellValue('A2', 'Documento')
-                    ->setCellValue('B2', 'Empleado')
-                    ->setCellValue('C2', 'Dia')
-                    ->setCellValue('D2', 'Hora')
-                    ->setCellValue('E2', 'Total Segundos')
-                    ->setCellValue('F2', 'Total Operacion')
-                    ->setCellValue('G2', 'OP. Realizadas')
-                    ->setCellValue('H2', 'Cumplimiento')
-                    ->setCellValue('I2', 'Estado');
+                    ->setCellValue('A2', 'Referencia')
+                    ->setCellValue('B2', 'Documento')
+                    ->setCellValue('C2', 'Empleado')
+                    ->setCellValue('D2', 'Dia')
+                    ->setCellValue('E2', 'Hora')
+                    ->setCellValue('F2', 'Total Segundos')
+                    ->setCellValue('G2', 'Total Operacion')
+                    ->setCellValue('H2', 'OP. Realizadas')
+                    ->setCellValue('I2', 'Cumplimiento')
+                    ->setCellValue('J2', 'Estado');
         $j = 3;
         
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $j, $ficha->empleado->identificacion)
-                    ->setCellValue('B' . $j, $ficha->empleado->nombrecorto);
-
+                    ->setCellValue('A' . $j, $ficha->referencia)
+                    ->setCellValue('B' . $j, $ficha->empleado->identificacion)
+                    ->setCellValue('C' . $j, $ficha->empleado->nombrecorto);    
         $i = 3;
         
         foreach ($model as $val) {
@@ -282,13 +298,13 @@ class FichatiempoController extends Controller
             }*/            
             
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('C' . $i, $val->dia)
-                    ->setCellValue('D' . $i, $val->desde.' - ' .$val->hasta)
-                    ->setCellValue('E' . $i, $val->total_segundos)
-                    ->setCellValue('F' . $i, $val->total_operacion)
-                    ->setCellValue('G' . $i, $val->realizadas)
-                    ->setCellValue('H' . $i, $val->cumplimiento)
-                    ->setCellValue('I' . $i, $val->observacion);
+                    ->setCellValue('D' . $i, $val->dia)
+                    ->setCellValue('E' . $i, $val->desde.' - ' .$val->hasta)
+                    ->setCellValue('F' . $i, $val->total_segundos)
+                    ->setCellValue('G' . $i, $val->total_operacion)
+                    ->setCellValue('H' . $i, $val->realizadas)
+                    ->setCellValue('I' . $i, $val->cumplimiento)
+                    ->setCellValue('J' . $i, $val->observacion);
             $i++;
         }        
         $bold = $i;

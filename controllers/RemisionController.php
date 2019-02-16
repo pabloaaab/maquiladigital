@@ -120,10 +120,22 @@ class RemisionController extends Controller
     
     public function actionEliminar($id,$iddetalle)
     {                                
-        $detalle = Remisiondetalle::findOne($iddetalle);
+        /*$detalle = Remisiondetalle::findOne($iddetalle);
         $detalle->delete();        
         $this->totales($id);
-        $this->redirect(["remision",'id' => $id]);
+        $this->redirect(["remision",'id' => $id]);*/
+        try {
+            $detalle->delete();
+            $this->totales($id);
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["remision",'id' => $id]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["remision",'id' => $id]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
+            $this->redirect(["remision",'id' => $id]);
+        }
     }
     
     protected function Calculos($table)
