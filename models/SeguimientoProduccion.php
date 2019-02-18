@@ -47,11 +47,11 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_seguimiento_produccion' => 'Id Seguimiento Produccion',
-            'fecha_inicio_produccion' => 'Fecha Inicio Produccion',
+            'id_seguimiento_produccion' => 'Id',
+            'fecha_inicio_produccion' => 'Fecha Inicio',
             'hora_inicio' => 'Hora Inicio',
-            'idcliente' => 'Idcliente',
-            'idordenproduccion' => 'Idordenproduccion',
+            'idcliente' => 'Cliente',
+            'idordenproduccion' => 'Orden',
         ];
     }
 
