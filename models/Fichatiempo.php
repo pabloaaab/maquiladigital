@@ -31,7 +31,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
     {
         return [
             [['id_empleado','referencia'], 'required'],
-            [['id_empleado'], 'integer'],
+            [['id_empleado','estado'], 'integer'],
             [['cumplimiento'], 'number'],
             [['observacion','referencia'], 'string'],
             [['desde','hasta'], 'safe'],
@@ -52,6 +52,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
             'desde' => 'Desde',
             'hasta' => 'Hasta',
             'referencia' => 'Referencia',
+            'estado' => 'Estado',
         ];
     }
 
@@ -61,5 +62,15 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function getEmpleado()
     {
         return $this->hasOne(Empleado::className(), ['id_empleado' => 'id_empleado']);
+    }
+    
+    public function getCerrado()
+    {
+        if($this->estado == 1){
+            $cerrado = "SI";
+        }else{
+            $cerrado = "NO";
+        }
+        return $cerrado;
     }
 }

@@ -31,6 +31,18 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php 
+        if ($model->estado == 0){ ?>
+            <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar', ['cerrar', 'id' => $model->id_ficha_tiempo], [
+                'class' => 'btn btn-default',
+                'data' => [
+                'confirm' => 'Esta seguro de cerrar el registro?',
+                'method' => 'post',
+                ],
+                ]) ?>
+        <?php } ?>        
+        
+        <button type="button" class="btn btn-warning">Cerrado <span class="badge"><?= $model->cerrado ?></span></button>
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -115,7 +127,9 @@ $form = ActiveForm::begin([
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->cumplimiento ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->observacion ?></td>                        
                         <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_ficha_tiempo_detalle[]" value="<?= $val->id_ficha_tiempo_detalle ?>"></td>
-                        <td><?=
+                        <td>
+                            <?php if ($model->estado == 0){ ?>
+                            <?=
                             Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->id_ficha_tiempo, 'iddetalle' => $val->id_ficha_tiempo_detalle], [
                                 'class' => '',
                                 'data' => [
@@ -124,6 +138,7 @@ $form = ActiveForm::begin([
                                 ],
                             ])
                             ?>
+                            <?php } ?>
                         </td>
                     </tr>
                 </tbody>
@@ -132,8 +147,10 @@ $form = ActiveForm::begin([
     </div>
     <div class="panel-footer text-right">
         <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
-        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
-        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
+        <?php if ($model->estado == 0) { ?>
+            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
+        <?php } ?>
     </div>
 </div>
 <?php ActiveForm::end(); ?>

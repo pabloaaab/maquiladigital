@@ -17,7 +17,7 @@ class FichatiempoSearch extends Fichatiempo
     public function rules()
     {
         return [
-            [['id_ficha_tiempo', 'id_empleado'], 'integer'],
+            [['id_ficha_tiempo', 'id_empleado','estado'], 'integer'],
             [['cumplimiento'], 'number'],
             [['desde','hasta'], 'safe'],
             [['observacion','referencia'], 'string'],
@@ -65,6 +65,7 @@ class FichatiempoSearch extends Fichatiempo
             'cumplimiento' => $this->cumplimiento,
             'desde' => $this->desde,
             'hasta' => $this->hasta,
+            'estado' => $this->estado,
         ]);
 
         $query->andFilterWhere(['like', 'observacion', $this->observacion]);

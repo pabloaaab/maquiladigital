@@ -16,6 +16,8 @@ use yii\base\Model;
 use yii\web\UploadedFile;
 use app\models\Ordenproduccion;
 use app\models\Cliente;
+use app\models\Color;
+use app\models\Remision;
 use app\models\Producto;
 use app\models\Productodetalle;
 use yii\web\Controller;
@@ -33,11 +35,15 @@ $this->params['breadcrumbs'][] = ['label' => 'Ordenes de Producción', 'url' => 
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
 $view = 'orden-produccion';
 ?>
+
+<?php
+    $remision = Remision::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->one();
+?>
+
 <div class="ordenproduccion-view">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
-
-    <p>
+<div class="btn-group">
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>
         <?php if ($model->autorizado == 0) { ?>
             <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idordenproduccion], ['class' => 'btn btn-success']) ?>
@@ -53,12 +59,52 @@ $view = 'orden-produccion';
             else {
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);
                 echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
-                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);
-                echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
-            }
-        ?>
-    </p>
-
+                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);                
+                if ($remision){
+                   echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);                             
+                }else{
+                    ?>
+                    <!-- Editar modal detalle -->
+                    <a href="#" data-toggle="modal" data-target="#remision<?= $model->idordenproduccion ?>" class="btn btn-default"><span class="glyphicon glyphicon-file"></span> Remision</a>
+                    <div class="modal fade" role="dialog" aria-hidden="true" id="remision<?= $model->idordenproduccion ?>">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <h4 class="modal-title">Remisión</h4>
+                                </div>                            
+                                <?= Html::beginForm(Url::toRoute(["remision/remision", 'id' => $model->idordenproduccion]), "POST") ?>                            
+                                <?php
+                                    $colores = ArrayHelper::map(Color::find()->all(), 'color', 'color');
+                                ?>
+                                <div class="modal-body">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            <h4>Información Remisión</h4>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-lg-2">
+                                                <label>Colores:</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <?php echo Html::dropdownList('color', '',$colores, ['class' => 'form-control', 'style' => 'width:200px','prompt' => 'Seleccione...','required' => true]) ?>
+                                            </div>                                                                                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Crear</button>
+                                </div>
+                                <?= Html::endForm() ?>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+            <?php }    ?>
+            <?php }    ?>        
+</div>
+    <br>
+    <br>    
     <div class="panel panel-success">
         <div class="panel-heading">
             Orden de Producción
@@ -66,7 +112,7 @@ $view = 'orden-produccion';
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr>
-                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
+                    <th><?= Html::activeLabel($model, "idordenproduccion") ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>

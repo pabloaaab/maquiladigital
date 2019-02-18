@@ -10,6 +10,8 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Session;
 use yii\db\ActiveQuery;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Remision */
 
@@ -26,7 +28,43 @@ $this->params['breadcrumbs'][] = $this->title;
        <?= Html::a('<span class="glyphicon glyphicon-check"></span> Generar Nro', ['generarnro', 'id' => $model->id_remision], ['class' => 'btn btn-default']); ?>
        <?php if ($model->numero > 0) { ?> 
             <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_remision], ['class' => 'btn btn-default']); ?>
-       <?php } ?> 
+       <?php } ?>
+       
+        <!-- Editar modal detalle -->
+        <a href="#" data-toggle="modal" data-target="#fecha<?= $model->idordenproduccion ?>" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span> Mod Fecha</a>
+        <div class="modal fade" role="dialog" aria-hidden="true" id="fecha<?= $model->idordenproduccion ?>">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">Remisión</h4>
+                    </div>                            
+                    <?= Html::beginForm(Url::toRoute(["remision/fechamodificar", 'id' => $model->idordenproduccion]), "POST") ?>                            
+                    
+                    <div class="modal-body">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h4>Modificar Fecha de Remisión</h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-lg-2">
+                                    <label>Colores:</label>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="date" name="fecha" value="<?php echo $model->fechacreacion ?>" size="50"  required>
+                                </div>                                                                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Modificar</button>
+                    </div>
+                    <?= Html::endForm() ?>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+             
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -171,7 +209,21 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
             <?php endforeach; ?>
             <tr>
                 <td></td>
-                <th scope="col">Totales:</th>
+                <th scope="col">Totales Cliente:</th>
+                <th scope="col"><?= $ttula ?></th>
+                <th scope="col"><?= $cxs ?></th>
+                <th scope="col"><?= $cs ?></th>
+                <th scope="col"><?= $cm ?></th>
+                <th scope="col"><?= $cl ?></th>
+                <th scope="col"><?= $cxl ?></th>                
+                <th scope="col"></th>
+                <th scope="col"><?= $tunidades ?></th>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <th scope="col">Totales Confección:</th>
                 <th scope="col"><?= $ttula ?></th>
                 <th scope="col"><?= $txs ?></th>
                 <th scope="col"><?= $ts ?></th>

@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Remision;
 use app\models\Remisiondetalle;
+use app\models\Ordenproduccion;
+use app\models\Ordenproducciondetalle;
 use app\models\Consecutivo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -58,73 +60,130 @@ class RemisionController extends Controller
      */
     public function actionRemision($id)
     {
-        $remision = Remision::find()->where(['=', 'idordenproduccion', $id])->one();
-        $count = 0;
-        if ($remision){
-            $model = $remision;
-            $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
-            $count = count($remisiondetalle);
-        }else{
-            $table = new Remision();
-            $table->idordenproduccion = $id;
-            $table->total_tulas = 0;
-            $table->total_exportacion = 0;
-            $table->totalsegundas = 0;
-            $table->total_colombia = 0;
-            $table->total_confeccion = 0;
-            $table->total_despachadas = 0;
-            $table->fechacreacion = date('Y-m-d');
-            $table->insert();
-            $model = Remision::findOne($table->id_remision);
-            $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
-            $count = count($remisiondetalle);
-        }
-        if (isset($_POST["id_remision_detalle"])) {
-            $intIndice = 0;
-            foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
-                $table = Remisiondetalle::findOne($intCodigo);
-                $table->color = $_POST["color"][$intIndice];
-                $table->oc = $_POST["oc"][$intIndice];
-                $table->xs = $_POST["xs"][$intIndice];
-                $table->s = $_POST["s"][$intIndice];
-                $table->m = $_POST["m"][$intIndice];
-                $table->l = $_POST["l"][$intIndice];
-                $table->xl = $_POST["xl"][$intIndice];
-                $table->estado = $_POST["estado"][$intIndice];                
-                $table->save(false);
-                $this->Calculos($table);
-                
-                $intIndice++;
+        if (Yii::$app->request->post()) {
+            $remision = Remision::find()->where(['=', 'idordenproduccion', $id])->one();
+            $count = 0;
+            if ($remision){
+                $model = $remision;
+                $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
+                $count = count($remisiondetalle);
+                $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
+                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+                foreach ($detalleorden as $val){
+                    if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
+                        $cxs = $val->cantidad;
+                    }
+                    if($val->productodetalle->prendatipo->talla->talla == 'S' or $val->productodetalle->prendatipo->talla->talla == 's'){
+                        $cs = $val->cantidad;
+                    }
+                    if($val->productodetalle->prendatipo->talla->talla == 'M' or $val->productodetalle->prendatipo->talla->talla == 'm'){
+                        $cm = $val->cantidad;
+                    }
+                    if($val->productodetalle->prendatipo->talla->talla == 'L' or $val->productodetalle->prendatipo->talla->talla == 'l'){
+                        $cl = $val->cantidad;
+                    }
+                    if($val->productodetalle->prendatipo->talla->talla == 'XL' or $val->productodetalle->prendatipo->talla->talla == 'xl'){
+                        $cxl = $val->cantidad;
+                    }
+                }
+            }else{
+                $table = new Remision();
+                $table->idordenproduccion = $id;
+                $table->total_tulas = 0;
+                $table->total_exportacion = 0;
+                $table->totalsegundas = 0;
+                $table->total_colombia = 0;
+                $table->total_confeccion = 0;
+                $table->total_despachadas = 0;
+                $table->fechacreacion = date('Y-m-d');
+                $table->color = $_POST['color'];
+                $table->insert();
+                $model = Remision::findOne($table->id_remision);
+                $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
+                $count = count($remisiondetalle);
             }
-            $this->totales($id);
-            return $this->redirect(['remision', 'id' => $id]);
-        }
+            if (isset($_POST["id_remision_detalle"])) {
+                $intIndice = 0;
+                foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
+                    $table = Remisiondetalle::findOne($intCodigo);
+                    $table->color = $_POST["color"][$intIndice];
+                    $table->oc = $_POST["oc"][$intIndice];
+                    $table->xs = $_POST["xs"][$intIndice];
+                    $table->s = $_POST["s"][$intIndice];
+                    $table->m = $_POST["m"][$intIndice];
+                    $table->l = $_POST["l"][$intIndice];
+                    $table->xl = $_POST["xl"][$intIndice];
+                    $table->estado = $_POST["estado"][$intIndice];                
+                    $table->save(false);
+                    $this->Calculos($table);
+
+                    $intIndice++;
+                }
+                $this->totales($id);
+                return $this->redirect(['remision', 'id' => $id]);
+            }
+            
+        }else{
+            $remision = Remision::find()->where(['=', 'idordenproduccion', $id])->one();
+            $count = 0;
+            if ($remision){
+                $model = $remision;
+                $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
+                $count = count($remisiondetalle);
+            }
+            $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
+            $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+            foreach ($detalleorden as $val){
+                if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
+                    $cxs = $val->cantidad;
+                }
+                if($val->productodetalle->prendatipo->talla->talla == 'S' or $val->productodetalle->prendatipo->talla->talla == 's'){
+                    $cs = $val->cantidad;
+                }
+                if($val->productodetalle->prendatipo->talla->talla == 'M' or $val->productodetalle->prendatipo->talla->talla == 'm'){
+                    $cm = $val->cantidad;
+                }
+                if($val->productodetalle->prendatipo->talla->talla == 'L' or $val->productodetalle->prendatipo->talla->talla == 'l'){
+                    $cl = $val->cantidad;
+                }
+                if($val->productodetalle->prendatipo->talla->talla == 'XL' or $val->productodetalle->prendatipo->talla->talla == 'xl'){
+                    $cxl = $val->cantidad;
+                }
+            }
+        }    
         
         return $this->render('remision', [
             'model' => $model,
             'remisiondetalle' => $remisiondetalle,
             'idordenproduccion' => $id,
-            'count' => $count
+            'count' => $count,
+            'cxs' => $cxs,
+            'cs' => $cs,
+            'cm' => $cm,
+            'cl' => $cl,
+            'cxl' => $cxl,
         ]);
     }
 
         
     public function actionNuevodetalle($id,$idordenproduccion)
     {        
+        $remision = Remision::findOne($id);
         $model = new Remisiondetalle();
         $model->id_remision = $id;
         $model->tula = 1;
+        $model->color = $remision->color;
         $model->insert();
         return $this->redirect(['remision', 'id' => $idordenproduccion]);
     }
     
     public function actionEliminar($id,$iddetalle)
     {                                
-        /*$detalle = Remisiondetalle::findOne($iddetalle);
+        $detalle = Remisiondetalle::findOne($iddetalle);
         $detalle->delete();        
         $this->totales($id);
-        $this->redirect(["remision",'id' => $id]);*/
-        try {
+        $this->redirect(["remision",'id' => $id]);
+        /*try {
             $detalle->delete();
             $this->totales($id);
             Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
@@ -135,7 +194,7 @@ class RemisionController extends Controller
         } catch (\Exception $e) {            
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
             $this->redirect(["remision",'id' => $id]);
-        }
+        }*/
     }
     
     protected function Calculos($table)
@@ -203,7 +262,16 @@ class RemisionController extends Controller
         
     }
     
-    public function actionImprimir($id) {
+    public function actionFechamodificar($id){
+        
+        $remision = Remision::find()->where(['=', 'idordenproduccion', $id])->one();
+        $remision->fechacreacion = $_POST['fecha'];
+        $remision->save(false);
+        $this->redirect(["remision/remision",'id' => $id]);
+      
+    }
+
+        public function actionImprimir($id) {
 
         return $this->render('../formatos/remision', [
             'model' => Remision::findOne($id),

@@ -51,9 +51,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'cumplimiento',
                 'contentOptions' => ['class' => 'col-lg-1 '],                
             ],
+            [
+                'attribute' => 'estado',
+                'value' => function($model){
+                    $ficha = \app\models\Fichatiempo::findOne($model->id_ficha_tiempo);                    
+                    return $ficha->cerrado;
+                },
+                'filter' => ArrayHelper::map(\app\models\Fichatiempo::find()->all(),'estado','cerrado'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
             [               
                 'attribute' => 'observacion',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'contentOptions' => ['class' => 'col-lg-2 '],                
             ],            			
             [
                 'class' => 'yii\grid\ActionColumn',              

@@ -39,6 +39,7 @@ class Remision extends \yii\db\ActiveRecord
         return [
             [['idordenproduccion', 'numero', 'total_tulas'], 'integer'],
             [['total_exportacion', 'totalsegundas', 'total_colombia', 'total_confeccion', 'total_despachadas'], 'number'],
+            [['color'], 'string'],
             [['fechacreacion'], 'safe'],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
         ];
@@ -60,6 +61,7 @@ class Remision extends \yii\db\ActiveRecord
             'total_confeccion' => 'Total Confeccion',
             'total_despachadas' => 'Total Despachadas',
             'fechacreacion' => 'Fecha',
+            'color' => 'Color',
         ];
     }
 

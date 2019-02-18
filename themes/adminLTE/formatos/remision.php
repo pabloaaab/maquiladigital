@@ -3,6 +3,8 @@
 use inquid\pdf\FPDF;
 use app\models\Remision;
 use app\models\Remisiondetalle;
+use app\models\Ordenproduccion;
+use app\models\Ordenproducciondetalle;
 use app\models\Producto;
 use app\models\Matriculaempresa;
 use app\models\Municipio;
@@ -164,18 +166,37 @@ class PDF extends FPDF {
             }else{
                 $estado = 'Segunda';
             }
-            $pdf->Cell(30, 6, $detalle->color, 0, 0, 'J');          
-            $pdf->Cell(26, 6, $oc, 0, 0, 'J');
-            $pdf->Cell(15, 6, $detalle->tula, 0, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->xs, 0, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->s, 0, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->m, 0, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->l, 0, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->xl, 0, 0, 'R');
-            $pdf->Cell(29, 6, $estado, 0, 0, 'C');
-            $pdf->Cell(21, 6, $detalle->unidades, 0, 0, 'R');
+            $pdf->Cell(30, 6, $detalle->color, 1, 0, 'J');          
+            $pdf->Cell(26, 6, $oc, 1, 0, 'J');
+            $pdf->Cell(15, 6, $detalle->tula, 1, 0, 'R');
+            $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R');
+            $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R');
+            $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R');
+            $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R');
+            $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R');
+            $pdf->Cell(29, 6, $estado, 1, 0, 'C');
+            $pdf->Cell(21, 6, $detalle->unidades, 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
+        }
+        $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$model->idordenproduccion])->all();
+        $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+        foreach ($detalleorden as $val){
+            if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
+                $cxs = $val->cantidad;
+            }
+            if($val->productodetalle->prendatipo->talla->talla == 'S' or $val->productodetalle->prendatipo->talla->talla == 's'){
+                $cs = $val->cantidad;
+            }
+            if($val->productodetalle->prendatipo->talla->talla == 'M' or $val->productodetalle->prendatipo->talla->talla == 'm'){
+                $cm = $val->cantidad;
+            }
+            if($val->productodetalle->prendatipo->talla->talla == 'L' or $val->productodetalle->prendatipo->talla->talla == 'l'){
+                $cl = $val->cantidad;
+            }
+            if($val->productodetalle->prendatipo->talla->talla == 'XL' or $val->productodetalle->prendatipo->talla->talla == 'xl'){
+                $cxl = $val->cantidad;
+            }
         }
         $this->SetFillColor(200, 200, 200);
         $pdf->SetXY(10, 190);
@@ -193,11 +214,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $pdf->Cell(56, 6, 'CANT CLIENTE', 1, 0, 'J');
         $pdf->Cell(15, 6, '', 1, 0, 'R');
-        $pdf->Cell(14, 6, $txs, 1, 0, 'R');
-        $pdf->Cell(14, 6, $ts, 1, 0, 'R');
-        $pdf->Cell(14, 6, $tm, 1, 0, 'R');
-        $pdf->Cell(14, 6, $tl, 1, 0, 'R');
-        $pdf->Cell(14, 6, $txl, 1, 0, 'R');
+        $pdf->Cell(14, 6, $cxs, 1, 0, 'R');
+        $pdf->Cell(14, 6, $cs, 1, 0, 'R');
+        $pdf->Cell(14, 6, $cm, 1, 0, 'R');
+        $pdf->Cell(14, 6, $cl, 1, 0, 'R');
+        $pdf->Cell(14, 6, $cxl, 1, 0, 'R');
         $pdf->SetXY(10, 202);
         $pdf->Cell(191, 6, 'RESUMEN DE LA ENTREGA', 1, 0, 'C',1);
         $pdf->SetXY(10, 208);

@@ -144,6 +144,20 @@ class FichatiempoController extends Controller
             $this->redirect(["fichatiempo/index"]);
         }
     }
+    
+    public function actionCerrar($id)
+    {        
+        $model = $this->findModel($id);
+        if ($model->cumplimiento > 0){
+            $model->estado = 1;
+            $model->save(false);
+            return $this->redirect(['view', 'id' => $id]);
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'No se puede cerrar el registro, no tiene detalles o el cumplimiento no puede ser cero (0)');
+            $this->redirect(["fichatiempo/index"]);
+        }
+        
+    }
 
     /**
      * Finds the Fichatiempo model based on its primary key value.
@@ -182,7 +196,7 @@ class FichatiempoController extends Controller
     {                                
         $detalle = Fichatiempodetalle::findOne($iddetalle);
         $detalle->delete();
-        $this->redirect(["view",'id' => $id]);
+        $this->redirect(["view",'id' => $id]);        
         $this->Totales($id);
     }
     
@@ -208,7 +222,7 @@ class FichatiempoController extends Controller
         }*/
         $calificacion = Fichatiempocalificacion::find()->all();
         foreach ($calificacion as $val){
-            if ($table->cumplimiento > $val->rango1 && $table->cumplimiento < $val->rango2){
+            if ($table->cumplimiento > $val->rango1 && $table->cumplimiento <= $val->rango2){
                 $table->observacion = $val->observacion;
             }            
         }
@@ -231,15 +245,29 @@ class FichatiempoController extends Controller
             $cont++;
         }        
         $table = Fichatiempo::findOne($id);
+        if ($cont == 0){
+            $cont = 1;
+        }
         $table->cumplimiento = round($sumacumplimiento / $cont,2);
         $calificacion = Fichatiempocalificacion::find()->all();
         foreach ($calificacion as $val){
-            if ($table->cumplimiento > $val->rango1 && $table->cumplimiento < $val->rango2){
-                $table->observacion = $val->observacion;
-            }            
+            if ($table->cumplimiento == 0 or $table->cumplimiento == ''){
+                $table->observacion = '';
+            }else{
+                if ($table->cumplimiento > $val->rango1 && $table->cumplimiento <= $val->rango2){
+                    $table->observacion = $val->observacion;
+                }
+            }
+                        
         }
-        $table->desde = $desde;
-        $table->hasta = $hasta;
+        if ($table->cumplimiento == 0 or $table->cumplimiento == ''){
+            $table->desde = '';
+            $table->hasta = '';
+        }else{
+            $table->desde = $desde;
+            $table->hasta = $hasta;
+        }
+        
         $table->update();
     }
     
