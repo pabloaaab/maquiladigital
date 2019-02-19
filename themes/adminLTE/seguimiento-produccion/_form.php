@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
-use kartik\date\TimePicker;
+use kartik\time\TimePicker;
 use kartik\select2\Select2;
 use yii\bootstrap\Modal;
 use yii\data\Pagination;
@@ -46,19 +46,8 @@ $form = ActiveForm::begin([
         <div class="row">
             <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione una orden de producción...']) ?>
         </div>
-        <div class="row">
-            
-            <?= $form->field($model, 'hora_inicio')->widget([TimePicker::class (),[
-     //'language' => 'fi',
-    'name'  => 'from_time',
-    'value'  => $model->hora_inicio,
-    'mode' => 'time',
-    'clientOptions' => [
-        'hour' => date('H'),
-        'minute' => date('i'),
-        'second' => date('s'),
-    ]]
-]);?>
+        <div class="row">            
+            <?= $form->field($model, 'hora_inicio')->widget(TimePicker::classname(), []); ?>
         </div>                                        
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("seguimiento-produccion/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

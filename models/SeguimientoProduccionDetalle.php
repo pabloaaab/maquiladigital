@@ -12,10 +12,10 @@ use Yii;
  * @property string $fecha_inicio
  * @property string $hora_inicio
  * @property string $hora_consulta
- * @property double $minutos_cliente
- * @property double $minutos_produccion
+ * @property double $minutos 
  * @property double $horas_a_trabajar
  * @property double $cantidad_por_hora
+ * @property double $cantidad
  * @property double $operarias
  * @property double $total
  * @property double $operacion_por_hora
@@ -44,7 +44,7 @@ class SeguimientoProduccionDetalle extends \yii\db\ActiveRecord
             [['id_seguimiento_produccion'], 'required'],
             [['id_seguimiento_produccion'], 'integer'],
             [['fecha_inicio', 'hora_inicio', 'hora_consulta'], 'safe'],
-            [['minutos_cliente', 'minutos_produccion', 'horas_a_trabajar', 'cantidad_por_hora', 'operarias', 'total', 'operacion_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
+            [['minutos', 'horas_a_trabajar', 'cantidad_por_hora','cantidad','operarias', 'total', 'operacion_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
             [['id_seguimiento_produccion'], 'exist', 'skipOnError' => true, 'targetClass' => SeguimientoProduccion::className(), 'targetAttribute' => ['id_seguimiento_produccion' => 'id_seguimiento_produccion']],
         ];
     }
@@ -60,10 +60,10 @@ class SeguimientoProduccionDetalle extends \yii\db\ActiveRecord
             'fecha_inicio' => 'Fecha Inicio',
             'hora_inicio' => 'Hora Inicio',
             'hora_consulta' => 'Hora Consulta',
-            'minutos_cliente' => 'Minutos Cliente',
-            'minutos_produccion' => 'Minutos Produccion',
+            'minutos' => 'Minutos',            
             'horas_a_trabajar' => 'Horas A Trabajar',
             'cantidad_por_hora' => 'Cantidad Por Hora',
+            'cantidad' => 'Cantidad',
             'operarias' => 'Operarias',
             'total' => 'Total',
             'operacion_por_hora' => 'Operacion Por Hora',
