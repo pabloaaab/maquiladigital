@@ -145,6 +145,7 @@ class PDF extends FPDF {
     }
 
     function Body($pdf, $model) {
+        $this->SetFillColor(200, 200, 200);
         $detalles = Remisiondetalle::find()->where(['=', 'id_remision', $model->id_remision])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', 'b', 10);
@@ -166,15 +167,28 @@ class PDF extends FPDF {
             }else{
                 $estado = 'Segunda';
             }
-            $pdf->Cell(30, 6, $detalle->color, 1, 0, 'J');          
-            $pdf->Cell(26, 6, $oc, 1, 0, 'J');
+            $pdf->Cell(30, 6, $detalle->color, 1, 0, 'J');
+            if ($detalle->oc == 1){
+                $pdf->Cell(26, 6, $oc, 1, 0, 'J',1);   
+            }else{
+                $pdf->Cell(26, 6, $oc, 1, 0, 'J',0);
+            }            
             $pdf->Cell(15, 6, $detalle->tula, 1, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R');
-            $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R');
-            $pdf->Cell(29, 6, $estado, 1, 0, 'C');
+            if ($detalle->oc == 1 || $detalle->estado == 1){
+                $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R',1);
+                $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R',1);
+                $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R',1);
+                $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R',1);
+                $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R',1);
+                $pdf->Cell(29, 6, $estado, 1, 0, 'C',1);
+            }else{
+                $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R');
+                $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R');
+                $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R');
+                $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R');
+                $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R');
+                $pdf->Cell(29, 6, $estado, 1, 0, 'C');
+            }                        
             $pdf->Cell(21, 6, $detalle->unidades, 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);

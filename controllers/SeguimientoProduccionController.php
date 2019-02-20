@@ -108,6 +108,12 @@ class SeguimientoProduccionController extends Controller
                                 $seguimientodetalletemporal->save(false);
                                 $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
                                 $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
+                                /*$seguimiento = SeguimientoProduccion::findOne($id);
+                                $seguimiento->minutos = $minutos;
+                                $seguimiento->operarias = $operarias;
+                                $seguimiento->horas_a_trabajar = $horastrabajar;
+                                $seguimiento->prendas_reales = $reales;
+                                $seguimiento->save(false);*/
                             }else{
                                 Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                                                        
                                 $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
@@ -127,6 +133,25 @@ class SeguimientoProduccionController extends Controller
             }else {
                 $form->getErrors();
                 }
+            if (isset($_POST["idseguimiento"])) {
+                $smtodetalletemporal = SeguimientoProduccionDetalle2::findOne($_POST["id"]);        
+                $seguimientodetalle = new SeguimientoProduccionDetalle();
+                $seguimientodetalle->id_seguimiento_produccion = $_POST["idseguimiento"];
+                $seguimientodetalle->fecha_inicio = $smtodetalletemporal->fecha_inicio;
+                $seguimientodetalle->minutos = $smtodetalletemporal->minutos;
+                $seguimientodetalle->hora_inicio = $smtodetalletemporal->hora_inicio;
+                $seguimientodetalle->hora_consulta = $smtodetalletemporal->hora_consulta;
+                $seguimientodetalle->cantidad = $smtodetalletemporal->cantidad;
+                $seguimientodetalle->horas_a_trabajar = $smtodetalletemporal->horas_a_trabajar;
+                $seguimientodetalle->cantidad_por_hora = $smtodetalletemporal->cantidad_por_hora;
+                $seguimientodetalle->operarias = $smtodetalletemporal->operarias;
+                $seguimientodetalle->total = $smtodetalletemporal->total;
+                $seguimientodetalle->operacion_por_hora = $smtodetalletemporal->operacion_por_hora;
+                $seguimientodetalle->prendas_reales = $smtodetalletemporal->prendas_reales;
+                $seguimientodetalle->prendas_sistema = $smtodetalletemporal->prendas_sistema;
+                $seguimientodetalle->porcentaje_produccion = $smtodetalletemporal->porcentaje_produccion;
+                $seguimientodetalle->insert();
+            }    
         }else{
             $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
             $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
@@ -171,7 +196,7 @@ class SeguimientoProduccionController extends Controller
     {
         $model = $this->findModel($id);
         $clientes = Cliente::find()->all();
-        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $table->idordenproduccion])->all();
+        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
         $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_seguimiento_produccion]);

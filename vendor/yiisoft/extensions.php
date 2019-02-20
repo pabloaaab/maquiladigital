@@ -129,6 +129,15 @@ return array (
       '@yii/bootstrap' => $vendorDir . '/yiisoft/yii2-bootstrap/src',
     ),
   ),
+  'kartik-v/yii2-widget-timepicker' => 
+  array (
+    'name' => 'kartik-v/yii2-widget-timepicker',
+    'version' => '1.0.4.0',
+    'alias' => 
+    array (
+      '@kartik/time' => $vendorDir . '/kartik-v/yii2-widget-timepicker/src',
+    ),
+  ),
   'moonlandsoft/yii2-phpexcel' => 
   array (
     'name' => 'moonlandsoft/yii2-phpexcel',
@@ -138,13 +147,13 @@ return array (
       '@moonland/phpexcel' => $vendorDir . '/moonlandsoft/yii2-phpexcel',
     ),
   ),
-  'kartik-v/yii2-widget-timepicker' => 
+  'alexgx/yii2-phpexcel' => 
   array (
-    'name' => 'kartik-v/yii2-widget-timepicker',
-    'version' => '1.0.4.0',
+    'name' => 'alexgx/yii2-phpexcel',
+    'version' => '9999999-dev',
     'alias' => 
     array (
-      '@kartik/time' => $vendorDir . '/kartik-v/yii2-widget-timepicker/src',
+      '@alexgx/phpexcel' => $vendorDir . '/alexgx/yii2-phpexcel',
     ),
   ),
 );

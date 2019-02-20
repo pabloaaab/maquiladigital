@@ -12,7 +12,11 @@ use Yii;
  * @property string $hora_inicio
  * @property int $idcliente
  * @property int $idordenproduccion
- *
+ * @property double $minutos 
+ * @property double $horas_a_trabajar
+ * @property double $operarias
+ * @property double $prendas_reales
+ * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
  * @property SeguimientoProduccionDetalle[] $seguimientoProduccionDetalles
@@ -36,6 +40,7 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
             [['fecha_inicio_produccion', 'hora_inicio', 'idcliente', 'idordenproduccion'], 'required'],
             [['fecha_inicio_produccion', 'hora_inicio'], 'safe'],
             [['idcliente', 'idordenproduccion'], 'integer'],
+            [['minutos', 'horas_a_trabajar', 'prendas_reales'], 'number'],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
         ];

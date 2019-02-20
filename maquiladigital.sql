@@ -364,7 +364,7 @@ CREATE TABLE `costo_produccion_diaria` (
 /*Data for the table `costo_produccion_diaria` */
 
 insert  into `costo_produccion_diaria`(`id_costo_produccion_diaria`,`idcliente`,`idordenproduccion`,`cantidad`,`ordenproduccion`,`ordenproduccionext`,`idtipo`,`cantidad_x_hora`,`cantidad_diaria`,`tiempo_entrega_dias`,`nro_horas`,`dias_entrega`,`costo_muestra_operaria`,`costo_x_hora`) values 
-(1,1,14,1171,'14633','13695',2,6.77,108.32,10.81,43.24,11,964,6526);
+(1,1,14,1171,'14633','13695',2,6.77,609.3,1.92,19.2,2,964,6526);
 
 /*Table structure for table `departamento` */
 
@@ -2930,7 +2930,7 @@ CREATE TABLE `remision` (
 /*Data for the table `remision` */
 
 insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`,`color`) values 
-(2,14,2,12,568,156,603,1171,1171,'2019-02-05','Rojo'),
+(2,14,2,17,568,156,625,1193,1193,'2019-02-05','Rojo'),
 (3,1,0,0,0,0,0,0,0,'2019-02-15','Rojo'),
 (4,13,3,1,0,0,10,10,10,'2019-02-13','Amarillo');
 
@@ -2962,7 +2962,7 @@ CREATE TABLE `remisiondetalle` (
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
 
@@ -2978,8 +2978,9 @@ insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,
 (13,2,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,33),
 (14,2,'Rojo',0,1,0,120,0,0,0,0,0,0,0,0,0,0,0,0,120),
 (15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,94),
-(16,2,'Rojo',0,1,0,22,38,0,96,0,0,0,0,0,0,0,0,1,156),
-(19,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10);
+(16,2,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,1,156),
+(19,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(21,2,'Rojo',0,1,0,22,0,0,0,0,0,0,0,0,0,0,0,0,22);
 
 /*Table structure for table `resolucion` */
 
@@ -3034,6 +3035,10 @@ CREATE TABLE `seguimiento_produccion` (
   `hora_inicio` time NOT NULL,
   `idcliente` int(11) NOT NULL,
   `idordenproduccion` int(11) NOT NULL,
+  `minutos` float DEFAULT NULL,
+  `horas_a_trabajar` float DEFAULT NULL,
+  `operarias` float DEFAULT NULL,
+  `prendas_reales` float DEFAULT NULL,
   PRIMARY KEY (`id_seguimiento_produccion`),
   KEY `idcliente` (`idcliente`),
   KEY `idordenproduccion` (`idordenproduccion`),
@@ -3043,8 +3048,8 @@ CREATE TABLE `seguimiento_produccion` (
 
 /*Data for the table `seguimiento_produccion` */
 
-insert  into `seguimiento_produccion`(`id_seguimiento_produccion`,`fecha_inicio_produccion`,`hora_inicio`,`idcliente`,`idordenproduccion`) values 
-(1,'2019-02-18','08:15:00',1,13);
+insert  into `seguimiento_produccion`(`id_seguimiento_produccion`,`fecha_inicio_produccion`,`hora_inicio`,`idcliente`,`idordenproduccion`,`minutos`,`horas_a_trabajar`,`operarias`,`prendas_reales`) values 
+(1,'2019-02-18','08:15:00',1,13,26,NULL,0,NULL);
 
 /*Table structure for table `seguimiento_produccion_detalle` */
 
@@ -3069,12 +3074,13 @@ CREATE TABLE `seguimiento_produccion_detalle` (
   PRIMARY KEY (`id_seguimiento_produccion_detalle`),
   KEY `id_seguimiento_produccion` (`id_seguimiento_produccion`),
   CONSTRAINT `seguimiento_produccion_detalle_ibfk_1` FOREIGN KEY (`id_seguimiento_produccion`) REFERENCES `seguimiento_produccion` (`id_seguimiento_produccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `seguimiento_produccion_detalle` */
 
 insert  into `seguimiento_produccion_detalle`(`id_seguimiento_produccion_detalle`,`id_seguimiento_produccion`,`fecha_inicio`,`hora_inicio`,`hora_consulta`,`minutos`,`horas_a_trabajar`,`cantidad`,`cantidad_por_hora`,`operarias`,`total`,`operacion_por_hora`,`prendas_sistema`,`prendas_reales`,`porcentaje_produccion`) values 
-(4,1,'2019-02-18','08:15:00','23:50:55',26,9,2.31,20.79,8,166.32,18.48,287.4,167,58.11);
+(4,1,'2019-02-18','08:15:00','23:50:55',26,9,2.31,20.79,8,166.32,18.48,287.4,167,58.11),
+(5,1,'2019-02-18','08:15:00','11:52:24',26,9,2.31,20.79,8,166.32,18.48,59.9,167,278.8);
 
 /*Table structure for table `seguimiento_produccion_detalle2` */
 
@@ -3102,7 +3108,7 @@ CREATE TABLE `seguimiento_produccion_detalle2` (
 /*Data for the table `seguimiento_produccion_detalle2` */
 
 insert  into `seguimiento_produccion_detalle2`(`id_seguimiento_produccion_detalle`,`id_seguimiento_produccion`,`fecha_inicio`,`hora_inicio`,`hora_consulta`,`minutos`,`horas_a_trabajar`,`cantidad`,`cantidad_por_hora`,`operarias`,`total`,`operacion_por_hora`,`prendas_sistema`,`prendas_reales`,`porcentaje_produccion`) values 
-(1,NULL,'2019-02-18','08:15:00','23:50:55',26,9,2.31,20.79,8,166.32,18.48,287.4,167,58.11);
+(1,NULL,'2019-02-18','08:15:00','11:53:09',26,9,2.31,20.79,8,166.32,18.48,72.1,167,231.62);
 
 /*Table structure for table `stockdescargas` */
 

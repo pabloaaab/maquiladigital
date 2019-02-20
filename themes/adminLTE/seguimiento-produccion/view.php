@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
 </div>
 
 </div>
-
+<?php $formulario->end() ?>
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
@@ -129,7 +129,24 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>                
                 <td><?= Html::a('<span class="glyphicon glyphicon-export"></span>', ['excel2', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>
-                <td><?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span>', ['guardar', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>
+                <?php
+$form = ActiveForm::begin([
+            "method" => "post",
+            'id' => 'formulario',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => true,
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+                'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                'options' => []
+            ],
+        ]);
+?>  
+    <input type="text" name="idseguimiento" value="<?= $model->id_seguimiento_produccion ?>" size="2px">
+    <input type="text" name="id" value="<?= $val->id_seguimiento_produccion_detalle ?>" size="2px">
+                <td><?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?></td>
+<?php $form->end() ?>                
             </tr>
             </tbody>
             <?php endforeach; ?>            
@@ -179,4 +196,3 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
     </div>
 </div>
 
-<?php $formulario->end() ?>

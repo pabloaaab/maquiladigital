@@ -102,12 +102,13 @@ class RemisionController extends Controller
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
                 $count = count($remisiondetalle);
             }
-            if (isset($_POST["id_remision_detalle"])) {
+            if (isset($_POST["actualizar"])) {
                 $intIndice = 0;
                 foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
                     $table = Remisiondetalle::findOne($intCodigo);
                     $table->color = $_POST["color"][$intIndice];
                     $table->oc = $_POST["oc"][$intIndice];
+                    $table->tula = $_POST["tula"][$intIndice];
                     $table->xs = $_POST["xs"][$intIndice];
                     $table->s = $_POST["s"][$intIndice];
                     $table->m = $_POST["m"][$intIndice];
@@ -116,10 +117,30 @@ class RemisionController extends Controller
                     $table->estado = $_POST["estado"][$intIndice];                
                     $table->save(false);
                     $this->Calculos($table);
-
+                    $intIndice++;
+                }
+                $this->totales($id);                
+                return $this->redirect(['remision', 'id' => $id]);
+            }
+            if (isset($_POST["actualizarynuevo"])) {
+                $intIndice = 0;
+                foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
+                    $table = Remisiondetalle::findOne($intCodigo);
+                    $table->color = $_POST["color"][$intIndice];
+                    $table->oc = $_POST["oc"][$intIndice];
+                    $table->tula = $_POST["tula"][$intIndice];
+                    $table->xs = $_POST["xs"][$intIndice];
+                    $table->s = $_POST["s"][$intIndice];
+                    $table->m = $_POST["m"][$intIndice];
+                    $table->l = $_POST["l"][$intIndice];
+                    $table->xl = $_POST["xl"][$intIndice];
+                    $table->estado = $_POST["estado"][$intIndice];                
+                    $table->save(false);
+                    $this->Calculos($table);
                     $intIndice++;
                 }
                 $this->totales($id);
+                $this->actionNuevodetalle($remision->id_remision,$remision->idordenproduccion);
                 return $this->redirect(['remision', 'id' => $id]);
             }
             
