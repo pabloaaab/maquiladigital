@@ -45,6 +45,7 @@ if ($mensaje != ""){
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
+                    <th scope="col">Módulo</th>
                     <th scope="col">Menú Operación</th>
                     <th scope="col">Permiso</th>                    
                     <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
@@ -54,6 +55,7 @@ if ($mensaje != ""){
                 <?php foreach ($permisos as $val): ?>
                 <tr>                    
                     <td><?= $val->id_permiso ?></td>
+                    <td><?= $val->modulo ?></td>
                     <td><?= $val->menu_operacion ?></td>
                     <td><?= $val->permiso ?></td>                    
                     <td><input type="checkbox" name="idpermiso[]" value="<?= $val->id_permiso ?>"></td>

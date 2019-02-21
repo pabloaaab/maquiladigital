@@ -130,7 +130,7 @@ class SiteController extends Controller {
     }
     
     public function actionNewpermiso($id) {
-        $permisos = Permisos::find()->all();
+        $permisos = Permisos::find()->orderBy('modulo,menu_operacion,permiso asc')->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
             if (isset($_POST["idpermiso"])) {

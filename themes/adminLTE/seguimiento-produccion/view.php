@@ -17,25 +17,17 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
     "method" => "get",
     "action" => Url::toRoute(["seguimiento-produccion/view", 'id' => $model->id_seguimiento_produccion]),
     "enableClientValidation" => true,
-    'options' => ['class' => 'form-horizontal'],
-    
-	'fieldConfig' => [
-                    'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
-                    'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                    'options' => []
-                ],
-    
-
+    'options' => ['class' => 'form-horizontal'],    
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-2 control-label'],
+        'options' => []
+    ],    
 ]);
 ?>
-
-<div class="seguimiento-produccion-view">
-
-    <!--<?= Html::encode($this->title) ?>-->
-
-    <p>
+<p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_seguimiento_produccion], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -44,6 +36,11 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             ],
         ]) ?>
     </p>
+<div class="seguimiento-produccion-view">
+
+    <!--<?= Html::encode($this->title) ?>-->
+
+    
     
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -79,10 +76,10 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
 	
     <div class="panel-body" id="seguimiento-produccion">
         <div class="row" >
-            <?= $formulario->field($form, "operarias")->input("search") ?>
-            <?= $formulario->field($form, "horastrabajar")->input("search") ?>            
+            <?= $formulario->field($form, "operarias")->input("search", ['value' => $model->operarias]) ?>
+            <?= $formulario->field($form, "horastrabajar")->input("search", ['value' => $model->horas_a_trabajar]) ?>            
             <?= $formulario->field($form, 'minutos')->dropdownList([$model->ordenproduccion->duracion => 'Cliente'.'('.$model->ordenproduccion->duracion.')', round($model->ordenproduccion->segundosficha/60,2) => 'Confección'.'('.round($model->ordenproduccion->segundosficha/60,2).')'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
-            <?= $formulario->field($form, "reales")->input("search") ?>            
+            <?= $formulario->field($form, "reales")->input("search" , ['value' => $model->prendas_reales]) ?>            
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Generar", ["class" => "btn btn-primary",]) ?>
@@ -127,26 +124,9 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->operacion_por_hora ?></td>
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
-                <td><?= $val->porcentaje_produccion ?></td>                
-                <td><?= Html::a('<span class="glyphicon glyphicon-export"></span>', ['excel2', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>
-                <?php
-$form = ActiveForm::begin([
-            "method" => "post",
-            'id' => 'formulario',
-            'enableClientValidation' => false,
-            'enableAjaxValidation' => true,
-            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-            'fieldConfig' => [
-                'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
-                'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                'options' => []
-            ],
-        ]);
-?>  
-    <input type="text" name="idseguimiento" value="<?= $model->id_seguimiento_produccion ?>" size="2px">
-    <input type="text" name="id" value="<?= $val->id_seguimiento_produccion_detalle ?>" size="2px">
-                <td><?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?></td>
-<?php $form->end() ?>                
+                <td><?= $val->porcentaje_produccion ?></td>
+                <td></td>
+                <td><?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span>', ['guardar', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>
             </tr>
             </tbody>
             <?php endforeach; ?>            
@@ -172,7 +152,8 @@ $form = ActiveForm::begin([
                 <th scope="col">Prendas por Sistemas</th>
                 <th scope="col">Prendas Reales</th>
                 <th scope="col">% Produccion</th>                
-                <th scope="col"></th>                
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>            
             <tbody>
@@ -187,12 +168,16 @@ $form = ActiveForm::begin([
                 <td><?= $val->operacion_por_hora ?></td>
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
-                <td><?= $val->porcentaje_produccion ?></td>                
+                <td><?= $val->porcentaje_produccion ?></td>
+                <td></td>
                 <td><?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['eliminardetalle', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>                
             </tr>
             </tbody>
             <?php endforeach; ?>
-        </table>        
+        </table>
+        <div class="panel-footer text-right">			            
+            <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excel', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
 </div>
 
