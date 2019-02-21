@@ -338,8 +338,8 @@ class FichatiempoController extends Controller
         $bold = $i;
         $objPHPExcel->getActiveSheet()->getStyle($bold)->getFont()->setBold(true);        
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('H' . $i, $ficha->cumplimiento)
-                    ->setCellValue('I' . $i, $ficha->observacion);
+                    ->setCellValue('I' . $i, $ficha->cumplimiento)
+                    ->setCellValue('J' . $i, $ficha->observacion);
 
         $objPHPExcel->getActiveSheet()->setTitle('Ficha_Tiempo');
         $objPHPExcel->setActiveSheetIndex(0);
