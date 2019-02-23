@@ -117,18 +117,22 @@ class SeguimientoProduccionController extends Controller
                             }else{
                                 Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                                                        
                                 $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
+                                $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
                                 } 
                         }else{
                             Yii::$app->getSession()->setFlash('error', 'La cantidad de la orden de produccion debe ser mayor a cero');
                             $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
+                            $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
                             }    
                     }else{
                         Yii::$app->getSession()->setFlash('error', 'La cantidad de operarias y/o horas a trabajar y/o minutos y/o prendas reales, no pueden ser 0 (cero)');                                                
                         $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
+                        $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
                         }                    
                 }else{
                     Yii::$app->getSession()->setFlash('error', 'No se tiene el valor de la orden de producción para generar el informe');
-                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();                    
+                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
+                    $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
                     } 
             }else {
                 $form->getErrors();
