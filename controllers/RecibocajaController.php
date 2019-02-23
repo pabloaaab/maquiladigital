@@ -472,14 +472,14 @@ class RecibocajaController extends Controller
                     $error = 0;
                 }else{
                     foreach ($detalles as $dato){
-                        if ($dato->vlrabono > $dato->vlrsaldo){
+                        /*if ($dato->vlrabono > $dato->vlrsaldo){
                             $error = 1;
-                        }
+                        }*/
                     }
                 }               
                 if ($error == 0){
                     $model->autorizado = 1;
-                    $model->update();
+                    $model->save(false);
                     $this->redirect(["recibocaja/view",'id' => $id]);
                 }else{
                     Yii::$app->getSession()->setFlash('error', 'Los abonos no pueden ser mayores a los saldos.');
@@ -514,9 +514,9 @@ class RecibocajaController extends Controller
                 $error = 0;
                 if ($model->libre == 0){
                     foreach ($recibodetalles as $dato){
-                        if ($dato->vlrabono > $dato->vlrsaldo){
+                        /*if ($dato->vlrabono > $dato->vlrsaldo){
                             $error = 1;
-                        }
+                        }*/
                     }
                 }else{
                     $error = 0;
@@ -543,7 +543,7 @@ class RecibocajaController extends Controller
                         $consecutivo = Consecutivo::findOne(3);//2 recibo de caja
                         $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                         $model->numero = $consecutivo->consecutivo;
-                        $model->update();
+                        $model->save(false);
                         $consecutivo->update();
                         //fin generar consecutivo
                         $this->redirect(["recibocaja/view",'id' => $id]);
