@@ -176,9 +176,9 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                     <tr>                                            
                         <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->color ,$colores, ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php if ($val->oc == 1) { ?>
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'Colombia', '1' => 'Exportacion'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
                         <?php } else { ?>    
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'Colombia', '1' => 'Exportacion'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php } ?>        
                         <td style="padding-left: 1;padding-right: 1;"><input type="text" name="tula[]" value="<?= $val->tula ?>" size="1" onkeypress="return esInteger(event)" required></td>
                         <?php if ($val->oc == 1 || $val->estado == 1) { ?>
@@ -187,14 +187,14 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>                            
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'Primera', '1' => 'Segunda'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
                         <?php } else { ?>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xs[]" value="<?= $val->xs ?>" size="4" onkeypress="return esInteger(event)" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="s[]" value="<?= $val->s ?>" size="4" onkeypress="return esInteger(event)" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="4" onkeypress="return esInteger(event)" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="4" onkeypress="return esInteger(event)" required></td>
                             <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'Primera', '1' => 'Segunda'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php } ?>                                                     
                         <td style="padding-left: 1;padding-right: 1;"><?= $val->unidades ?></td>
                         <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_remision_detalle[]" value="<?= $val->id_remision_detalle ?>"></td>

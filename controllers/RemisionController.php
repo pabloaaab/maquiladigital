@@ -87,6 +87,7 @@ class RemisionController extends Controller
                     }
                 }
             }else{
+                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
                 $table = new Remision();
                 $table->idordenproduccion = $id;
                 $table->total_tulas = 0;
