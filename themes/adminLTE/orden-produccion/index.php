@@ -29,6 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
+                'attribute' => 'codigoproducto',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
                 'attribute' => 'ordenproduccion',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
@@ -43,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return "{$clientes->nombrecorto} - {$clientes->cedulanit}";
                 },
                 'filter' => ArrayHelper::map(Cliente::find()->all(),'idcliente','nombreClientes'),
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],                    
             [               
             'attribute' => 'fechaentrega',

@@ -44,6 +44,14 @@ use app\models\Ordenproducciondetalle;
                         <th><?= Html::activeLabel($model, 'cantidad') ?></th>
                         <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>
+                    <tr>
+                        <th><?= Html::activeLabel($model, 'Duración') ?></th>
+                        <td><?= Html::encode($model->duracion) ?></td>
+                        <th></th>
+                        <td></td>
+                        <th></th>
+                        <td></td>
+                    </tr>
                 </table>
             </div>
         </div>

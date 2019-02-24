@@ -82,7 +82,7 @@ class SeguimientoProduccionController extends Controller
                     if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 && $reales > 0){
                         $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
                         if ($ordenproduccion->cantidad > 0){
-                            if($ordenproduccion->segundosficha > 0){
+                            /*if($ordenproduccion->segundosficha > 0){*/
                                 $seguimientodetalletemporal = SeguimientoProduccionDetalle2::findOne(1);
                                 $seguimientodetalletemporal->minutos = $minutos;
                                 //$calculohora = date('H:i:s') - $model->hora_inicio;
@@ -114,11 +114,11 @@ class SeguimientoProduccionController extends Controller
                                 $seguimiento->horas_a_trabajar = $horastrabajar;
                                 $seguimiento->prendas_reales = $reales;
                                 $seguimiento->save(false);
-                            }else{
+                            /*}else{
                                 Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                                                        
                                 $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
                                 $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                                } 
+                                }*/ 
                         }else{
                             Yii::$app->getSession()->setFlash('error', 'La cantidad de la orden de produccion debe ser mayor a cero');
                             $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
@@ -158,7 +158,7 @@ class SeguimientoProduccionController extends Controller
     {
         $model = new SeguimientoProduccion();
         $clientes = Cliente::find()->all();
-        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->all();
+        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->orderBy('idordenproduccion desc')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_seguimiento_produccion]);
         }

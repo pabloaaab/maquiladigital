@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <div class="panel-body">
                                 <div class="col-lg-2">
-                                    <label>Colores:</label>
+                                    <label>Fecha:</label>
                                 </div>
                                 <div class="col-lg-3">
                                     <input type="date" name="fecha" value="<?php echo $model->fechacreacion ?>" size="50"  required>

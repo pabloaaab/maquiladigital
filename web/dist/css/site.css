@@ -429,6 +429,11 @@ i.fa {
     width: 90%;
 }
 
+@media (min-width: 992px){
+.modal-lg {
+    width: 1150px;
+}}
+
 /**
  * Sobre-escribimos archivos.
  */

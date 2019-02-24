@@ -75,6 +75,7 @@ $form = ActiveForm::begin([
                 <thead>
                     <tr>
                         <th scope="col">Id</th>
+                        <th scope="col">Módulo</th>
                         <th scope="col">Menú Operación</th>
                         <th scope="col">Permiso</th>
                         
@@ -85,6 +86,7 @@ $form = ActiveForm::begin([
                 <?php foreach ($usuariodetalles as $val): ?>
                         <tr>                                                
                             <td><?= $val->codusuario_detalle ?></td>
+                            <td><?= $val->permiso->modulo ?></td>
                             <td><?= $val->permiso->menu_operacion ?></td>
                             <td><?= $val->permiso->permiso ?></td>                            
                             <td><input type="checkbox" name="codusuario_detalle[]" value="<?= $val->codusuario_detalle ?>"></td>                                                               
