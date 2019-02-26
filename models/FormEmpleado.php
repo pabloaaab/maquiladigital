@@ -13,6 +13,7 @@ use app\models\Municipio;
  */
 class FormEmpleado extends Model
 {
+    public $id_empleado;
     public $identificacion;
     public $id_empleado_tipo;
     public $fechaingreso;

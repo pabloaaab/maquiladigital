@@ -125,19 +125,84 @@ class EmpleadoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->nombrecorto = $model->nombre1.' '.$model->nombre2.' '.$model->apellido1.' '.$model->apellido2;
-            $model->save(false);
-            return $this->redirect(['index']);
+    public function actionUpdate($id) {
+        //$matriculaempresa = Matriculaempresa::findOne(901189320);
+        $model = new FormEmpleado();
+        $msg = null;
+        $tipomsg = null;
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {            
+            if ($model->validate()) {
+                $table = Empleado::find()->where(['id_empleado' => $id])->one();
+                if ($table) {
+                    $table->id_empleado_tipo = $model->id_empleado_tipo;
+                    $table->identificacion = $model->identificacion;
+                    $table->dv = $model->dv;
+                    $table->nombre1 = $model->nombre1;
+                    $table->nombre2 = $model->nombre2;
+                    $table->apellido1 = $model->apellido1;
+                    $table->apellido2 = $model->apellido2;
+                    $table->nombrecorto = $table->nombre1.' '.$table->nombre2.' '.$table->apellido1.' '.$table->apellido2;
+                    $table->direccion = $model->direccion;
+                    $table->telefono = $model->telefono;
+                    $table->celular = $model->celular;
+                    $table->email = $model->email;
+                    $table->iddepartamento = $model->iddepartamento;
+                    $table->idmunicipio = $model->idmunicipio;
+                    $table->contrato = $model->contrato;
+                    $table->observacion = $model->observacion;
+                    $table->fechaingreso = $model->fechaingreso;
+                    $table->fecharetiro = $model->fecharetiro;                                                            
+                    if ($table->update()) {
+                        $msg = "El registro ha sido actualizado correctamente";
+                        $this->redirect(["empleado/index"]);
+                    } else {
+                        $msg = "El registro no sufrio ningun cambio";
+                        $tipomsg = "danger";
+                    }
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            } else {
+                $model->getErrors();
+            }
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+
+        if (Yii::$app->request->get("id")) {
+            $table = Empleado::find()->where(['id_empleado' => $id])->one();
+            //$municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
+            //$municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
+            if ($table) {
+                $model->id_empleado = $table->id_empleado;
+                $model->id_empleado_tipo = $table->id_empleado_tipo;
+                $model->identificacion = $table->identificacion;
+                $model->dv = $table->dv;
+                $model->nombre1 = $table->nombre1;
+                $model->nombre2 = $table->nombre2;
+                $model->apellido1 = $table->apellido1;
+                $model->apellido2 = $table->apellido2;
+                $model->direccion = $table->direccion;
+                $model->telefono = $table->telefono;
+                $model->celular = $table->celular;
+                $model->email = $table->email;
+                $model->iddepartamento = $table->iddepartamento;
+                $model->idmunicipio = $table->idmunicipio;
+                $model->contrato = $table->contrato;                                                
+                $model->observacion = $table->observacion;
+                $model->fechaingreso = $table->fechaingreso;
+                $model->fecharetiro = $table->fecharetiro;
+            } else {
+                return $this->redirect(["empleado/index"]);
+            }
+        } else {
+            return $this->redirect(["empleado/index"]);
+        }
+        return $this->render("update", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg]);
     }
 
     /**

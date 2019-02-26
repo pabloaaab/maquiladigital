@@ -24,12 +24,13 @@ $form = ActiveForm::begin([
             'enableAjaxValidation' => true,
             'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
-                'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
-                'labelOptions' => ['class' => 'col-sm-2 control-label'],
-                'options' => []
-            ],
+            'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => []
+        ],
         ]);
 ?>
+
 <?php
 $departamento = ArrayHelper::map(Departamento::find()->all(), 'iddepartamento', 'departamento');
 $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipio');
@@ -96,6 +97,6 @@ $tipodempleado = ArrayHelper::map(EmpleadoTipo::find()->all(), 'id_empleado_tipo
         </div>
     </div>
 </div>
-<?php ActiveForm::end(); ?>     
+<?php $form->end() ?>     
 
 </div>

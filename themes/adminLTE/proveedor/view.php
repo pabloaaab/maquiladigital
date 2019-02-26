@@ -119,13 +119,13 @@ $view = 'Proveedores';
             </tr>
             <tr>
                 <th>Tipo Regimen:</th>
-                <td><?= $table->tiporegimen ?></td>
+                <td><?= $table->regimen ?></td>
                 <th>AutoRetenedor:</th>
-                <td><?= $table->autoretenedor ?></td>
+                <td><?= $table->autoretener ?></td>
                 <th>Retención Fuente:</th>
-                <td><?= $table->retencionfuente ?></td>
+                <td><?= $table->retenerfuente ?></td>
                 <th>Retención Iva:</th>
-                <td><?= $table->retencioniva ?></td>
+                <td><?= $table->reteneriva ?></td>
             </tr>
         </table>
     </div>

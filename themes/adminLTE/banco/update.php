@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Banco */
+use yii\helpers\ArrayHelper;
 
 $this->title = 'Editar Banco: ' . $model->idbanco;
 $this->params['breadcrumbs'][] = ['label' => 'Bancos', 'url' => ['index']];

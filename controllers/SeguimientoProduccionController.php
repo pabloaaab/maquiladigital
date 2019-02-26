@@ -71,69 +71,83 @@ class SeguimientoProduccionController extends Controller
         $operarias = null;
         $horastrabajar = null;
         $minutos = null;   
-        $reales = null;   
+        $reales = null;
+        $descanso = null;
         if ($form->load(Yii::$app->request->get())) {
             if ($form->validate()) {
-                $operarias = Html::encode($form->operarias);
-                $horastrabajar = Html::encode($form->horastrabajar);
-                $minutos = Html::encode($form->minutos);
-                $reales = Html::encode($form->reales);
-                if ($minutos){
-                    if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 && $reales > 0){
-                        $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
-                        if ($ordenproduccion->cantidad > 0){
-                            /*if($ordenproduccion->segundosficha > 0){*/
-                                $seguimientodetalletemporal = SeguimientoProduccionDetalle2::findOne(1);
-                                $seguimientodetalletemporal->minutos = $minutos;
-                                //$calculohora = date('H:i:s') - $model->hora_inicio;
-                                $horaInicio = new \DateTime($model->hora_inicio);
-                                $horaTermino = new \DateTime(date('H:i:s'));                                
-                                $interval = $horaInicio->diff($horaTermino);
-                                $interval2 = $interval->format('%h');
-                                $interval3 = $interval->format('%s');
-                                $interval4 = $interval2.'.'.$interval3;
-                                //$interval->format('%H horas %i minutos %s seconds');date.timezone = America/Lima
-                                $seguimientodetalletemporal->fecha_inicio = $model->fecha_inicio_produccion;
-                                $seguimientodetalletemporal->hora_inicio = $model->hora_inicio;
-                                $seguimientodetalletemporal->hora_consulta = date('H:i:s');
-                                $seguimientodetalletemporal->cantidad = round(60 / $seguimientodetalletemporal->minutos,2);
-                                $seguimientodetalletemporal->horas_a_trabajar = $horastrabajar;
-                                $seguimientodetalletemporal->cantidad_por_hora = round($seguimientodetalletemporal->cantidad * $seguimientodetalletemporal->horas_a_trabajar,2);
-                                $seguimientodetalletemporal->operarias = $operarias;
-                                $seguimientodetalletemporal->total = round($operarias * $seguimientodetalletemporal->cantidad_por_hora,2);
-                                $seguimientodetalletemporal->operacion_por_hora = round($seguimientodetalletemporal->total / $seguimientodetalletemporal->horas_a_trabajar,2);
-                                $seguimientodetalletemporal->prendas_reales = $reales;
-                                $seguimientodetalletemporal->prendas_sistema = round($seguimientodetalletemporal->operacion_por_hora * ($interval4),1);
-                                $seguimientodetalletemporal->porcentaje_produccion = round((100 * $reales) / $seguimientodetalletemporal->prendas_sistema,2);
-                                $seguimientodetalletemporal->save(false);
-                                $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
-                                $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                                $seguimiento = SeguimientoProduccion::findOne($id);
-                                $seguimiento->minutos = $minutos;
-                                $seguimiento->operarias = $operarias;
-                                $seguimiento->horas_a_trabajar = $horastrabajar;
-                                $seguimiento->prendas_reales = $reales;
-                                $seguimiento->save(false);
-                            /*}else{
-                                Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                                                        
+                if(isset($_POST['guardardetalle'])){
+                    $this->actionGuardar(1, $id);
+                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
+                    $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
+                }
+                else{
+                    $operarias = Html::encode($form->operarias);
+                    $horastrabajar = Html::encode($form->horastrabajar);
+                    $minutos = $form->minutos;
+                    $reales = Html::encode($form->reales);
+                    $descanso = Html::encode($form->descanso);
+                    if ($minutos){
+                        if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 && $reales > 0){
+                            $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
+                            if ($ordenproduccion->cantidad > 0){
+                                /*if($ordenproduccion->segundosficha > 0){*/
+                                    $seguimientodetalletemporal = SeguimientoProduccionDetalle2::findOne(1);
+                                    $seguimientodetalletemporal->minutos = $minutos;
+                                    //$calculohora = date('H:i:s') - $model->hora_inicio;
+                                    $horaInicio = new \DateTime($model->hora_inicio);
+                                    $horaTermino = new \DateTime(date('H:i:s'));                                
+                                    $interval = $horaInicio->diff($horaTermino);
+                                                                        
+                                    $interval2 = $interval->format('%h');
+                                    //$interval3 = $interval->format('%s');
+                                    $interval3 = $interval->format('%i');
+                                    $interval4 = $interval2.'.'.$interval3;
+                                    $interval4 = ($interval4 * 3600) - ($descanso * 60);
+                                    $interval4 = $interval4 / 3600;
+                                    $seguimientodetalletemporal->fecha_inicio = $model->fecha_inicio_produccion;
+                                    $seguimientodetalletemporal->hora_inicio = $model->hora_inicio;
+                                    $seguimientodetalletemporal->hora_consulta = date('H:i:s');
+                                    $seguimientodetalletemporal->cantidad = round(60 / $seguimientodetalletemporal->minutos,2);
+                                    $seguimientodetalletemporal->horas_a_trabajar = $horastrabajar;
+                                    $seguimientodetalletemporal->cantidad_por_hora = round($seguimientodetalletemporal->cantidad * $seguimientodetalletemporal->horas_a_trabajar,2);
+                                    $seguimientodetalletemporal->operarias = $operarias;
+                                    $seguimientodetalletemporal->total = round($operarias * $seguimientodetalletemporal->cantidad_por_hora,2);
+                                    $seguimientodetalletemporal->operacion_por_hora = round($seguimientodetalletemporal->total / $seguimientodetalletemporal->horas_a_trabajar,2);
+                                    $seguimientodetalletemporal->prendas_reales = $reales;
+                                    $seguimientodetalletemporal->prendas_sistema = round($seguimientodetalletemporal->operacion_por_hora * ($interval4),1);
+                                    $seguimientodetalletemporal->porcentaje_produccion = round((100 * $reales) / $seguimientodetalletemporal->prendas_sistema,2);
+                                    $seguimientodetalletemporal->save(false);
+                                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
+                                    $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
+                                    $seguimiento = SeguimientoProduccion::findOne($id);
+                                    $seguimiento->minutos = $minutos;
+                                    $seguimiento->operarias = $operarias;
+                                    $seguimiento->horas_a_trabajar = $horastrabajar;
+                                    $seguimiento->prendas_reales = $reales;
+                                    $seguimiento->descanso = $descanso;
+                                    $seguimiento->save(false);
+
+                                /*}else{
+                                    Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                                                        
+                                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
+                                    $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
+                                    }*/ 
+                            }else{
+                                Yii::$app->getSession()->setFlash('error', 'La cantidad de la orden de produccion debe ser mayor a cero');
                                 $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
                                 $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                                }*/ 
+                                }    
                         }else{
-                            Yii::$app->getSession()->setFlash('error', 'La cantidad de la orden de produccion debe ser mayor a cero');
+                            Yii::$app->getSession()->setFlash('error', 'La cantidad de operarias y/o horas a trabajar y/o minutos y/o prendas reales, no pueden ser 0 (cero)');                                                
                             $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
                             $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                            }    
+                            }                    
                     }else{
-                        Yii::$app->getSession()->setFlash('error', 'La cantidad de operarias y/o horas a trabajar y/o minutos y/o prendas reales, no pueden ser 0 (cero)');                                                
+                        Yii::$app->getSession()->setFlash('error', 'No se tiene el valor de la orden de producción para generar el informe');
                         $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
                         $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                        }                    
-                }else{
-                    Yii::$app->getSession()->setFlash('error', 'No se tiene el valor de la orden de producción para generar el informe');
-                    $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',0])->all();
-                    $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
-                    } 
+                        }
+                } 
             }else {
                 $form->getErrors();
                 }                
@@ -239,7 +253,8 @@ class SeguimientoProduccionController extends Controller
         $seguimientodetalle->prendas_sistema = $seguimientodetalletemporal->prendas_sistema;
         $seguimientodetalle->porcentaje_produccion = $seguimientodetalletemporal->porcentaje_produccion;
         $seguimientodetalle->insert();
-        return $this->redirect(['view', 'id' => $idseguimiento]);
+        //return $this->redirect(['view', 'id' => $idseguimiento]);
+        return ;
     }
     
     public function actionEliminardetalle($id,$idseguimiento)

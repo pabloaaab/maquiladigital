@@ -129,4 +129,45 @@ class Cliente extends \yii\db\ActiveRecord
     {
         return "{$this->nombrecorto} - {$this->cedulanit}";
     }
+    
+    public function getAutoretener()
+    {
+        if($this->autoretenedor == 1){
+            $autoretenedor = "SI";
+        }else{
+            $autoretenedor = "NO";
+        }
+        return $autoretenedor;
+    }
+    
+    public function getRetenerfuente()
+    {
+        if($this->retencionfuente == 1){
+            $retenerfuente = "SI";
+        }else{
+            $retenerfuente = "NO";
+        }
+        return $retenerfuente;
+    }
+    
+    public function getReteneriva()
+    {
+        if($this->retencioniva == 1){
+            $retenerfiva = "SI";
+        }else{
+            $retenerfiva = "NO";
+        }
+        return $retenerfiva;
+    }
+    
+    public function getRegimen()
+    {
+        if($this->tiporegimen == 1){
+            $tiporegimen = "CÓMUN";
+        }
+        if($this->tiporegimen == 2){
+            $tiporegimen = "SIMPLIFICADO";
+        }        
+        return $tiporegimen;
+    }
 }

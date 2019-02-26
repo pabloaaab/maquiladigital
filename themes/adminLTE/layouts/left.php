@@ -164,6 +164,7 @@
                                         'url' => '#',
                                         'items' => [
                                         ['label' => 'Tipo Recibo', 'icon' => 'plus-square-o', 'url' => ['/tipo-recibo/index']],
+                                        ['label' => 'Tipo Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-tipo/index']],    
                                         ['label' => 'Proveedor', 'icon' => 'plus-square-o', 'url' => ['/proveedor/index']],
                                     ],    
                                     ],
@@ -197,6 +198,7 @@
                                         'url' => '#',                                                                                    
                                         'items' => [
                                             ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
+                                            ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/index']],
                                             ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['']],
                                         ],    
                                     ]    

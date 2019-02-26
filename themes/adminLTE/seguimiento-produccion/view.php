@@ -76,10 +76,11 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
 	
     <div class="panel-body" id="seguimiento-produccion">
         <div class="row" >
-            <?= $formulario->field($form, "operarias")->input("search", ['value' => $model->operarias]) ?>
-            <?= $formulario->field($form, "horastrabajar")->input("search", ['value' => $model->horas_a_trabajar]) ?>            
-            <?= $formulario->field($form, 'minutos')->dropdownList([$model->ordenproduccion->duracion => 'Cliente'.'('.$model->ordenproduccion->duracion.')', round($model->ordenproduccion->segundosficha/60,2) => 'Confección'.'('.round($model->ordenproduccion->segundosficha/60,2).')'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
-            <?= $formulario->field($form, "reales")->input("search" , ['value' => $model->prendas_reales]) ?>            
+            <?= $formulario->field($form, "operarias")->input("search") ?>
+            <?= $formulario->field($form, "horastrabajar")->input("search") ?>            
+            <?= $formulario->field($form, 'minutos')->dropdownList([number_format($model->ordenproduccion->duracion,2) => 'Cliente'.'('.$model->ordenproduccion->duracion.')', number_format($model->ordenproduccion->segundosficha/60,2) => 'Confección'.'('.number_format($model->ordenproduccion->segundosficha/60,2).')'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
+            <?= $formulario->field($form, "reales")->input("search") ?>
+            <?= $formulario->field($form, "descanso")->input("search") ?>
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Generar", ["class" => "btn btn-primary",]) ?>
@@ -126,7 +127,20 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>
                 <td></td>
-                <td><?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span>', ['guardar', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>
+                <td>
+                <?php
+                $form = ActiveForm::begin([
+                            "method" => "post",
+                            'id' => 'formulario',
+                            'enableClientValidation' => false,
+                            'enableAjaxValidation' => true,
+                            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+                            
+                        ]);
+                ?>    
+                <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span>", ['name' => 'guardardetalle']); ?>
+                <?php $form->end() ?>
+                </td>
             </tr>
             </tbody>
             <?php endforeach; ?>            

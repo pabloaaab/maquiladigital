@@ -13,7 +13,8 @@ class FormGenerarSeguimientoProduccion extends Model
     public $horastrabajar;
     public $operarias;
     public $minutos;
-    public $reales;    
+    public $reales;
+    public $descanso;
 
     public function rules()
     {
@@ -21,8 +22,9 @@ class FormGenerarSeguimientoProduccion extends Model
             [['horastrabajar','operarias','minutos'],'required', 'message' => 'Campo requerido para generar el informe'],
             ['operarias', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['horastrabajar', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['reales', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['minutos', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            
+            ['reales', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            
+            ['minutos', 'match', 'pattern' => '/^[.0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['descanso', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            
         ];
     }
 
@@ -32,7 +34,8 @@ class FormGenerarSeguimientoProduccion extends Model
             'operarias' => 'Nro Operarias',
             'horastrabajar' => 'Horas a Trabajar',
             'minutos' => 'Minutos Confeccion/Cliente:',
-            'reales' => 'Prendas Reales:',            
+            'reales' => 'Prendas Reales:',
+            'descanso' => 'Descanso (Minutos):',            
         ];
     }
 }
