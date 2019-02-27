@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <th scope="col">Minutos</th>
                 <th scope="col">Cantidad</th>
                 <th scope="col">Horas a Trabajar</th>
-                <th scope="col">Cantidad por Hora</th>
+                <th scope="col">Cant. Total por Hora</th>
                 <th scope="col">Operarias</th>
                 <th scope="col">Total</th>
                 <th scope="col">Operario por Hora</th>
@@ -157,9 +157,9 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <thead>
             <tr>                
                 <th scope="col">Minutos</th>
-                <th scope="col">Cantidad</th>
+                <th scope="col">Cantidad </th>
                 <th scope="col">Horas a Trabajar</th>
-                <th scope="col">Cantidad por Hora</th>
+                <th scope="col">Cant. Total por Hora</th>
                 <th scope="col">Operarias</th>
                 <th scope="col">Total</th>
                 <th scope="col">Operario por Hora</th>
