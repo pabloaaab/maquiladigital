@@ -51,7 +51,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion'], 'required'],
+            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion','gran_contribuyente','agente_retenedor'], 'required'],
             [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion'], 'integer'],
             [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
             [['declaracion','nombresistema'], 'string'],
@@ -86,13 +86,15 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             'paginaweb' => 'Pagina Web:',
             'porcentajeiva' => 'Porcentaje Iva:',
             'porcentajeretefuente' => 'Porcentaje Rete Fuente:',
-            'retefuente' => 'Rete Fuente:',
+            'retefuente' => 'Base Rete Fuente:',
             'porcentajereteiva' => 'Porcentaje Rete Iva:',
             'id_tipo_regimen' => 'Tipo Regimen:',
             'declaracion' => 'Declaración:',
             'id_banco_factura' => 'Banco Factura:',
             'idresolucion' => 'Resolución:',
             'nombresistema' => 'Nombre Sistema:',
+            'agente_retenedor' => 'Agente Retenedor:',
+            'gran_contribuyente' => 'Gran Contribuyente:',
         ];
     }
 

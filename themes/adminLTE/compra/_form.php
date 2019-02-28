@@ -34,19 +34,24 @@ use kartik\depdrop\DepDrop;
             <?= $form->field($model, 'id_proveedor')->dropDownList($proveedores, ['prompt' => 'Seleccione un proveedor...']) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_compra_tipo')->dropDownList($tipos,['prompt' => 'Seleccione un tipo...']) ?>
+            <?= $form->field($model, 'id_compra_concepto')->dropDownList($conceptos,['prompt' => 'Seleccione un concepto...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'factura')->textInput(['maxlength' => true]) ?>  					
         </div>
         <div class="row">
             <?= $form->field($model, 'subtotal')->textInput(['maxlength' => true]) ?>  					
+        </div>        
+        <div class="row">
+            <?= $form->field($model,'fechainicio')->widget(DatePicker::className(),['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'impuestoiva')->textInput(['maxlength' => true]) ?>  					
-        </div>
-        <div class="row">
-            <?= $form->field($model,'fechacreacion')->widget(DatePicker::className(),['name' => 'check_issue_date',
+            <?= $form->field($model,'fechavencimiento')->widget(DatePicker::className(),['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [

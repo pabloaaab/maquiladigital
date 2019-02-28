@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<body onload= "mostrar()">
+<body onload= "mostrar2()">
 <!--<h1>Editar proveedor</h1>-->
 <?php if ($tipomsg == "danger") { ?>
     <h3 class="alert-danger"><?= $msg ?></h3>
@@ -53,7 +53,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 
         <div class="panel-body">
             <div class="row" id="personal">            
-                <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onload' => 'mostrar()', 'onchange' => 'mostrar()', 'id' => 'idtipo']) ?>
+                <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onload' => 'mostrar2()', 'onchange' => 'mostrar2()', 'id' => 'idtipo']) ?>
                 <?= $form->field($model, 'cedulanit')->input('text', ['id' => 'cedulanit', 'onchange' => 'calcularDigitoVerificacion()']) ?>			
                 <?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'style' => 'width:35px', 'readonly' => true, 'aria-required' => true]) ?>
             </div>
@@ -74,7 +74,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
                 <?= $form->field($model, 'direccionproveedor')->input("text") ?>
             </div>
             <div class="row">
-                <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, ['prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('proveedor/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
+                <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, ['prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('clientes/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
             $( "#' . Html::getInputId($model, 'idmunicipio', ['required']) . '" ).html( data ); });']); ?>
                 <?= $form->field($model, 'idmunicipio')->dropDownList($municipio, ['prompt' => 'Seleccione...']) ?>
             </div>
@@ -84,19 +84,23 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
             </div>	
             <div class="row">
                 <?= $form->field($model, 'celularcontacto')->input("text") ?>
-                <?= $form->field($model, 'nitmatricula')->input("text", ['readonly' => true]) ?>			
+                <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
             </div>    
             <div class="row">
-                <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
+                <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...']) ?>
                 <?= $form->field($model, 'plazopago')->input("text",['id' => 'plazopago']) ?>			
             </div>
-            <div class="row">
-                <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...', 'onchange' => 'tregimen()', 'id' => 'tiporegimen']) ?>
-                <?= $form->field($model, 'autoretenedor')->dropdownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione...', 'onchange' => 'retener()', 'id' => 'autoretenedor']) ?>
+            <div class="row">        
+                <?= $form->field($model, 'autoretenedor')->dropdownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione...']) ?>
+                <?= $form->field($model, 'naturaleza')->dropdownList(['1' => 'PUBLICA', '2' => 'PRIVADA','3' => 'COOPERATIVA'], ['prompt' => 'Seleccione...']) ?>
             </div>
             <div class="row">
-                <?= $form->field($model, 'retencioniva')->dropdownList(['0' => 'NO', '1' => 'SI'], ['id' => 'retencioniva', 'readonly' => 'readonly']) ?>
-                <?= $form->field($model, 'retencionfuente')->dropdownList(['0' => 'NO', '1' => 'SI'], ['id' => 'retencionfuente', 'readonly' => 'readonly']) ?>
+                <?= $form->field($model, 'banco')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'sociedad')->dropdownList(['1' => 'NATURAL', '2' => 'JURIDICA'], ['prompt' => 'Seleccione...']) ?>
+            </div>    
+            <div class="row">
+                <?= $form->field($model, 'tipocuenta')->dropdownList(['0' => 'AHORRO', '1' => 'CORRIENTE'], ['prompt' => 'Seleccione...']) ?>
+                <?= $form->field($model, 'cuentanumero')->textInput(['maxlength' => true]) ?>
             </div>
             <div class="row">
                 <div class="field-tblproveedor-observaciones_proveedor has-success">

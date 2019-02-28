@@ -59,8 +59,8 @@ $view = 'compra';
                     <td><?= Html::encode('$ '.number_format($model->subtotal,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
-                    <td><?= Html::encode($model->compraTipo->tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
+                    <td><?= Html::encode($model->compraConcepto->concepto) ?></td>
                     <th><?= Html::activeLabel($model, 'porcentajeiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajeiva) ?></td>
                     <th><?= Html::activeLabel($model, 'impuestoiva') ?>: +</th>
@@ -83,8 +83,8 @@ $view = 'compra';
                     <td><?= Html::encode('$ '.number_format($model->retencionfuente,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
-                    <td><?= Html::encode($model->fechacreacion) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'fechainicio') ?>:</th>
+                    <td><?= Html::encode($model->fechainicio) ?></td>                    
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'total') ?>:</th>
@@ -98,27 +98,6 @@ $view = 'compra';
         </div>
     </div>
 
-    <!--<?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id_compra',
-            'id_compra_tipo',
-            'porcentajeiva',
-            'porcentajefuente',
-            'porcentajereteiva',
-            'subtotal',
-            'retencionfuente',
-            'impuestoiva',
-            'retencioniva',
-            'saldo',
-            'total',
-            'id_proveedor',
-            'usuariosistema',
-            'estado',
-            'autorizado',
-            'observacion:ntext',
-            'fechacreacion',
-        ],
-    ]) ?>-->
+    
 
 </div>

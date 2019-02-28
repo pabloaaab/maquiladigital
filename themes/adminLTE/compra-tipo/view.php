@@ -37,12 +37,12 @@ $this->params['breadcrumbs'][] = $model->id_compra_tipo;
                     <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo) ?></td>                    
                 </tr>
-                <tr>
+                <!--<tr>
                     <th><?= Html::activeLabel($model, 'porcentaje') ?>:</th>
                     <td><?= Html::encode($model->porcentaje) ?></td>
                     <th><?= Html::activeLabel($model, 'cuenta') ?>:</th>
                     <td><?= Html::encode($model->cuenta) ?></td>                    
-                </tr>                                                
+                </tr> -->                                               
             </table>
         </div>
     </div>
@@ -52,8 +52,8 @@ $this->params['breadcrumbs'][] = $model->id_compra_tipo;
         'attributes' => [
             'id_compra_tipo',
             'tipo',
-            'porcentaje',
-            'cuenta',
+            //'porcentaje',
+            //'cuenta',
         ],
     ]) ?>-->
 

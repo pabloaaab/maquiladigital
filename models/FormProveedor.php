@@ -35,10 +35,13 @@ class FormProveedor extends Model
     public $nitmatricula;
     public $tiporegimen;
     public $autoretenedor;
-    public $retencioniva;
-    public $retencionfuente;
+    public $naturaleza;
+    public $sociedad;
     public $observacion;
     public $fechaingreso;
+    public $banco;
+    public $tipocuenta;
+    public $cuentanumero;
 
     public function rules()
     {
@@ -70,11 +73,14 @@ class FormProveedor extends Model
 	    [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio'],'message' => 'Campo requerido'],                      
             ['tiporegimen', 'required', 'message' => 'Campo requerido'],
             ['autoretenedor', 'required'],
-            ['retencioniva', 'required', 'message' => 'Campo requerido'],
-            ['retencioniva', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['retencionfuente', 'required', 'message' => 'Campo requerido'],
-            ['retencionfuente', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['naturaleza', 'required', 'message' => 'Campo requerido'],
+            ['naturaleza', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['sociedad', 'required', 'message' => 'Campo requerido'],
+            ['sociedad', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['observacion', 'default'],
+            ['banco', 'match', 'pattern' => '/^[ 0-9a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras y numeros'],
+            ['tipocuenta', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['cuentanumero', 'match', 'pattern' => '/^[-0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
         ];
     }
 
@@ -99,11 +105,13 @@ class FormProveedor extends Model
             'idmunicipio' => 'Municipio:',            
             'tiporegimen' => 'Tipo Régimen:',
             'autoretenedor' => 'Autoretenedor:',
-            'retencioniva' => 'Retención Iva:',
-            'retencionfuente' => 'Retención Fte:',
+            'naturaleza' => 'naturaleza:',
+            'sociedad' => 'sociedad:',
             'dv' => '',
             'observacion' => 'Observaciones:',
-
+            'banco' => 'Entidad Bancaria:',
+            'tipocuenta' => 'Tipo Cuenta:',
+            'cuentanumero' => 'Numero cuenta:',
         ];
     }
 

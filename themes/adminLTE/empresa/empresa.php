@@ -94,6 +94,12 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
             <?= $form->field($model, 'id_tipo_regimen')->dropDownList($regimen, ['prompt' => 'Seleccione un regimen...']) ?>
         </div>
         <div class="row">
+            <?= $form->field($model, 'gran_contribuyente')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'agente_retenedor')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'declaracion')->textArea(['maxlength' => true]) ?>
         </div>
         <div class="row">                        

@@ -44,7 +44,7 @@ class Departamento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'iddepartamento' => 'Id',
+            'iddepartamento' => 'Id (Dane)',
             'departamento' => 'Departamento',
             'activo' => 'Activo',
         ];

@@ -59,7 +59,8 @@ class Proveedor extends \yii\db\ActiveRecord
 	$this->nombrecorto = strtoupper($this->nombrecorto);
 	$this->direccionproveedor = strtoupper($this->direccionproveedor);
 	$this->contacto = strtoupper($this->contacto);
-	$this->observacion = strtoupper($this->observacion);	
+	$this->observacion = strtoupper($this->observacion);
+        $this->banco = strtoupper($this->banco);
         return true;
     }
 
@@ -104,24 +105,29 @@ class Proveedor extends \yii\db\ActiveRecord
         return $autoretenedor;
     }
     
-    public function getRetenerfuente()
+    public function getNaturalezas()
     {
-        if($this->retencionfuente == 1){
-            $retenerfuente = "SI";
-        }else{
-            $retenerfuente = "NO";
+        if($this->naturaleza == 1){
+            $naturaleza = "PUBLICA";
         }
-        return $retenerfuente;
+        if($this->naturaleza == 2){
+            $naturaleza = "PRIVADA";
+        }
+        if($this->naturaleza == 3){
+            $naturaleza = "COOPERATIVA";
+        }
+        return $naturaleza;
     }
     
-    public function getReteneriva()
+    public function getSociedades()
     {
-        if($this->retencioniva == 1){
-            $retenerfiva = "SI";
-        }else{
-            $retenerfiva = "NO";
+        if($this->sociedad == 1){
+            $sociedad = "NATURAL";
         }
-        return $retenerfiva;
+        if($this->sociedad == 2){
+            $sociedad = "JURIDICA";
+        }        
+        return $sociedad;
     }
     
     public function getRegimen()
@@ -133,5 +139,15 @@ class Proveedor extends \yii\db\ActiveRecord
             $tiporegimen = "SIMPLIFICADO";
         }        
         return $tiporegimen;
+    }
+    
+    public function getTcuenta()
+    {
+        if($this->tipocuenta == 0){
+            $tipo = "CUENTA DE AHORROS";
+        }else{
+            $tipo = "CUENTA CORRIENTE";
+        }
+        return $tipo;
     }
 }

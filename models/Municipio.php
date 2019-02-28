@@ -33,11 +33,11 @@ class Municipio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idmunicipio', 'codigomunicipio', 'municipio'], 'required', 'message' => 'Campo requerido'],
+            [['idmunicipio', 'codigomunicipio', 'municipio','iddepartamento'], 'required', 'message' => 'Campo requerido'],
             [['activo'], 'integer'],
             [['idmunicipio', 'codigomunicipio', 'iddepartamento'], 'string', 'max' => 15],
             [['municipio'], 'string', 'max' => 100],
-            [['idmunicipio'], 'unique'],
+            [['idmunicipio'], 'unique'],          
             [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
         ];
     }
@@ -49,9 +49,9 @@ class Municipio extends \yii\db\ActiveRecord
     {
         return [
             'idmunicipio' => 'Id',
-            'codigomunicipio' => 'Codigo Municipio',
+            'codigomunicipio' => 'Codigo Municipio (Dane)',
             'municipio' => 'Municipio',
-            'iddepartamento' => 'Id Departamento',
+            'iddepartamento' => 'Departamento',
             'activo' => 'Activo',
         ];
     }

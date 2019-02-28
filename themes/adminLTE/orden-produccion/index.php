@@ -36,10 +36,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'ordenproduccion',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
-            [
+            /*[
                 'attribute' => 'ordenproduccionext',
                 'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+            ],*/
             [
                 'attribute' => 'idcliente',
                 'value' => function($model){

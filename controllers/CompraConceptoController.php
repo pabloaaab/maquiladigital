@@ -3,17 +3,31 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Municipio;
-use app\models\MunicipioSearch;
+use app\models\CompraConcepto;
+use app\models\CompraConceptoSearch;
+use app\models\CompraTipo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\db\ActiveQuery;
+use yii\base\Model;
+use yii\web\Response;
+use yii\web\Session;
+use yii\data\Pagination;
+use yii\filters\AccessControl;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
+use Codeception\Lib\HelperModule;
 use app\models\UsuarioDetalle;
 
 /**
- * MunicipioController implements the CRUD actions for Municipio model.
+ * CompraConceptoController implements the CRUD actions for CompraConcepto model.
  */
-class MunicipioController extends Controller
+class CompraConceptoController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,13 +45,13 @@ class MunicipioController extends Controller
     }
 
     /**
-     * Lists all Municipio models.
+     * Lists all CompraConcepto models.
      * @return mixed
      */
     public function actionIndex()
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',6])->all()){
-            $searchModel = new MunicipioSearch();
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',36])->all()){
+            $searchModel = new CompraConceptoSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
@@ -46,12 +60,12 @@ class MunicipioController extends Controller
             ]);
         }else{
             return $this->redirect(['site/sinpermiso']);
-        }    
+        }
     }
 
     /**
-     * Displays a single Municipio model.
-     * @param string $id
+     * Displays a single CompraConcepto model.
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -63,58 +77,49 @@ class MunicipioController extends Controller
     }
 
     /**
-     * Creates a new Municipio model.
+     * Creates a new CompraConcepto model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Municipio();
-
-        if ($model->load(Yii::$app->request->post())) {
-            $codigo = $model->codigomunicipio;
-            $iddepartamento = $model->iddepartamento;
-            $valor = $iddepartamento.''.$codigo;
-            $valorencontrado = Municipio::find()->where(['idmunicipio' => $valor])->one();
-            if ($valorencontrado == $valor){
-                $model->idmuncipio = $valor;
-                $model->save();
-                return $this->redirect(['view', 'id' => $model->idmunicipio]);
-            }else{
-                Yii::$app->getSession()->setFlash('danger', 'Ya se xiste el municipio a ingresar');
-            }
-            
+        $model = new CompraConcepto();
+        $tipos = CompraTipo::find()->all();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id_compra_concepto]);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'tipos' => ArrayHelper::map($tipos, "id_compra_tipo", "tipo"),
         ]);
     }
 
     /**
-     * Updates an existing Municipio model.
+     * Updates an existing CompraConcepto model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $tipos = CompraTipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id_compra_concepto]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'tipos' => ArrayHelper::map($tipos, "id_compra_tipo", "tipo"),
         ]);
     }
 
     /**
-     * Deletes an existing Municipio model.
+     * Deletes an existing CompraConcepto model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
+     * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -123,26 +128,26 @@ class MunicipioController extends Controller
         try {
             $this->findModel($id)->delete();
             Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
-            $this->redirect(["municipio/index"]);
+            $this->redirect(["compra-concepto/index"]);
         } catch (IntegrityException $e) {
-            $this->redirect(["municipio/index"]);
-            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el municipio, tiene registros asociados en otros procesos');
+            $this->redirect(["compra-concepto/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar concepto, tiene registros asociados en otros procesos');
         } catch (\Exception $e) {            
-            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el municipio, tiene registros asociados en otros procesos');
-            $this->redirect(["municipio/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar concepto, tiene registros asociados en otros procesos');
+            $this->redirect(["compra-concepto/index"]);
         }
     }
 
     /**
-     * Finds the Municipio model based on its primary key value.
+     * Finds the CompraConcepto model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Municipio the loaded model
+     * @param integer $id
+     * @return CompraConcepto the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Municipio::findOne($id)) !== null) {
+        if (($model = CompraConcepto::findOne($id)) !== null) {
             return $model;
         }
 

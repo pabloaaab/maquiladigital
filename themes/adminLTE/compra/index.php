@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Proveedor;
 use app\models\Compra;
 use app\models\CompraTipo;
+use app\models\CompraConcepto;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CompraSearch */
@@ -31,12 +32,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-1 '],
             ],
             [
-                'attribute' => 'id_compra_tipo',
+                'attribute' => 'id_compra_concepto',
                 'value' => function($model){
-                    $compratipo = CompraTipo::findOne($model->id_compra_tipo);
-                    return $compratipo->tipo;
+                    $compraconcepto = CompraConcepto::findOne($model->id_compra_concepto);
+                    return $compraconcepto->concepto;
                 },
-                'filter' => ArrayHelper::map(CompraTipo::find()->all(),'id_compra_tipo','tipo'),
+                'filter' => ArrayHelper::map(CompraConcepto::find()->all(),'id_compra_concepto','concepto'),
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [               
@@ -53,8 +54,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-2'],
             ],            
             [               
-                'attribute' => 'fechacreacion',
-                'contentOptions' => ['class' => 'col-lg-1 '],
+            'attribute' => 'fechainicio',
+            'value' => function($model){
+                $compra = Compra::findOne($model->id_compra);
+                return date("Y-m-d", strtotime("$compra->fechainicio"));
+            },
+            'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'subtotal',

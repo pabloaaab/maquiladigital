@@ -17,9 +17,9 @@ class CompraSearch extends Compra
     public function rules()
     {
         return [
-            [['id_compra', 'id_compra_tipo', 'id_proveedor', 'estado', 'autorizado','numero','factura'], 'integer'],
+            [['id_compra', 'id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','numero','factura'], 'integer'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'total'], 'number'],
-            [['usuariosistema', 'observacion', 'fechacreacion'], 'safe'],
+            [['usuariosistema', 'observacion', 'fechacreacion', 'fechainicio', 'fechavencimiento'], 'safe'],
         ];
     }
 
@@ -60,7 +60,7 @@ class CompraSearch extends Compra
         // grid filtering conditions
         $query->andFilterWhere([
             'id_compra' => $this->id_compra,
-            'id_compra_tipo' => $this->id_compra_tipo,
+            'id_compra_concepto' => $this->id_compra_concepto,
             'porcentajeiva' => $this->porcentajeiva,
             'porcentajefuente' => $this->porcentajefuente,
             'porcentajereteiva' => $this->porcentajereteiva,
@@ -74,6 +74,8 @@ class CompraSearch extends Compra
             'estado' => $this->estado,
             'autorizado' => $this->autorizado,
             'fechacreacion' => $this->fechacreacion,
+            'fechainicio' => $this->fechainicio,
+            'fechavencimiento' => $this->fechavencimiento,
             'numero' => $this->numero,
             'factura' => $this->factura,
         ]);

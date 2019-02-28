@@ -12,7 +12,17 @@ $this->title = 'Detalle Seguimiento Produccion';
 $this->params['breadcrumbs'][] = ['label' => 'Seguimientos Produccion', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
 ?>
-
+<p>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_seguimiento_produccion], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => 'Esta seguro de eliminar el registro?',
+                'method' => 'post',
+            ],
+        ]) ?>
+    </p>
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
     "action" => Url::toRoute(["seguimiento-produccion/view", 'id' => $model->id_seguimiento_produccion]),
@@ -25,17 +35,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
     ],    
 ]);
 ?>
-<p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_seguimiento_produccion], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Esta seguro de eliminar el registro?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
+
 <div class="seguimiento-produccion-view">
 
     <!--<?= Html::encode($this->title) ?>-->
@@ -80,10 +80,12 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?= $formulario->field($form, "horastrabajar")->input("search") ?>            
             <?= $formulario->field($form, 'minutos')->dropdownList([number_format($model->ordenproduccion->duracion,2) => 'Cliente'.'('.$model->ordenproduccion->duracion.')', number_format($model->ordenproduccion->segundosficha/60,2) => 'Confección'.'('.number_format($model->ordenproduccion->segundosficha/60,2).')'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
             <?= $formulario->field($form, "reales")->input("search") ?>
-            <?= $formulario->field($form, "descanso")->input("search") ?>
+            <?= $formulario->field($form, "descanso")->input("search", ['value' => '0']) ?>
+            <?= $formulario->field($form, "sistema")->input("search",['readonly' => TRUE]) ?>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Generar", ["class" => "btn btn-primary",]) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Calcular prendas", ["class" => "btn btn-primary", 'name' => 'calcular']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Generar Info", ["class" => "btn btn-primary",]) ?>
             <a align="right" href="<?= Url::toRoute(["seguimiento-produccion/view", 'id' => $model->id_seguimiento_produccion]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
@@ -100,11 +102,11 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <thead>
             <tr>                
                 <th scope="col">Minutos</th>
-                <th scope="col">Cantidad</th>
+                <th scope="col">Cant. por Hora</th>
                 <th scope="col">Horas a Trabajar</th>
                 <th scope="col">Cant. Total por Hora</th>
                 <th scope="col">Operarias</th>
-                <th scope="col">Total</th>
+                <th scope="col">Total Unid por Dia</th>
                 <th scope="col">Operario por Hora</th>
                 <th scope="col">Prendas por Sistemas</th>
                 <th scope="col">Prendas Reales</th>
@@ -117,12 +119,12 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?php foreach ($seguimientodetalletemporal as $val): ?>    
             <tr>                                
                 <td><?= $val->minutos ?></td>
-                <td><?= $val->cantidad ?></td>
-                <td><?= $val->horas_a_trabajar ?></td>
                 <td><?= $val->cantidad_por_hora ?></td>
+                <td><?= $val->horas_a_trabajar ?></td>
+                <td><?= $val->cantidad_total_por_hora ?></td>
                 <td><?= $val->operarias ?></td>
-                <td><?= $val->total ?></td>
-                <td><?= $val->operacion_por_hora ?></td>
+                <td><?= $val->total_unidades_por_dia ?></td>
+                <td><?= $val->total_unidades_por_hora ?></td>
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>
@@ -157,11 +159,11 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <thead>
             <tr>                
                 <th scope="col">Minutos</th>
-                <th scope="col">Cantidad </th>
+                <th scope="col">Cant. por Hora</th>
                 <th scope="col">Horas a Trabajar</th>
                 <th scope="col">Cant. Total por Hora</th>
                 <th scope="col">Operarias</th>
-                <th scope="col">Total</th>
+                <th scope="col">Total Unid por Dia</th>
                 <th scope="col">Operario por Hora</th>
                 <th scope="col">Prendas por Sistemas</th>
                 <th scope="col">Prendas Reales</th>
@@ -174,12 +176,12 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?php foreach ($seguimientodetalle as $val): ?>    
             <tr>                                
                 <td><?= $val->minutos ?></td>
-                <td><?= $val->cantidad ?></td>
-                <td><?= $val->horas_a_trabajar ?></td>
                 <td><?= $val->cantidad_por_hora ?></td>
+                <td><?= $val->horas_a_trabajar ?></td>
+                <td><?= $val->cantidad_total_por_hora ?></td>
                 <td><?= $val->operarias ?></td>
-                <td><?= $val->total ?></td>
-                <td><?= $val->operacion_por_hora ?></td>
+                <td><?= $val->total_unidades_por_dia ?></td>
+                <td><?= $val->total_unidades_por_hora ?></td>
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>

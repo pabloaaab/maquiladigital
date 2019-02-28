@@ -27,7 +27,7 @@ use Yii;
  * @property int $factura
  * @property int $numero
  *
- * @property CompraTipo $compraTipo
+ * @property CompraTipo $compraComcepto
  * @property Proveedor $proveedor
  */
 class Compra extends \yii\db\ActiveRecord
@@ -46,13 +46,13 @@ class Compra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_compra_tipo', 'id_proveedor', 'factura', 'subtotal','fechacreacion','impuestoiva'], 'required'],
-            [['id_compra_tipo', 'id_proveedor', 'estado', 'autorizado','factura','numero'], 'integer'],
+            [['id_compra_concepto', 'id_proveedor', 'factura', 'subtotal','fechainicio','fechavencimiento'], 'required'],
+            [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','factura','numero'], 'integer'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'total'], 'number'],
             [['observacion'], 'string'],
-            [['fechacreacion'], 'safe'],
+            [['fechacreacion','fechainicio','fechavencimiento'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 50],
-            [['id_compra_tipo'], 'exist', 'skipOnError' => true, 'targetClass' => CompraTipo::className(), 'targetAttribute' => ['id_compra_tipo' => 'id_compra_tipo']],
+            [['id_compra_concepto'], 'exist', 'skipOnError' => true, 'targetClass' => CompraConcepto::className(), 'targetAttribute' => ['id_compra_concepto' => 'id_compra_concepto']],
             [['id_proveedor'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['id_proveedor' => 'idproveedor']],
         ];
     }
@@ -64,7 +64,7 @@ class Compra extends \yii\db\ActiveRecord
     {
         return [
             'id_compra' => 'Id Compra',
-            'id_compra_tipo' => 'Compra Tipo',
+            'id_compra_concepto' => 'Compra Concepto',
             'porcentajeiva' => 'Porcentaje Iva',
             'porcentajefuente' => 'Porcentaje Fuente',
             'porcentajereteiva' => 'Porcentaje Reteiva',
@@ -80,6 +80,8 @@ class Compra extends \yii\db\ActiveRecord
             'autorizado' => 'Autorizado',
             'observacion' => 'Observacion',
             'fechacreacion' => 'Fecha Creacion',
+            'fechainicio' => 'Fecha Inicio',
+            'fechavencimiento' => 'Fecha Vencimiento',
             'factura' => 'Factura',
             'numero' => 'Número',
         ];
@@ -88,9 +90,9 @@ class Compra extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCompraTipo()
+    public function getCompraConcepto()
     {
-        return $this->hasOne(CompraTipo::className(), ['id_compra_tipo' => 'id_compra_tipo']);
+        return $this->hasOne(CompraConcepto::className(), ['id_compra_concepto' => 'id_compra_concepto']);
     }
 
     /**

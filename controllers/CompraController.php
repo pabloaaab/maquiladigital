@@ -5,9 +5,11 @@ namespace app\controllers;
 use Yii;
 use app\models\Compra;
 use app\models\CompraTipo;
+use app\models\CompraConcepto;
 use app\models\Proveedor;
 use app\models\CompraSearch;
 use app\models\UsuarioDetalle;
+use app\models\Consecutivo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -86,17 +88,18 @@ class CompraController extends Controller
     {
         $model = new Compra();
         $proveedores = Proveedor::find()->all();
-        $tipos = CompraTipo::find()->all();
+        $conceptos = CompraConcepto::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();
+            $this->calculo($model->id_compra);
             return $this->redirect(['view', 'id' => $model->id_compra]);
         }
 
         return $this->render('create', [
             'model' => $model,
             'proveedores' => ArrayHelper::map($proveedores, "idproveedor", "nombreProveedores"),
-            'tipos' => ArrayHelper::map($tipos, "id_compra_tipo", "tipo"),
+            'conceptos' => ArrayHelper::map($conceptos, "id_compra_concepto", "concepto"),
         ]);
     }
 
@@ -111,15 +114,16 @@ class CompraController extends Controller
     {
         $model = $this->findModel($id);
         $proveedores = Proveedor::find()->all();
-        $tipos = CompraTipo::find()->all();
+        $conceptos = CompraConcepto::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->calculo($id);
             return $this->redirect(['view', 'id' => $model->id_compra]);
         }
 
         return $this->render('update', [
             'model' => $model,
             'proveedores' => ArrayHelper::map($proveedores, "idproveedor", "nombreProveedores"),
-            'tipos' => ArrayHelper::map($tipos, "id_compra_tipo", "tipo"),
+            'conceptos' => ArrayHelper::map($conceptos, "id_compra_concepto", "concepto"),
         ]);
     }
 
@@ -132,9 +136,17 @@ class CompraController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["compra/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["compra/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la compra, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar la compra, tiene registros asociados en otros procesos');
+            $this->redirect(["compra/index"]);
+        }
     }
 
     /**
@@ -161,9 +173,123 @@ class CompraController extends Controller
             $model->update();
             $this->redirect(["compra/view", 'id' => $id]);            
         } else {
-            $model->autorizado = 0;
-            $model->update();
-            $this->redirect(["compra/view", 'id' => $id]);
+            if($model->numero == 0){
+                $model->autorizado = 0;
+                $model->update();
+                $this->redirect(["compra/view", 'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado, no se puede desautorizar.');
+                $this->redirect(["compra/view",'id' => $id]);
+            }
+            
         }
+    }
+    
+    protected function calculo($id)
+    {
+        $model = $this->findModel($id);
+        $proveedor = Proveedor::findOne($model->id_proveedor);
+        $concepto = CompraConcepto::findOne($model->id_compra_concepto);
+        $porcentajeiva = 0;
+        $porcentajereteiva = 0;
+        $porcentajeretefuente = 0;
+        if ($proveedor->tiporegimen == 1){ //comun            
+            $impuestoiva = round($model->subtotal * $concepto->porcentaje_iva / 100);
+            $porcentajeiva = $concepto->porcentaje_iva;
+            if ($proveedor->autoretenedor == 1){ //si es autorretenedor
+                $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
+                $porcentajereteiva = $concepto->porcentaje_reteiva;
+            }else{
+                $retencioniva = 0;
+            }
+            if ($concepto->base_retencion == 100){
+                $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+                if($retencionfuente == 0){
+                    $porcentajeretefuente = 0;
+                }else{
+                    $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
+                }
+            }else{
+                if ($model->subtotal >= $concepto->base_retencion){
+                    $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+                    if($retencionfuente == 0){
+                        $porcentajeretefuente = 0;
+                    }else{
+                        $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
+                    }
+                }else{
+                    $retencionfuente = 0;
+                }
+            }
+        }
+        if ($proveedor->tiporegimen == 2){ //simplificado
+            $impuestoiva = 0;
+            if ($proveedor->autoretenedor == 1){ //si es autorretenedor
+                $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
+                $porcentajereteiva = $concepto->porcentaje_reteiva;
+            }else{
+                $retencioniva = 0;
+            }
+            if ($concepto->base_retencion == 100){
+                $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+                if($retencionfuente == 0){
+                    $porcentajeretefuente = 0;
+                }else{
+                    $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
+                }
+            }else{
+                if ($model->subtotal >= $concepto->base_retencion){
+                    $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+                    if($retencionfuente == 0){
+                        $porcentajeretefuente = 0;
+                    }else{
+                        $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
+                    }
+                }else{
+                    $retencionfuente = 0;
+                }
+            }
+        }
+        $model->porcentajeiva = $porcentajeiva;
+        $model->porcentajefuente = $porcentajeretefuente;
+        $model->porcentajereteiva = $porcentajereteiva;
+        $model->impuestoiva = $impuestoiva;
+        $model->retencionfuente = $retencionfuente;
+        $model->retencioniva = $retencioniva;
+        $model->total = $model->subtotal + $impuestoiva - $retencionfuente - $retencioniva;
+        $model->saldo = $model->total;
+        $model->save(false);
+        return ;
+    }
+    
+    public function actionGenerarnro($id)
+    {
+        $model = $this->findModel($id);
+        $mensaje = "";
+        if ($model->autorizado == 1){            
+            if ($model->numero == 0){
+                $consecutivo = Consecutivo::findOne(5);// 5 compras
+                $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                $model->numero = $consecutivo->consecutivo;
+                $model->update();
+                $consecutivo->update();                
+                $this->redirect(["compra/view",'id' => $id]);
+            }else{
+                Yii::$app->getSession()->setFlash('error', 'El registro ya fue generado.');
+                $this->redirect(["compra/view",'id' => $id]);
+            }
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'El registro debe estar autorizado para poder imprimir la compra.');
+            $this->redirect(["compra/view",'id' => $id]);
+        }
+    }
+    
+    public function actionImprimir($id)
+    {
+                                
+        return $this->render('../formatos/compra', [
+            'model' => $this->findModel($id),
+            
+        ]);
     }
 }

@@ -15,10 +15,10 @@ use Yii;
  * @property double $minutos
  * @property double $horas_a_trabajar
  * @property double $cantidad_por_hora
- * @property double $cantidad
+ * @property double $cantidad_total_por_hora
  * @property double $operarias
- * @property double $total
- * @property double $operacion_por_hora
+ * @property double $total_unidades_por_dia
+ * @property double $total_unidades_por_hora
  * @property double $prendas_sistema
  * @property double $prendas_reales
  * @property double $porcentaje_produccion
@@ -41,7 +41,7 @@ class SeguimientoProduccionDetalle2 extends \yii\db\ActiveRecord
         return [
             [['id_seguimiento_produccion'], 'integer'],
             [['fecha_inicio', 'hora_inicio', 'hora_consulta'], 'safe'],
-            [['minutos', 'horas_a_trabajar', 'cantidad_por_hora', 'cantidad','operarias', 'total', 'operacion_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
+            [['minutos', 'horas_a_trabajar', 'cantidad_por_hora', 'cantidad_total_por_hora','operarias', 'total_unidades_por_dia', 'total_unidades_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
         ];
     }
 
@@ -59,10 +59,10 @@ class SeguimientoProduccionDetalle2 extends \yii\db\ActiveRecord
             'minutos' => 'Minutos',            
             'horas_a_trabajar' => 'Horas A Trabajar',
             'cantidad_por_hora' => 'Cantidad Por Hora',
-            'cantidad' => 'Cantidad',
+            'cantidad_total_por_hora' => 'Cantidad',
             'operarias' => 'Operarias',
-            'total' => 'Total',
-            'operacion_por_hora' => 'Operacion Por Hora',
+            'total_unidades_por_dia' => 'Total',
+            'total_unidades_por_hora' => 'Operacion Por Hora',
             'prendas_sistema' => 'Prendas Sistema',
             'prendas_reales' => 'Prendas Reales',
             'porcentaje_produccion' => 'Porcentaje Produccion',

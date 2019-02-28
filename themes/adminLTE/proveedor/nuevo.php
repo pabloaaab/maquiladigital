@@ -48,7 +48,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
     </div>
     <div class="panel-body">
         <div class="row">
-            <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onchange' => 'mostrar()', 'id' => 'idtipo']) ?>
+            <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onchange' => 'mostrar2()', 'id' => 'idtipo']) ?>
             <?= $form->field($model, 'cedulanit')->input('text', ['id' => 'cedulanit', 'onchange' => 'calcularDigitoVerificacion()']) ?>
             <?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'placeholder' => 'dv', 'style' => 'width:50px', 'readonly' => true]) ?>       
         </div>														   
@@ -80,20 +80,24 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
     </div>	
     <div class="row">
         <?= $form->field($model, 'celularcontacto')->input("text") ?>
-
+        <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
     </div>    
     <div class="row">
-        <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
+        <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...']) ?>
         <?= $form->field($model, 'plazopago')->input("text",['id' => 'plazopago']) ?>			
     </div>
-    <div class="row">
-        <?= $form->field($model, 'tiporegimen')->dropdownList(['1' => 'COMÚN', '2' => 'SIMPLIFICADO'], ['prompt' => 'Seleccione...', 'onchange' => 'tregimen()', 'id' => 'tiporegimen']) ?>
-        <?= $form->field($model, 'autoretenedor')->dropdownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione...', 'onchange' => 'retener()', 'id' => 'autoretenedor']) ?>
+    <div class="row">        
+        <?= $form->field($model, 'autoretenedor')->dropdownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione...']) ?>
+        <?= $form->field($model, 'naturaleza')->dropdownList(['1' => 'PUBLICA', '2' => 'PRIVADA','3' => 'COOPERATIVA'], ['prompt' => 'Seleccione...']) ?>
     </div>
     <div class="row">
-        <?= $form->field($model, 'retencioniva')->dropdownList(['0' => 'NO', '1' => 'SI'], ['id' => 'retencioniva', 'readonly' => 'readonly']) ?>
-        <?= $form->field($model, 'retencionfuente')->dropdownList(['0' => 'NO', '1' => 'SI'], ['id' => 'retencionfuente', 'readonly' => 'readonly']) ?>
-    </div>
+        <?= $form->field($model, 'banco')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'sociedad')->dropdownList(['1' => 'NATURAL', '2' => 'JURIDICA'], ['prompt' => 'Seleccione...']) ?>
+    </div>    
+    <div class="row">
+        <?= $form->field($model, 'tipocuenta')->dropdownList(['0' => 'CUENTA DE AHORROS', '1' => 'CUENTA CORRIENTE'], ['prompt' => 'Seleccione...']) ?>
+        <?= $form->field($model, 'cuentanumero')->textInput(['maxlength' => true]) ?>
+    </div>                
     <div class="row">
         <div class="field-tblproveedor-observaciones_proveedor has-success">
             <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>

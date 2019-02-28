@@ -201,8 +201,21 @@ function mostrar() {
         nombrecliente.style.display = "none";
         apellidocliente.style.display = "none";
     }
-}
-;
+};
+
+function mostrar2() {
+    idtipo = document.getElementById('idtipo').value;
+    if (idtipo == '1') {
+        razonsocial.style.display = "none";
+        nombreproveedor.style.display = "block";
+        apellidoproveedor.style.display = "block";
+    } else if (idtipo == '5') {
+        razonsocial.style.display = "block";
+        nombreproveedor.style.display = "none";
+        apellidoproveedor.style.display = "none";
+    }
+};
+
 function tregimen() {
     idtiporegimen = document.getElementById('tiporegimen').value;
     if (idtiporegimen == 1) {

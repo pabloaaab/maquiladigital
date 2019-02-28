@@ -24,20 +24,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'id_compra_tipo',
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-4'],
             ],
             [                
                 'attribute' => 'tipo',
-                'contentOptions' => ['class' => 'col-lg-3'],                
+                'contentOptions' => ['class' => 'col-lg-4'],                
             ],
-            [               
+            /*[               
                 'attribute' => 'porcentaje',
                 'contentOptions' => ['class' => 'col-lg-3 '],                
             ],
             [               
                 'attribute' => 'cuenta',
                 'contentOptions' => ['class' => 'col-lg-3 '],                
-            ],            			
+            ],*/            			
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

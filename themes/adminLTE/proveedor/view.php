@@ -83,6 +83,16 @@ $view = 'Proveedores';
                 <th >Municipio:</th>
                 <td><?= $table->municipio->municipio ?></td>
             </tr>
+            <tr>
+                <th>Entidad Bancaria:</th>
+                <td><?= $table->banco ?></td>
+                <th>Tipo Cuenta:</th>
+                <td><?= $table->tcuenta ?></td>
+                <th>Numero Cuenta:</th>
+                <td><?= $table->cuentanumero ?></td>
+                <th></th>
+                <td></td>
+            </tr>
         </table>
     </div>
     <div class="panel-heading">
@@ -122,10 +132,10 @@ $view = 'Proveedores';
                 <td><?= $table->regimen ?></td>
                 <th>AutoRetenedor:</th>
                 <td><?= $table->autoretener ?></td>
-                <th>Retención Fuente:</th>
-                <td><?= $table->retenerfuente ?></td>
-                <th>Retención Iva:</th>
-                <td><?= $table->reteneriva ?></td>
+                <th>Naturaleza:</th>
+                <td><?= $table->naturalezas ?></td>
+                <th>Sociedad:</th>
+                <td><?= $table->sociedades ?></td>
             </tr>
         </table>
     </div>

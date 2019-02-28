@@ -109,10 +109,13 @@ class ProveedorController extends Controller {
                 $table->nitmatricula = $model->cedulanit;
                 $table->tiporegimen = $model->tiporegimen;
                 $table->autoretenedor = $model->autoretenedor;
-                $table->retencionfuente = $model->retencionfuente;
-                $table->retencioniva = $model->retencioniva;
+                $table->naturaleza = $model->naturaleza;
+                $table->sociedad = $model->sociedad;
                 $table->observacion = $model->observacion;
                 $table->dv = $dv;
+                $table->banco = $model->banco;
+                $table->tipocuenta = $model->tipocuenta;
+                $table->cuentanumero = $model->cuentanumero;
                 if ($model->idtipo == 1) {
                     $table->nombrecorto = $model->nombreproveedor . " " . $model->apellidoproveedor;
                     $model->razonsocial = null;
@@ -166,10 +169,12 @@ class ProveedorController extends Controller {
                     $table->nitmatricula = $model->cedulanit;
                     $table->tiporegimen = $model->tiporegimen;
                     $table->autoretenedor = $model->autoretenedor;
-                    $table->retencionfuente = $model->retencionfuente;
-                    $table->retencioniva = $model->retencioniva;
+                    $table->sociedad = $model->sociedad;
+                    $table->naturaleza = $model->naturaleza;
                     $table->observacion = $model->observacion;
-                    $table->dv = $dv;
+                    $table->banco = $model->banco;
+                    $table->tipocuenta = $model->tipocuenta;
+                    $table->cuentanumero = $model->cuentanumero;
                     if ($model->idtipo == 1) {
                         $table->nombrecorto = strtoupper($model->nombreproveedor . " " . $model->apellidoproveedor);
                         $model->razonsocial = null;
@@ -218,10 +223,13 @@ class ProveedorController extends Controller {
                 $model->nitmatricula = $table->nitmatricula;
                 $model->tiporegimen = $table->tiporegimen;
                 $model->autoretenedor = $table->autoretenedor;
-                $model->retencionfuente = $table->retencionfuente;
-                $model->retencioniva = $table->retencioniva;
+                $model->naturaleza = $table->naturaleza;
+                $model->sociedad = $table->sociedad;
                 $model->dv = $table->dv;
                 $model->observacion = $table->observacion;
+                $model->banco = $table->banco;
+                $model->tipocuenta = $table->tipocuenta;
+                $model->cuentanumero = $table->cuentanumero;
             } else {
                 return $this->redirect(["proveedor/index"]);
             }

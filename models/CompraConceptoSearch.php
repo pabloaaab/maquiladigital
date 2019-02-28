@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CompraTipo;
+use app\models\CompraConcepto;
 
 /**
- * CompraTipoSearch represents the model behind the search form of `app\models\CompraTipo`.
+ * CompraConceptoSearch represents the model behind the search form of `app\models\CompraConcepto`.
  */
-class CompraTipoSearch extends CompraTipo
+class CompraConceptoSearch extends CompraConcepto
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class CompraTipoSearch extends CompraTipo
     public function rules()
     {
         return [
-            [['id_compra_tipo'/*, 'cuenta'*/], 'integer'],
-            [['tipo'], 'safe'],
-            //[['porcentaje'], 'number'],
+            [['id_compra_concepto', 'cuenta', 'id_compra_tipo'], 'integer'],
+            [['concepto'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class CompraTipoSearch extends CompraTipo
      */
     public function search($params)
     {
-        $query = CompraTipo::find();
+        $query = CompraConcepto::find();
 
         // add conditions that should always apply here
 
@@ -59,12 +58,12 @@ class CompraTipoSearch extends CompraTipo
 
         // grid filtering conditions
         $query->andFilterWhere([
+            'id_compra_concepto' => $this->id_compra_concepto,
+            'cuenta' => $this->cuenta,
             'id_compra_tipo' => $this->id_compra_tipo,
-            //'porcentaje' => $this->porcentaje,
-            //'cuenta' => $this->cuenta,
         ]);
 
-        $query->andFilterWhere(['like', 'tipo', $this->tipo]);
+        $query->andFilterWhere(['like', 'concepto', $this->concepto]);
 
         return $dataProvider;
     }

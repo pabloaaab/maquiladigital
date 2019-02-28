@@ -27,13 +27,7 @@ $form = ActiveForm::begin([
     <div class="panel-body">        														   		
         <div class="row">
             <?= $form->field($model, 'tipo')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'porcentaje')->textInput(['maxlength' => true]) ?>  					
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'cuenta')->textInput(['maxlength' => true]) ?>
-        </div>                
+        </div>                       
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("compra-tipo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

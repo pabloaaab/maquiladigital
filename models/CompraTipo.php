@@ -39,8 +39,8 @@ class CompraTipo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['porcentaje'], 'number'],
-            [['cuenta'], 'integer'],
+            //[['porcentaje'], 'number'],
+            //[['cuenta'], 'integer'],
             [['tipo'], 'string', 'max' => 50],
         ];
     }
@@ -53,8 +53,8 @@ class CompraTipo extends \yii\db\ActiveRecord
         return [
             'id_compra_tipo' => 'Id Compra Tipo',
             'tipo' => 'Tipo',
-            'porcentaje' => 'Porcentaje',
-            'cuenta' => 'Cuenta',
+            //'porcentaje' => 'Porcentaje',
+            //'cuenta' => 'Cuenta',
         ];
     }
 
