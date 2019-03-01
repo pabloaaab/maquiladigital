@@ -89,7 +89,7 @@ class SeguimientoProduccionController extends Controller
                         $reales = Html::encode($form->reales);
                         $descanso = Html::encode($form->descanso);
                         if ($minutos){
-                            if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 && $reales > 0){
+                            if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 ){
                                 $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
                                 if ($ordenproduccion->cantidad > 0){                                                                            
                                         $horaInicio = new \DateTime($model->hora_inicio);
@@ -135,7 +135,7 @@ class SeguimientoProduccionController extends Controller
                     $reales = Html::encode($form->reales);
                     $descanso = Html::encode($form->descanso);
                     if ($minutos){
-                        if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 && $reales > 0){
+                        if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 ){
                             $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
                             if ($ordenproduccion->cantidad > 0){
                                 /*if($ordenproduccion->segundosficha > 0){*/

@@ -68,7 +68,7 @@ class RemisionController extends Controller
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
                 $count = count($remisiondetalle);
                 $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
-                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0;
                 foreach ($detalleorden as $val){
                     if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
                         $cxs = $val->cantidad;
@@ -86,6 +86,7 @@ class RemisionController extends Controller
                         $cxl = $val->cantidad;
                     }
                 }
+                $ct = $cxs + $cs + $cm + $cl + $cxl;
             }else{
                 $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
                 $table = new Remision();
@@ -102,6 +103,7 @@ class RemisionController extends Controller
                 $model = Remision::findOne($table->id_remision);
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
                 $count = count($remisiondetalle);
+                $ct = $cxs + $cs + $cm + $cl + $cxl;
             }
             if (isset($_POST["actualizar"])) {
                 $intIndice = 0;
@@ -154,7 +156,7 @@ class RemisionController extends Controller
                 $count = count($remisiondetalle);
             }
             $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
-            $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+            $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0;
             foreach ($detalleorden as $val){
                 if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
                     $cxs = $val->cantidad;
@@ -172,6 +174,7 @@ class RemisionController extends Controller
                     $cxl = $val->cantidad;
                 }
             }
+            $ct = $cxs + $cs + $cm + $cl + $cxl;
         }    
         
         return $this->render('remision', [
@@ -184,6 +187,7 @@ class RemisionController extends Controller
             'cm' => $cm,
             'cl' => $cl,
             'cxl' => $cxl,
+            'ct' => $ct,
         ]);
     }
 

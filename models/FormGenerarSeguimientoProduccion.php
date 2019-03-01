@@ -20,7 +20,7 @@ class FormGenerarSeguimientoProduccion extends Model
     public function rules()
     {
         return [            
-            [['horastrabajar','operarias','minutos','descanso'],'required', 'message' => 'Campo requerido para generar el informe'],
+            [['horastrabajar','operarias','minutos','descanso','reales'],'required', 'message' => 'Campo requerido para generar el informe'],
             ['operarias', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['horastrabajar', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['reales', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            

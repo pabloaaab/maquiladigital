@@ -16,8 +16,10 @@ use Yii;
  * @property double $retencionfuente
  * @property double $impuestoiva
  * @property double $retencioniva
+ * @property double $porcentajeaiu
  * @property double $saldo
  * @property double $total
+ * @property double $base_aiu
  * @property int $id_proveedor
  * @property string $usuariosistema
  * @property int $estado
@@ -48,7 +50,7 @@ class Compra extends \yii\db\ActiveRecord
         return [
             [['id_compra_concepto', 'id_proveedor', 'factura', 'subtotal','fechainicio','fechavencimiento'], 'required'],
             [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','factura','numero'], 'integer'],
-            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'total'], 'number'],
+            [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'base_aiu', 'total'], 'number'],
             [['observacion'], 'string'],
             [['fechacreacion','fechainicio','fechavencimiento'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 50],
@@ -68,6 +70,7 @@ class Compra extends \yii\db\ActiveRecord
             'porcentajeiva' => 'Porcentaje Iva',
             'porcentajefuente' => 'Porcentaje Fuente',
             'porcentajereteiva' => 'Porcentaje Reteiva',
+            'porcentajereteaiu' => 'Porcentaje Aiu',
             'subtotal' => 'Subtotal',
             'retencionfuente' => 'Retencion Fuente',
             'impuestoiva' => 'Impuesto Iva',
@@ -84,6 +87,7 @@ class Compra extends \yii\db\ActiveRecord
             'fechavencimiento' => 'Fecha Vencimiento',
             'factura' => 'Factura',
             'numero' => 'Número',
+            'base_aiu' => 'Base AIU',
         ];
     }
 

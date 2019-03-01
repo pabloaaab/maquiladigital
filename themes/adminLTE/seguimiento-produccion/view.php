@@ -79,7 +79,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?= $formulario->field($form, "operarias")->input("search") ?>
             <?= $formulario->field($form, "horastrabajar")->input("search") ?>            
             <?= $formulario->field($form, 'minutos')->dropdownList([number_format($model->ordenproduccion->duracion,2) => 'Cliente'.'('.$model->ordenproduccion->duracion.')', number_format($model->ordenproduccion->segundosficha/60,2) => 'Confección'.'('.number_format($model->ordenproduccion->segundosficha/60,2).')'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>
-            <?= $formulario->field($form, "reales")->input("search") ?>
+            <?= $formulario->field($form, "reales")->input("search", ['value' => '0']) ?>
             <?= $formulario->field($form, "descanso")->input("search", ['value' => '0']) ?>
             <?= $formulario->field($form, "sistema")->input("search",['readonly' => TRUE]) ?>
         </div>

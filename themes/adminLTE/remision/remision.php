@@ -91,8 +91,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <th><?= Html::activeLabel($model, 'ordenProdInterna') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->ordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenProdExterna') ?>:</th>
-                    <td><?= Html::encode($model->ordenproduccion->ordenproduccion) ?></td>
+                    <th><?= Html::activeLabel($model, 'codigoProducto') ?>:</th>
+                    <td><?= Html::encode($model->ordenproduccion->codigoproducto) ?></td>
                     <th><?= Html::activeLabel($model, 'totalsegundas') ?>:</th>
                     <td><?= Html::encode($model->totalsegundas) ?></td>
                 </tr>
@@ -230,7 +230,7 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                 <th scope="col"><?= $cl ?></th>
                 <th scope="col"><?= $cxl ?></th>                
                 <th scope="col"></th>
-                <th scope="col"><?= $tunidades ?></th>
+                <th scope="col"><?= $ct ?></th>
                 <td></td>
                 <td></td>
             </tr>

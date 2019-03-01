@@ -10,6 +10,7 @@ use app\models\Proveedor;
 use app\models\CompraSearch;
 use app\models\UsuarioDetalle;
 use app\models\Consecutivo;
+use app\models\Matriculaempresa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -190,27 +191,29 @@ class CompraController extends Controller
         $model = $this->findModel($id);
         $proveedor = Proveedor::findOne($model->id_proveedor);
         $concepto = CompraConcepto::findOne($model->id_compra_concepto);
+        $configuracion = Matriculaempresa::findOne(901189320);
         $porcentajeiva = 0;
         $porcentajereteiva = 0;
         $porcentajeretefuente = 0;
-        if ($proveedor->tiporegimen == 1){ //comun            
-            $impuestoiva = round($model->subtotal * $concepto->porcentaje_iva / 100);
-            $porcentajeiva = $concepto->porcentaje_iva;
-            if ($proveedor->autoretenedor == 1){ //si es autorretenedor
-                $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
-                $porcentajereteiva = $concepto->porcentaje_reteiva;
-            }else{
-                $retencioniva = 0;
-            }
-            if ($concepto->base_retencion == 100){
-                $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+        $porcentajebaseaiu = 0;
+        if ($proveedor->tiporegimen == 1){ //comun
+            if ($concepto->base_aiu <> 0){ //calculo para la base aiu y el iva
+                $baseaiu = round($model->subtotal * $concepto->base_aiu / 100);
+                $porcentajebaseaiu = $concepto->base_aiu;
+                $impuestoiva = round($baseaiu * $concepto->porcentaje_iva / 100); //calculo iva
+                $porcentajeiva = $concepto->porcentaje_iva;
+                $retencionfuente = round($baseaiu * $concepto->porcentaje_retefuente / 100);
                 if($retencionfuente == 0){
                     $porcentajeretefuente = 0;
                 }else{
                     $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
                 }
-            }else{
-                if ($model->subtotal >= $concepto->base_retencion){
+            }
+            else{
+                $impuestoiva = round($model->subtotal * $concepto->porcentaje_iva / 100); //calculo iva
+                $porcentajeiva = $concepto->porcentaje_iva; 
+                $baseaiu = 0;
+                if ($concepto->base_retencion == 100){ //calculo retefuente cuando es el 100%
                     $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
                     if($retencionfuente == 0){
                         $porcentajeretefuente = 0;
@@ -218,18 +221,23 @@ class CompraController extends Controller
                         $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
                     }
                 }else{
-                    $retencionfuente = 0;
+                    if ($model->subtotal >= $concepto->base_retencion){ //calculo retefuente cuando cumple con la base de retension
+                        $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
+                        if($retencionfuente == 0){
+                            $porcentajeretefuente = 0;
+                        }else{
+                            $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
+                        }
+                    }else{
+                        $retencionfuente = 0;
+                    }
                 }
             }
+            
+            
         }
         if ($proveedor->tiporegimen == 2){ //simplificado
-            $impuestoiva = 0;
-            if ($proveedor->autoretenedor == 1){ //si es autorretenedor
-                $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
-                $porcentajereteiva = $concepto->porcentaje_reteiva;
-            }else{
-                $retencioniva = 0;
-            }
+            $impuestoiva = 0;            
             if ($concepto->base_retencion == 100){
                 $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
                 if($retencionfuente == 0){
@@ -250,9 +258,22 @@ class CompraController extends Controller
                 }
             }
         }
+        if ($configuracion->gran_contribuyente == 1 && $configuracion->agente_retenedor == 1) { //calculo para el reteiva
+            $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
+            $porcentajereteiva = $concepto->porcentaje_reteiva;
+        }else{
+            if ($configuracion->gran_contribuyente == 0 && $configuracion->agente_retenedor == 1) {
+                $retencioniva = round($impuestoiva * $concepto->porcentaje_reteiva / 100);
+                $porcentajereteiva = $concepto->porcentaje_reteiva;
+            }else{
+                $retencioniva = 0;                
+            }    
+        }        
         $model->porcentajeiva = $porcentajeiva;
         $model->porcentajefuente = $porcentajeretefuente;
         $model->porcentajereteiva = $porcentajereteiva;
+        $model->porcentajeaiu = $porcentajebaseaiu;
+        $model->base_aiu = $baseaiu;
         $model->impuestoiva = $impuestoiva;
         $model->retencionfuente = $retencionfuente;
         $model->retencioniva = $retencioniva;
@@ -284,12 +305,12 @@ class CompraController extends Controller
         }
     }
     
-    public function actionImprimir($id)
+    /*public function actionImprimir($id)
     {
                                 
         return $this->render('../formatos/compra', [
             'model' => $this->findModel($id),
             
         ]);
-    }
+    }*/
 }

@@ -36,8 +36,7 @@ $view = 'compra';
         else {
             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_compra], ['class' => 'btn btn-default']);
             echo Html::a('<span class="glyphicon glyphicon-check"></span> Generar', ['generarnro', 'id' => $model->id_compra], ['class' => 'btn btn-default']);
-            if (($model->numero > 0)){
-                echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_compra], ['class' => 'btn btn-default']);            
+            if (($model->numero > 0)){                
                 echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 7, 'codigo' => $model->id_compra,'view' => $view], ['class' => 'btn btn-default']);                                                         
             }
         }
@@ -61,35 +60,43 @@ $view = 'compra';
                 <tr>
                     <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
                     <td><?= Html::encode($model->compraConcepto->concepto) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentajeAiu') ?>:</th>
+                    <td><?= Html::encode($model->porcentajeaiu) ?></td>
+                    <th><?= Html::activeLabel($model, 'baseAiu') ?>:</th>
+                    <td><?= Html::encode('$ '.number_format($model->base_aiu,0)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'factura') ?>:</th>
+                    <td><?= Html::encode($model->factura) ?></td>
                     <th><?= Html::activeLabel($model, 'porcentajeiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajeiva) ?></td>
                     <th><?= Html::activeLabel($model, 'impuestoiva') ?>: +</th>
                     <td><?= Html::encode('$ '.number_format($model->impuestoiva,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'factura') ?>:</th>
-                    <td><?= Html::encode($model->factura) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajefuente') ?>:</th>
-                    <td><?= Html::encode($model->porcentajefuente) ?></td>
+                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <td><?= Html::encode($model->numero) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentajereteiva') ?>:</th>
+                    <td><?= Html::encode($model->porcentajereteiva) ?></td>                    
                     <th><?= Html::activeLabel($model, 'retencioniva') ?>: -</th>
                     <td><?= Html::encode('$ '.number_format($model->retencioniva,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
-                    <td><?= Html::encode($model->numero) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajereteiva') ?>:</th>
-                    <td><?= Html::encode($model->porcentajereteiva) ?></td>
-                    <th><?= Html::activeLabel($model, 'retencionfuente') ?>: -</th>
-                    <td><?= Html::encode('$ '.number_format($model->retencionfuente,0)) ?></td>
-                </tr>
-                <tr>
                     <th><?= Html::activeLabel($model, 'fechainicio') ?>:</th>
                     <td><?= Html::encode($model->fechainicio) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'porcentajefuente') ?>:</th>
+                    <td><?= Html::encode($model->porcentajefuente) ?></td>
+                    <th><?= Html::activeLabel($model, 'retencionfuente') ?>: -</th>
+                    <td><?= Html::encode('$ '.number_format($model->retencionfuente,0)) ?></td>
+                </tr> 
+                <tr>
+                    <th><?= Html::activeLabel($model, 'fechavencimiento') ?>:</th>
+                    <td><?= Html::encode($model->fechavencimiento) ?></td>                    
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th><?= Html::activeLabel($model, 'total') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->total,0)) ?></td>
-                </tr>                
+                </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>

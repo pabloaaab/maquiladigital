@@ -78,9 +78,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 8);
         $this->Cell(100, 5, utf8_decode($remision->ordenproduccion->cliente->direccioncliente), 0, 0, 'J');
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(33, 5, utf8_decode("ORDEN PROD EXT:"), 0, 0, 'c');
+        $this->Cell(33, 5, utf8_decode("CÓDIGO PRODUCTO:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
-        $this->Cell(40, 5, utf8_decode($remision->ordenproduccion->ordenproduccionext), 0, 0, 'J');
+        $this->Cell(40, 5, utf8_decode($remision->ordenproduccion->codigoproducto), 0, 0, 'J');
         $this->SetXY(10, 79); //FILA 5
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("EMAIL:"), 0, 0, 'c');
@@ -167,29 +167,29 @@ class PDF extends FPDF {
             }else{
                 $estado = 'Segunda';
             }
-            $pdf->Cell(30, 6, $detalle->color, 1, 0, 'J');
+            $pdf->Cell(30, 4.5, $detalle->color, 1, 0, 'J');
             if ($detalle->oc == 1){
-                $pdf->Cell(26, 6, $oc, 1, 0, 'J',1);   
+                $pdf->Cell(26, 4.5, $oc, 1, 0, 'J',1);   
             }else{
-                $pdf->Cell(26, 6, $oc, 1, 0, 'J',0);
+                $pdf->Cell(26, 4.5, $oc, 1, 0, 'J',0);
             }            
-            $pdf->Cell(15, 6, $detalle->tula, 1, 0, 'R');
+            $pdf->Cell(15, 4.5, $detalle->tula, 1, 0, 'R');
             if ($detalle->oc == 1 || $detalle->estado == 1){
-                $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R',1);
-                $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R',1);
-                $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R',1);
-                $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R',1);
-                $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R',1);
-                $pdf->Cell(29, 6, $estado, 1, 0, 'C',1);
+                $pdf->Cell(14, 4.5, $detalle->xs, 1, 0, 'R',1);
+                $pdf->Cell(14, 4.5, $detalle->s, 1, 0, 'R',1);
+                $pdf->Cell(14, 4.5, $detalle->m, 1, 0, 'R',1);
+                $pdf->Cell(14, 4.5, $detalle->l, 1, 0, 'R',1);
+                $pdf->Cell(14, 4.5, $detalle->xl, 1, 0, 'R',1);
+                $pdf->Cell(29, 4.5, $estado, 1, 0, 'C',1);
             }else{
-                $pdf->Cell(14, 6, $detalle->xs, 1, 0, 'R');
-                $pdf->Cell(14, 6, $detalle->s, 1, 0, 'R');
-                $pdf->Cell(14, 6, $detalle->m, 1, 0, 'R');
-                $pdf->Cell(14, 6, $detalle->l, 1, 0, 'R');
-                $pdf->Cell(14, 6, $detalle->xl, 1, 0, 'R');
-                $pdf->Cell(29, 6, $estado, 1, 0, 'C');
+                $pdf->Cell(14, 4.5, $detalle->xs, 1, 0, 'R');
+                $pdf->Cell(14, 4.5, $detalle->s, 1, 0, 'R');
+                $pdf->Cell(14, 4.5, $detalle->m, 1, 0, 'R');
+                $pdf->Cell(14, 4.5, $detalle->l, 1, 0, 'R');
+                $pdf->Cell(14, 4.5, $detalle->xl, 1, 0, 'R');
+                $pdf->Cell(29, 4.5, $estado, 1, 0, 'C');
             }                        
-            $pdf->Cell(21, 6, $detalle->unidades, 1, 0, 'R');
+            $pdf->Cell(21, 4.5, $detalle->unidades, 1, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }

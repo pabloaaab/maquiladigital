@@ -23,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
 $form = ActiveForm::begin([
             'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
-                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-                'labelOptions' => ['class' => 'col-sm-3 control-label'],
+                'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-2 control-label'],
                 'options' => []
             ],
         ]);
@@ -42,74 +42,55 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
     </div>
     <div class="panel-body">
         <div class="row">
-            <?= $form->field($model, 'nitmatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
+            <?= $form->field($model, 'nitmatricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'dv')->textInput(['maxlength' => true]) ?>
+        </div>                
         <div class="row">
-            <?= $form->field($model, 'dv')->textInput(['maxlength' => true]) ?>    
-        </div>        
-        <div class="row">
-            <?= $form->field($model, 'razonsocialmatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'nombrematricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'apellidomatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'direccionmatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'telefonomatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'celularmatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'emailmatricula')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, [ 'prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('empresa/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
-                $( "#' . Html::getInputId($model, 'idmunicipio', ['required', 'class' => 'select-2']) . '" ).html( data ); });']); ?>            
-        </div>
-        <div class="row">            
-            <?= $form->field($model, 'idmunicipio')->dropDownList($municipio, ['prompt' => 'Seleccione...']) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'paginaweb')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'porcentajeiva')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'porcentajeretefuente')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'retefuente')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'porcentajereteiva')->textInput(['maxlength' => true]) ?>    
-        </div>
-        <div class="row">
+            <?= $form->field($model, 'razonsocialmatricula')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'id_tipo_regimen')->dropDownList($regimen, ['prompt' => 'Seleccione un regimen...']) ?>
         </div>
         <div class="row">
+            <?= $form->field($model, 'nombrematricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'apellidomatricula')->textInput(['maxlength' => true]) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'direccionmatricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'telefonomatricula')->textInput(['maxlength' => true]) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'celularmatricula')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'emailmatricula')->textInput(['maxlength' => true]) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, [ 'prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('empresa/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
+                $( "#' . Html::getInputId($model, 'idmunicipio', ['required', 'class' => 'select-2']) . '" ).html( data ); });']); ?>
+            <?= $form->field($model, 'idmunicipio')->dropDownList($municipio, ['prompt' => 'Seleccione...']) ?>
+        </div>                
+        <div class="row">
+            <?= $form->field($model, 'porcentajeiva')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'porcentajeretefuente')->textInput(['maxlength' => true]) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'porcentajereteiva')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'retefuente')->textInput(['maxlength' => true]) ?>    
+        </div>                
+        <div class="row">
             <?= $form->field($model, 'gran_contribuyente')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>
-        <div class="row">
             <?= $form->field($model, 'agente_retenedor')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'declaracion')->textArea(['maxlength' => true]) ?>
-        </div>
+        </div>                
         <div class="row">                        
             <?= $form->field($model, 'id_banco_factura')->dropDownList($bancos, ['prompt' => 'Seleccione un cliente...']) ?>
-        </div>
-        <div class="row">                        
             <?= $form->field($model, 'idresolucion')->dropDownList($resoluciones, ['prompt' => 'Seleccione una resolucion...']) ?>
         </div>
+        <div class="row">                        
+            
+        </div>
         <div class="row">
-            <?= $form->field($model, 'nombresistema')->textInput(['maxlength' => true]) ?>    
+            <?= $form->field($model, 'nombresistema')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'paginaweb')->textInput(['maxlength' => true]) ?>    
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'declaracion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
         </div>
         <div class="panel-footer text-right">			                        
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>

@@ -38,7 +38,7 @@ CREATE TABLE `archivodir` (
   KEY `iddirectorio` (`iddirectorio`),
   CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
   CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `archivodir` */
 
@@ -189,10 +189,12 @@ CREATE TABLE `compra` (
   `porcentajeiva` double DEFAULT '0',
   `porcentajefuente` double DEFAULT '0',
   `porcentajereteiva` double DEFAULT '0',
+  `porcentajeaiu` double DEFAULT '0',
   `subtotal` double DEFAULT '0',
   `retencionfuente` double DEFAULT '0',
   `impuestoiva` double DEFAULT '0',
   `retencioniva` double DEFAULT '0',
+  `base_aiu` double DEFAULT NULL,
   `saldo` double DEFAULT '0',
   `total` double DEFAULT '0',
   `id_proveedor` int(11) DEFAULT NULL,
@@ -210,13 +212,14 @@ CREATE TABLE `compra` (
   KEY `id_compra_concepto` (`id_compra_concepto`),
   CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`idproveedor`),
   CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_compra_concepto`) REFERENCES `compra_concepto` (`id_compra_concepto`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `compra` */
 
-insert  into `compra`(`id_compra`,`id_compra_concepto`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`total`,`id_proveedor`,`usuariosistema`,`estado`,`autorizado`,`observacion`,`fechacreacion`,`fechainicio`,`fechavencimiento`,`numero`,`factura`) values 
-(2,1,19,4,15,10915686,436627,2073980,311097,12241942,12241942,6,'71268830',0,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,123),
-(3,1,0,0,0,1000,0,0,0,1000,1000,5,'71268830',0,0,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,145);
+insert  into `compra`(`id_compra`,`id_compra_concepto`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`porcentajeaiu`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`base_aiu`,`saldo`,`total`,`id_proveedor`,`usuariosistema`,`estado`,`autorizado`,`observacion`,`fechacreacion`,`fechainicio`,`fechavencimiento`,`numero`,`factura`) values 
+(2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,12241942,12241942,6,'71268830',0,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,123),
+(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,0,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,145),
+(4,3,19,1,0,10,20366082,20366,386956,0,2036608,20732672,20732672,3,'71268830',0,0,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',0,5258);
 
 /*Table structure for table `compra_concepto` */
 
@@ -235,13 +238,14 @@ CREATE TABLE `compra_concepto` (
   PRIMARY KEY (`id_compra_concepto`),
   KEY `id_compra_tipo` (`id_compra_tipo`),
   CONSTRAINT `compra_concepto_ibfk_1` FOREIGN KEY (`id_compra_tipo`) REFERENCES `compra_tipo` (`id_compra_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `compra_concepto` */
 
 insert  into `compra_concepto`(`id_compra_concepto`,`concepto`,`cuenta`,`id_compra_tipo`,`base_retencion`,`porcentaje_iva`,`porcentaje_retefuente`,`porcentaje_reteiva`,`base_aiu`) values 
 (1,'COMPRAS OTROS',1111,2,925000,19,4,15,10),
-(2,'SERVICIOS OTROS',2222,1,0,19,0,0,0);
+(2,'SERVICIOS OTROS',2222,1,0,19,0,0,0),
+(3,'TEMPORALES',452,2,925000,19,1,0,10);
 
 /*Table structure for table `compra_tipo` */
 
@@ -292,7 +296,7 @@ insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values
 (1,'FACTURA DE VENTA',31),
 (2,'NOTA CREDITO',1),
 (3,'RECIBO CAJA',9),
-(4,'REMISION',3),
+(4,'REMISION',4),
 (5,'COMPRAS',2);
 
 /*Table structure for table `costo_fijo` */
@@ -848,7 +852,7 @@ CREATE TABLE `matriculaempresa` (
 /*Data for the table `matriculaempresa` */
 
 insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`id_tipo_regimen`,`agente_retenedor`,`gran_contribuyente`,`declaracion`,`id_banco_factura`,`idresolucion`,`nombresistema`) values 
-('901189320',2,'MAQUILA DIGITAL SAS','MAQUILA','MAQUILA','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW.MAQUILA.COM',19,4,925000,15,1,0,0,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1021,3,'SYSTIME');
+('901189320',2,'MAQUILA DIGITAL SAS','MAQUILA','MAQUILA','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW.MAQUILA.COM',19,4,925000,15,1,1,1,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1021,3,'SYSTIME');
 
 /*Table structure for table `municipio` */
 
@@ -3026,14 +3030,15 @@ CREATE TABLE `remision` (
   PRIMARY KEY (`id_remision`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remision` */
 
 insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`,`color`) values 
-(2,14,2,16,568,156,603,1171,1171,'2019-02-05','Rojo'),
+(2,14,2,25,568,156,705,1273,1273,'2019-02-05','Rojo'),
 (3,1,0,0,0,0,0,0,0,'2019-02-15','Rojo'),
-(4,13,3,1,0,0,10,10,10,'2019-02-13','Amarillo');
+(4,13,3,1,0,0,10,10,10,'2019-02-13','Amarillo'),
+(5,8,4,1,0,0,10,10,10,'2019-03-01','Negro');
 
 /*Table structure for table `remisiondetalle` */
 
@@ -3063,7 +3068,7 @@ CREATE TABLE `remisiondetalle` (
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
 
@@ -3080,7 +3085,17 @@ insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,
 (14,2,'Rojo',0,1,0,120,0,0,0,0,0,0,0,0,0,0,0,0,120),
 (15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,94),
 (16,2,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,1,156),
-(19,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10);
+(19,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(20,2,'Rojo',0,1,0,22,0,0,0,0,0,0,0,0,0,0,0,0,22),
+(21,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
+(22,2,'Rojo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(23,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,10),
+(24,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
+(25,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
+(26,2,'Rojo',0,1,0,0,0,0,10,0,0,0,0,0,0,0,0,0,10),
+(27,2,'Rojo',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(28,2,'Rojo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(29,5,'Negro',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,10);
 
 /*Table structure for table `resolucion` */
 
@@ -3150,7 +3165,7 @@ CREATE TABLE `seguimiento_produccion` (
 /*Data for the table `seguimiento_produccion` */
 
 insert  into `seguimiento_produccion`(`id_seguimiento_produccion`,`fecha_inicio_produccion`,`hora_inicio`,`idcliente`,`idordenproduccion`,`minutos`,`horas_a_trabajar`,`operarias`,`prendas_reales`,`descanso`) values 
-(1,'2019-02-25','18:00:00',1,13,26,9,8,167,0),
+(1,'2019-02-25','18:00:00',1,13,26,9,8,0,0),
 (2,'2019-02-23','07:00:00',1,14,2.6,9,8,167,10);
 
 /*Table structure for table `seguimiento_produccion_detalle` */
@@ -3221,7 +3236,7 @@ CREATE TABLE `seguimiento_produccion_detalle2` (
 /*Data for the table `seguimiento_produccion_detalle2` */
 
 insert  into `seguimiento_produccion_detalle2`(`id_seguimiento_produccion_detalle`,`id_seguimiento_produccion`,`fecha_inicio`,`hora_inicio`,`hora_consulta`,`minutos`,`horas_a_trabajar`,`cantidad_por_hora`,`cantidad_total_por_hora`,`operarias`,`total_unidades_por_dia`,`total_unidades_por_hora`,`prendas_sistema`,`prendas_reales`,`porcentaje_produccion`) values 
-(1,NULL,'2019-02-25','18:00:00','11:51:24',26,9,2.31,20.79,8,166.32,18.48,125.7,167,132.86);
+(1,NULL,'2019-02-25','18:00:00','12:40:13',26,9,2.31,20.79,8,166.32,18.48,95.9,0,0);
 
 /*Table structure for table `stockdescargas` */
 
