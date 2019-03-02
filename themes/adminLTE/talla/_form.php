@@ -27,7 +27,7 @@ use yii\helpers\Url;
             <?= $form->field($model, 'talla')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'sexo')->dropdownList(['HOMBRE' => 'HOMBRE', 'MUJER' => 'MUJER'], ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'sexo')->dropdownList(['HOMBRE' => 'HOMBRE', 'MUJER' => 'MUJER', 'NIÑA' => 'NIÑA', 'NIÑO' => 'NIÑO'], ['prompt' => 'Seleccione...']) ?>
         </div>
         <div class="panel-footer text-right">            
             <a href="<?= Url::toRoute("talla/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
