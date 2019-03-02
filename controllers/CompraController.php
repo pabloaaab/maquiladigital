@@ -196,6 +196,7 @@ class CompraController extends Controller
         $porcentajereteiva = 0;
         $porcentajeretefuente = 0;
         $porcentajebaseaiu = 0;
+        $baseaiu = 0;
         if ($proveedor->tiporegimen == 1){ //comun
             if ($concepto->base_aiu <> 0){ //calculo para la base aiu y el iva
                 $baseaiu = round($model->subtotal * $concepto->base_aiu / 100);
