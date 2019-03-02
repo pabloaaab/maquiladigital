@@ -202,12 +202,13 @@ class CompraController extends Controller
                 $porcentajebaseaiu = $concepto->base_aiu;
                 $impuestoiva = round($baseaiu * $concepto->porcentaje_iva / 100); //calculo iva
                 $porcentajeiva = $concepto->porcentaje_iva;
-                $retencionfuente = round($baseaiu * $concepto->porcentaje_retefuente / 100);
-                if($retencionfuente == 0){
-                    $porcentajeretefuente = 0;
-                }else{
+                if ($baseaiu >= $concepto->base_retencion){
+                    $retencionfuente = round($baseaiu * $concepto->porcentaje_retefuente / 100);
                     $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
-                }
+                }else{
+                    $retencionfuente = 0;
+                    $porcentajeretefuente = 0;
+                }                
             }
             else{
                 $impuestoiva = round($model->subtotal * $concepto->porcentaje_iva / 100); //calculo iva
