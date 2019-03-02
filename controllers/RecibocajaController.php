@@ -5,7 +5,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Recibocaja;
-use app\models\ReciboCajaSearch;
+use app\models\RecibocajaSearch;
 use app\models\Recibocajadetalle;
 use app\models\Facturaventa;
 use app\models\Consecutivo;
@@ -59,7 +59,7 @@ class RecibocajaController extends Controller
     public function actionIndex()
     {
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',23])->all()){
-            $searchModel = new ReciboCajaSearch();
+            $searchModel = new RecibocajaSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [

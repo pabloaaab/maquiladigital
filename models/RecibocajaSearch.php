@@ -10,7 +10,7 @@ use app\models\Recibocaja;
 /**
  * ReciboCajaSearch represents the model behind the search form of `app\models\Recibocaja`.
  */
-class ReciboCajaSearch extends Recibocaja
+class RecibocajaSearch extends Recibocaja
 {
     /**
      * {@inheritdoc}
