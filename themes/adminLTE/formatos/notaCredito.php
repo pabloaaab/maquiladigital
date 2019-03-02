@@ -13,7 +13,7 @@ class PDF extends FPDF {
     function Header() {
         $idnotacredito = $GLOBALS['idnotacredito'];
         $notacredito = Notacredito::findOne($idnotacredito);
-        $config = Matriculaempresa::findOne(901189320);
+        $config = Matriculaempresa::findOne(1);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);
         $detallesnotacredito = Notacreditodetalle::find()->where(['=', 'idnotacredito', $idnotacredito])->all();

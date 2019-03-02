@@ -191,7 +191,7 @@ class CompraController extends Controller
         $model = $this->findModel($id);
         $proveedor = Proveedor::findOne($model->id_proveedor);
         $concepto = CompraConcepto::findOne($model->id_compra_concepto);
-        $configuracion = Matriculaempresa::findOne(901189320);
+        $configuracion = Matriculaempresa::findOne(1);
         $porcentajeiva = 0;
         $porcentajereteiva = 0;
         $porcentajeretefuente = 0;

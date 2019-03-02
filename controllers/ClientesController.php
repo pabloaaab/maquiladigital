@@ -78,7 +78,7 @@ class ClientesController extends Controller {
     }
 
     public function actionNuevo() {
-        $matriculaempresa = Matriculaempresa::findOne(901189320);
+        $matriculaempresa = Matriculaempresa::findOne(1);
         $model = new FormCliente();
         $msg = null;
         $tipomsg = null;
@@ -136,7 +136,7 @@ class ClientesController extends Controller {
     }
 
     public function actionEditar($id) {
-        $matriculaempresa = Matriculaempresa::findOne(901189320);
+        $matriculaempresa = Matriculaempresa::findOne(1);
         $model = new FormCliente();
         $msg = null;
         $tipomsg = null;

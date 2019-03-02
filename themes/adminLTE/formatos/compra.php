@@ -13,7 +13,7 @@ class PDF extends FPDF {
     function Header() {
         $id_compra = $GLOBALS['id_compra'];
         $compra = Compra::findOne($id_compra);
-        $config = Matriculaempresa::findOne(901189320);
+        $config = Matriculaempresa::findOne(1);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);
         //Logo
@@ -135,7 +135,7 @@ class PDF extends FPDF {
     }
 
     function Body($pdf,$model) {
-        /*$config = Matriculaempresa::findOne(901189320);
+        /*$config = Matriculaempresa::findOne(1);
         $detalles = Facturaventadetalle::find()->where(['=','idfactura',$model->idfactura])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 8);

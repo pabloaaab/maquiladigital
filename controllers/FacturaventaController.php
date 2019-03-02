@@ -219,7 +219,7 @@ class FacturaventaController extends Controller
                         $table->insert();
                         $factura = Facturaventa::findOne($idfactura);
                         $factura->subtotal = round($factura->subtotal + $table->total);
-                        $config = Matriculaempresa::findOne(901189320);
+                        $config = Matriculaempresa::findOne(1);
                         $cliente = Cliente::findOne($factura->idcliente);
                         $factura->porcentajeiva = round($config->porcentajeiva);
                         $factura->porcentajereteiva = $config->porcentajereteiva;
@@ -278,7 +278,7 @@ class FacturaventaController extends Controller
                     $factura->subtotal = $factura->subtotal - Html::encode($_POST["total"]);
                     $factura->subtotal = $factura->subtotal + $table->total;
 
-                    $config = Matriculaempresa::findOne(901189320);
+                    $config = Matriculaempresa::findOne(1);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
                     $factura->porcentajereteiva = $config->porcentajereteiva;
@@ -329,7 +329,7 @@ class FacturaventaController extends Controller
                     $factura->subtotal = $factura->subtotal - $total;
                     $factura->subtotal = $factura->subtotal + $table->total;
 
-                    $config = Matriculaempresa::findOne(901189320);
+                    $config = Matriculaempresa::findOne(1);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
                     $factura->porcentajereteiva = $config->porcentajereteiva;
@@ -376,7 +376,7 @@ class FacturaventaController extends Controller
                     $factura = Facturaventa::findOne($idfactura);
                     $factura->subtotal = $factura->subtotal - $total;
 
-                    $config = Matriculaempresa::findOne(901189320);
+                    $config = Matriculaempresa::findOne(1);
                     $cliente = Cliente::findOne($factura->idcliente);
                     $factura->porcentajeiva = $config->porcentajeiva;
                     $factura->porcentajereteiva = $config->porcentajereteiva;
@@ -434,7 +434,7 @@ class FacturaventaController extends Controller
                         $factura = Facturaventa::findOne($idfactura);
                         $factura->subtotal = $factura->subtotal - $total;
 
-                        $config = Matriculaempresa::findOne(901189320);
+                        $config = Matriculaempresa::findOne(1);
                         $cliente = Cliente::findOne($factura->idcliente);
                         $factura->porcentajeiva = $config->porcentajeiva;
                         $factura->porcentajereteiva = $config->porcentajereteiva;

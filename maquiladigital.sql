@@ -813,6 +813,7 @@ insert  into `fichatiempodetalle`(`id_ficha_tiempo_detalle`,`id_ficha_tiempo`,`d
 DROP TABLE IF EXISTS `matriculaempresa`;
 
 CREATE TABLE `matriculaempresa` (
+  `id` int(11) NOT NULL,
   `nitmatricula` char(15) NOT NULL,
   `dv` int(1) NOT NULL,
   `razonsocialmatricula` char(40) NOT NULL,
@@ -836,7 +837,7 @@ CREATE TABLE `matriculaempresa` (
   `id_banco_factura` int(11) DEFAULT NULL,
   `idresolucion` int(11) NOT NULL,
   `nombresistema` varchar(50) NOT NULL,
-  PRIMARY KEY (`nitmatricula`),
+  PRIMARY KEY (`id`),
   KEY `id_banco_factura` (`id_banco_factura`),
   KEY `id_tipo_regimen` (`id_tipo_regimen`),
   KEY `iddepartamento` (`iddepartamento`),
@@ -851,8 +852,8 @@ CREATE TABLE `matriculaempresa` (
 
 /*Data for the table `matriculaempresa` */
 
-insert  into `matriculaempresa`(`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`id_tipo_regimen`,`agente_retenedor`,`gran_contribuyente`,`declaracion`,`id_banco_factura`,`idresolucion`,`nombresistema`) values 
-('901189320',2,'MAQUILA DIGITAL SAS','MAQUILA','MAQUILA','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW.MAQUILA.COM',19,4,925000,15,1,1,1,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1021,3,'SYSTIME');
+insert  into `matriculaempresa`(`id`,`nitmatricula`,`dv`,`razonsocialmatricula`,`nombrematricula`,`apellidomatricula`,`direccionmatricula`,`telefonomatricula`,`celularmatricula`,`emailmatricula`,`iddepartamento`,`idmunicipio`,`paginaweb`,`porcentajeiva`,`porcentajeretefuente`,`retefuente`,`porcentajereteiva`,`id_tipo_regimen`,`agente_retenedor`,`gran_contribuyente`,`declaracion`,`id_banco_factura`,`idresolucion`,`nombresistema`) values 
+(1,'901189320',2,'MAQUILA DIGITAL SAS','MAQUILA','MAQUILA','CL 75A # 64D-15 INT 201','2575082','3013861052','jgpmorales1975@hotmail.com','05','05001','WWW.MAQUILA.COM',19,4,925000,15,1,1,1,'Según lo establecido en la ley 1231 de julio 17/08, esta factura se entiende irrevocablemente aceptada, y se asimila en todos sus efectos a\r\nuna letra de cambio según el artículo 774 del código de comercio. Autorizo a la entidad MAQUILA DIGITAL S.A.S o a quien represente la\r\ncalidad de acreedor, a reportar, procesar, solicitar o divulgar a cualquier entidad que maneje o administre base de datos la información\r\nreferente a mi comportamiento comercial.',1021,3,'SYSTIME');
 
 /*Table structure for table `municipio` */
 
@@ -3103,24 +3104,25 @@ DROP TABLE IF EXISTS `resolucion`;
 
 CREATE TABLE `resolucion` (
   `idresolucion` int(11) NOT NULL AUTO_INCREMENT,
-  `nroresolucion` char(40) NOT NULL,
-  `desde` char(10) NOT NULL,
-  `hasta` char(10) NOT NULL,
+  `id_matriculaempresa` int(11) NOT NULL,
+  `nroresolucion` char(40) CHARACTER SET latin1 NOT NULL,
+  `desde` char(10) CHARACTER SET latin1 NOT NULL,
+  `hasta` char(10) CHARACTER SET latin1 NOT NULL,
   `fechavencimiento` datetime NOT NULL,
-  `nitmatricula` char(11) NOT NULL,
+  `nitmatricula` char(11) CHARACTER SET latin1 NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
   `fechacreacion` date DEFAULT NULL,
-  `codigoactividad` varchar(20) DEFAULT NULL,
-  `descripcion` varchar(50) DEFAULT NULL,
+  `codigoactividad` varchar(20) CHARACTER SET latin1 DEFAULT NULL,
+  `descripcion` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`idresolucion`),
-  KEY `nitmatricula` (`nitmatricula`),
-  CONSTRAINT `resolucion_ibfk_1` FOREIGN KEY (`nitmatricula`) REFERENCES `matriculaempresa` (`nitmatricula`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  KEY `id_matriculaempresa` (`id_matriculaempresa`),
+  CONSTRAINT `resolucion_ibfk_1` FOREIGN KEY (`id_matriculaempresa`) REFERENCES `matriculaempresa` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `resolucion` */
 
-insert  into `resolucion`(`idresolucion`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`,`fechacreacion`,`codigoactividad`,`descripcion`) values 
-(3,'18762009830025','1','1000','2020-08-23 00:00:00','901189320',1,'2018-08-24','1410','Confección de prendas de vestir');
+insert  into `resolucion`(`idresolucion`,`id_matriculaempresa`,`nroresolucion`,`desde`,`hasta`,`fechavencimiento`,`nitmatricula`,`activo`,`fechacreacion`,`codigoactividad`,`descripcion`) values 
+(3,1,'18762009830025','1','1000','2020-08-23 00:00:00','901189320',1,'2018-08-24','1410','Confección de prendas de vestir');
 
 /*Table structure for table `resumen_costos` */
 

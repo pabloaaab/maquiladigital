@@ -5,7 +5,7 @@ use app\models\Matriculaempresa;
 
 
 ?>
-<?php $empresa = Matriculaempresa::findOne(901189320) ;
+<?php $empresa = Matriculaempresa::findOne(1) ;
 $this->title = $empresa->nombresistema; ?>
 <div class="site-index">
 

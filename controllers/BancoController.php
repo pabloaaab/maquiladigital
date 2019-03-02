@@ -74,7 +74,7 @@ class BancoController extends Controller
         $model = new Banco;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $empresa = Matriculaempresa::find(901189320)->one();
+            $empresa = Matriculaempresa::find(1)->one();
             $model->nitmatricula = $empresa->nitmatricula;
             $model->update();
             return $this->redirect(['view', 'id' => $model->idbanco]);

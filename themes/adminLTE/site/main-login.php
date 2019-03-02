@@ -22,7 +22,7 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <?php $empresa = Matriculaempresa::findOne(901189320) ;?>
+        <?php $empresa = Matriculaempresa::findOne(1) ;?>
         <a href="#"><b><?= $empresa->nombresistema ?></a>
     </div>
     <!-- /.login-logo -->

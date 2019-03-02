@@ -126,7 +126,7 @@ class EmpleadoController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
-        //$matriculaempresa = Matriculaempresa::findOne(901189320);
+        //$matriculaempresa = Matriculaempresa::findOne(1);
         $model = new FormEmpleado();
         $msg = null;
         $tipomsg = null;

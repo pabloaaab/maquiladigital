@@ -13,7 +13,7 @@ class PDF extends FPDF {
     function Header() {
         $idordenproduccion = $GLOBALS['idordenproduccion'];
         $ordenproduccion = Ordenproduccion::findOne($idordenproduccion);
-        $config = Matriculaempresa::findOne(901189320);
+        $config = Matriculaempresa::findOne(1);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);        
         //Logo
