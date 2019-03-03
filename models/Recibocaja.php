@@ -91,7 +91,7 @@ class Recibocaja extends \yii\db\ActiveRecord
      */
     public function getTiporecibo()
     {
-        return $this->hasOne(Tiporecibo::className(), ['idtiporecibo' => 'idtiporecibo']);
+        return $this->hasOne(TipoRecibo::className(), ['idtiporecibo' => 'idtiporecibo']);
     }
 
     /**
