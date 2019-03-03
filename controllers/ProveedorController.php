@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 use app\models\Proveedor;
 use app\models\Municipio;
 use app\models\Departamentos;
-use app\models\Formproveedor;
+use app\models\FormProveedor;
 use yii\helpers\Url;
 use app\models\FormFiltroProveedor;
 use yii\web\UploadedFile;
@@ -78,7 +78,7 @@ class ProveedorController extends Controller {
     }
 
     public function actionNuevo() {
-        $model = new Formproveedor();
+        $model = new FormProveedor();
         $msg = null;
         $tipomsg = null;
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {

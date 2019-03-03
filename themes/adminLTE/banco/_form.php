@@ -21,11 +21,7 @@ $form = ActiveForm::begin([
 ?>
 <body onload= "mostrar()">
 <!--<h1>Editar Cliente</h1>-->
-<?php if ($tipomsg == "danger") { ?>
-    <h3 class="alert-danger"><?= $msg ?></h3>
-<?php } else{ ?>
-    <h3 class="alert-success"><?= $msg ?></h3>
-<?php } ?>
+
 <div class="panel panel-success">
     <div class="panel-heading">
         Información Banco

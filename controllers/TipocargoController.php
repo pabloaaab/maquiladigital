@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Tipocargo;
+use app\models\TipoCargo;
 use app\models\TipocargoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -69,7 +69,7 @@ class TipocargoController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Tipocargo();
+        $model = new TipoCargo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_tipo_cargo]);
