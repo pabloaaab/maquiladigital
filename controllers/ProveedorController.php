@@ -18,7 +18,7 @@ use app\models\Municipio;
 use app\models\Departamentos;
 use app\models\Formproveedor;
 use yii\helpers\Url;
-use app\models\FormFiltroproveedor;
+use app\models\FormFiltroProveedor;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
@@ -29,7 +29,7 @@ class ProveedorController extends Controller {
 
     public function actionIndex() {
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',15])->all()){
-            $form = new FormFiltroproveedor;
+            $form = new FormFiltroProveedor;
             $cedulanit = null;
             $nombrecorto = null;
             if ($form->load(Yii::$app->request->get())) {
