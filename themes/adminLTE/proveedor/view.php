@@ -19,7 +19,7 @@ use yii\bootstrap\Modal;
 $this->title = 'Detalle Proveedor';
 $this->params['breadcrumbs'][] = ['label' => 'Proveedores', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-$view = 'Proveedores';
+$view = 'proveedor';
 ?>
 
 <p>
