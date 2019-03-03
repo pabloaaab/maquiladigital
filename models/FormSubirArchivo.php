@@ -42,7 +42,7 @@ class FormSubirArchivo extends Model
         if ($this->validate()) {
             $carpeta = 'Documentos/'.$this->numero.'/'.$this->codigo.'/';
             if (!file_exists($carpeta)) {
-                mkdir($carpeta, 0777, true);
+                mkdir($carpeta, 777, true);
             }
             if(!file_exists($carpeta . $this->imageFile->baseName . '.' . $this->imageFile->extension)){
                 $this->imageFile->saveAs($carpeta . $this->imageFile->baseName . '.' . $this->imageFile->extension);
