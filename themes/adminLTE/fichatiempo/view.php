@@ -146,7 +146,8 @@ $form = ActiveForm::begin([
         </table>
     </div>
     <div class="panel-footer text-right">
-        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-primary ']); ?>
+        
+        <?php echo Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-primary ']) ?>
         <?php if ($model->estado == 0) { ?>
             <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>

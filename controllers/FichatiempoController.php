@@ -356,8 +356,7 @@ class FichatiempoController extends Controller
         header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header ('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-        $objWriter->save('php://output');
-        return $this->redirect(['view', 'id' => $id]);
+        $objWriter->save('php://output');        
         exit;
         
     }
