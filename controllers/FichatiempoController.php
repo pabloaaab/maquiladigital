@@ -357,7 +357,8 @@ class FichatiempoController extends Controller
         header ('Pragma: public'); // HTTP/1.0
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
-        exit;
         return $this->redirect(['view', 'id' => $id]);
+        exit;
+        
     }
 }
