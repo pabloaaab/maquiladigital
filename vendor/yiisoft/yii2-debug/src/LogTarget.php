@@ -81,7 +81,7 @@ class LogTarget extends Target
      * @throws \yii\base\InvalidConfigException
      */
     private function updateIndexFile($indexFile, $summary)
-    {
+    {        
         touch($indexFile);
         if (($fp = @fopen($indexFile, 'r+')) === false) {
             throw new InvalidConfigException("Unable to open debug data index file: $indexFile");
