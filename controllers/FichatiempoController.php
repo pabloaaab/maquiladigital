@@ -346,6 +346,9 @@ class FichatiempoController extends Controller
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Type: application/force-download");
+header("Content-Type: application/octet-stream");
+header("Content-Type: application/download");
         header('Content-Disposition: attachment;filename="Ficha_Tiempo.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
@@ -357,8 +360,7 @@ class FichatiempoController extends Controller
         header('Pragma: public'); // HTTP/1.0 
         header("Content-Transfer-Encoding: binary ");
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
-        $objWriter->save('php://output');
-        return $this->redirect(['view', 'id' => $id]);
+        $objWriter->save('php://output');        
         exit;
         
 
