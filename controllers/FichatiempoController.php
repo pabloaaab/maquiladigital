@@ -350,7 +350,7 @@ class FichatiempoController extends Controller
         header("Content-Type: application/force-download");
         header("Content-Type: application/octet-stream");
         header("Content-Type: application/download");
-        header('Content-Disposition: attachment;filename="fichatiempo.xlsx"');
+        header('Content-Disposition: attachment;filename="fichatiempo.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
