@@ -361,7 +361,8 @@ class FichatiempoController extends Controller
         header('Pragma: public'); // HTTP/1.0 
         header("Content-Transfer-Encoding: binary ");
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
-        $objWriter->save('php://output');        
+        //$objWriter->save('php://output');
+        $objWriter->save($pFilename = 'Descargas');
         exit; 
         
     }
