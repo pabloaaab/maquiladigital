@@ -355,13 +355,14 @@ class FichatiempoController extends Controller
         header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
         header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
-        
-        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
-        return $this->redirect(['view', 'id' => $id]);
-        $objWriter->save('php://output');        
-        
+        header ('Pragma: public'); // HTTP/1.0        
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
+        $objWriter->save('php://output');                
         exit;
-        
+        $fichatiempodetalle = Fichatiempodetalle::find()->where(['=', 'id_ficha_tiempo', $id])->all();
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+            'fichatiempodetalle' => $fichatiempodetalle
+        ]);
     }
 }
