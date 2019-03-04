@@ -275,7 +275,7 @@ class FichatiempoController extends Controller
     public function actionExcel($id) {        
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
-        $objPHPExcel = new \moonland\phpexcel\Excel();
+        $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
             ->setLastModifiedBy("EMPRESA")
