@@ -13,6 +13,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 //use moonland\phpexcel\Excel;
 use app\models\UsuarioDetalle;
+use alexgx\phpexcel\ExcelDataReader;
 
 /**
  * FichatiempoController implements the CRUD actions for Fichatiempo model.
