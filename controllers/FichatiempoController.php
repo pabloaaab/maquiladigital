@@ -272,6 +272,7 @@ class FichatiempoController extends Controller
     }
     
     public function actionExcel($id) {
+        return $this->redirect(['view', 'id' => $id]);
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
         $objPHPExcel = new \PHPExcel();
