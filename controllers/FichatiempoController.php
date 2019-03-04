@@ -272,7 +272,7 @@ class FichatiempoController extends Controller
     }
     
     public function actionExcel($id) {
-        
+        return $this->redirect(['view', 'id' => $id]);
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
         $objPHPExcel = new \PHPExcel();
@@ -358,7 +358,6 @@ class FichatiempoController extends Controller
         header ('Pragma: public'); // HTTP/1.0        
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
         $objWriter->save('php://output');                
-        exit;
-        return;
+        exit;        
     }
 }
