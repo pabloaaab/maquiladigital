@@ -181,8 +181,8 @@ class FichatiempoController extends Controller
         $model = new Fichatiempodetalle();
         $model->id_ficha_tiempo = $ficha->id_ficha_tiempo;                
         $model->dia = date('Y-m-d');
-        $model->desde = time();
-        $model->hasta = time();
+        $model->desde = date('12:00:00');
+        $model->hasta = date('12:00:00');
         $model->total_segundos = 0;
         $model->total_operacion = 0;
         $model->realizadas = 0;
