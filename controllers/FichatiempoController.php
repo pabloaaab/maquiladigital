@@ -359,13 +359,9 @@ header("Content-Type: application/download");
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header('Pragma: public'); // HTTP/1.0 
         header("Content-Transfer-Encoding: binary ");
-        /*$objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
-        $objWriter->save('php://output');        
-        exit;*/
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, "Excel2007");
-    ob_end_clean();
-    $objWriter->save('php://output');
-    exit;
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
+        $objWriter->save('Descargar.xlsx');        
+        exit;
         
 
 //header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
