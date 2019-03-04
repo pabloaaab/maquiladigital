@@ -272,7 +272,7 @@ class FichatiempoController extends Controller
         $table->update();
     }
     
-    public function actionExcel($id) {        
+    public function actionGenerarexcel($id) {        
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
         $objPHPExcel = new \PHPExcel();
