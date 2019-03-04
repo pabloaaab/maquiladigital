@@ -11,7 +11,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
-//use moonland\phpexcel\Excel;
+use moonland\phpexcel\Excel;
 use app\models\UsuarioDetalle;
 use alexgx\phpexcel\ExcelDataReader;
 
@@ -275,7 +275,7 @@ class FichatiempoController extends Controller
     public function actionExcel($id) {        
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
-        $objPHPExcel = new \PHPExcel();
+        $objPHPExcel = new \moonland\phpexcel\Excel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
             ->setLastModifiedBy("EMPRESA")
