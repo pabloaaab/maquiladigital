@@ -358,7 +358,7 @@ class FichatiempoController extends Controller
         header ('Pragma: public'); // HTTP/1.0        
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
         $objWriter->save('php://output');                
-        exit;
+        //exit;
         $fichatiempodetalle = Fichatiempodetalle::find()->where(['=', 'id_ficha_tiempo', $id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
