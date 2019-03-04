@@ -271,8 +271,7 @@ class FichatiempoController extends Controller
         $table->update();
     }
     
-    public function actionExcel($id) {
-        return $this->redirect(['view', 'id' => $id]);
+    public function actionExcel($id) {        
         $ficha = Fichatiempo::findOne($id);
         $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
         $objPHPExcel = new \PHPExcel();
