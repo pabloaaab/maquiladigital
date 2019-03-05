@@ -38,7 +38,7 @@ CREATE TABLE `archivodir` (
   KEY `iddirectorio` (`iddirectorio`),
   CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
   CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `archivodir` */
 
@@ -67,7 +67,10 @@ insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`nume
 (35,4,'2019-01-29 12:36:03',4,1,13,'OrdenConfecciion14962.pdf','pdf','application/pdf',309009,'ORDEN DE CONFECCION 14962',NULL),
 (36,1,'2019-01-29 14:07:08',1,1,11,'Factura26.pdf','pdf','application/pdf',394295,'FACTURA 26',NULL),
 (37,4,'2019-01-29 14:51:52',4,1,14,'OrdeTerminacio527.pdf','pdf','application/pdf',11539,'ORDEN DE TERMINACION 527',NULL),
-(38,1,'2019-01-29 15:04:05',1,1,12,'Factura27.pdf','pdf','application/pdf',394269,'FACTURA 27',NULL);
+(38,1,'2019-01-29 15:04:05',1,1,12,'Factura27.pdf','pdf','application/pdf',394269,'FACTURA 27',NULL),
+(39,5,'2019-03-03 15:51:06',5,1,6,'Remision5.pdf','pdf','application/pdf',393743,'PRUEBA',NULL),
+(40,5,'2019-03-03 15:53:28',5,1,6,'Remision2 (4).pdf','pdf','application/pdf',395501,'PRUEBA',NULL),
+(41,1,'2019-03-03 18:00:50',1,1,13,'Factura31 (4).pdf','pdf','application/pdf',394181,'PRUEBA',NULL);
 
 /*Table structure for table `arl` */
 
@@ -205,7 +208,7 @@ CREATE TABLE `compra` (
   `fechacreacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fechainicio` date DEFAULT NULL,
   `fechavencimiento` date DEFAULT NULL,
-  `numero` int(11) NOT NULL,
+  `numero` int(11) NOT NULL DEFAULT '0',
   `factura` int(11) NOT NULL,
   PRIMARY KEY (`id_compra`),
   KEY `id_proveedor` (`id_proveedor`),
@@ -797,7 +800,7 @@ CREATE TABLE `fichatiempodetalle` (
   PRIMARY KEY (`id_ficha_tiempo_detalle`),
   KEY `id_ficha_tiempo` (`id_ficha_tiempo`),
   CONSTRAINT `fichatiempodetalle_ibfk_1` FOREIGN KEY (`id_ficha_tiempo`) REFERENCES `fichatiempo` (`id_ficha_tiempo`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempodetalle` */
 
@@ -806,7 +809,9 @@ insert  into `fichatiempodetalle`(`id_ficha_tiempo_detalle`,`id_ficha_tiempo`,`d
 (2,1,'2019-02-15','23:00:00','01:00:00',31.2,115.38,100,86.67,'Cumple con el perfil de la empresa'),
 (17,2,'2019-02-27','01:00:00','02:00:00',20,180,10,5.56,'No cumple con el perfil de la empresa'),
 (18,2,'2019-02-27','00:00:00','00:00:00',0,0,0,0,''),
-(19,3,'2019-02-27','00:00:00','00:00:00',0,0,0,0,'');
+(19,3,'2019-02-27','00:00:00','00:00:00',0,0,0,0,''),
+(20,3,'2019-03-03','20:47:03','20:47:03',0,0,0,0,''),
+(21,3,'2019-03-03','12:00:00','12:00:00',0,0,0,0,'');
 
 /*Table structure for table `matriculaempresa` */
 
