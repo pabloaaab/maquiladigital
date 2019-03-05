@@ -93,7 +93,7 @@ $ficha = Fichatiempo::findOne($id);
         header("Content-Transfer-Encoding: binary ");
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
         //$objWriter->save('php://output');
-        $objWriter->save('Descargas.xlsx');
+        //$objWriter->save('Descargas.xlsx');
         exit; 
 
 return;
