@@ -180,9 +180,7 @@ $view = 'orden-produccion';
                         <th scope="col">Precio</th>
                         <th scope="col">Subtotal</th>
                         <th></th>
-                        <?php if ($model->autorizado == 0){ ?>
-                            <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
-                        <?php } ?>    
+                           
                     </tr>
                     </thead>
                     <tbody>
@@ -261,20 +259,22 @@ $view = 'orden-produccion';
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
-                            </td>
-                            <td><input type="checkbox" id="seleccion" name="seleccion[]" value="<?= $val->iddetalleorden ?>"></td>
+                            </td>                            
+                                                       
                         <?php } ?>
                     </tr>
                     </tbody>
                     <?php endforeach; ?>
                 </table>
             </div>
+            
             <?php if ($model->autorizado == 0) { ?>
                 <div class="panel-footer text-right">
                     <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success']) ?>
-                    <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger", 'name' => 'eliminar']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success']) ?>                                            
+                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger']) ?>
                 </div>
+            
             <?php } ?>
         </div>
     </div>

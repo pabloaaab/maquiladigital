@@ -351,6 +351,7 @@ class OrdenProduccionController extends Controller {
     public function actionEliminardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $mensaje = "";
+        $error = 0;
         if (Yii::$app->request->post()) {
             $intIndice = 0;
 
@@ -359,7 +360,23 @@ class OrdenProduccionController extends Controller {
                     $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($intCodigo);
                     $subtotal = $ordenProduccionDetalle->subtotal;
                     $cantidad = $ordenProduccionDetalle->cantidad;
-                    if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo])) {
+                    
+                    try {
+                        OrdenProduccionDetalle::findOne($intCodigo)->delete();
+                        $this->Actualizartotal($idordenproduccion);
+                        $this->Actualizarcantidad($idordenproduccion);
+                        //$this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                    } catch (IntegrityException $e) {
+                        //$this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                        Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                        $error = 1;
+                    } catch (\Exception $e) {
+                        Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                        $error = 1;
+                        //$this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                    }
+                    
+                    /*if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo])) {
                         $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
                         $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
                         $ordenProduccion->cantidad = $ordenProduccion->cantidad - $cantidad;
@@ -367,9 +384,14 @@ class OrdenProduccionController extends Controller {
                             $ordenProduccion->totalorden = 0;
                         }
                         $ordenProduccion->update();
-                    }
+                    }*/
                 }
-                $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                if($error == 1){
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                }else{
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                }
+                
             } else {
                 $mensaje = "Debe seleccionar al menos un registro";
             }

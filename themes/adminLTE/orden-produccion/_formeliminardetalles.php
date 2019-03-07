@@ -69,7 +69,7 @@ if ($mensaje != ""){
                 <?php foreach ($mds as $val): ?>
                 <tr>
                     <td><?= $val->iddetalleorden ?></td>
-                    <td><?= $val->producto->nombreProducto ?></td>
+                    <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                     <td><?= $val->codigoproducto ?></td>
                     <td><?= $val->cantidad ?></td>
                     <td><?= '$ '.number_format($val->vlrprecio,0) ?></td>
