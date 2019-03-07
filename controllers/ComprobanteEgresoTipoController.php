@@ -35,13 +35,17 @@ class ComprobanteEgresoTipoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ComprobanteEgresoTipoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',37])->all()){
+            $searchModel = new ComprobanteEgresoTipoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
 
     /**
@@ -104,9 +108,17 @@ class ComprobanteEgresoTipoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        try {
+            $this->findModel($id)->delete();
+            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+            $this->redirect(["comprobante-egreso-tipo/index"]);
+        } catch (IntegrityException $e) {
+            $this->redirect(["comprobante-egreso-tipo/index"]);
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
+        } catch (\Exception $e) {            
+            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
+            $this->redirect(["comprobante-egreso-tipo/index"]);
+        }
     }
 
     /**

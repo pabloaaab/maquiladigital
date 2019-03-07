@@ -35,13 +35,17 @@ class ComprobanteEgresoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ComprobanteEgresoSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',38])->all()){
+            $searchModel = new ComprobanteEgresoSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }    
     }
 
     /**

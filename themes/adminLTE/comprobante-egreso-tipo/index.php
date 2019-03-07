@@ -1,35 +1,62 @@
 <?php
-
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ComprobanteEgresoTipoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Comprobante Egreso Tipos';
+$this->title = 'Lista Comprobante Egresos Tipos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="comprobante-egreso-tipo-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <!--<h1><?= Html::encode($this->title) ?></h1>-->
+    <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Comprobante Egreso Tipo', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            [                
+                'attribute' => 'id_comprobante_egreso_tipo',
+                'contentOptions' => ['class' => 'col-lg-3'],
+            ],
+            [                
+                'attribute' => 'concepto',
+                'contentOptions' => ['class' => 'col-lg-4'],                
+            ],
+            [
+                'attribute' => 'activo',
+                'value' => function($model){
+                    $tipo = app\models\ComprobanteEgresoTipo::findOne($model->id_comprobante_egreso_tipo);                    
+                    return $tipo->estado;
+                },
+                'filter' => ArrayHelper::map(app\models\ComprobanteEgresoTipo::find()->all(),'activo','estado'),
+                'contentOptions' => ['class' => 'col-lg-3'],
+            ],            
+            [
+                    'class' => 'yii\grid\ActionColumn',              
+                ],
 
-            'id_comprobante_egreso_tipo',
-            'concepto',
-            'activo',
+            ],
+            //'tableOptions' => ['class' => 'table table-success'],
+            'tableOptions'=>['class'=>'table table-bordered table-success'],        
+            'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+            'layout' => '{summary}{items}</div><div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
+            'pager' => [
+                'nextPageLabel' => '<i class="fa fa-forward"></i>',
+                'prevPageLabel'  => '<i class="fa fa-backward"></i>',
+                'lastPageLabel' => '<i class="fa fa-fast-forward"></i>',
+                'firstPageLabel'  => '<i class="fa fa-fast-backward"></i>'
+            ],
+
+        ]); ?>
 </div>
+
+

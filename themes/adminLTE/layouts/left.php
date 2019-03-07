@@ -166,6 +166,7 @@
                                         ['label' => 'Tipo Recibo', 'icon' => 'plus-square-o', 'url' => ['/tipo-recibo/index']],
                                         ['label' => 'Tipo Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-tipo/index']],
                                         ['label' => 'Concepto Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-concepto/index']],    
+                                        ['label' => 'Tipo Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso-tipo/index']],
                                         ['label' => 'Proveedor', 'icon' => 'plus-square-o', 'url' => ['/proveedor/index']],
                                     ],    
                                     ],
@@ -200,7 +201,7 @@
                                         'items' => [
                                             ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
                                             ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/index']],
-                                            ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['']],
+                                            ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso/index']],
                                         ],    
                                     ]    
                                     

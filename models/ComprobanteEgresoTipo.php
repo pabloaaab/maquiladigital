@@ -22,6 +22,15 @@ class ComprobanteEgresoTipo extends \yii\db\ActiveRecord
     {
         return 'comprobante_egreso_tipo';
     }
+    
+    public function beforeSave($insert) {
+	if(!parent::beforeSave($insert)){
+            return false;
+        }
+	# ToDo: Cambiar a cliente cargada de configuración.    
+	$this->concepto = strtoupper($this->concepto);		
+        return true;
+    }
 
     /**
      * {@inheritdoc}
@@ -41,7 +50,7 @@ class ComprobanteEgresoTipo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_comprobante_egreso_tipo' => 'Id Comprobante Egreso Tipo',
+            'id_comprobante_egreso_tipo' => 'Id',
             'concepto' => 'Concepto',
             'activo' => 'Activo',
         ];
@@ -53,5 +62,15 @@ class ComprobanteEgresoTipo extends \yii\db\ActiveRecord
     public function getComprobanteEgresos()
     {
         return $this->hasMany(ComprobanteEgreso::className(), ['id_comprobante_egreso_tipo' => 'id_comprobante_egreso_tipo']);
+    }
+    
+    public function getEstado()
+    {
+        if($this->activo == 0){
+            $estado = "SI";
+        }else{
+            $estado = "NO";
+        }
+        return $estado;
     }
 }

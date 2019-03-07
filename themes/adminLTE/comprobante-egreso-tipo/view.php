@@ -6,33 +6,41 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgresoTipo */
 
-$this->title = $model->id_comprobante_egreso_tipo;
+$this->title = 'Detalle Comprobante Egreso Tipo';
 $this->params['breadcrumbs'][] = ['label' => 'Comprobante Egreso Tipos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+$this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
 ?>
 <div class="comprobante-egreso-tipo-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id_comprobante_egreso_tipo], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id_comprobante_egreso_tipo], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_comprobante_egreso_tipo], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_comprobante_egreso_tipo], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id_comprobante_egreso_tipo',
-            'concepto',
-            'activo',
-        ],
-    ]) ?>
-
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Comprobante Egreso Tipo
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
+                    <td><?= Html::encode($model->id_comprobante_egreso_tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
+                    <td><?= Html::encode($model->concepto) ?></td>
+                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <td><?= Html::encode($model->estado) ?></td>
+                </tr>                                                
+            </table>
+        </div>
+    </div>
+    
 </div>
