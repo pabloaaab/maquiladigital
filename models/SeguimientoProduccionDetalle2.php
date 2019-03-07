@@ -10,6 +10,7 @@ use Yii;
  * @property int $id_seguimiento_produccion_detalle
  * @property int $id_seguimiento_produccion
  * @property string $fecha_inicio
+ * @property string $fecha_consulta
  * @property string $hora_inicio
  * @property string $hora_consulta
  * @property double $minutos
@@ -40,7 +41,7 @@ class SeguimientoProduccionDetalle2 extends \yii\db\ActiveRecord
     {
         return [
             [['id_seguimiento_produccion'], 'integer'],
-            [['fecha_inicio', 'hora_inicio', 'hora_consulta'], 'safe'],
+            [['fecha_inicio', 'hora_inicio', 'fecha_consulta','hora_consulta'], 'safe'],
             [['minutos', 'horas_a_trabajar', 'cantidad_por_hora', 'cantidad_total_por_hora','operarias', 'total_unidades_por_dia', 'total_unidades_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
         ];
     }
@@ -54,6 +55,7 @@ class SeguimientoProduccionDetalle2 extends \yii\db\ActiveRecord
             'id_seguimiento_produccion_detalle' => 'Id Seguimiento Produccion Detalle',
             'id_seguimiento_produccion' => 'Id Seguimiento Produccion',
             'fecha_inicio' => 'Fecha Inicio',
+            'fecha_consulta' => 'Fecha Consulta',
             'hora_inicio' => 'Hora Inicio',
             'hora_consulta' => 'Hora Consulta',
             'minutos' => 'Minutos',            

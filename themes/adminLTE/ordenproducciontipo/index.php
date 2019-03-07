@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenproducciontipoSearch */
@@ -26,9 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'tipo',
                 'contentOptions' => ['class' => 'col-lg-6'],                
             ],
-            [               
+            [
                 'attribute' => 'activo',
-                'contentOptions' => ['class' => 'col-lg-5 '],                
+                'value' => function($model){
+                    $orden = app\models\Ordenproducciontipo::findOne($model->idtipo);                    
+                    return $orden->estado;
+                },
+                'filter' => ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(),'activo','estado'),
+                'contentOptions' => ['class' => 'col-lg-5'],
             ],            		
             [
                 'class' => 'yii\grid\ActionColumn',              

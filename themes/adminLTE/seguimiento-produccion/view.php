@@ -101,16 +101,17 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
         <table class="table table-hover">
             <thead>
             <tr>                
+                <th scope="col">Fecha/Hora Consulta</th>
                 <th scope="col">Minutos</th>
-                <th scope="col">Cant. por Hora</th>
+                <th scope="col">Cant. x Hora</th>
                 <th scope="col">Horas a Trabajar</th>
-                <th scope="col">Cant. Total por Hora</th>
+                <th scope="col">Cant. Total x Hora</th>
                 <th scope="col">Operarias</th>
-                <th scope="col">Total Unid por Dia</th>
-                <th scope="col">Operario por Hora</th>
-                <th scope="col">Prendas por Sistemas</th>
+                <th scope="col">Total Unid x Dia</th>
+                <th scope="col">Operario x Hora</th>
+                <th scope="col">Prendas x Sistemas</th>
                 <th scope="col">Prendas Reales</th>
-                <th scope="col">% Produccion</th>                
+                <th scope="col">% Prod</th>                
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -118,6 +119,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <tbody>
             <?php foreach ($seguimientodetalletemporal as $val): ?>    
             <tr>                                
+                <td><?= $val->fecha_consulta.' '.$val->hora_consulta ?></td>
                 <td><?= $val->minutos ?></td>
                 <td><?= $val->cantidad_por_hora ?></td>
                 <td><?= $val->horas_a_trabajar ?></td>
@@ -158,16 +160,17 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
         <table class="table table-hover">
             <thead>
             <tr>                
+                <th scope="col">Fecha/Hora Consulta</th>
                 <th scope="col">Minutos</th>
-                <th scope="col">Cant. por Hora</th>
+                <th scope="col">Cant. x Hora</th>
                 <th scope="col">Horas a Trabajar</th>
-                <th scope="col">Cant. Total por Hora</th>
+                <th scope="col">Cant. Total x Hora</th>
                 <th scope="col">Operarias</th>
-                <th scope="col">Total Unid por Dia</th>
-                <th scope="col">Operario por Hora</th>
-                <th scope="col">Prendas por Sistemas</th>
+                <th scope="col">Total Unid x Dia</th>
+                <th scope="col">Operario x Hora</th>
+                <th scope="col">Prendas x Sistemas</th>
                 <th scope="col">Prendas Reales</th>
-                <th scope="col">% Produccion</th>                
+                <th scope="col">% Prod</th>                
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -175,6 +178,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <tbody>
             <?php foreach ($seguimientodetalle as $val): ?>    
             <tr>                                
+                <td><?= $val->fecha_consulta.' '.$val->hora_consulta ?></td>
                 <td><?= $val->minutos ?></td>
                 <td><?= $val->cantidad_por_hora ?></td>
                 <td><?= $val->horas_a_trabajar ?></td>

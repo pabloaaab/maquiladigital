@@ -319,13 +319,27 @@ class OrdenProduccionController extends Controller {
             if ((int) $iddetalleorden) {
                 $ordenProduccionDetalle = OrdenProduccionDetalle::findOne($iddetalleorden);
                 $subtotal = $ordenProduccionDetalle->subtotal;
-                if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden])) {
+                
+                try {
+                    OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden]);
+                    $this->Actualizartotal($idordenproduccion);
+                    $this->Actualizarcantidad($idordenproduccion);
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                } catch (\Exception $e) {
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                }
+                
+                /*if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden])) {
                     $this->Actualizartotal($idordenproduccion);
                     $this->Actualizarcantidad($idordenproduccion);
                     $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);                    
                 } else {
                     echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
-                }
+                }*/
             } else {
                 echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
             }

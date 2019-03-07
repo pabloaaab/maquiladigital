@@ -43,7 +43,7 @@ $view = 'orden-produccion';
 <div class="ordenproduccion-view">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
-<div class="btn-group">
+
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>
         <?php if ($model->autorizado == 0) { ?>
             <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idordenproduccion], ['class' => 'btn btn-success']) ?>
@@ -61,8 +61,13 @@ $view = 'orden-produccion';
                 echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
                 echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);                
                 if ($remision){
-                   echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);                             
+                   if ($model->idtipo == 2)
+                   {    
+                        echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);                             
+                   }
                 }else{
+                    if ($model->idtipo == 2)
+                    {
                     ?>
                     <!-- Editar modal detalle -->
                     <a href="#" data-toggle="modal" data-target="#remision<?= $model->idordenproduccion ?>" class="btn btn-default"><span class="glyphicon glyphicon-file"></span> Remision</a>
@@ -100,9 +105,9 @@ $view = 'orden-produccion';
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
-            <?php }    ?>
+            <?php }}    ?>
             <?php }    ?>        
-</div>
+
     <br>
     <br>    
     <div class="panel panel-success">
@@ -158,14 +163,7 @@ $view = 'orden-produccion';
             </table>
         </div>
     </div>
-    <?php $form = ActiveForm::begin([
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-    ]); ?>
+    
     <div class="table-responsive">
         <div class="panel panel-success ">
             <div class="panel-heading">
@@ -280,7 +278,7 @@ $view = 'orden-produccion';
             <?php } ?>
         </div>
     </div>
-    <?php ActiveForm::end(); ?>
+    
 </div>
 
 <script type="text/javascript">

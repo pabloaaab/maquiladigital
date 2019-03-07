@@ -62,4 +62,14 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Ordenproduccion::className(), ['idtipo' => 'idtipo']);
     }
+    
+    public function getEstado()
+    {
+        if($this->activo == 1){
+            $estado = "NO";
+        }else{
+            $estado = "SI";
+        }
+        return $estado;
+    }
 }

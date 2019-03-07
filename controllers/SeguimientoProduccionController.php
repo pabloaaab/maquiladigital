@@ -154,6 +154,7 @@ class SeguimientoProduccionController extends Controller
                                     $interval4 = $interval4 / 3600;
                                     $seguimientodetalletemporal->fecha_inicio = $model->fecha_inicio_produccion;
                                     $seguimientodetalletemporal->hora_inicio = $model->hora_inicio;
+                                    $seguimientodetalletemporal->fecha_consulta = date('Y-m-d');
                                     $seguimientodetalletemporal->hora_consulta = date('H:i:s');
                                     $seguimientodetalletemporal->cantidad_por_hora = round(60 / $seguimientodetalletemporal->minutos,2);
                                     $seguimientodetalletemporal->horas_a_trabajar = $horastrabajar;
@@ -295,6 +296,7 @@ class SeguimientoProduccionController extends Controller
         $seguimientodetalle = new SeguimientoProduccionDetalle();
         $seguimientodetalle->id_seguimiento_produccion = $idseguimiento;
         $seguimientodetalle->fecha_inicio = $seguimientodetalletemporal->fecha_inicio;
+        $seguimientodetalle->fecha_consulta = $seguimientodetalletemporal->fecha_consulta;
         $seguimientodetalle->minutos = $seguimientodetalletemporal->minutos;
         $seguimientodetalle->hora_inicio = $seguimientodetalletemporal->hora_inicio;
         $seguimientodetalle->hora_consulta = $seguimientodetalletemporal->hora_consulta;
@@ -367,9 +369,9 @@ class SeguimientoProduccionController extends Controller
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Codigo')
                     ->setCellValue('B1', 'Id Seguimiento')
-                    ->setCellValue('C1', '¨Fecha Inicio')
+                    ->setCellValue('C1', 'Fecha Inicio')
                     ->setCellValue('D1', 'Hora Inicio')
-                    ->setCellValue('E1', 'Hora Consulta')
+                    ->setCellValue('E1', 'Fecha/Hora Consulta')
                     ->setCellValue('F1', 'Minutos')
                     ->setCellValue('G1', 'Horas a Trabajar')
                     ->setCellValue('H1', 'Cantidad por Hora')
@@ -390,7 +392,7 @@ class SeguimientoProduccionController extends Controller
                     ->setCellValue('B' . $i, $val->id_seguimiento_produccion)
                     ->setCellValue('C' . $i, $val->fecha_inicio)
                     ->setCellValue('D' . $i, $val->hora_inicio)
-                    ->setCellValue('E' . $i, $val->hora_consulta)
+                    ->setCellValue('E' . $i, $val->fecha_consulta.' '.$val->hora_consulta)
                     ->setCellValue('F' . $i, $val->minutos)
                     ->setCellValue('G' . $i, $val->horas_a_trabajar)
                     ->setCellValue('H' . $i, $val->cantidad_por_hora)
