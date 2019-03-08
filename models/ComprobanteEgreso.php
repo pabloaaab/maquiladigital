@@ -64,20 +64,20 @@ class ComprobanteEgreso extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_comprobante_egreso' => 'Id Comprobante Egreso',
-            'id_municipio' => 'Id Municipio',
+            'id_comprobante_egreso' => 'Id',
+            'id_municipio' => 'Municipio',
             'fecha' => 'Fecha',
             'fecha_comprobante' => 'Fecha Comprobante',
             'numero' => 'Numero',
-            'id_comprobante_egreso_tipo' => 'Id Comprobante Egreso Tipo',
+            'id_comprobante_egreso_tipo' => 'Tipo',
             'valor' => 'Valor',
-            'id_proveedor' => 'Id Proveedor',
+            'id_proveedor' => 'Proveedor',
             'observacion' => 'Observacion',
             'usuariosistema' => 'Usuariosistema',
             'estado' => 'Estado',
             'autorizado' => 'Autorizado',
             'libre' => 'Libre',
-            'id_banco' => 'Id Banco',
+            'id_banco' => 'Banco',
         ];
     }
 
@@ -119,5 +119,15 @@ class ComprobanteEgreso extends \yii\db\ActiveRecord
     public function getComprobanteEgresoDetalles()
     {
         return $this->hasMany(ComprobanteEgresoDetalle::className(), ['id_comprobante_egreso' => 'id_comprobante_egreso']);
+    }
+    
+    public function getAutorizar()
+    {
+        if($this->autorizado == 1){
+            $autorizar = "SI";
+        }else{
+            $autorizar = "NO";
+        }
+        return $autorizar;
     }
 }

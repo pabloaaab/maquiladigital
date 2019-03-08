@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\ComprobanteEgresoTipo;
 use app\models\ComprobanteEgresoTipoSearch;
+use app\models\UsuarioDetalle;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

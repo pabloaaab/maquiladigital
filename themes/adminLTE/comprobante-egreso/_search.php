@@ -2,52 +2,38 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
-/* @var $model app\models\ComprobanteEgresoSearch */
+/* @var $model app\models\ComprobanteEgresoTipoSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="comprobante-egreso-search">
+<div class="comprobante-egreso-tipo-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
-        'method' => 'get',
+        'options' => ['class' => 'form-horizontal'],
+        'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-4 form-group">{input}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => [ 'tag' => false,]
+        ],
     ]); ?>
+    <div class="panel panel-success panel-filters" style="display:none">
+        <div class="panel-heading">
+            Filtros <i class="glyphicon glyphicon-filter"></i>
+        </div>
+        <div class="panel-body" style="display:none">
+            <div class="row">
+                <?= $form->field($model, 'id_comprobante_egreso') ?>
+                <?= $form->field($model, 'fecha') ?>
+            </div>
+            <div class="panel-footer text-right" style="display:none">
+                <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>
+                <?=  Html::resetButton('Limpiar ' . Html::tag('i', '', ['class' => 'fa fa-eraser']), ['class' => 'btn btn-info']) ?>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'id_comprobante_egreso') ?>
+        <?php ActiveForm::end(); ?>
 
-    <?= $form->field($model, 'id_municipio') ?>
-
-    <?= $form->field($model, 'fecha') ?>
-
-    <?= $form->field($model, 'fecha_comprobante') ?>
-
-    <?= $form->field($model, 'numero') ?>
-
-    <?php // echo $form->field($model, 'id_comprobante_egreso_tipo') ?>
-
-    <?php // echo $form->field($model, 'valor') ?>
-
-    <?php // echo $form->field($model, 'id_proveedor') ?>
-
-    <?php // echo $form->field($model, 'observacion') ?>
-
-    <?php // echo $form->field($model, 'usuariosistema') ?>
-
-    <?php // echo $form->field($model, 'estado') ?>
-
-    <?php // echo $form->field($model, 'autorizado') ?>
-
-    <?php // echo $form->field($model, 'libre') ?>
-
-    <?php // echo $form->field($model, 'id_banco') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
-
 </div>

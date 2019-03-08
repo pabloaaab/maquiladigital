@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\ComprobanteEgresoTipo */
 
 $this->title = 'Detalle Comprobante Egreso Tipo';
-$this->params['breadcrumbs'][] = ['label' => 'Comprobante Egreso Tipos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Comprobante Egresos Tipos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
 ?>
 <div class="comprobante-egreso-tipo-view">
@@ -43,4 +43,5 @@ $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
         </div>
     </div>
     
+
 </div>
