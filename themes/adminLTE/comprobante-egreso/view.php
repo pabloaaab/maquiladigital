@@ -105,7 +105,7 @@ $view = 'comprobante-egreso';
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Id Comprobante</th>
+                        <th scope="col">Factura</th>
                         <th scope="col">Rete Fuente</th>
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Base Aiu</th>
@@ -121,7 +121,7 @@ $view = 'comprobante-egreso';
                     <tr>
                         <td><?= $val->id_comprobante_egreso_detalle ?></td>
                         <?php if($val->id_compra){ ?>
-                            <td><?= $val->id_compra ?></td>
+                            <td><?= $val->compra->factura ?></td>
                         <?php }else{ ?>
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>

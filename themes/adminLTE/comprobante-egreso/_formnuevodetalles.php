@@ -45,8 +45,8 @@ if ($mensaje != ""){
             <table class="table table-condensed">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Nro Compra</th>
+                    <th scope="col">Factura</th>
                     <th scope="col">Concepto</th>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Vcto</th>
@@ -63,8 +63,8 @@ if ($mensaje != ""){
                 <tbody>
                 <?php foreach ($compraegreso as $val): ?>
                 <tr>
-                    <td><?= $val->id_compra ?></td>
                     <td><?= $val->numero ?></td>
+                    <td><?= $val->factura ?></td>
                     <td><?= $val->compraConcepto->concepto ?></td>
                     <td><?= $val->fechainicio ?></td>
                     <td><?= $val->fechavencimiento ?></td>

@@ -41,8 +41,8 @@ use yii\db\ActiveQuery;
             <table class="table table-condensed">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Id Compra</th>
+                    <th scope="col">Factura</th>
                     <th scope="col">Base Aiu</th>
                     <th scope="col">Rete Fuente</th>
                     <th scope="col">Rete Iva</th>
@@ -54,8 +54,8 @@ use yii\db\ActiveQuery;
                 <tbody>
                 <?php foreach ($mds as $val): ?>
                 <tr>
-                    <td><?= $val->id_comprobante_egreso_detalle ?></td>
                     <td><?= $val->id_compra ?></td>
+                    <td><?= $val->compra->factura ?></td>
                     <td><?= $val->base_aiu ?></td>
                     <td><?= $val->retefuente ?></td>
                     <td><?= $val->reteiva ?></td>

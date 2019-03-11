@@ -26,7 +26,7 @@ use Yii;
  * @property int $autorizado
  * @property string $observacion
  * @property string $fechacreacion
- * @property int $factura
+ * @property string $factura
  * @property int $numero
  *
  * @property CompraTipo $compraComcepto
@@ -49,9 +49,9 @@ class Compra extends \yii\db\ActiveRecord
     {
         return [
             [['id_compra_concepto', 'id_proveedor', 'factura', 'subtotal','fechainicio','fechavencimiento'], 'required'],
-            [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','factura','numero'], 'integer'],
+            [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','numero'], 'integer'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'base_aiu', 'total'], 'number'],
-            [['observacion'], 'string'],
+            [['observacion','factura'], 'string'],
             [['fechacreacion','fechainicio','fechavencimiento'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 50],
             [['id_compra_concepto'], 'exist', 'skipOnError' => true, 'targetClass' => CompraConcepto::className(), 'targetAttribute' => ['id_compra_concepto' => 'id_compra_concepto']],
