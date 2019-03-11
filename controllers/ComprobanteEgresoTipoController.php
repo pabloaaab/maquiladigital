@@ -72,7 +72,7 @@ class ComprobanteEgresoTipoController extends Controller
         $model = new ComprobanteEgresoTipo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_comprobante_egreso_tipo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -92,7 +92,7 @@ class ComprobanteEgresoTipoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_comprobante_egreso_tipo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

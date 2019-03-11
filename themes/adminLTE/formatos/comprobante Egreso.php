@@ -1,9 +1,9 @@
 <?php
 
 use inquid\pdf\FPDF;
-use app\models\Recibocaja;
-use app\models\Recibocajadetalle;
-use app\models\Facturaventa;
+use app\models\ComprobanteEgreso;
+use app\models\ComprobanteEgresoDetalle;
+use app\models\Compra;
 use app\models\Matriculaempresa;
 use app\models\Municipio;
 use app\models\Departamento;
@@ -11,8 +11,8 @@ use app\models\Departamento;
 class PDF extends FPDF {
 
     function Header() {
-        $idrecibo = $GLOBALS['idrecibo'];
-        $recibo = Recibocaja::findOne($idrecibo);
+        $id_comprobante_egreso = $GLOBALS['id_comprobante_egreso'];
+        $comprobanteEgreso = ComprobanteEgreso::findOne($idrecibo);
         $config = Matriculaempresa::findOne(1);
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);
@@ -143,7 +143,7 @@ class PDF extends FPDF {
     }
 
     function Body($pdf, $model) {
-        $detalles = Recibocajadetalle::find()->where(['=', 'idrecibo', $model->idrecibo])->all();
+        $detalles = app\models\ComprobanteEgresoDetalle::find()->where(['=', 'idrecibo', $model->idrecibo])->all();
         $pdf->SetX(10);
         $pdf->SetFont('Arial', '', 9);
         $i = 0;
@@ -174,15 +174,15 @@ class PDF extends FPDF {
 
 }
 
-global $idrecibo;
-$idrecibo = $model->idrecibo;
+global $id_comprobante_egreso;
+$id_comprobante_egreso = $model->id_comprobante_egreso;
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->Body($pdf, $model);
 $pdf->AliasNbPages();
 $pdf->SetFont('Times', '', 10);
-$pdf->Output("ReciboCaja$model->idrecibo.pdf", 'D');
+$pdf->Output("ComprobanteEgreso$model->id_comprobante_egreso.pdf", 'D');
 
 exit;
 

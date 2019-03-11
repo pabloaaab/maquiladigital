@@ -86,7 +86,7 @@ class CompraConceptoController extends Controller
         $model = new CompraConcepto();
         $tipos = CompraTipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_compra_concepto]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -107,7 +107,7 @@ class CompraConceptoController extends Controller
         $model = $this->findModel($id);
         $tipos = CompraTipo::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_compra_concepto]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
