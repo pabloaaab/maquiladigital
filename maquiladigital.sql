@@ -38,7 +38,7 @@ CREATE TABLE `archivodir` (
   KEY `iddirectorio` (`iddirectorio`),
   CONSTRAINT `archivodir_ibfk_1` FOREIGN KEY (`iddocumentodir`) REFERENCES `documentodir` (`iddocumentodir`),
   CONSTRAINT `archivodir_ibfk_2` FOREIGN KEY (`iddirectorio`) REFERENCES `directorio` (`iddirectorio`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `archivodir` */
 
@@ -70,7 +70,9 @@ insert  into `archivodir`(`idarchivodir`,`iddocumentodir`,`fecha_creacion`,`nume
 (38,1,'2019-01-29 15:04:05',1,1,12,'Factura27.pdf','pdf','application/pdf',394269,'FACTURA 27',NULL),
 (39,5,'2019-03-03 15:51:06',5,1,6,'Remision5.pdf','pdf','application/pdf',393743,'PRUEBA',NULL),
 (40,5,'2019-03-03 15:53:28',5,1,6,'Remision2 (4).pdf','pdf','application/pdf',395501,'PRUEBA',NULL),
-(41,1,'2019-03-03 18:00:50',1,1,13,'Factura31 (4).pdf','pdf','application/pdf',394181,'PRUEBA',NULL);
+(41,1,'2019-03-03 18:00:50',1,1,13,'Factura31 (4).pdf','pdf','application/pdf',394181,'PRUEBA',NULL),
+(43,8,'2019-03-08 11:45:40',8,1,1,'Remision2 (5).pdf','pdf','application/pdf',395525,'FGFG',NULL),
+(44,8,'2019-03-08 12:03:44',8,1,2,'Factura31 (1).pdf','pdf','application/pdf',394176,'PRUEBA',NULL);
 
 /*Table structure for table `arl` */
 
@@ -220,8 +222,8 @@ CREATE TABLE `compra` (
 /*Data for the table `compra` */
 
 insert  into `compra`(`id_compra`,`id_compra_concepto`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`porcentajeaiu`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`base_aiu`,`saldo`,`total`,`id_proveedor`,`usuariosistema`,`estado`,`autorizado`,`observacion`,`fechacreacion`,`fechainicio`,`fechavencimiento`,`numero`,`factura`) values 
-(2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,12241942,12241942,6,'71268830',0,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,123),
-(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,0,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,145),
+(2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,0,12241942,6,'71268830',2,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,123),
+(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,1,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,145),
 (4,3,19,1,0,10,20366082,20366,386956,0,2036608,20732672,20732672,3,'71268830',0,0,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',0,5258);
 
 /*Table structure for table `compra_concepto` */
@@ -294,9 +296,13 @@ CREATE TABLE `comprobante_egreso` (
   CONSTRAINT `comprobante_egreso_ibfk_2` FOREIGN KEY (`id_comprobante_egreso_tipo`) REFERENCES `comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
   CONSTRAINT `comprobante_egreso_ibfk_3` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`idproveedor`),
   CONSTRAINT `comprobante_egreso_ibfk_4` FOREIGN KEY (`id_banco`) REFERENCES `banco` (`idbanco`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 /*Data for the table `comprobante_egreso` */
+
+insert  into `comprobante_egreso`(`id_comprobante_egreso`,`id_municipio`,`fecha`,`fecha_comprobante`,`numero`,`id_comprobante_egreso_tipo`,`valor`,`id_proveedor`,`observacion`,`usuariosistema`,`estado`,`autorizado`,`libre`,`id_banco`) values 
+(1,'05001','2019-03-08 10:46:46','2019-03-08',2,1,12241942,6,'aaaaa','71268830',NULL,1,NULL,1021),
+(2,'05001','2019-03-08 11:57:30','2019-03-08',3,1,15000,4,'bbbb','71268830',NULL,1,1,1021);
 
 /*Table structure for table `comprobante_egreso_detalle` */
 
@@ -319,9 +325,13 @@ CREATE TABLE `comprobante_egreso_detalle` (
   KEY `id_comprobante_egreso` (`id_comprobante_egreso`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_2` FOREIGN KEY (`id_comprobante_egreso`) REFERENCES `comprobante_egreso` (`id_comprobante_egreso`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `comprobante_egreso_detalle` */
+
+insert  into `comprobante_egreso_detalle`(`id_comprobante_egreso_detalle`,`id_compra`,`id_comprobante_egreso`,`vlr_abono`,`vlr_saldo`,`retefuente`,`reteiva`,`reteica`,`iva`,`base_aiu`,`observacion`) values 
+(6,2,1,12241942,0,436627,311097,0,0,0,NULL),
+(8,NULL,2,15000,0,0,0,0,0,0,NULL);
 
 /*Table structure for table `comprobante_egreso_tipo` */
 
@@ -364,7 +374,7 @@ CREATE TABLE `consecutivo` (
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `consecutivo` int(20) NOT NULL,
   PRIMARY KEY (`consecutivo_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `consecutivo` */
 
@@ -372,8 +382,9 @@ insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values
 (1,'FACTURA DE VENTA',31),
 (2,'NOTA CREDITO',1),
 (3,'RECIBO CAJA',9),
-(4,'REMISION',4),
-(5,'COMPRAS',2);
+(4,'REMISION',5),
+(5,'COMPRAS',2),
+(6,'COMPROBANTE EGRESO',3);
 
 /*Table structure for table `costo_fijo` */
 
@@ -2173,7 +2184,7 @@ insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`codigoproducto`,
 (10,1,'','2019-01-17 00:00:00','2019-01-23 00:00:00','2019-01-29 00:00:00',1171,8482958,NULL,'no lleva lavanderia',0,'14633',1,'facturacion',1,1,0,0,0,0,'13224',0,NULL),
 (11,1,'','2019-01-19 00:00:00','2019-01-19 00:00:00','2019-01-19 00:00:00',1184,1059438.6464,NULL,'proceso de terminacion',0,'14201',2,'ADMINISTRADOR',1,1,0,0,0,0,'13340',0,NULL),
 (12,1,'','2019-01-21 00:00:00','2019-01-21 00:00:00','2019-01-24 00:00:00',992,515497,NULL,'Terminacion de prenda',0,'14341',2,'ADMINISTRADOR',1,1,0,0,0,0,'13468',0,NULL),
-(13,1,'220','2019-01-29 00:00:00','2019-02-05 00:00:00','2019-02-09 00:00:00',1090,8215439,NULL,'esta prenda lleva lavanderia',0,'14962',1,'ADMINISTRADOR',1,0,0,6.2103,0,6.2103,'13659',650,29.42),
+(13,1,'220','2019-01-29 00:00:00','2019-02-05 00:00:00','2019-02-09 00:00:00',1090,8215439,NULL,'esta prenda lleva lavanderia',0,'14962',2,'ADMINISTRADOR',1,0,0,6.2103,0,6.2103,'13659',650,29.42),
 (14,1,'527','2019-01-24 00:00:00','2019-01-24 00:00:00','2019-01-29 00:00:00',1131,693125.381,NULL,'terminacion',0,'14633',2,'ADMINISTRADOR',1,0,0,0,0,0,'13695',60,2.6);
 
 /*Table structure for table `ordenproducciondetalle` */
@@ -2738,7 +2749,7 @@ insert  into `permisos`(`id_permiso`,`permiso`,`modulo`,`menu_operacion`) values
 (35,'COMPRA','CONTABILIDAD','MOVIMIENTOS'),
 (36,'COMPRA CONCEPTO','CONTABILIDAD','ADMINISTRACION'),
 (37,'COMPROBANTE EGRESO TIPO','CONTABILIDAD','ADMINISTRACION'),
-(38,'COMPROBANTE EGRESO','CONTABILIDAD','ADMINISTRACION');
+(38,'COMPROBANTE EGRESO','CONTABILIDAD','MOVIMIENTO');
 
 /*Table structure for table `prendatipo` */
 
@@ -3107,15 +3118,16 @@ CREATE TABLE `remision` (
   PRIMARY KEY (`id_remision`),
   KEY `idordenproduccion` (`idordenproduccion`),
   CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remision` */
 
 insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`,`color`) values 
-(2,14,2,25,568,156,705,1273,1273,'2019-02-05','Rojo'),
+(2,14,2,23,568,156,563,1131,1131,'2019-02-05','Rojo'),
 (3,1,0,0,0,0,0,0,0,'2019-02-15','Rojo'),
-(4,13,3,1,0,0,10,10,10,'2019-02-13','Amarillo'),
-(5,8,4,1,0,0,10,10,10,'2019-03-01','Negro');
+(4,13,3,3,0,10,1090,1090,1090,'2019-02-13','Amarillo'),
+(5,8,4,1,0,0,10,10,10,'2019-03-01','Negro'),
+(7,12,5,4,7,7,985,992,992,'2019-03-10','Azul');
 
 /*Table structure for table `remisiondetalle` */
 
@@ -3132,47 +3144,84 @@ CREATE TABLE `remisiondetalle` (
   `m` int(2) DEFAULT '0',
   `l` int(2) DEFAULT '0',
   `xl` int(2) DEFAULT '0',
+  `2` int(2) DEFAULT '0',
+  `4` int(2) DEFAULT '0',
+  `6` int(2) DEFAULT '0',
+  `8` int(2) DEFAULT '0',
+  `10` int(2) DEFAULT '0',
+  `12` int(2) DEFAULT '0',
+  `14` int(2) DEFAULT '0',
+  `16` int(2) DEFAULT '0',
+  `18` int(2) DEFAULT '0',
+  `20` int(2) DEFAULT '0',
+  `22` int(2) DEFAULT '0',
   `28` int(2) DEFAULT '0',
   `30` int(2) DEFAULT '0',
   `32` int(2) DEFAULT '0',
   `34` int(2) DEFAULT '0',
+  `36` int(2) DEFAULT '0',
   `38` int(2) DEFAULT '0',
-  `40` int(2) DEFAULT '0',
   `42` int(2) DEFAULT '0',
-  `44` int(2) DEFAULT '0',
+  `txs` tinyint(1) DEFAULT '0',
+  `ts` tinyint(1) DEFAULT '0',
+  `tm` tinyint(1) DEFAULT '0',
+  `tl` tinyint(1) DEFAULT '0',
+  `txl` tinyint(1) DEFAULT '0',
+  `t2` tinyint(1) DEFAULT '0',
+  `t4` tinyint(1) DEFAULT '0',
+  `t6` tinyint(1) DEFAULT '0',
+  `t8` tinyint(1) DEFAULT '0',
+  `t10` tinyint(1) DEFAULT '0',
+  `t12` tinyint(1) DEFAULT '0',
+  `t14` tinyint(1) DEFAULT '0',
+  `t16` tinyint(1) DEFAULT '0',
+  `t18` tinyint(1) DEFAULT '0',
+  `t20` tinyint(1) DEFAULT '0',
+  `t22` tinyint(1) DEFAULT '0',
+  `t28` tinyint(1) DEFAULT '0',
+  `t30` tinyint(1) DEFAULT '0',
+  `t32` tinyint(1) DEFAULT '0',
+  `t34` tinyint(1) DEFAULT '0',
+  `t36` tinyint(1) DEFAULT '0',
+  `t38` tinyint(1) DEFAULT '0',
+  `t42` tinyint(1) DEFAULT '0',
   `estado` tinyint(1) DEFAULT NULL,
   `unidades` int(10) DEFAULT '0',
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
 
-insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,`tula`,`xs`,`s`,`m`,`l`,`xl`,`28`,`30`,`32`,`34`,`38`,`40`,`42`,`44`,`estado`,`unidades`) values 
-(5,2,'Rojo',1,1,120,60,7,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,187),
-(6,2,'Rojo',1,1,120,67,107,0,0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,0,294),
-(7,2,'Rojo',1,1,27,0,0,60,0,0,0,0,0,0,0,0,0,0,87),
-(8,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(9,2,'Rojo',0,1,0,0,0,80,0,0,0,0,0,0,0,0,0,0,80),
-(10,2,'Rojo',0,1,0,0,120,0,0,0,0,0,0,0,0,0,0,0,120),
-(11,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(12,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(13,2,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,33),
-(14,2,'Rojo',0,1,0,120,0,0,0,0,0,0,0,0,0,0,0,0,120),
-(15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,94),
-(16,2,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,1,156),
-(19,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(20,2,'Rojo',0,1,0,22,0,0,0,0,0,0,0,0,0,0,0,0,22),
-(21,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
-(22,2,'Rojo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(23,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,10),
-(24,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
-(25,2,'Rojo',0,1,0,0,10,0,0,0,0,0,0,0,0,0,0,0,10),
-(26,2,'Rojo',0,1,0,0,0,0,10,0,0,0,0,0,0,0,0,0,10),
-(27,2,'Rojo',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(28,2,'Rojo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(29,5,'Negro',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,10);
+insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,`tula`,`xs`,`s`,`m`,`l`,`xl`,`2`,`4`,`6`,`8`,`10`,`12`,`14`,`16`,`18`,`20`,`22`,`28`,`30`,`32`,`34`,`36`,`38`,`42`,`txs`,`ts`,`tm`,`tl`,`txl`,`t2`,`t4`,`t6`,`t8`,`t10`,`t12`,`t14`,`t16`,`t18`,`t20`,`t22`,`t28`,`t30`,`t32`,`t34`,`t36`,`t38`,`t42`,`estado`,`unidades`) values 
+(5,2,'Rojo',1,1,120,60,107,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,347),
+(6,2,'Rojo',1,1,120,67,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,194),
+(7,2,'Rojo',1,1,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27),
+(8,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(9,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(10,2,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33),
+(11,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(12,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(13,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(14,2,'Rojo',0,1,0,120,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,240),
+(15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,94),
+(16,2,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,156),
+(19,4,'Amarillo',0,1,0,400,400,200,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1000),
+(20,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(21,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(22,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(23,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(24,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(25,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(26,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(29,5,'Negro',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(30,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,10),
+(32,4,'Amarillo',0,1,0,30,23,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,80),
+(33,7,'Azul',0,1,120,120,120,94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,454),
+(34,7,'Azul',0,1,120,120,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,360),
+(35,7,'Azul',0,1,45,120,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,171),
+(36,7,'Azul',1,1,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,7);
 
 /*Table structure for table `resolucion` */
 

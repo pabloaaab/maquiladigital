@@ -13,7 +13,7 @@ use Yii;
  *
  * @property Cliente[] $clientes
  */
-class Tipodocumento extends \yii\db\ActiveRecord
+class TipoDocumento extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}

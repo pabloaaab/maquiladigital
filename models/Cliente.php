@@ -74,7 +74,7 @@ class Cliente extends \yii\db\ActiveRecord
      */
     public function getTipo()
     {
-        return $this->hasOne(Tipodocumento::className(), ['idtipo' => 'idtipo']);
+        return $this->hasOne(TipoDocumentoTipoDocumento::className(), ['idtipo' => 'idtipo']);
     }
 
     /**
