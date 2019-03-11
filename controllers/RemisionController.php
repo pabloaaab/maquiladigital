@@ -68,27 +68,13 @@ class RemisionController extends Controller
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
                 $count = count($remisiondetalle);
                 $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
-                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0;
-                foreach ($detalleorden as $val){
-                    if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
-                        $cxs = $val->cantidad;
-                    }
-                    if($val->productodetalle->prendatipo->talla->talla == 'S' or $val->productodetalle->prendatipo->talla->talla == 's'){
-                        $cs = $val->cantidad;
-                    }
-                    if($val->productodetalle->prendatipo->talla->talla == 'M' or $val->productodetalle->prendatipo->talla->talla == 'm'){
-                        $cm = $val->cantidad;
-                    }
-                    if($val->productodetalle->prendatipo->talla->talla == 'L' or $val->productodetalle->prendatipo->talla->talla == 'l'){
-                        $cl = $val->cantidad;
-                    }
-                    if($val->productodetalle->prendatipo->talla->talla == 'XL' or $val->productodetalle->prendatipo->talla->talla == 'xl'){
-                        $cxl = $val->cantidad;
-                    }
-                }
-                $ct = $cxs + $cs + $cm + $cl + $cxl;
+                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0; $c2 = 0; $c4 = 0; $c6 = 0; $c8 = 0; $c10 = 0; $c12 = 0; $c14 = 0; $c16 = 0; $c18 = 0;
+                $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0;
+                
+                $ct = $cxs + $cs + $cm + $cl + $cxl + $c2 + $c4 + $c6 + $c8 + $c10 + $c12 + $c14 + $c16 + $c18 + $c20 + $c22 + $c28 + $c30 + $c32 + $c34 + $c36 + $c38 + $c42;
             }else{
-                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; 
+                $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0; $c2 = 0; $c4 = 0; $c6 = 0; $c8 = 0; $c10 = 0; $c12 = 0; $c14 = 0; $c16 = 0; $c18 = 0;
+                $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0; 
                 $table = new Remision();
                 $table->idordenproduccion = $id;
                 $table->total_tulas = 0;
@@ -103,7 +89,8 @@ class RemisionController extends Controller
                 $model = Remision::findOne($table->id_remision);
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
                 $count = count($remisiondetalle);
-                $ct = $cxs + $cs + $cm + $cl + $cxl;
+                $ct = $cxs + $cs + $cm + $cl + $cxl + $c2 + $c4 + $c6 + $c8 + $c10 + $c12 + $c14 + $c16 + $c18 + $c20 + $c22 + $c28 + $c30 + $c32 + $c34 + $c36 + $c38 + $c42;
+                $datostallas = null;
             }
             if (isset($_POST["actualizar"])) {
                 $intIndice = 0;
@@ -112,12 +99,76 @@ class RemisionController extends Controller
                     $table->color = $_POST["color"][$intIndice];
                     $table->oc = $_POST["oc"][$intIndice];
                     $table->tula = $_POST["tula"][$intIndice];
-                    $table->xs = $_POST["xs"][$intIndice];
-                    $table->s = $_POST["s"][$intIndice];
-                    $table->m = $_POST["m"][$intIndice];
-                    $table->l = $_POST["l"][$intIndice];
-                    $table->xl = $_POST["xl"][$intIndice];
-                    $table->estado = $_POST["estado"][$intIndice];                
+                    if ($table->txs == 1){
+                        $table->xs = $_POST["xs"][$intIndice];
+                    }
+                    if ($table->ts == 1){
+                        $table->s = $_POST["s"][$intIndice];
+                    }
+                    if ($table->tm == 1){
+                        $table->m = $_POST["m"][$intIndice];
+                    }
+                    if ($table->tl == 1){
+                        $table->l = $_POST["l"][$intIndice];
+                    }
+                    if ($table->txl == 1){
+                        $table->xl = $_POST["xl"][$intIndice];
+                    }
+                    if ($table['t2'] == 1){
+                        $table['2'] = $_POST["2"][$intIndice];
+                    }
+                    if ($table['t4'] == 1){
+                        $table['4'] = $_POST["4"][$intIndice];
+                    }
+                    if ($table['t6'] == 1){
+                        $table['6'] = $_POST["6"][$intIndice];
+                    }
+                    if ($table['t8'] == 1){
+                        $table['8'] = $_POST["8"][$intIndice];
+                    }
+                    if ($table['t10'] == 1){
+                        $table['10'] = $_POST["10"][$intIndice];
+                    }
+                    if ($table['t12'] == 1){
+                        $table['12'] = $_POST["12"][$intIndice];
+                    }
+                    if ($table['t14'] == 1){
+                        $table['14'] = $_POST["14"][$intIndice];
+                    }
+                    if ($table['t16'] == 1){
+                        $table['16'] = $_POST["16"][$intIndice];
+                    }
+                    if ($table['t18'] == 1){
+                        $table['18'] = $_POST["18"][$intIndice];
+                    }
+                    if ($table['t20'] == 1){
+                        $table['20'] = $_POST["20"][$intIndice];
+                    }
+                    if ($table['t22'] == 1){
+                        $table['22'] = $_POST["22"][$intIndice];
+                    }                    
+                    if ($table['t28'] == 1){
+                        $table['28'] = $_POST["28"][$intIndice];
+                    }
+                    if ($table['t30'] == 1){
+                        $table['30'] = $_POST["30"][$intIndice];
+                    }
+                    if ($table['t32'] == 1){
+                        $table['32'] = $_POST["32"][$intIndice];
+                    }
+                    if ($table['t34'] == 1){
+                        $table['34'] = $_POST["34"][$intIndice];
+                    }
+                    if ($table['t36'] == 1){
+                        $table['36'] = $_POST["36"][$intIndice];
+                    }
+                    if ($table['t38'] == 1){
+                        $table['38'] = $_POST["38"][$intIndice];
+                    }
+                    if ($table['t42'] == 1){
+                        $table['42'] = $_POST["42"][$intIndice];
+                    }
+                    $table->estado = $_POST["estado"][$intIndice];
                     $table->save(false);
                     $this->Calculos($table);
                     $intIndice++;
@@ -132,12 +183,76 @@ class RemisionController extends Controller
                     $table->color = $_POST["color"][$intIndice];
                     $table->oc = $_POST["oc"][$intIndice];
                     $table->tula = $_POST["tula"][$intIndice];
-                    $table->xs = $_POST["xs"][$intIndice];
-                    $table->s = $_POST["s"][$intIndice];
-                    $table->m = $_POST["m"][$intIndice];
-                    $table->l = $_POST["l"][$intIndice];
-                    $table->xl = $_POST["xl"][$intIndice];
-                    $table->estado = $_POST["estado"][$intIndice];                
+                    if ($table->txs == 1){
+                        $table->xs = $_POST["xs"][$intIndice];
+                    }
+                    if ($table->ts == 1){
+                        $table->s = $_POST["s"][$intIndice];
+                    }
+                    if ($table->tm == 1){
+                        $table->m = $_POST["m"][$intIndice];
+                    }
+                    if ($table->tl == 1){
+                        $table->l = $_POST["l"][$intIndice];
+                    }
+                    if ($table->txl == 1){
+                        $table->xl = $_POST["xl"][$intIndice];
+                    }
+                    if ($table['t2'] == 1){
+                        $table['2'] = $_POST["2"][$intIndice];
+                    }
+                    if ($table['t4'] == 1){
+                        $table['4'] = $_POST["4"][$intIndice];
+                    }
+                    if ($table['t6'] == 1){
+                        $table['6'] = $_POST["6"][$intIndice];
+                    }
+                    if ($table['t8'] == 1){
+                        $table['8'] = $_POST["8"][$intIndice];
+                    }
+                    if ($table['t10'] == 1){
+                        $table['10'] = $_POST["10"][$intIndice];
+                    }
+                    if ($table['t12'] == 1){
+                        $table['12'] = $_POST["12"][$intIndice];
+                    }
+                    if ($table['t14'] == 1){
+                        $table['14'] = $_POST["14"][$intIndice];
+                    }
+                    if ($table['t16'] == 1){
+                        $table['16'] = $_POST["16"][$intIndice];
+                    }
+                    if ($table['t18'] == 1){
+                        $table['18'] = $_POST["18"][$intIndice];
+                    }
+                    if ($table['t20'] == 1){
+                        $table['20'] = $_POST["20"][$intIndice];
+                    }
+                    if ($table['t22'] == 1){
+                        $table['22'] = $_POST["22"][$intIndice];
+                    }                    
+                    if ($table['t28'] == 1){
+                        $table['28'] = $_POST["28"][$intIndice];
+                    }
+                    if ($table['t30'] == 1){
+                        $table['30'] = $_POST["30"][$intIndice];
+                    }
+                    if ($table['t32'] == 1){
+                        $table['32'] = $_POST["32"][$intIndice];
+                    }
+                    if ($table['t34'] == 1){
+                        $table['34'] = $_POST["34"][$intIndice];
+                    }
+                    if ($table['t36'] == 1){
+                        $table['36'] = $_POST["36"][$intIndice];
+                    }
+                    if ($table['t38'] == 1){
+                        $table['38'] = $_POST["38"][$intIndice];
+                    }
+                    if ($table['t42'] == 1){
+                        $table['42'] = $_POST["42"][$intIndice];
+                    }
+                    $table->estado = $_POST["estado"][$intIndice];
                     $table->save(false);
                     $this->Calculos($table);
                     $intIndice++;
@@ -154,39 +269,164 @@ class RemisionController extends Controller
                 $model = $remision;
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
                 $count = count($remisiondetalle);
+            }            
+            $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0; $c2 = 0; $c4 = 0; $c6 = 0; $c8 = 0; $c10 = 0; $c12 = 0; $c14 = 0; $c16 = 0; $c18 = 0;
+            $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0;
+            $tallasremision = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->one();
+            $cantidadesremision = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
+            foreach ($cantidadesremision as $val){
+                if ($val->txs == 1){
+                    $cxs = $cxs+ $val->xs;
+                }
+                if ($val->ts == 1){
+                    $cs = $cs + $val->s;
+                }
+                if ($val->tm == 1){
+                    $cm = $cm + $val->m;
+                }
+                if ($val->tl == 1){
+                    $cl = $cl + $val->l;
+                }
+                if ($val->txl == 1){
+                    $cxl = $cxl + $val->xl;
+                }
+                if ($val->t2 == 1){
+                    $c2 = $c2 + $val['2'];
+                }
+                if ($val->t4 == 1){
+                    $c4 = $c4 + $val['4'];
+                }
+                if ($val->t6 == 1){
+                    $c6 = $c6 + $val['6'];
+                }
+                if ($val->t8 == 1){
+                    $c8 = $c8 + $val['8'];
+                }
+                if ($val->t10 == 1){
+                    $c10 = $c10 + $val['10'];
+                }
+                if ($val->t12 == 1){
+                    $c12 = $c12 + $val['12'];
+                }
+                if ($val->t14 == 1){
+                    $c14 = $c14 + $val['14'];
+                }
+                if ($val->t16 == 1){
+                    $c16 = $c16 + $val['16'];
+                }
+                if ($val->t18 == 1){
+                    $c18 = $c18 + $val['18'];
+                }
+                if ($val->t20 == 1){
+                    $c20 = $c20 + $val['20'];
+                }
+                if ($val->t22 == 1){
+                    $c22 = $c22 + $val['22'];
+                }
+                if ($val->t28 == 1){
+                    $c28 = $c28 + $val['28'];
+                }
+                if ($val->t30 == 1){
+                    $c30 = $c30 + $val['30'];
+                }
+                if ($val->t32 == 1){
+                    $c32 = $c32 +$val['32'];
+                }
+                if ($val->t34 == 1){
+                    $c34 = $c34 + $val['34'];
+                }
+                if ($val->t36 == 1){
+                    $c36 = $c36 + $val['36'];
+                }
+                if ($val->t38 == 1){
+                    $c38 = $c38 + $val['38'];
+                }
+                if ($val->t42 == 1){
+                    $c42 = $c42 + $val['42'];
+                }
             }
-            $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$id])->all();
-            $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0;
-            foreach ($detalleorden as $val){
-                if($val->productodetalle->prendatipo->talla->talla == 'XS' or $val->productodetalle->prendatipo->talla->talla == 'xs'){
-                    $cxs = $val->cantidad;
-                }
-                if($val->productodetalle->prendatipo->talla->talla == 'S' or $val->productodetalle->prendatipo->talla->talla == 's'){
-                    $cs = $val->cantidad;
-                }
-                if($val->productodetalle->prendatipo->talla->talla == 'M' or $val->productodetalle->prendatipo->talla->talla == 'm'){
-                    $cm = $val->cantidad;
-                }
-                if($val->productodetalle->prendatipo->talla->talla == 'L' or $val->productodetalle->prendatipo->talla->talla == 'l'){
-                    $cl = $val->cantidad;
-                }
-                if($val->productodetalle->prendatipo->talla->talla == 'XL' or $val->productodetalle->prendatipo->talla->talla == 'xl'){
-                    $cxl = $val->cantidad;
-                }
+            if ($tallasremision->txs == 1){
+                $datostallas[] = 'XS';
             }
-            $ct = $cxs + $cs + $cm + $cl + $cxl;
+            if ($tallasremision->ts == 1){
+                $datostallas[] = 'S';
+            }
+            if ($tallasremision->tm == 1){
+                $datostallas[] = 'M';
+            }
+            if ($tallasremision->tl == 1){
+                $datostallas[] = 'L';
+            }
+            if ($tallasremision->txl == 1){
+                $datostallas[] = 'XL';
+            }
+            if ($tallasremision->t2 == 1){
+                $datostallas[] = '2';
+            }
+            if ($tallasremision->t4 == 1){
+                $datostallas[] = '4';
+            }
+            if ($tallasremision->t6 == 1){
+                $datostallas[] = '6';
+            }
+            if ($tallasremision->t8 == 1){
+                $datostallas[] = '8';
+            }
+            if ($tallasremision->t10 == 1){
+                $datostallas[] = '10';
+            }
+            if ($tallasremision->t12 == 1){
+                $datostallas[] = '12';
+            }
+            if ($tallasremision->t14 == 1){
+                $datostallas[] = '14';
+            }
+            if ($tallasremision->t16 == 1){
+                $datostallas[] = '16';
+            }
+            if ($tallasremision->t18 == 1){
+                $datostallas[] = '18';
+            }
+            if ($tallasremision->t20 == 1){
+                $datostallas[] = '20';
+            }
+            if ($tallasremision->t22 == 1){
+                $datostallas[] = '22';
+            }
+            if ($tallasremision->t28 == 1){
+                $datostallas[] = '28';
+            }
+            if ($tallasremision->t30 == 1){
+                $datostallas[] = '30';
+            }
+            if ($tallasremision->t32 == 1){
+                $datostallas[] = '32';
+            }
+            if ($tallasremision->t34 == 1){
+                $datostallas[] = '34';
+            }
+            if ($tallasremision->t36 == 1){
+                $datostallas[] = '36';
+            }
+            if ($tallasremision->t38 == 1){
+                $datostallas[] = '38';
+            }
+            if ($tallasremision->t42 == 1){
+                $datostallas[] = '42';
+            }
+            
+            $ct = $cxs + $cs + $cm + $cl + $cxl + $c2; $c4 + $c6 + $c8 + $c10 + $c12 + $c14 + $c16 + $c18 + $c20 + $c22 + $c28 + $c30 + $c32 + $c34 + $c36 + $c38 + $c42;
         }    
         
         return $this->render('remision', [
             'model' => $model,
             'remisiondetalle' => $remisiondetalle,
             'idordenproduccion' => $id,
+            //'detalleorden' =>$detalleorden,
+            'datostallas' => $datostallas,
+            //'cantidades' => $cantidades,
             'count' => $count,
-            'cxs' => $cxs,
-            'cs' => $cs,
-            'cm' => $cm,
-            'cl' => $cl,
-            'cxl' => $cxl,
+            'cxs' => $cxs, 'cs' => $cs, 'cm' => $cm, 'cl' => $cl, 'cxl' => $cxl, 'c2' => $c2,'c4' => $c4, 'c6' => $c6, 'c8' => $c8, 'c10' => $c10, 'c12' => $c12, 'c14' => $c14, 'c16' => $c16, 'c18' => $c18, 'c20' => $c20, 'c22' => $c22, 'c28' => $c28,'c30' => $c30,'c32' => $c32,'c34' => $c34, 'c36' => $c36,'c38' => $c38, 'c42' => $c42,
             'ct' => $ct,
         ]);
     }
@@ -199,6 +439,11 @@ class RemisionController extends Controller
         $model->id_remision = $id;
         $model->tula = 1;
         $model->color = $remision->color;
+        $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+        foreach ($detalleorden as $val){
+            $talla = 't'.strtolower($val->productodetalle->prendatipo->talla->talla);
+            $model->$talla = 1;
+        }
         $model->insert();
         return $this->redirect(['remision', 'id' => $idordenproduccion]);
     }

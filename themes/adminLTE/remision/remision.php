@@ -145,59 +145,184 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
         Detalle Remision de Entrega - <?= $count ?> Registros
     </div>
     <div class="panel-body">
-        <table class="table table-bordered table-striped table-hover">
+        <table class="table table-bordered table-striped table-responsive-xl">
             <thead>
                 <tr>
                     <th scope="col">Color</th>
                     <th scope="col">OC</th>
                     <th scope="col">Tula</th>
-                    <th scope="col">XS</th>
-                    <th scope="col">S</th>
-                    <th scope="col">M</th>
-                    <th scope="col">L</th>
-                    <th scope="col">Xl</th>                    
-                    <th scope="col">ESTADO</th>
-                    <th scope="col">UNIDAD X TULA</th>
-                    <th scope="col"></th>
+                    <?php if ($datostallas){ 
+                        foreach ($datostallas as $val): ?>
+                        <th scope="col"><?= $val ?></th>
+                    <?php endforeach; 
+                     } else {  ?>
+                        <th scope="col"></th>
+                    <?php }?>    
+                    <th scope="col">Estado</th>
+                    <th scope="col">Unidad por Tula</th>                    
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php                    
                     $ttula = 0;
-                    $tunidades = 0;
-                    $txs = 0;
-                    $ts = 0;
-                    $tm = 0;
-                    $tl = 0;
-                    $txl = 0;
+                    $tunidades = 0;                    
+                    $total = 0;
                 ?>
                 <?php foreach ($remisiondetalle as $val): ?>                
                     <tr>                                            
-                        <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->color ,$colores, ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
+                        <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->color ,$colores, ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php if ($val->oc == 1) { ?>
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
                         <?php } else { ?>    
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php } ?>        
                         <td style="padding-left: 1;padding-right: 1;"><input type="text" name="tula[]" value="<?= $val->tula ?>" size="1" onkeypress="return esInteger(event)" required></td>
                         <?php if ($val->oc == 1 || $val->estado == 1) { ?>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xs[]" value="<?= $val->xs ?>" size="4" onkeypress="return esInteger(event)"  style="background-color:silver" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="s[]" value="<?= $val->s ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="4" onkeypress="return esInteger(event)" style="background-color:silver" required></td>                            
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
+                            <?php if ($val->txs == 1) { ?>
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xs[]" value="<?= $val->xs ?>" size="1" onkeypress="return esInteger(event)"  style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->ts == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="s[]" value="<?= $val->s ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->tm == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>    
+                            <?php if ($val->tl == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->txl == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t2 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="2[]" value="<?= $val['2'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t4 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="4[]" value="<?= $val['4'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t6 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="6[]" value="<?= $val['6'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t8 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="8[]" value="<?= $val['8'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t10 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="10[]" value="<?= $val['10'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t12 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="12[]" value="<?= $val['12'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t14 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="14[]" value="<?= $val['14'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t16 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="16[]" value="<?= $val['16'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t18 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="18[]" value="<?= $val['18'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t20 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="20[]" value="<?= $val['20'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t22 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="22[]" value="<?= $val['22'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t28 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="28[]" value="<?= $val['28'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t30 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="30[]" value="<?= $val['30'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t32 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="32[]" value="<?= $val['32'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t34 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="34[]" value="<?= $val['34'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t36 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="36[]" value="<?= $val['36'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t38 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="38[]" value="<?= $val['38'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>
+                            <?php if ($val->t42 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="42[]" value="<?= $val['42'] ?>" size="1" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                            <?php } ?>    
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
                         <?php } else { ?>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xs[]" value="<?= $val->xs ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="s[]" value="<?= $val->s ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-sm-13','prompt' => 'Seleccione...','required' => true]) ?>
+                            <?php if ($val->txs == 1) { ?>
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xs[]" value="<?= $val->xs ?>" size="1" onkeypress="return esInteger(event)"  required></td>
+                            <?php } ?>
+                            <?php if ($val->ts == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="s[]" value="<?= $val->s ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->tm == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="m[]" value="<?= $val->m ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>    
+                            <?php if ($val->tl == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="l[]" value="<?= $val->l ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->txl == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="xl[]" value="<?= $val->xl ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t2 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="2[]" value="<?= $val['2'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t4 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="4[]" value="<?= $val['4'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t6 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="6[]" value="<?= $val['6'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t8 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="8[]" value="<?= $val['8'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t10 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="10[]" value="<?= $val['10'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t12 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="12[]" value="<?= $val['12'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t14 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="14[]" value="<?= $val['14'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t16 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="16[]" value="<?= $val['16'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t18 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="18[]" value="<?= $val['18'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t20 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="20[]" value="<?= $val['20'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t22 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="22[]" value="<?= $val['22'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t28 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="28[]" value="<?= $val['28'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t30 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="30[]" value="<?= $val['30'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t32 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="32[]" value="<?= $val['32'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t34 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="34[]" value="<?= $val['34'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t36 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="36[]" value="<?= $val['36'] ?>" size="1" onkeypress="return esInteger(event)"  required></td>
+                            <?php } ?>
+                            <?php if ($val->t38 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="38[]" value="<?= $val['38'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <?php if ($val->t42 == 1) { ?>    
+                                <td style="padding-left: 1;padding-right: 1;"><input type="text" name="42[]" value="<?= $val['42'] ?>" size="1" onkeypress="return esInteger(event)" required></td>
+                            <?php } ?>
+                            <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('estado[]', $val->estado ,['0' => 'PRIMERA', '1' => 'SEGUNDA'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php } ?>                                                     
                         <td style="padding-left: 1;padding-right: 1;"><?= $val->unidades ?></td>
-                        <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_remision_detalle[]" value="<?= $val->id_remision_detalle ?>"></td>
+                        <input type="hidden" name="id_remision_detalle[]" value="<?= $val->id_remision_detalle ?>">
                         <td><?=
                             Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->idordenproduccion, 'iddetalle' => $val->id_remision_detalle], [
                                 'class' => '',
@@ -211,11 +336,7 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                     </tr>
                 </tbody>
                 <?php                    
-                    $txs = $txs + $val->xs;
-                    $ts = $ts + $val->s;
-                    $tm = $tm + $val->m;
-                    $tl = $tl + $val->l;
-                    $txl = $txl + $val->xl;
+                    
                     $ttula = $ttula + $val->tula;
                     $tunidades = $tunidades + $val->unidades;
                 ?>
@@ -224,28 +345,105 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                 <td></td>
                 <th scope="col">Totales Cliente:</th>
                 <th scope="col"><?= $ttula ?></th>
-                <th scope="col"><?= $cxs ?></th>
-                <th scope="col"><?= $cs ?></th>
-                <th scope="col"><?= $cm ?></th>
-                <th scope="col"><?= $cl ?></th>
-                <th scope="col"><?= $cxl ?></th>                
+                <?php if ($datostallas){ 
+                    foreach ($datostallas as $val): ?>                    
+                        <?php $ordendetalle = app\models\Ordenproducciondetalle::find()->where(['=','idordenproduccion',$model->idordenproduccion])->all();
+                        foreach ($ordendetalle as $val2){
+                            if ($val == $val2->productodetalle->prendatipo->talla->talla){
+                                $total = $val2->cantidad;                                
+                            }
+                        }
+                        ?>
+                        <th scope="col"><?= $total ?></th>
+                <?php endforeach; 
+                 } else {  ?>
+                    <th scope="col"></th>
+                <?php }?>
                 <th scope="col"></th>
-                <th scope="col"><?= $ct ?></th>
-                <td></td>
+                <th scope="col"><?= $model->ordenproduccion->cantidad ?></th>                
                 <td></td>
             </tr>
             <tr>
                 <td></td>
                 <th scope="col">Totales Confección:</th>
                 <th scope="col"><?= $ttula ?></th>
-                <th scope="col"><?= $txs ?></th>
-                <th scope="col"><?= $ts ?></th>
-                <th scope="col"><?= $tm ?></th>
-                <th scope="col"><?= $tl ?></th>
-                <th scope="col"><?= $txl ?></th>                
+                <?php if ($datostallas){ 
+                    foreach ($datostallas as $val): ?>
+                        <?php if ($val == 'xs' or $val == 'XS'){ ?>
+                            <th scope="col"><?= $cxs ?></th>
+                        <?php } ?>
+                        <?php if ($val == 's' or $val == 'S'){ ?>
+                            <th scope="col"><?= $cs ?></th>
+                        <?php } ?>
+                        <?php if ($val == 'm' or $val == 'M'){ ?>
+                            <th scope="col"><?= $cm ?></th>
+                        <?php } ?>
+                        <?php if ($val == 'l' or $val == 'L'){ ?>
+                            <th scope="col"><?= $cl ?></th>
+                        <?php } ?>
+                        <?php if ($val == 'xl' or $val == 'XL'){ ?>
+                            <th scope="col"><?= $cxl ?></th>
+                        <?php } ?> 
+                        <?php if ($val == '2' or $val == '2'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '4' or $val == '4'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '6' or $val == '6'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '8' or $val == '8'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '10' or $val == '10'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '12' or $val == '12'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '14' or $val == '14'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '16' or $val == '16'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '18' or $val == '18'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '20' or $val == '20'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '22' or $val == '22'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '28' or $val == '28'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '30' or $val == '30'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '32' or $val == '32'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '34' or $val == '34'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '36' or $val == '36'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '38' or $val == '38'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>
+                        <?php if ($val == '42' or $val == '42'){ ?>
+                            <th scope="col"><?= $c2 ?></th>
+                        <?php } ?>    
+                <?php endforeach; 
+                 } else {  ?>
+                    <th scope="col"></th>
+                <?php }?>
                 <th scope="col"></th>
-                <th scope="col"><?= $tunidades ?></th>
-                <td></td>
+                <th scope="col"><?= $tunidades ?></th>                
                 <td></td>
             </tr>    
         </table>        

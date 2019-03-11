@@ -6,10 +6,6 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Facturaventa;
-use app\models\Producto;
-use app\models\Facturaventadetalle;
-use app\models\FacturaventaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -44,14 +40,15 @@ if ($mensaje != ""){
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Eliminar detalle Recibo de Caja
+            Eliminar detalle Comprobante Egreso
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Id Factura</th>
+                    <th scope="col">Id Compra</th>
+                    <th scope="col">Base Aiu</th>
                     <th scope="col">Rete Fuente</th>
                     <th scope="col">Rete Iva</th>
                     <th scope="col">Valor Abono</th>
@@ -62,20 +59,21 @@ if ($mensaje != ""){
                 <tbody>
                 <?php foreach ($mds as $val): ?>
                 <tr>
-                    <td><?= $val->iddetallerecibo ?></td>
-                    <td><?= $val->idfactura ?></td>
+                    <td><?= $val->id_comprobante_egreso_detalle ?></td>
+                    <td><?= $val->id_compra ?></td>
+                    <td><?= $val->base_aiu ?></td>
                     <td><?= $val->retefuente ?></td>
                     <td><?= $val->reteiva ?></td>
-                    <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
-                    <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
-                    <td><input type="checkbox" name="seleccion[]" value="<?= $val->iddetallerecibo ?>"></td>
+                    <td><?= '$ '.number_format($val->vlr_abono,0) ?></td>
+                    <td><?= '$ '.number_format($val->vlr_saldo,0) ?></td>
+                    <td><input type="checkbox" name="seleccion[]" value="<?= $val->id_comprobante_egreso_detalle ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['recibocaja/view', 'id' => $idrecibo], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['comprobante-egreso/view', 'id' => $id_comprobante_egreso], ['class' => 'btn btn-primary']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger",]) ?>
         </div>
 

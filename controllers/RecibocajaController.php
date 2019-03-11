@@ -378,8 +378,8 @@ class RecibocajaController extends Controller
                     $total = $table->vlrabono;
                     $table->vlrabono = $_POST["vlrabono"][$intIndice];
 
-                    /*$table->update();
-                    $recibo = Recibocaja::findOne($idrecibo);
+                    $table->update();
+                    /*$recibo = Recibocaja::findOne($idrecibo);
                     $recibo->valorpagado = $recibo->valorpagado - $total;
                     $recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
 

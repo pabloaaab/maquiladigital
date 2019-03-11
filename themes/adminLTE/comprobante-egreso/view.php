@@ -33,7 +33,7 @@ $view = 'comprobante-egreso';
             echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']);
             if ($model->numero > 0){
                     echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']);            
-                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->id_comprobante_egreso,'view' => $view], ['class' => 'btn btn-default']);                                                         
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 8, 'codigo' => $model->id_comprobante_egreso,'view' => $view], ['class' => 'btn btn-default']);                                                         
             }
         }
         ?>
@@ -68,7 +68,7 @@ $view = 'comprobante-egreso';
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
                     <td><?= Html::encode($model->banco->producto) ?></td>
-                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>                    
                 </tr>
                 <tr>
@@ -117,7 +117,7 @@ $view = 'comprobante-egreso';
                     <tbody>
                         <?php $calculo = 0; ?>
                     <?php foreach ($modeldetalles as $val): ?>
-                        <?php $calculo = $calculo + $val->vlrabono; ?>
+                        <?php $calculo = $calculo + $val->vlr_abono; ?>
                     <tr>
                         <td><?= $val->id_comprobante_egreso_detalle ?></td>
                         <?php if($val->id_compra){ ?>
@@ -129,8 +129,8 @@ $view = 'comprobante-egreso';
                         <td><?= '$ '.number_format($val->retefuente,0) ?></td>
                         <td><?= '$ '.number_format($val->reteiva,0) ?></td>
                         <td><?= '$ '.number_format($val->base_aiu,0) ?></td>
-                        <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
-                        <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
+                        <td><?= '$ '.number_format($val->vlr_abono,0) ?></td>
+                        <td><?= '$ '.number_format($val->vlr_saldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>
                                 <a href="#" data-toggle="modal" data-target="#iddetallecomprobante2<?= $val->id_comprobante_egreso_detalle ?>"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -153,11 +153,11 @@ $view = 'comprobante-egreso';
                                                             <label>Abono:</label>
                                                         </div>
                                                         <div class="col-lg-3">
-                                                            <input type="text" name="vlrabono" value="<?= $val->vlrabono ?>" class="form-control" required>
+                                                            <input type="text" name="vlr_abono" value="<?= $val->vlr_abono ?>" class="form-control" required>
                                                         </div>
                                                         <input type="hidden" name="id_comprobante_egreso_detalle" value="<?= $val->id_comprobante_egreso_detalle ?>">
                                                         <input type="hidden" name="id_comprobante_egreso" value="<?= $val->id_comprobante_egreso ?>">
-                                                        <input type="hidden" name="total" value="<?= $val->vlrabono ?>">
+                                                        <input type="hidden" name="total" value="<?= $val->vlr_abono ?>">
                                                     </div>
                                                 </div>
                                             </div>
