@@ -21,7 +21,7 @@ class PDF extends FPDF {
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
-        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. "NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. " NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
         $this->SetXY(53, 15);
         $this->Cell(150, 7, utf8_decode($config->direccionmatricula. "Teléfono:" .$config->telefonomatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 20);

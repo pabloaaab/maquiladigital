@@ -22,7 +22,7 @@ class PDF extends FPDF {
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
-        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. "NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
+        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. " NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
         $this->SetXY(53, 15);
         $this->Cell(150, 7, utf8_decode($config->direccionmatricula. "Teléfono:" .$config->telefonomatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 20);
@@ -51,17 +51,18 @@ class PDF extends FPDF {
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->nitmatricula . '-' . $comprobanteEgreso->proveedor->dv), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("T. COMPROBANTE:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 8);
-        $this->Cell(50, 6, utf8_decode($comprobanteEgreso->comprobanteEgresoTipo->concepto), 0, 0, 'L');
+        $this->SetFont('Arial', '', 7.8);
+        //$this->Cell(50, 6, utf8_decode($comprobanteEgreso->comprobanteEgresoTipo->concepto), 0, 0, 'L');
+        $this->MultiCell(47, 4, utf8_decode('COMPRA DE INSUMOS DE CONFECCION PARA LA VENTA DE ROPA'), 0, 'L');
         $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("PROVEEDOR:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 10);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->nombrecorto), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
+        //$this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');
+        //$this->Cell(50, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');
         $this->SetXY(10, 70); //FILA 3
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');

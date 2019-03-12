@@ -211,7 +211,7 @@ CREATE TABLE `compra` (
   `fechainicio` date DEFAULT NULL,
   `fechavencimiento` date DEFAULT NULL,
   `numero` int(11) NOT NULL DEFAULT '0',
-  `factura` int(11) NOT NULL,
+  `factura` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`id_compra`),
   KEY `id_proveedor` (`id_proveedor`),
   KEY `id_compra_concepto` (`id_compra_concepto`),
@@ -222,9 +222,9 @@ CREATE TABLE `compra` (
 /*Data for the table `compra` */
 
 insert  into `compra`(`id_compra`,`id_compra_concepto`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`porcentajeaiu`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`base_aiu`,`saldo`,`total`,`id_proveedor`,`usuariosistema`,`estado`,`autorizado`,`observacion`,`fechacreacion`,`fechainicio`,`fechavencimiento`,`numero`,`factura`) values 
-(2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,0,12241942,6,'71268830',2,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,123),
-(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,1,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,145),
-(4,3,19,1,0,10,20366082,20366,386956,0,2036608,20732672,20732672,3,'71268830',0,0,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',0,5258);
+(2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,0,12241942,6,'71268830',2,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,'123'),
+(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,1,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,'145'),
+(4,3,19,1,0,10,20366082,20366,386956,0,2036608,20732672,20732672,3,'71268830',0,1,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',3,'5258');
 
 /*Table structure for table `compra_concepto` */
 
@@ -296,13 +296,14 @@ CREATE TABLE `comprobante_egreso` (
   CONSTRAINT `comprobante_egreso_ibfk_2` FOREIGN KEY (`id_comprobante_egreso_tipo`) REFERENCES `comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
   CONSTRAINT `comprobante_egreso_ibfk_3` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`idproveedor`),
   CONSTRAINT `comprobante_egreso_ibfk_4` FOREIGN KEY (`id_banco`) REFERENCES `banco` (`idbanco`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 /*Data for the table `comprobante_egreso` */
 
 insert  into `comprobante_egreso`(`id_comprobante_egreso`,`id_municipio`,`fecha`,`fecha_comprobante`,`numero`,`id_comprobante_egreso_tipo`,`valor`,`id_proveedor`,`observacion`,`usuariosistema`,`estado`,`autorizado`,`libre`,`id_banco`) values 
 (1,'05001','2019-03-08 10:46:46','2019-03-08',2,1,12241942,6,'aaaaa','71268830',NULL,1,NULL,1021),
-(2,'05001','2019-03-08 11:57:30','2019-03-08',3,1,15000,4,'bbbb','71268830',NULL,1,1,1021);
+(2,'05001','2019-03-08 11:57:30','2019-03-08',3,1,15000,4,'bbbb','71268830',NULL,1,1,1021),
+(3,'05001','2019-03-11 14:17:35','2019-03-21',NULL,1,NULL,3,'sasas','71268830',NULL,NULL,NULL,1);
 
 /*Table structure for table `comprobante_egreso_detalle` */
 
@@ -325,13 +326,14 @@ CREATE TABLE `comprobante_egreso_detalle` (
   KEY `id_comprobante_egreso` (`id_comprobante_egreso`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_2` FOREIGN KEY (`id_comprobante_egreso`) REFERENCES `comprobante_egreso` (`id_comprobante_egreso`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `comprobante_egreso_detalle` */
 
 insert  into `comprobante_egreso_detalle`(`id_comprobante_egreso_detalle`,`id_compra`,`id_comprobante_egreso`,`vlr_abono`,`vlr_saldo`,`retefuente`,`reteiva`,`reteica`,`iva`,`base_aiu`,`observacion`) values 
 (6,2,1,12241942,0,436627,311097,0,0,0,NULL),
-(8,NULL,2,15000,0,0,0,0,0,0,NULL);
+(8,NULL,2,15000,0,0,0,0,0,0,NULL),
+(9,4,3,20732672,20732672,20366,0,0,0,0,NULL);
 
 /*Table structure for table `comprobante_egreso_tipo` */
 
@@ -383,7 +385,7 @@ insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values
 (2,'NOTA CREDITO',1),
 (3,'RECIBO CAJA',9),
 (4,'REMISION',5),
-(5,'COMPRAS',2),
+(5,'COMPRAS',3),
 (6,'COMPROBANTE EGRESO',3);
 
 /*Table structure for table `costo_fijo` */
@@ -3401,7 +3403,7 @@ CREATE TABLE `talla` (
   `talla` varchar(40) COLLATE utf8_spanish_ci NOT NULL,
   `sexo` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`idtalla`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `talla` */
 
@@ -3410,7 +3412,42 @@ insert  into `talla`(`idtalla`,`talla`,`sexo`) values
 (2,'S','MUJER'),
 (3,'M','MUJER'),
 (4,'L','MUJER'),
-(5,'XL','MUJER');
+(5,'XL','MUJER'),
+(40,'6','MUJER'),
+(41,'8','MUJER'),
+(42,'10','MUJER'),
+(43,'12','MUJER'),
+(44,'14','MUJER'),
+(45,'16','MUJER'),
+(46,'18','MUJER'),
+(47,'20','MUJER'),
+(48,'22','MUJER'),
+(49,'XS','HOMBRE'),
+(50,'S','HOMBRE'),
+(51,'M','HOMBRE'),
+(52,'L','HOMBRE'),
+(53,'XL','HOMBRE'),
+(54,'28','HOMBRE'),
+(55,'30','HOMBRE'),
+(56,'32','HOMBRE'),
+(57,'34','HOMBRE'),
+(58,'36','HOMBRE'),
+(59,'38','HOMBRE'),
+(60,'42','HOMBRE'),
+(61,'2','NIÑA'),
+(62,'4','NIÑA'),
+(63,'6','NIÑA'),
+(64,'8','NIÑA'),
+(65,'10','NIÑA'),
+(66,'12','NIÑA'),
+(67,'14','NIÑA'),
+(68,'2','NIÑO'),
+(69,'4','NIÑO'),
+(70,'6','NIÑO'),
+(71,'8','NIÑO'),
+(72,'10','NIÑO'),
+(73,'12','NIÑO'),
+(74,'14','NIÑO');
 
 /*Table structure for table `tipo_cargo` */
 
