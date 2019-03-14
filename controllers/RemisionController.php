@@ -72,6 +72,7 @@ class RemisionController extends Controller
                 $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0;
                 
                 $ct = $cxs + $cs + $cm + $cl + $cxl + $c2 + $c4 + $c6 + $c8 + $c10 + $c12 + $c14 + $c16 + $c18 + $c20 + $c22 + $c28 + $c30 + $c32 + $c34 + $c36 + $c38 + $c42;
+                $datostallas = null;
             }else{
                 $cxs = 0; $cs = 0; $cm = 0; $cl = 0; $cxl = 0; $ct = 0; $c2 = 0; $c4 = 0; $c6 = 0; $c8 = 0; $c10 = 0; $c12 = 0; $c14 = 0; $c16 = 0; $c18 = 0;
                 $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0; 
@@ -173,7 +174,8 @@ class RemisionController extends Controller
                     $this->Calculos($table);
                     $intIndice++;
                 }
-                $this->totales($id);                
+                $this->totales($id);
+                $datostallas = null;                
                 return $this->redirect(['remision', 'id' => $id]);
             }
             if (isset($_POST["actualizarynuevo"])) {
@@ -259,10 +261,12 @@ class RemisionController extends Controller
                 }
                 $this->totales($id);
                 $this->actionNuevodetalle($remision->id_remision,$remision->idordenproduccion);
+                $datostallas = null;
                 return $this->redirect(['remision', 'id' => $id]);
             }
             
         }else{
+            $datostallas = null;
             $remision = Remision::find()->where(['=', 'idordenproduccion', $id])->one();
             $count = 0;
             if ($remision){

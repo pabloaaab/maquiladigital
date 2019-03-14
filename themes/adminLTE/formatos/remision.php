@@ -191,20 +191,36 @@ class PDF extends FPDF {
         $this->Line(137, 92, 137, 190);//x1,y1,x2,y2
         $this->Line(144, 92, 144, 190);//x1,y1,x2,y2
         }
+        if ($nregistros == 3){
+            //estado
+            $this->Line(150, 92, 150, 190);//x1,y1,x2,y2   
+            //unidad por tula
+            $this->Line(179, 92, 179, 190);//x1,y1,x2,y2   
+            //linea final vertical
+            $this->Line(200, 92, 200, 190);//x1,y1,x2,y2
+            //   
+            //linea final 
+            $this->Line(10, 190, 201, 190); //linea horizontal inferior x1,y1,x2,y2
+
+            //Linea de la entrega
+            $this->Line(10, 232, 10, 265); //linea vertical
+            $this->Line(201, 232, 201, 265); //linea vertical
+        }else{
+            //estado
+            $this->Line(151, 92, 151, 190);//x1,y1,x2,y2   
+            //unidad por tula
+            $this->Line(180, 92, 180, 190);//x1,y1,x2,y2   
+            //linea final vertical
+            $this->Line(201, 92, 201, 190);//x1,y1,x2,y2
+            //   
+            //linea final 
+            $this->Line(10, 190, 201, 190); //linea horizontal inferior x1,y1,x2,y2
+
+            //Linea de la entrega
+            $this->Line(10, 232, 10, 265); //linea vertical
+            $this->Line(201, 232, 201, 265); //linea vertical
+        }
         
-        //estado
-        $this->Line(151, 92, 151, 190);//x1,y1,x2,y2   
-        //unidad por tula
-        $this->Line(180, 92, 180, 190);//x1,y1,x2,y2   
-        //linea final vertical
-        $this->Line(201, 92, 201, 190);//x1,y1,x2,y2
-        //   
-        //linea final 
-        $this->Line(10, 190, 201, 190); //linea horizontal inferior x1,y1,x2,y2
-        
-        //Linea de la entrega
-        $this->Line(10, 232, 10, 265); //linea vertical
-        $this->Line(201, 232, 201, 265); //linea vertical
         //Detalle factura
         $this->EncabezadoDetalles($nregistros);
     }
