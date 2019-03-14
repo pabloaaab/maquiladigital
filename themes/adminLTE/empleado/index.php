@@ -12,7 +12,35 @@ $this->title = 'Lista Empleados';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="empleados-index">
+<?php
+use kartik\export\ExportMenu;
+$gridColumns = [
+    ['class' => 'yii\grid\SerialColumn'],
+    'id_empleado',
+    'identificacion',
+    'nombrecorto',
+    'fechaingreso',
+    'fecharetiro',
+    [
+        'attribute' => 'contrato',
+        'value' => function($model){
+            $empleado = Empleado::findOne($model->id_empleado);                   
+            return $empleado->contratado;
+        },
+        'filter' => ArrayHelper::map(Empleado::find()->all(),'contrato','contratado'),
+        'contentOptions' => ['class' => 'col-lg-1'],
+    ],
+    'telefono',
+    'celular',    
+    ['class' => 'yii\grid\ActionColumn'],
+];
 
+// Renders a export dropdown menu
+echo ExportMenu::widget([
+    'dataProvider' => $dataProvider,
+    'columns' => $gridColumns
+]);
+?>
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
