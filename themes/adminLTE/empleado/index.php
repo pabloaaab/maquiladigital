@@ -3,6 +3,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use app\models\Empleado;
+use app\models\Departamento;
+use app\models\Municipio;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BancoSearch */
@@ -12,6 +14,7 @@ $this->title = 'Lista Empleados';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="empleados-index">
+    
 <?php
 use kartik\export\ExportMenu;
 $gridColumns = [
@@ -30,8 +33,28 @@ $gridColumns = [
         'filter' => ArrayHelper::map(Empleado::find()->all(),'contrato','contratado'),
         'contentOptions' => ['class' => 'col-lg-1'],
     ],
+    [
+        'attribute' => 'iddepartamento',
+        'value' => function($model){
+            $departamento = Departamento::findOne($model->iddepartamento);
+            return $departamento->departamento;
+        },
+        'filter' => ArrayHelper::map(Departamento::find()->all(),'iddepartamento','departamento'),
+        'contentOptions' => ['class' => 'col-lg-1'],
+    ],
+    [
+        'attribute' => 'iddmunicipio',
+        'value' => function($model){
+            $municipio = Municipio::findOne($model->idmunicipio);
+            return $municipio->municipio;
+        },
+        'filter' => ArrayHelper::map(Municipio::find()->all(),'idmunicipio','municipio'),
+        'contentOptions' => ['class' => 'col-lg-1'],
+    ],            
     'telefono',
-    'celular',    
+    'celular',
+    'email',
+    'observacion',            
     ['class' => 'yii\grid\ActionColumn'],
 ];
 
