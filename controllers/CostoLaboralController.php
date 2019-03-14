@@ -78,7 +78,14 @@ class CostoLaboralController extends Controller
                         $table->auxilio_transporte = $_POST["auxilio_transporte"][$intIndice];
                         $table->tiempo_extra = $_POST["tiempo_extra"][$intIndice];
                         $table->bonificacion = $_POST["bonificacion"][$intIndice];
-                        $table->update();
+                        /*if (isset($_POST["no_empleado"])){
+                            $dato = 1;
+                            $table->no_empleado = 1;
+                        }else{
+                            $dato = 0;
+                            $table->no_empleado = 0;
+                        }*/
+                        $table->save(false);
                         $this->Calculos($table);
                     }
                     $intIndice++;

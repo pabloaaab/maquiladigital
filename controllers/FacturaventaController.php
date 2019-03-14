@@ -125,7 +125,7 @@ class FacturaventaController extends Controller
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->idresolucion = $resolucion->idresolucion;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idfactura]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

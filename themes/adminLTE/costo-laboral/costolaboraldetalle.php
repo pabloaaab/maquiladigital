@@ -77,6 +77,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                 <tr>
                     <th scope="col" title="N° Empleados">N°</th>
                     <th scope="col">Tipo Cargo</th>
+                    <th scope="col" title="No Empleado">NE</th>
                     <th scope="col">% Arl</th>
                     <th scope="col">Salario</th>
                     <th scope="col" title="Auxilio Transporte">Transp</th>
@@ -90,16 +91,22 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                     <th scope="col" title="Ajuste Vacaciones">A.V</th>
                     <th scope="col">Subtotal</th>
                     <th scope="col" title="Administración">Admon</th>
-                    <th scope="col">Total</th>
-                    <th scope="col"></th>
+                    <th scope="col">Total</th>                    
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($costolaboraldetalle as $val): ?>
+                    <?php if ($val->no_empleado == 1){
+                        $checked = ' checked';
+                    }else{
+                        $checked = ' ';
+                    }                         
+                    ?>
                     <tr>                    
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 0;padding-right: 1;"><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Opción', 'required' => true]) ?>
+                        <td style="padding-left: 0;padding-right: 0;" align="center"><input type="checkbox" name="no_empleado[]" value="<?= $val->no_empleado ?>" <?= $checked ?> ></td>
                         <td style="padding-left: 0;padding-right: 1;"><?= Html::dropDownList('id_arl[]', $val->id_arl, $arl, ['class' => 'col-sm-13', 'prompt' => 'Opción', 'required' => true]) ?>    
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="salario[]" value="<?= $val->salario ?>" size="5" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="4" onkeypress="return esInteger(event)" required></td>
@@ -114,7 +121,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->subtotal) ?></td>
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->admon) ?></td>
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->total) ?></td>
-                        <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_costo_laboral_detalle[]" value="<?= $val->id_costo_laboral_detalle ?>"></td>
+                        <input type="hidden" name="id_costo_laboral_detalle[]" value="<?= $val->id_costo_laboral_detalle ?>">
                         <td><?=
                             Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $costolaboral->id_costo_laboral, 'iddetalle' => $val->id_costo_laboral_detalle], [
                                 'class' => '',

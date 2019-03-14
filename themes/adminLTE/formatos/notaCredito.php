@@ -61,7 +61,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(29, 5, utf8_decode("NIT:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 8);
-        $this->Cell(70, 5, utf8_decode($factura->cliente->nitmatricula . '-' . $factura->cliente->dv), 0, 0, 'L');
+        $this->Cell(70, 5, utf8_decode($factura->cliente->cedulanit . '-' . $factura->cliente->dv), 0, 0, 'L');
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("CLIENTE:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);

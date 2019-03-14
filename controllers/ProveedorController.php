@@ -126,7 +126,7 @@ class ProveedorController extends Controller {
                 }
 
                 if ($table->insert()) {
-                    $this->redirect(["proveedor/view", 'id' => $table->idproveedor]);
+                    return $this->redirect(['index']);
                 } else {
                     $msg = "error";
                 }
@@ -185,6 +185,7 @@ class ProveedorController extends Controller {
                     }
                     if ($table->update()) {
                         $msg = "El registro ha sido actualizado correctamente";
+                        return $this->redirect(['index']);
                     } else {
                         $msg = "El registro no sufrio ningun cambio";
                         $tipomsg = "danger";

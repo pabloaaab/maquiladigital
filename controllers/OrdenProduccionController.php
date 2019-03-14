@@ -125,7 +125,7 @@ class OrdenProduccionController extends Controller {
             $model->autorizado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idordenproduccion]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

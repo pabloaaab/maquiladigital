@@ -92,7 +92,7 @@ class NotacreditoController extends Controller
 
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idnotacredito]);
+            return $this->redirect(['index']);
         }
         return $this->render('create', [
             'model' => $model,

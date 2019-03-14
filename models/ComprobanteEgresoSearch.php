@@ -44,6 +44,11 @@ class ComprobanteEgresoSearch extends ComprobanteEgreso
         $query = ComprobanteEgreso::find();
 
         // add conditions that should always apply here
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['id_comprobante_egreso' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

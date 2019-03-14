@@ -94,7 +94,7 @@ class CompraController extends Controller
             $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();
             $this->calculo($model->id_compra);
-            return $this->redirect(['view', 'id' => $model->id_compra]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -118,7 +118,7 @@ class CompraController extends Controller
         $conceptos = CompraConcepto::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->calculo($id);
-            return $this->redirect(['view', 'id' => $model->id_compra]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -223,7 +223,7 @@ class CompraController extends Controller
                         $porcentajeretefuente = $concepto->porcentaje_retefuente;                    
                     }
                 }else{
-                    if ($model->subtotal >= $concepto->base_retencion){ //calculo retefuente cuando cumple con la base de retension
+                    if ($model->subtotal >= $concepto->base_retencion){ //calculo retefuente cuando cumple con la base de retencion
                         $retencionfuente = round($model->subtotal * $concepto->porcentaje_retefuente / 100);
                         if($retencionfuente == 0){
                             $porcentajeretefuente = 0;

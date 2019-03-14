@@ -72,7 +72,7 @@ class TipoReciboController extends Controller
         $model = new TipoRecibo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtiporecibo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

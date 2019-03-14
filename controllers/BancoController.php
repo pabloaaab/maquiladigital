@@ -77,7 +77,7 @@ class BancoController extends Controller
             $empresa = Matriculaempresa::find(1)->one();
             $model->nitmatricula = $empresa->nitmatricula;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idbanco]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

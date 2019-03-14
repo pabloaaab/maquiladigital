@@ -43,6 +43,11 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
         $query = SeguimientoProduccion::find();
 
         // add conditions that should always apply here
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['id_seguimiento_produccion' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -25,6 +25,7 @@ use Yii;
  * @property double $total
  * @property int $id_tipo_cargo
  * @property int $id_arl
+ * @property int $no_empleado
  *
  * @property CostoLaboral $costoLaboral
  * @property TipoCargo $tipoCargo
@@ -46,7 +47,7 @@ class CostoLaboralDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_costo_laboral', 'nro_empleados', 'id_tipo_cargo', 'id_arl'], 'integer'],
+            [['id_costo_laboral', 'nro_empleados', 'id_tipo_cargo', 'id_arl','no_empleado'], 'integer'],
             [['salario', 'auxilio_transporte', 'tiempo_extra', 'bonificacion', 'arl', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste_vac', 'subtotal', 'admon', 'total'], 'number'],
             [['id_costo_laboral'], 'exist', 'skipOnError' => true, 'targetClass' => CostoLaboral::className(), 'targetAttribute' => ['id_costo_laboral' => 'id_costo_laboral']],
             [['id_tipo_cargo'], 'exist', 'skipOnError' => true, 'targetClass' => TipoCargo::className(), 'targetAttribute' => ['id_tipo_cargo' => 'id_tipo_cargo']],

@@ -21,17 +21,20 @@ class PDF extends FPDF {
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
         $this->SetFont('Arial', '', 12);
-        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula. " NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
-        $this->SetXY(53, 15);
-        $this->Cell(150, 7, utf8_decode($config->direccionmatricula. "Teléfono:" .$config->telefonomatricula), 0, 0, 'C', 0);
-        $this->SetXY(53, 20);
+        $this->SetXY(53, 9);
+        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
+        $this->SetXY(53, 13.5);
+        $this->Cell(150, 7, utf8_decode(" NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
+        $this->SetXY(53, 18);
+        $this->Cell(150, 7, utf8_decode($config->direccionmatricula. " Teléfono: " .$config->telefonomatricula), 0, 0, 'C', 0);
+        $this->SetXY(53, 23);
         $this->Cell(150, 7, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'C', 0);
-        $this->SetXY(53, 25);
+        $this->SetXY(53, 28);
         $this->Cell(150, 7, utf8_decode($config->tipoRegimen->regimen), 0, 0, 'C', 0);
-        $this->SetXY(53, 30);
+        $this->SetXY(53, 32);
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(150, 7, utf8_decode("Autorización Numeración de Facturación: Res. Dian N° " .$config->resolucion->nroresolucion), 0, 0, 'C', 0);
-        $this->SetXY(53, 35);
+        $this->SetXY(53, 36);
         $this->Cell(150, 7, utf8_decode("Fecha: ". date('d-m-Y', strtotime($config->resolucion->fechacreacion)). " Numeración: ". $config->resolucion->desde. " AL ". $config->resolucion->hasta), 0, 0, 'C', 0);
         $this->SetXY(53, 40);
         $this->Cell(150, 7, utf8_decode("Código Actividad: " .$config->resolucion->codigoactividad. " Descripción: ". $config->resolucion->descripcion), 0, 0, 'C', 0);
@@ -46,7 +49,7 @@ class PDF extends FPDF {
         $this->SetXY(10, 54);
         /*$this->SetFont('Arial', 'B', 8);
         $this->Cell(23, 5, utf8_decode("NIT:"), 0, 0, 'l', 1);
-        $this->Cell(118, 5, utf8_decode($factura->cliente->nitmatricula.'-'.$factura->cliente->dv), 0, 0, 'L',1);
+        $this->Cell(118, 5, utf8_decode($factura->cliente->cedulanit.'-'.$factura->cliente->dv), 0, 0, 'L',1);
         $this->Cell(25, 5, utf8_decode("FECHA EMISION"), 0, 0, 'c', 1);
         $this->Cell(25, 5, utf8_decode("FECHA VENCE"), 0, 0, 'c', 1);
         $this->SetXY(10, 59);

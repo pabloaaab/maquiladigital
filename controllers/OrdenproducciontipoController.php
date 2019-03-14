@@ -72,7 +72,7 @@ class OrdenproducciontipoController extends Controller
         $model = new Ordenproducciontipo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->idtipo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

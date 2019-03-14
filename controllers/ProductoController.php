@@ -123,7 +123,7 @@ class ProductoController extends Controller
             $model->usuariosistema = Yii::$app->user->identity->username;
             //$model->stock = $model->cantidad;
             $model->update();
-            return $this->redirect(['view', 'id' => $model->idproducto]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

@@ -44,6 +44,11 @@ class CompraSearch extends Compra
         $query = Compra::find();
 
         // add conditions that should always apply here
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['id_compra' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
+        ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
