@@ -55,7 +55,7 @@ class CostoLaboral extends \yii\db\ActiveRecord
             'total_operativo' => 'Total Operativo',
             'total_general' => 'Total General',
             'empleados_operativos' => 'Empleados Operativos',
-            'empleados_administrativos' => 'Empleados Operativos',
+            'empleados_administrativos' => 'Empleados Administrativos',
         ];
     }
 

@@ -52,6 +52,7 @@ class CostoLaboralController extends Controller
         $model->admon = 0;
         $model->total = 0;
         $model->id_tipo_cargo = 1;
+        $model->no_empleado = 1;
         $model->save();
         return $this->redirect(['costolaboraldetalle', 'id' => 1]);
     }
@@ -78,13 +79,7 @@ class CostoLaboralController extends Controller
                         $table->auxilio_transporte = $_POST["auxilio_transporte"][$intIndice];
                         $table->tiempo_extra = $_POST["tiempo_extra"][$intIndice];
                         $table->bonificacion = $_POST["bonificacion"][$intIndice];
-                        /*if (isset($_POST["no_empleado"])){
-                            $dato = 1;
-                            $table->no_empleado = 1;
-                        }else{
-                            $dato = 0;
-                            $table->no_empleado = 0;
-                        }*/
+                        $table->no_empleado = $_POST["no_empleado"][$intIndice];
                         $table->save(false);
                         $this->Calculos($table);
                     }
@@ -107,17 +102,30 @@ class CostoLaboralController extends Controller
     protected function Calculos($table)
     {
         $parametros = Parametros::findOne(1);
-        $arl = $table->arl0->arl;
-        $table->arl = round(($table->salario + $table->tiempo_extra) * $arl / 100);
-        $table->pension = round(($table->salario + $table->tiempo_extra) * $parametros->pension / 100);
-        $table->caja = round(($table->salario + $table->tiempo_extra) * $parametros->caja / 100);
-        $table->prestaciones = round(($table->salario + $table->tiempo_extra + $table->auxilio_transporte) * $parametros->prestaciones / 100);
-        $table->vacaciones = round(($table->salario) * $parametros->vacaciones / 100);
-        $table->ajuste_vac = round(($table->vacaciones) * $parametros->ajuste / 100);
-        $subtotal = round(($table->salario + $table->auxilio_transporte + $table->tiempo_extra + $table->bonificacion + $table->arl + $table->pension + $table->caja + $table->prestaciones + $table->vacaciones + $table->ajuste_vac) * $table->nro_empleados);
-        $table->subtotal = $subtotal;
-        $table->admon = round($subtotal * $parametros->admon / 100);
-        $table->total = round($subtotal + $table->admon);
+        if ($table->no_empleado == 1) {
+            $arl = $table->arl0->arl;
+            $table->arl = round(($table->salario + $table->tiempo_extra) * $arl / 100);
+            $table->pension = round(($table->salario + $table->tiempo_extra) * $parametros->pension / 100);
+            $table->caja = round(($table->salario + $table->tiempo_extra) * $parametros->caja / 100);
+            $table->prestaciones = round(($table->salario + $table->tiempo_extra + $table->auxilio_transporte) * $parametros->prestaciones / 100);
+            $table->vacaciones = round(($table->salario) * $parametros->vacaciones / 100);
+            $table->ajuste_vac = round(($table->vacaciones) * $parametros->ajuste / 100);
+            $subtotal = round(($table->salario + $table->auxilio_transporte + $table->tiempo_extra + $table->bonificacion + $table->arl + $table->pension + $table->caja + $table->prestaciones + $table->vacaciones + $table->ajuste_vac) * $table->nro_empleados);
+            $table->subtotal = $subtotal;
+            $table->admon = round($subtotal * $parametros->admon / 100);
+            $table->total = round($subtotal + $table->admon);
+        }else{
+            $table->arl = 0;
+            $table->pension = 0;
+            $table->caja = 0;
+            $table->prestaciones = 0;
+            $table->vacaciones = 0;
+            $table->ajuste_vac = 0;
+            $subtotal = round(($table->salario + $table->auxilio_transporte + $table->tiempo_extra + $table->bonificacion) * $table->nro_empleados);
+            $table->subtotal = $subtotal;
+            $table->admon = round($subtotal * $parametros->admon / 100);
+            $table->total = round($subtotal + $table->admon);
+        }        
         $table->update();
     }
     
@@ -128,28 +136,43 @@ class CostoLaboralController extends Controller
         $detalles = CostoLaboralDetalle::find()->where(['=','id_costo_laboral',$id])->all();
         $operativos = 0;
         $administrativos = 0;
+        $no_operativos = 0;
+        $no_administrativos = 0;
         $totaloperativo = 0;
-        $totaladministrativo = 0;        
+        $total_no_operativo = 0;
+        $totaladministrativo = 0;
+        $total_no_administrativo = 0;        
         $totaladministracion = 0;
         $totalgeneral = 0;
             foreach ($detalles as $val){
-                if($val->id_tipo_cargo == 1){ //1 = operativo, 2 = administrativo
+                if($val->id_tipo_cargo == 1 && $val->no_empleado == 1){ //1 = operativo, 2 = administrativo, 0 = no es empleado operativo, 1 = si es empleado operativo
                     $totaloperativo = $totaloperativo + $val->total;
                     $operativos = $operativos + $val->nro_empleados;
                 }
-                if($val->id_tipo_cargo == 2){ //1 = operativo, 2 = administrativo
-                    $totaladministrativo = $totaladministrativo + $val->total;
-                    //$totaloperativo = $totaloperativo + $val->total;
+                if($val->id_tipo_cargo == 1 && $val->no_empleado == 0){ //1 = operativo, 2 = administrativo, 0 = no es empleado operativo, 1 = si es empleado operativo
+                    $total_no_operativo = $total_no_operativo + $val->total;
+                    $no_operativos = $no_operativos + $val->nro_empleados;
+                }
+                if($val->id_tipo_cargo == 2 && $val->no_empleado == 1){ //1 = operativo, 2 = administrativo, 0 = no es empleado operativo, 1 = si es empleado operativo
+                    $totaladministrativo = $totaladministrativo + $val->total;                    
                     $administrativos = $administrativos + $val->nro_empleados;
-                }                
+                }
+                if($val->id_tipo_cargo == 2 && $val->no_empleado == 0){ //1 = operativo, 2 = administrativo, 0 = no es empleado operativo, 1 = si es empleado operativo
+                    $total_no_administrativo = $total_no_administrativo + $val->total;                    
+                    $no_administrativos = $no_administrativos + $val->nro_empleados;
+                }
                 $totaladministracion = $totaladministracion + $val->admon;
                 $totalgeneral = $totalgeneral + $val->total;
         }        
         $costolaboral = CostoLaboral::findOne($id);
         $costolaboral->empleados_administrativos = $administrativos;
         $costolaboral->empleados_operativos = $operativos;
+        $costolaboral->no_empleados_administrativos = $no_administrativos;
+        $costolaboral->no_empleados_operativos = $no_operativos;
         $costolaboral->total_operativo = $totaloperativo;
         $costolaboral->total_administrativo = $totaladministrativo;
+        $costolaboral->total_operativo_no_empleado = $total_no_operativo;
+        $costolaboral->total_administrativo_no_empleado = $total_no_administrativo;
         $costolaboral->total_administracion = $totaladministracion;
         $costolaboral->total_general = $totalgeneral;
         $costolaboral->update();
