@@ -54,8 +54,9 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(35, 6, utf8_decode("T. COMPROBANTE:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 7.8);
+        $this->SetXY(160, 60);
         //$this->Cell(50, 6, utf8_decode($comprobanteEgreso->comprobanteEgresoTipo->concepto), 0, 0, 'L');
-        $this->MultiCell(47, 4, utf8_decode('COMPRA DE INSUMOS DE CONFECCION PARA LA VENTA DE ROPA'), 0, 'L');
+        $this->MultiCell(47, 3.5, utf8_decode('COMPRA DE INSUMOS DE CONFECCION PARA LA VENTA DE ROPA'), 0, 'L');
         $this->SetXY(10, 64); //FILA 2
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("PROVEEDOR:"), 0, 0, 'c');
