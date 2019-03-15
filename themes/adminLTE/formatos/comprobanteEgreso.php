@@ -124,7 +124,7 @@ class PDF extends FPDF {
 
     function EncabezadoDetalles() {
         $this->Ln(3);
-        $header = array('TERCERO', utf8_decode('N° FACTURA'), 'VLR ABONO', 'VLR SALDO', 'RTE FUENTE', 'RTE IVA', 'BASE AIU');
+        $header = array('CONCEPTO', utf8_decode('N° FACTURA'), 'VLR ABONO', 'VLR SALDO', 'RTE FUENTE', 'RTE IVA', 'BASE AIU');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -154,7 +154,7 @@ class PDF extends FPDF {
         foreach ($detalles as $detalle) {
             $i = $i + 1;
             $pdf->SetFont('Arial', '', 7.5);
-            $pdf->Cell(74, 5, $detalle->compra->proveedor->nombrecorto, 0, 0, 'L');
+            $pdf->Cell(74, 5, $detalle->compra->compraConcepto->concepto, 0, 0, 'L');
             $pdf->SetFont('Arial', '', 9);
             if ($model->libre == 0){
                 $pdf->Cell(21, 5, $detalle->compra->factura, 0, 0, 'R');
