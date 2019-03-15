@@ -51,7 +51,11 @@ $fieldOptions2 = [
             </div>
             <!-- /.col -->
         </div>
-
+        <br>
+        <br>        
+        <div class="row" align="center">
+            <img src="dist/images/logos/logomaquila.png" align="center" width="50%" height="50%">
+        </div>
 
         <?php ActiveForm::end(); ?>
 
@@ -72,6 +76,3 @@ $fieldOptions2 = [
     
 </div><!-- /.login-box -->
 
-<div align="center">
-    <img src="dist/images/logos/logomaquila.png" align="center" width="12%" height="12%">
-</div>

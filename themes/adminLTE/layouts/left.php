@@ -74,7 +74,7 @@
                                         'icon' => 'question',
                                         'url' => '#',
                                         'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/indexconsulta']],                                    
                                         ],    
                                     ],
                                     [
