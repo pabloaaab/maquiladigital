@@ -154,7 +154,12 @@ class PDF extends FPDF {
         foreach ($detalles as $detalle) {
             $i = $i + 1;
             $pdf->SetFont('Arial', '', 7.5);
-            $pdf->Cell(74, 5, $detalle->compra->compraConcepto->concepto, 0, 0, 'L');
+            if ($model->libre == 0){
+                $pdf->Cell(74, 5, $detalle->compra->compraConcepto->concepto, 0, 0, 'L');
+            }else{
+                $pdf->Cell(74, 5, $model->comprobanteEgresoTipo->concepto, 0, 0, 'L');
+            }
+            
             $pdf->SetFont('Arial', '', 9);
             if ($model->libre == 0){
                 $pdf->Cell(21, 5, $detalle->compra->factura, 0, 0, 'R');
