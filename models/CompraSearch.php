@@ -48,11 +48,7 @@ class CompraSearch extends Compra
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['id_compra' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
-        ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        ]);        
 
         $this->load($params);
 

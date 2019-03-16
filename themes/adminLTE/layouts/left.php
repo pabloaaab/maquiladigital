@@ -233,7 +233,7 @@
                                         'icon' => 'question',
                                         'url' => '#',
                                         'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Factura Venta', 'icon' => 'plus-square-o', 'url' => ['/facturaventa/indexconsulta']],                                            
                                         ],    
                                     ],
                                     [

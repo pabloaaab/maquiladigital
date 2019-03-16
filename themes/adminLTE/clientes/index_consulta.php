@@ -88,8 +88,14 @@ $this->params['breadcrumbs'][] = $this->title;
             </tbody>
             <?php endforeach; ?>
         </table>    
-        <div class="panel-footer text-right" >
-            <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['excelconsulta'], ['class' => 'btn btn-primary ']); ?>
+        <div class="panel-footer text-right" >            
+            <?php
+                $form = ActiveForm::begin([
+                            "method" => "post",                            
+                        ]);
+                ?>    
+                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary ']); ?>
+            <?php $form->end() ?>
         </div>
     </div>
 </div>

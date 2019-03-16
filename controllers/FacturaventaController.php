@@ -11,6 +11,7 @@ use Yii;
 use app\models\Facturaventa;
 use app\models\FacturaventaSearch;
 use app\models\Facturaventadetalle;
+use app\models\FormFiltroConsultaFacturaventa;
 use app\models\Matriculaempresa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -555,43 +556,7 @@ class FacturaventaController extends Controller
             $producto->stock = $producto->stock - $dato->cantidad;
             $producto->update();
         }
-    }
-    
-    
- 
-/*public function actionImprimir() {
-    // get your HTML raw content without any layouts or scripts
-    $content = $this->renderPartial('formatos/imprimir');
-    
-    // setup kartik\mpdf\Pdf component
-    $pdf = new Pdf([
-        // set to use core fonts only
-        'mode' => Pdf::MODE_CORE, 
-        // A4 paper format
-        'format' => Pdf::FORMAT_LETTER, 
-        // portrait orientation
-        'orientation' => Pdf::ORIENT_PORTRAIT, 
-        // stream to browser inline
-        'destination' => Pdf::DEST_BROWSER,
-        'filename' => 'dsds.pdf',
-        // your html content input
-        'content' => $content,  
-        // format content from your own css file if needed or use the
-        // enhanced bootstrap css built by Krajee for mPDF formatting 
-        'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
-        // any css to be embedded if required
-        'cssInline' => '.kv-heading-1{font-size:10px}', 
-         // set mPDF properties on the fly
-        'options' => ['title' => 'Krajee Report Title'],
-         // call mPDF methods on the fly
-        'methods' => [              
-            'SetFooter'=>['PAG {PAGENO}'],            
-        ]
-    ]);
-
-    // return the pdf output as per the destination setting
-    return $pdf->render();     
-}*/
+    }         
     
     public function actionImprimir($id)
     {
@@ -600,6 +565,188 @@ class FacturaventaController extends Controller
             'model' => $this->findModel($id),
             
         ]);
+    }
+    
+    public function actionIndexconsulta() {
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',14])->all()){
+            $form = new FormFiltroConsultaFacturaventa();
+            $idcliente = null;
+            $desde = null;
+            $hasta = null;
+            $numero = null;
+            $pendiente = null;
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $desde = Html::encode($form->desde);
+                    $hasta = Html::encode($form->hasta);
+                    $numero = Html::encode($form->numero);
+                    $pendiente = Html::encode($form->pendiente);
+                    $table = Facturaventa::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['>=', 'fechainicio', $desde])
+                            ->andFilterWhere(['<=', 'fechainicio', $hasta])
+                            ->andFilterWhere(['=', 'nrofactura', $numero]);
+                    if ($pendiente == 1){
+                        $table = $table->andFilterWhere(['>', 'saldo', $pendiente]);
+                    }        
+                    $table = $table->orderBy('idfactura desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 20,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if(isset($_POST['excel'])){
+                        $table = $table->all();
+                        $this->actionExcelconsulta($table);
+                    }
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = Facturaventa::find()
+                        ->orderBy('idfactura desc');
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 20,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+                if(isset($_POST['excel'])){
+                    $table = $table->all();
+                    $this->actionExcelconsulta($table);
+                }
+            }
+            $to = $count->count();
+            return $this->render('index_consulta', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+    }
+    
+    public function actionViewconsulta($id)
+    {
+        $modeldetalles = Facturaventadetalle::find()->Where(['=', 'idfactura', $id])->all();
+        $modeldetalle = new Facturaventadetalle();
+        $mensaje = "";                        
+        return $this->render('view_consulta', [
+            'model' => $this->findModel($id),
+            'modeldetalle' => $modeldetalle,
+            'modeldetalles' => $modeldetalles,
+            'mensaje' => $mensaje,
+        ]);
+    }
+    
+    public function actionExcelconsulta($table) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);                       
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Id')
+                    ->setCellValue('B1', 'N° Factura')
+                    ->setCellValue('C1', 'Cliente')
+                    ->setCellValue('D1', 'Id Orden Produccion')
+                    ->setCellValue('E1', 'Fecha Inicio')
+                    ->setCellValue('F1', 'Fecha Vencimiento')
+                    ->setCellValue('G1', 'Forma Pago')
+                    ->setCellValue('H1', 'Plazo Pago')
+                    ->setCellValue('I1', '% Iva')
+                    ->setCellValue('J1', '% ReteFuente')
+                    ->setCellValue('K1', '% ReteIva')
+                    ->setCellValue('L1', 'Iva')
+                    ->setCellValue('M1', 'ReteFuente')
+                    ->setCellValue('N1', 'ReteIva')
+                    ->setCellValue('O1', 'Subtotal')  
+                    ->setCellValue('P1', 'Saldo')
+                    ->setCellValue('Q1', 'Total')
+                    ->setCellValue('R1', 'Autorizado')
+                    ->setCellValue('S1', 'Estado')
+                    ->setCellValue('T1', 'Observacion');
+        $i = 2;
+        
+        foreach ($table as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->idfactura)
+                    ->setCellValue('B' . $i, $val->nrofactura)
+                    ->setCellValue('C' . $i, $val->cliente->nombreClientes)
+                    ->setCellValue('D' . $i, $val->idordenproduccion)
+                    ->setCellValue('E' . $i, $val->fechainicio)
+                    ->setCellValue('F' . $i, $val->fechavcto)
+                    ->setCellValue('G' . $i, $val->formadepago)
+                    ->setCellValue('H' . $i, $val->plazopago)
+                    ->setCellValue('I' . $i, $val->porcentajeiva)
+                    ->setCellValue('J' . $i, $val->porcentajefuente)
+                    ->setCellValue('K' . $i, $val->porcentajereteiva)
+                    ->setCellValue('L' . $i, '$ '.number_format($val->impuestoiva,0))
+                    ->setCellValue('M' . $i, '$ '.number_format($val->retencionfuente,0))
+                    ->setCellValue('N' . $i, '$ '.number_format($val->retencioniva,0))
+                    ->setCellValue('O' . $i, '$ '.number_format($val->subtotal,0))
+                    ->setCellValue('P' . $i, '$ '.$val->saldo)
+                    ->setCellValue('Q' . $i, '$ '.number_format($val->totalpagar,0))
+                    ->setCellValue('R' . $i, $val->autorizar)
+                    ->setCellValue('S' . $i, $val->estados)
+                    ->setCellValue('T' . $i, $val->observacion);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('facturas_de_venta');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="facturas_de_venta.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
     }
     
 }
