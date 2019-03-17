@@ -279,7 +279,7 @@ class ClientesController extends Controller {
     }
     
     public function actionIndexconsulta() {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',14])->all()){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',39])->all()){
             $form = new FormFiltroConsultaCliente;
             $cedulanit = null;
             $nombrecorto = null;

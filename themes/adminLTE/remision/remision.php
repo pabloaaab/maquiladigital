@@ -388,55 +388,55 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                             <th scope="col"><?= $c2 ?></th>
                         <?php } ?>
                         <?php if ($val == '4' or $val == '4'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c4 ?></th>
                         <?php } ?>
                         <?php if ($val == '6' or $val == '6'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c6 ?></th>
                         <?php } ?>
                         <?php if ($val == '8' or $val == '8'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c8 ?></th>
                         <?php } ?>
                         <?php if ($val == '10' or $val == '10'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c10 ?></th>
                         <?php } ?>
                         <?php if ($val == '12' or $val == '12'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c12 ?></th>
                         <?php } ?>
                         <?php if ($val == '14' or $val == '14'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c14 ?></th>
                         <?php } ?>
                         <?php if ($val == '16' or $val == '16'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c16 ?></th>
                         <?php } ?>
                         <?php if ($val == '18' or $val == '18'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c18 ?></th>
                         <?php } ?>
                         <?php if ($val == '20' or $val == '20'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c20 ?></th>
                         <?php } ?>
                         <?php if ($val == '22' or $val == '22'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c22 ?></th>
                         <?php } ?>
                         <?php if ($val == '28' or $val == '28'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c28 ?></th>
                         <?php } ?>
                         <?php if ($val == '30' or $val == '30'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c30 ?></th>
                         <?php } ?>
                         <?php if ($val == '32' or $val == '32'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c32 ?></th>
                         <?php } ?>
                         <?php if ($val == '34' or $val == '34'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c34 ?></th>
                         <?php } ?>
                         <?php if ($val == '36' or $val == '36'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c36 ?></th>
                         <?php } ?>
                         <?php if ($val == '38' or $val == '38'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c38 ?></th>
                         <?php } ?>
                         <?php if ($val == '42' or $val == '42'){ ?>
-                            <th scope="col"><?= $c2 ?></th>
+                            <th scope="col"><?= $c42 ?></th>
                         <?php } ?>    
                 <?php endforeach; 
                  } else {  ?>

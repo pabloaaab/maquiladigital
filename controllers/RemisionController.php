@@ -474,7 +474,7 @@ class RemisionController extends Controller
     
     protected function Calculos($table)
     {                
-        $table->unidades = $table->xs + $table->s + $table->m + $table->l + $table->xl;                
+        $table->unidades = $table->xs + $table->s + $table->m + $table->l + $table->xl + $table['2'] + $table['4'] + $table['6'] + $table['8'] + $table['10'] + $table['12'] + $table['14'] + $table['16'] + $table['18'] + $table['20'] + $table['22'] + $table['28'] + $table['30'] + $table['32'] + $table['34'] + $table['36'] + $table['38'] + $table['42'];
         $table->update();
     }
     

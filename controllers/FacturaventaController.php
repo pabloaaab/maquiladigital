@@ -568,7 +568,7 @@ class FacturaventaController extends Controller
     }
     
     public function actionIndexconsulta() {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',14])->all()){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',40])->all()){
             $form = new FormFiltroConsultaFacturaventa();
             $idcliente = null;
             $desde = null;
@@ -696,9 +696,9 @@ class FacturaventaController extends Controller
                     ->setCellValue('L1', 'Iva')
                     ->setCellValue('M1', 'ReteFuente')
                     ->setCellValue('N1', 'ReteIva')
-                    ->setCellValue('O1', 'Subtotal')  
-                    ->setCellValue('P1', 'Saldo')
-                    ->setCellValue('Q1', 'Total')
+                    ->setCellValue('O1', 'Subtotal')                      
+                    ->setCellValue('P1', 'Total')
+                    ->setCellValue('Q1', 'Saldo')
                     ->setCellValue('R1', 'Autorizado')
                     ->setCellValue('S1', 'Estado')
                     ->setCellValue('T1', 'Observacion');
@@ -718,12 +718,12 @@ class FacturaventaController extends Controller
                     ->setCellValue('I' . $i, $val->porcentajeiva)
                     ->setCellValue('J' . $i, $val->porcentajefuente)
                     ->setCellValue('K' . $i, $val->porcentajereteiva)
-                    ->setCellValue('L' . $i, '$ '.number_format($val->impuestoiva,0))
-                    ->setCellValue('M' . $i, '$ '.number_format($val->retencionfuente,0))
-                    ->setCellValue('N' . $i, '$ '.number_format($val->retencioniva,0))
-                    ->setCellValue('O' . $i, '$ '.number_format($val->subtotal,0))
-                    ->setCellValue('P' . $i, '$ '.$val->saldo)
-                    ->setCellValue('Q' . $i, '$ '.number_format($val->totalpagar,0))
+                    ->setCellValue('L' . $i, round($val->impuestoiva,0))
+                    ->setCellValue('M' . $i, round($val->retencionfuente,0))
+                    ->setCellValue('N' . $i, round($val->retencioniva,0))
+                    ->setCellValue('O' . $i, round($val->subtotal,0))                    
+                    ->setCellValue('P' . $i, round($val->totalpagar,0))
+                    ->setCellValue('Q' . $i, round($val->saldo,0))
                     ->setCellValue('R' . $i, $val->autorizar)
                     ->setCellValue('S' . $i, $val->estados)
                     ->setCellValue('T' . $i, $val->observacion);
