@@ -74,8 +74,8 @@ class PDF extends FPDF {
         $this->Cell(118, 5, utf8_decode($factura->cliente->direccioncliente), 0, 0, 'l', 1);
         $this->SetFont('Arial', 'B', 7.5);
         $this->Cell(25, 5, utf8_decode("TIPO SERVICIO:"), 0, 0, 'J', 1);
-        $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, utf8_decode($factura->ordenproduccion->tipo->tipo), 0, 0, 'L', 1);
+        $this->SetFont('Arial', '', 7.5);
+        $this->Cell(25, 5, utf8_decode(substr($factura->ordenproduccion->tipo->tipo,0,13)), 0, 0, 'L', 1);        
         $this->SetXY(10, 74);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(23, 5, utf8_decode("TELÉFONO:"), 0, 0, 'l', 1);
