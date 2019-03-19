@@ -13,7 +13,8 @@ class FormFiltroOrdenProduccionProceso extends Model
     public $idcliente;
     public $ordenproduccion;
     public $idtipo;
-
+    public $codigoproducto;
+    
     public function rules()
     {
         return [
@@ -21,6 +22,7 @@ class FormFiltroOrdenProduccionProceso extends Model
             ['idcliente', 'default' ],
             ['ordenproduccion', 'default'],
             ['idtipo', 'default'],
+            ['codigoproducto', 'default'],
         ];
     }
 
@@ -31,6 +33,7 @@ class FormFiltroOrdenProduccionProceso extends Model
             'idcliente' => 'Cliente:',
             'ordenproduccion' => 'Orden de Producción:',
             'idtipo' => 'Tipo:',
+            'codigoproducto' => 'Cod Producto:',
         ];
     }
 }

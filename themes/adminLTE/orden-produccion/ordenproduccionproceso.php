@@ -61,8 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="row" >
             <?= $formulario->field($form, "ordenproduccion")->input("search") ?>
+            <?= $formulario->field($form, "codigoproducto")->input("search") ?>
         </div>
-
+        
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
             <a align="right" href="<?= Url::toRoute("orden-produccion/proceso") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>

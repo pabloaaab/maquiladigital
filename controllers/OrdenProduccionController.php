@@ -454,6 +454,7 @@ class OrdenProduccionController extends Controller {
             $idcliente = null;
             $ordenproduccion = null;
             $idtipo = null;
+            $codigoproducto = null;
             $clientes = Cliente::find()->all();
             $ordenproducciontipos = Ordenproducciontipo::find()->all();
             if ($form->load(Yii::$app->request->get())) {
@@ -461,9 +462,11 @@ class OrdenProduccionController extends Controller {
                     $idcliente = Html::encode($form->idcliente);
                     $ordenproduccion = Html::encode($form->ordenproduccion);
                     $idtipo = Html::encode($form->idtipo);
+                    $codigoproducto = Html::encode($form->codigoproducto);
                     $table = Ordenproduccion::find()
                             ->andFilterWhere(['=', 'idcliente', $idcliente])
                             ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
                             ->andFilterWhere(['=', 'idtipo', $idtipo])
                             ->orderBy('idordenproduccion desc');
                     $count = clone $table;
