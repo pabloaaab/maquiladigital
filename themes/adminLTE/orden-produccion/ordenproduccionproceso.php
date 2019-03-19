@@ -81,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <thead>
             <tr>
                 <th scope="col">Id Orden</th>
+                <th scope="col">Cod Prod</th>
                 <th scope="col">Orden Produccion</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Fecha Llegada</th>
@@ -95,11 +96,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php foreach ($model as $val): ?>
             <tr>
                 <td><?= $val->idordenproduccion ?></td>
+                <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->ordenproduccion ?></td>
                 <td><?= $val->cliente->nombrecorto ?></td>
-                <td><?= $val->fechallegada ?></td>
-                <td><?= $val->fechaprocesada ?></td>
-                <td><?= $val->fechaentrega ?></td>
+                <td><?= date("Y-m-d", strtotime("$val->fechallegada")) ?></td>
+                <td><?= date("Y-m-d", strtotime("$val->fechaprocesada")) ?></td>
+                <td><?= date("Y-m-d", strtotime("$val->fechaentrega")) ?></td>
                 <td><?= $val->tipo->tipo ?></td>
                 <td><?= 'Proceso '.'<b>'.round($val->porcentaje_proceso,1).' % - </b>Cantidad '.'<b>'.round($val->porcentaje_cantidad,1).' %' ?></td>
                 <td>
