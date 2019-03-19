@@ -61,6 +61,14 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'contentOptions' => ['class' => 'col-lg-1'],
             ],
+            [               
+            'attribute' => 'fechavencimiento',
+            'value' => function($model){
+                $compra = Compra::findOne($model->id_compra);
+                return date("Y-m-d", strtotime("$compra->fechavencimiento"));
+            },
+            'contentOptions' => ['class' => 'col-lg-1'],
+            ],        
             [
                 'attribute' => 'subtotal',
                 'value' => function($model) {

@@ -66,7 +66,7 @@ class Compra extends \yii\db\ActiveRecord
     {
         return [
             'id_compra' => 'Id Compra',
-            'id_compra_concepto' => 'Compra Concepto',
+            'id_compra_concepto' => 'Concepto',
             'porcentajeiva' => 'Porcentaje Iva',
             'porcentajefuente' => 'Porcentaje Fuente',
             'porcentajereteiva' => 'Porcentaje Reteiva',
@@ -84,7 +84,7 @@ class Compra extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'fechacreacion' => 'Fecha Creacion',
             'fechainicio' => 'Fecha Inicio',
-            'fechavencimiento' => 'Fecha Vencimiento',
+            'fechavencimiento' => 'Fecha Vcto',
             'factura' => 'Factura',
             'numero' => 'Número',
             'base_aiu' => 'Base AIU',
