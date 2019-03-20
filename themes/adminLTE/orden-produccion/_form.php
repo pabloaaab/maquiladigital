@@ -37,7 +37,7 @@ $form = ActiveForm::begin([
         $( "#'.Html::getInputId($model, 'codigoproducto',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'codigoproducto')->dropDownList($codigo,['prompt' => 'Seleccione un codigo...'],['required' => true]) ?>
+            <?= $form->field($model, 'codigoproducto')->dropDownList($codigos,['prompt' => 'Seleccione un codigo...'],['required' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>
