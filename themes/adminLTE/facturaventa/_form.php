@@ -43,7 +43,7 @@ use kartik\depdrop\DepDrop;
         $( "#'.Html::getInputId($model, 'idordenproduccion',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione una orden de producción...']) ?>
+            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione una orden de producción...'],['required' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>

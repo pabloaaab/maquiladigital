@@ -107,7 +107,7 @@ class Producto extends \yii\db\ActiveRecord
             return $nombreproducto = $this->codigo.' - '.$productoprendas->prendatipo->prenda;
         }else{
             return $nombreproducto = $this->codigo.' - '."sin detalles, por favor ingresar detalles al producto";
-            //$this->addError($attribute, "El producto no tiene detalles");
+            $this->addError($attribute, "El producto no tiene detalles");
         }
     }
         

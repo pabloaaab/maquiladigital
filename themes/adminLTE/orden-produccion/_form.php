@@ -4,10 +4,12 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use app\models\Cliente;
-use app\models\Ordenproducciontipo;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use yii\bootstrap\Modal;
+use yii\data\Pagination;
+use kartik\depdrop\DepDrop;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -31,11 +33,11 @@ $form = ActiveForm::begin([
     </div>
     <div class="panel-body">
         <div class="row">
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('ordenproduccion/codigo').'", { id: $(this).val() } ) .done(function( data ) {
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('orden-produccion/productos').'", { id: $(this).val() } ) .done(function( data ) {
         $( "#'.Html::getInputId($model, 'codigoproducto',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'codigoproducto')->dropDownList($codigos,['prompt' => 'Seleccione un codigo...']) ?>
+            <?= $form->field($model, 'codigoproducto')->dropDownList($codigo,['prompt' => 'Seleccione un codigo...'],['required' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>

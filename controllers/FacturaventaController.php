@@ -531,7 +531,7 @@ class FacturaventaController extends Controller
     public function actionOrdenp($id){
         $rows = Ordenproduccion::find()->where(['idcliente' => $id])->andWhere(['autorizado' => 1])->andWhere(['facturado' => 0])->orderBy('idordenproduccion desc')->all();
 
-        echo "<option required>Seleccione...</option>";
+        echo "<option value='' required>Seleccione...</option>";
         if(count($rows)>0){
             foreach($rows as $row){
                 echo "<option value='$row->idordenproduccion' required>$row->ordenProduccion</option>";

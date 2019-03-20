@@ -132,7 +132,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
         ]);
     }
 
@@ -147,7 +147,7 @@ class OrdenProduccionController extends Controller {
         $model = $this->findModel($id);
         $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        $codigos = Producto::find()->all();
+        $codigos = Producto::find()->where(['=','idcliente',$model->idcliente])->all();
         if (Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $id])->all() or $model->facturado == 1) {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
@@ -216,7 +216,12 @@ class OrdenProduccionController extends Controller {
         $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
         //$productosCliente = Productodetalle::find()->where(['=', 'idcliente', $idcliente])->andWhere(['=', 'idtipo', $ordenProduccion->idtipo])->andWhere(['>', 'stock', 0])->all();
         $productocodigo = Producto::find()->where(['=','idcliente',$idcliente])->andWhere(['=','codigo',$ordenProduccion->codigoproducto])->one();        
-        $productosCliente = Productodetalle::find()->where(['=', 'idproducto', $productocodigo->idproducto])->all();            
+        if ($productocodigo){
+            $productosCliente = Productodetalle::find()->where(['=', 'idproducto', $productocodigo->idproducto])->all();            
+        }else{
+            Yii::$app->getSession()->setFlash('error', 'No tiene productos asociados al cliente, por favor verifique si el cliente tiene productos asociados y/o esta mal configurado la orden de produccion, edite la orden');            
+            $productosCliente = Productodetalle::find()->where(['=','idproductodetalle',0])->all();            
+        }                
         $ponderacion = 0;
         $error = 0;
         $totalorden = 0;
@@ -814,10 +819,10 @@ class OrdenProduccionController extends Controller {
         $ordenproduccion->save(false);
     }
     
-    public function actionCodigo($id){
-        $rows = Producto::find()->where(['idcliente' => $id])->all();
+    public function actionProductos($id){
+        $rows = Producto::find()->where(['=','idcliente', $id])->all();
 
-        echo "<option required>Seleccione...</option>";
+        echo "<option value='' required>Seleccione un codigo...</option>";
         if(count($rows)>0){
             foreach($rows as $row){
                 echo "<option value='$row->codigo' required>$row->codigonombre</option>";
