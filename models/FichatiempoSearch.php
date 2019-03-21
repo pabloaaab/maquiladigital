@@ -49,11 +49,7 @@ class FichatiempoSearch extends Fichatiempo
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['id_ficha_tiempo' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
-        ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        ]);        
 
         $this->load($params);
 

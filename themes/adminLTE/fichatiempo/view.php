@@ -68,7 +68,9 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>                    
+                    <td colspan="3"><?= Html::encode($model->observacion) ?></td>
+                    <th><?= Html::activeLabel($model, 'total_segundos') ?>:</th>
+                    <td ><?= Html::encode($model->total_segundos) ?></td>
                 </tr>                                                
             </table>
         </div>

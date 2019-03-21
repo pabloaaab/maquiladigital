@@ -16,6 +16,7 @@ class FormGenerarSeguimientoProduccion extends Model
     public $reales;
     public $sistema;
     public $descanso;
+    public $vlrprenda;
 
     public function rules()
     {
@@ -26,6 +27,7 @@ class FormGenerarSeguimientoProduccion extends Model
             ['reales', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            
             ['minutos', 'match', 'pattern' => '/^[.0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['descanso', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],            
+            ['vlrprenda', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
         ];
     }
 
@@ -36,7 +38,8 @@ class FormGenerarSeguimientoProduccion extends Model
             'horastrabajar' => 'Horas a Trabajar',
             'minutos' => 'Minutos Confeccion/Cliente:',
             'reales' => 'Prendas Reales:',
-            'descanso' => 'Descanso (Minutos):',            
+            'descanso' => 'Descanso (Minutos):',
+            'vlrprenda' => 'Valor Prenda:',
         ];
     }
 }

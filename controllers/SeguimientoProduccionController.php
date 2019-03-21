@@ -45,16 +45,20 @@ class SeguimientoProduccionController extends Controller
      */
     public function actionIndex()
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',33])->all()){
-            $searchModel = new SeguimientoProduccionSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (empty(Yii::$app->user)){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',33])->all()){
+                $searchModel = new SeguimientoProduccionSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
+            return $this->redirect(['site/login']);
         }
     }
 
@@ -74,6 +78,7 @@ class SeguimientoProduccionController extends Controller
         $reales = null;
         $descanso = null;
         $sistema = null;
+        $vlrprenda = null;
         if ($form->load(Yii::$app->request->get())) {
             if ($form->validate()) {
                 if(isset($_POST['guardardetalle'])){
@@ -88,6 +93,7 @@ class SeguimientoProduccionController extends Controller
                         $minutos = Html::encode($form->minutos);
                         $reales = Html::encode($form->reales);
                         $descanso = Html::encode($form->descanso);
+                        $vlrprenda = Html::encode($form->vlrprenda);
                         if ($minutos){
                             if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 ){
                                 $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
@@ -134,6 +140,7 @@ class SeguimientoProduccionController extends Controller
                     $minutos = $form->minutos;
                     $reales = Html::encode($form->reales);
                     $descanso = Html::encode($form->descanso);
+                    $vlrprenda = Html::encode($form->vlrprenda);
                     if ($minutos){
                         if($operarias > 0 && $horastrabajar > 0 && $minutos > 0 ){
                             $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
@@ -165,6 +172,7 @@ class SeguimientoProduccionController extends Controller
                                     $seguimientodetalletemporal->prendas_reales = $reales;
                                     $seguimientodetalletemporal->prendas_sistema = round($seguimientodetalletemporal->total_unidades_por_hora * ($interval4),1);
                                     $seguimientodetalletemporal->porcentaje_produccion = round((100 * $reales) / $seguimientodetalletemporal->prendas_sistema,2);
+                                    $seguimientodetalletemporal->total_venta = $seguimientodetalletemporal->prendas_reales * $vlrprenda;
                                     $seguimientodetalletemporal->save(false);
                                     $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
                                     $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();
@@ -230,6 +238,11 @@ class SeguimientoProduccionController extends Controller
         $clientes = Cliente::find()->all();
         $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->orderBy('idordenproduccion desc')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
+            $model->codigoproducto = $ordenproduccion->codigoproducto;
+            $model->ordenproduccionint = $ordenproduccion->ordenproduccion;
+            $model->ordenproduccionext = $ordenproduccion->ordenproduccionext;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->id_seguimiento_produccion]);
         }
 
@@ -254,6 +267,11 @@ class SeguimientoProduccionController extends Controller
         $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
         $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
+            $model->codigoproducto = $ordenproduccion->codigoproducto;
+            $model->ordenproduccionint = $ordenproduccion->ordenproduccion;
+            $model->ordenproduccionext = $ordenproduccion->ordenproduccionext;
+            $model->update();
             return $this->redirect(['view', 'id' => $model->id_seguimiento_produccion]);
         }
 
@@ -309,6 +327,7 @@ class SeguimientoProduccionController extends Controller
         $seguimientodetalle->prendas_reales = $seguimientodetalletemporal->prendas_reales;
         $seguimientodetalle->prendas_sistema = $seguimientodetalletemporal->prendas_sistema;
         $seguimientodetalle->porcentaje_produccion = $seguimientodetalletemporal->porcentaje_produccion;
+        $seguimientodetalle->total_venta = $seguimientodetalletemporal->total_venta;
         $seguimientodetalle->insert();
         //return $this->redirect(['view', 'id' => $idseguimiento]);
         return ;

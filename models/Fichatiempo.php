@@ -10,7 +10,13 @@ use Yii;
  * @property int $id_ficha_tiempo
  * @property int $id_empleado
  * @property double $cumplimiento
+ * @property date $fechacreacion
+ * @property date $desde
+ * @property date $hasta
  * @property string $observacion
+ * @property string $referencia
+ * @property int $estado
+ * @property float $total_segundos
  *
  * @property Empleado $empleado
  */
@@ -30,9 +36,9 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado','referencia'], 'required'],
+            [['id_empleado','referencia','total_segundos'], 'required'],
             [['id_empleado','estado'], 'integer'],
-            [['cumplimiento'], 'number'],
+            [['cumplimiento','total_segundos'], 'number'],
             [['observacion','referencia'], 'string'],
             [['desde','hasta'], 'safe'],
             [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],
@@ -53,6 +59,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
             'hasta' => 'Hasta',
             'referencia' => 'Referencia',
             'estado' => 'Estado',
+            'total_segundos' => 'Total Segundos',
         ];
     }
 

@@ -57,14 +57,14 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <tr>
                     <th><?= Html::activeLabel($model, 'idcliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenProduccion') ?>:</th>
+                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>                   
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'ordenProdInterna') ?>:</th>
-                    <td><?= Html::encode($model->ordenproduccion->ordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenProdExterna') ?>:</th>
-                    <td><?= Html::encode($model->ordenproduccion->ordenproduccionext) ?></td>                   
+                    <th><?= Html::activeLabel($model, 'ordenproduccionint') ?>:</th>
+                    <td><?= Html::encode($model->ordenproduccionint) ?></td>
+                    <th><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
+                    <td><?= Html::encode($model->codigoproducto) ?></td>                   
                 </tr>
             </table>
         </div>
@@ -82,6 +82,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?= $formulario->field($form, "reales")->input("search", ['value' => '0']) ?>
             <?= $formulario->field($form, "descanso")->input("search", ['value' => '0']) ?>
             <?= $formulario->field($form, "sistema")->input("search",['readonly' => TRUE]) ?>
+            <?= $formulario->field($form, "vlrprenda")->input("search",['readonly' => TRUE, 'value' => (round($model->ordenproduccion->totalorden / $model->ordenproduccion->cantidad))]) ?>
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Calcular prendas", ["class" => "btn btn-primary", 'name' => 'calcular']) ?>
@@ -111,7 +112,8 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <th scope="col">Operario x Hora</th>
                 <th scope="col">Prendas x Sistemas</th>
                 <th scope="col">Prendas Reales</th>
-                <th scope="col">% Prod</th>                
+                <th scope="col">% Prod</th>
+                <th scope="col">T. Venta</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -130,6 +132,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>
+                <td><?= $val->total_venta ?></td>
                 <td></td>
                 <td>
                 <?php
@@ -170,7 +173,8 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <th scope="col">Operario x Hora</th>
                 <th scope="col">Prendas x Sistemas</th>
                 <th scope="col">Prendas Reales</th>
-                <th scope="col">% Prod</th>                
+                <th scope="col">% Prod</th>
+                <th scope="col">T. Venta</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -189,6 +193,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->prendas_sistema ?></td>
                 <td><?= $val->prendas_reales ?></td>
                 <td><?= $val->porcentaje_produccion ?></td>
+                <td><?= $val->total_venta ?></td>
                 <td></td>
                 <td><?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['eliminardetalle', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>                
             </tr>

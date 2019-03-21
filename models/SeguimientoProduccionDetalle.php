@@ -23,6 +23,7 @@ use Yii;
  * @property double $prendas_sistema
  * @property double $prendas_reales
  * @property double $porcentaje_produccion
+ * @property double $total_venta
  *
  * @property SeguimientoProduccion $seguimientoProduccion
  */
@@ -45,7 +46,7 @@ class SeguimientoProduccionDetalle extends \yii\db\ActiveRecord
             [['id_seguimiento_produccion'], 'required'],
             [['id_seguimiento_produccion'], 'integer'],
             [['fecha_inicio', 'hora_inicio', 'fecha_inicio','hora_consulta'], 'safe'],
-            [['minutos', 'horas_a_trabajar', 'cantidad_por_hora','cantidad_total_por_hora','operarias', 'total_unidades_por_dia', 'total_unidades_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion'], 'number'],
+            [['minutos', 'horas_a_trabajar', 'cantidad_por_hora','cantidad_total_por_hora','operarias', 'total_unidades_por_dia', 'total_unidades_por_hora', 'prendas_sistema', 'prendas_reales', 'porcentaje_produccion','total_venta'], 'number'],
             [['id_seguimiento_produccion'], 'exist', 'skipOnError' => true, 'targetClass' => SeguimientoProduccion::className(), 'targetAttribute' => ['id_seguimiento_produccion' => 'id_seguimiento_produccion']],
         ];
     }
@@ -72,6 +73,7 @@ class SeguimientoProduccionDetalle extends \yii\db\ActiveRecord
             'prendas_sistema' => 'Prendas Sistema',
             'prendas_reales' => 'Prendas Reales',
             'porcentaje_produccion' => 'Porcentaje Produccion',
+            'total_venta' => 'Total Venta',
         ];
     }
 

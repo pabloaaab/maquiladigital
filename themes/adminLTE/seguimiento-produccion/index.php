@@ -47,7 +47,19 @@ $this->params['breadcrumbs'][] = $this->title;
             [               
                 'attribute' => 'idordenproduccion',
                 'contentOptions' => ['class' => 'col-lg-1 '],                
-            ],            			
+            ],
+            [               
+                'attribute' => 'codigoproducto',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],
+            [               
+                'attribute' => 'ordenproduccionint',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],
+            [               
+                'attribute' => 'ordenproduccionext',
+                'contentOptions' => ['class' => 'col-lg-1 '],                
+            ],            
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

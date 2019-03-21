@@ -17,6 +17,9 @@ use Yii;
  * @property double $operarias
  * @property double $prendas_reales
  * @property int $descanso
+ * @property string $codigoproducto
+ * @property string $ordenproduccionint
+ * @property string $ordenproduccionext
  * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
@@ -42,6 +45,7 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
             [['fecha_inicio_produccion', 'hora_inicio'], 'safe'],
             [['idcliente', 'idordenproduccion','descanso'], 'integer'],
             [['minutos', 'horas_a_trabajar', 'prendas_reales'], 'number'],
+            [['codigoproducto', 'ordenproduccionint', 'ordenproduccionext'], 'string'],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
         ];
@@ -57,8 +61,11 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
             'fecha_inicio_produccion' => 'Fecha Inicio',
             'hora_inicio' => 'Hora Inicio',
             'idcliente' => 'Cliente',
-            'idordenproduccion' => 'Orden',
+            'idordenproduccion' => 'Id Orden',
             'descanso' => 'Descanso',
+            'codigoproducto' => 'Cód. Producto',
+            'ordenproduccionint' => 'Orden Prod',
+            'ordenproduccionext' => 'Orden Prod Ext',
         ];
     }
 

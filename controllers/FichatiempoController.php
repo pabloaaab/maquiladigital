@@ -40,7 +40,7 @@ class FichatiempoController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {
+    {        
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',32])->all()){
             $searchModel = new FichatiempoSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -52,7 +52,7 @@ class FichatiempoController extends Controller
         }else{
             return $this->redirect(['site/sinpermiso']);
         }
-    }
+    }    
 
     /**
      * Displays a single Fichatiempo model.
@@ -184,8 +184,12 @@ class FichatiempoController extends Controller
         $model->dia = date('Y-m-d');
         $model->desde = date('12:00:00');
         $model->hasta = date('12:00:00');
-        $model->total_segundos = 0;
-        $model->total_operacion = 0;
+        $model->total_segundos = $ficha->total_segundos;
+        if  ($model->total_segundos <= 0){
+            $model->total_operacion = 0;
+        }else{
+            $model->total_operacion = round((60 / $model->total_segundos) * 60,2);
+        }        
         $model->realizadas = 0;
         $model->cumplimiento = 0;
         $model->observacion = '';        

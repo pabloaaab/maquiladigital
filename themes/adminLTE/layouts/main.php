@@ -1,12 +1,18 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\web\Session;
+use app\models\UsuarioDetalle;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-if (empty(Yii::$app->user) || Yii::$app->user->isGuest) {
-            return Yii::$app->response->redirect(['/site/login']);
-        }else{
+if (!Yii::$app->user->identity->codusuario){
+   return Yii::$app->response->redirect(['/site/login']); 
+}
+        
+if (empty(Yii::$app->user) || Yii::$app->user->isGuest || empty(Yii::$app->session || empty(Yii::$app->user->identity->codusuario))) {
+    return Yii::$app->response->redirect(['/site/login']);
+}else{
 
 if (Yii::$app->controller->action->id === 'login') { 
 /**

@@ -18,6 +18,7 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
     {
         return [
             [['id_seguimiento_produccion', 'idcliente', 'idordenproduccion'], 'integer'],
+            [['codigoproducto', 'ordenproduccionint', 'ordenproduccionext'], 'string'],
             [['fecha_inicio_produccion', 'hora_inicio'], 'safe'],
         ];
     }
@@ -47,11 +48,7 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort'=> ['defaultOrder' => ['id_seguimiento_produccion' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
-        ]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        ]);        
 
         $this->load($params);
 
@@ -68,6 +65,9 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
             'hora_inicio' => $this->hora_inicio,
             'idcliente' => $this->idcliente,
             'idordenproduccion' => $this->idordenproduccion,
+            'ordenproduccionext' => $this->ordenproduccionext,
+            'ordenproduccionint' => $this->ordenproduccionint,
+            'codigoproducto' => $this->codigoproducto,
         ]);
 
         return $dataProvider;
