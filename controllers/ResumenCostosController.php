@@ -53,23 +53,27 @@ class ResumenCostosController extends Controller {
      */
     public function actionResumencostos($id)
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',22])->all()){
-            $model = $this->findModel($id);
-            $costolaboralhora = CostoLaboralHora::findOne($id);
-            $costofijo = CostoFijo::findOne($id);
-            $costolaboral = CostoLaboral::findOne($id);  
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',22])->all()){
+                $model = $this->findModel($id);
+                $costolaboralhora = CostoLaboralHora::findOne($id);
+                $costofijo = CostoFijo::findOne($id);
+                $costolaboral = CostoLaboral::findOne($id);  
 
-            $model->costo_laboral = $costolaboral->total_general;
-            $model->costo_fijo = $costofijo->valor;
-            $model->total_costo = $model->costo_laboral + $model->costo_fijo;
-            $model->costo_diario = round($model->total_costo / $costolaboralhora->dia_mes,0);
-            $model->update(); 
-            return $this->render('resumencostos', [
-                'model' => $model,
-            ]);
+                $model->costo_laboral = $costolaboral->total_general;
+                $model->costo_fijo = $costofijo->valor;
+                $model->total_costo = $model->costo_laboral + $model->costo_fijo;
+                $model->costo_diario = round($model->total_costo / $costolaboralhora->dia_mes,0);
+                $model->update(); 
+                return $this->render('resumencostos', [
+                    'model' => $model,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
-        }    
+            return $this->redirect(['site/login']);
+        }
     }
     
     

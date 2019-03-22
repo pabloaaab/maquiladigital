@@ -65,37 +65,41 @@ class CostoLaboralController extends Controller
         $this->Totales(1);
     }
     
-    public function actionCostolaboraldetalle($id) {                
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',17])->all()){
-            if (isset($_POST["nro_empleados"])) {
-                $intIndice = 0;
-                foreach ($_POST["id_costo_laboral_detalle"] as $intCodigo) {
-                    if ($_POST["nro_empleados"][$intIndice] > 0) {
-                        $table = CostoLaboralDetalle::findOne($intCodigo);
-                        $table->nro_empleados = $_POST["nro_empleados"][$intIndice];
-                        $table->id_tipo_cargo = $_POST["id_tipo_cargo"][$intIndice];
-                        $table->id_arl = $_POST["id_arl"][$intIndice];
-                        $table->salario = $_POST["salario"][$intIndice];
-                        $table->auxilio_transporte = $_POST["auxilio_transporte"][$intIndice];
-                        $table->tiempo_extra = $_POST["tiempo_extra"][$intIndice];
-                        $table->bonificacion = $_POST["bonificacion"][$intIndice];
-                        $table->no_empleado = $_POST["no_empleado"][$intIndice];
-                        $table->save(false);
-                        $this->Calculos($table);
+    public function actionCostolaboraldetalle($id) {
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',17])->all()){
+                if (isset($_POST["nro_empleados"])) {
+                    $intIndice = 0;
+                    foreach ($_POST["id_costo_laboral_detalle"] as $intCodigo) {
+                        if ($_POST["nro_empleados"][$intIndice] > 0) {
+                            $table = CostoLaboralDetalle::findOne($intCodigo);
+                            $table->nro_empleados = $_POST["nro_empleados"][$intIndice];
+                            $table->id_tipo_cargo = $_POST["id_tipo_cargo"][$intIndice];
+                            $table->id_arl = $_POST["id_arl"][$intIndice];
+                            $table->salario = $_POST["salario"][$intIndice];
+                            $table->auxilio_transporte = $_POST["auxilio_transporte"][$intIndice];
+                            $table->tiempo_extra = $_POST["tiempo_extra"][$intIndice];
+                            $table->bonificacion = $_POST["bonificacion"][$intIndice];
+                            $table->no_empleado = $_POST["no_empleado"][$intIndice];
+                            $table->save(false);
+                            $this->Calculos($table);
+                        }
+                        $intIndice++;
                     }
-                    $intIndice++;
-                }
 
+                }
+                $this->totales($id);
+                $costolaboral = CostoLaboral::findOne($id);
+                $costolaboraldetalle = CostoLaboralDetalle::find()->where(['=', 'id_costo_laboral', $id])->all();
+                return $this->render('costolaboraldetalle', [
+                            'costolaboral' => $costolaboral,
+                            'costolaboraldetalle' => $costolaboraldetalle,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
             }
-            $this->totales($id);
-            $costolaboral = CostoLaboral::findOne($id);
-            $costolaboraldetalle = CostoLaboralDetalle::find()->where(['=', 'id_costo_laboral', $id])->all();
-            return $this->render('costolaboraldetalle', [
-                        'costolaboral' => $costolaboral,
-                        'costolaboraldetalle' => $costolaboraldetalle,
-            ]);
         }else{
-            return $this->redirect(['site/sinpermiso']);
+            return $this->redirect(['site/login']);
         }
     }
     

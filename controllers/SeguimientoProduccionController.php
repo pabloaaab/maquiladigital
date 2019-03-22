@@ -45,7 +45,7 @@ class SeguimientoProduccionController extends Controller
      */
     public function actionIndex()
     {
-        if (empty(Yii::$app->user)){
+        if (Yii::$app->user->identity){
             if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',33])->all()){
                 $searchModel = new SeguimientoProduccionSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);

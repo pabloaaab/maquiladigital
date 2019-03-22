@@ -37,16 +37,20 @@ class BancoController extends Controller
      */
     public function actionIndex()
     {                
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',1])->all()){
-            $searchModel = new BancoSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',1])->all()){
+                $searchModel = new BancoSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
+            return $this->redirect(['site/login']);
         }
         
     }

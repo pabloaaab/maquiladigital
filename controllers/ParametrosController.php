@@ -40,18 +40,23 @@ class ParametrosController extends Controller
      */
     public function actionParametros($id)
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',29])->all()){
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //return $this->redirect(['view', 'id' => $model->id_parametros]);
-            }
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',29])->all()){
+                $model = $this->findModel($id);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    //return $this->redirect(['view', 'id' => $model->id_parametros]);
+                }
 
-            return $this->render('parametros', [
-                'model' => $model,
-            ]);
+                return $this->render('parametros', [
+                    'model' => $model,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
-        }    
+            return $this->redirect(['site/login']);
+        }
+        
     }
     
 

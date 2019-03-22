@@ -42,16 +42,20 @@ class EmpresaController extends Controller
      */
     public function actionEmpresa($id)
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',30])->all()){
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                //return $this->redirect(['view', 'id' => $model->id_parametros]);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',30])->all()){
+                $model = $this->findModel($id);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    //return $this->redirect(['view', 'id' => $model->id_parametros]);
+                }
+                return $this->render('empresa', [
+                    'model' => $model,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
             }
-            return $this->render('empresa', [
-                'model' => $model,
-            ]);
         }else{
-            return $this->redirect(['site/sinpermiso']);
+            return $this->redirect(['site/login']);
         }
     }
     

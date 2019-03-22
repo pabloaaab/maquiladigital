@@ -73,17 +73,21 @@ class CostoFijoController extends Controller
         $this->redirect(["costo-fijo/costofijodetalle",'id' => 1]);        
     }
     
-    public function actionCostofijodetalle($id) {                
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',19])->all()){        
-            $costofijo = CostoFijo::findOne($id);
-            $costofijodetalle = CostoFijoDetalle::find()->where(['=', 'id_costo_fijo', $id])->all();
-            return $this->render('costofijodetalle', [
-                        'costofijo' => $costofijo,
-                        'costofijodetalle' => $costofijodetalle,
-            ]);
+    public function actionCostofijodetalle($id) {
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',19])->all()){        
+                $costofijo = CostoFijo::findOne($id);
+                $costofijodetalle = CostoFijoDetalle::find()->where(['=', 'id_costo_fijo', $id])->all();
+                return $this->render('costofijodetalle', [
+                            'costofijo' => $costofijo,
+                            'costofijodetalle' => $costofijodetalle,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
-        }    
+            return $this->redirect(['site/login']);
+        }
     }
           
     protected function Totales($id)

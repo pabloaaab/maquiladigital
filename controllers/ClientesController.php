@@ -29,53 +29,57 @@ use app\models\UsuarioDetalle;
 class ClientesController extends Controller {
 
     public function actionIndex() {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',14])->all()){
-            $form = new FormFiltroCliente;
-            $cedulanit = null;
-            $nombrecorto = null;
-            if ($form->load(Yii::$app->request->get())) {
-                if ($form->validate()) {
-                    $cedulanit = Html::encode($form->cedulanit);
-                    $nombrecorto = Html::encode($form->nombrecorto);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',14])->all()){
+                $form = new FormFiltroCliente;
+                $cedulanit = null;
+                $nombrecorto = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $cedulanit = Html::encode($form->cedulanit);
+                        $nombrecorto = Html::encode($form->nombrecorto);
+                        $table = Cliente::find()
+                                ->andFilterWhere(['like', 'cedulanit', $cedulanit])
+                                ->andFilterWhere(['like', 'nombrecorto', $nombrecorto])
+                                ->orderBy('idcliente desc');
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 10,
+                            'totalCount' => $count->count()
+                        ]);
+                        $model = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
                     $table = Cliente::find()
-                            ->andFilterWhere(['like', 'cedulanit', $cedulanit])
-                            ->andFilterWhere(['like', 'nombrecorto', $nombrecorto])
                             ->orderBy('idcliente desc');
                     $count = clone $table;
-                    $to = $count->count();
                     $pages = new Pagination([
                         'pageSize' => 10,
-                        'totalCount' => $count->count()
+                        'totalCount' => $count->count(),
                     ]);
                     $model = $table
                             ->offset($pages->offset)
                             ->limit($pages->limit)
                             ->all();
-                } else {
-                    $form->getErrors();
                 }
-            } else {
-                $table = Cliente::find()
-                        ->orderBy('idcliente desc');
-                $count = clone $table;
-                $pages = new Pagination([
-                    'pageSize' => 10,
-                    'totalCount' => $count->count(),
+                $to = $count->count();
+                return $this->render('index', [
+                            'model' => $model,
+                            'form' => $form,
+                            'pagination' => $pages,
                 ]);
-                $model = $table
-                        ->offset($pages->offset)
-                        ->limit($pages->limit)
-                        ->all();
+            }else{
+                return $this->redirect(['site/sinpermiso']);
             }
-            $to = $count->count();
-            return $this->render('index', [
-                        'model' => $model,
-                        'form' => $form,
-                        'pagination' => $pages,
-            ]);
         }else{
-            return $this->redirect(['site/sinpermiso']);
-        }
+            return $this->redirect(['site/login']);
+        }    
     }
 
     public function actionNuevo() {

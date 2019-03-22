@@ -40,50 +40,54 @@ class CostoLaboralHoraController extends Controller
      */
     public function actionCostolaboralhora($id)
     {
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',18])->all()){
-            $model = $this->findModel($id);
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $detallescostolaboral = \app\models\CostoLaboralDetalle::find()->all();
-                $totaldetalle = 0;
-                $totalpersonal = 0;
-                $valorarl = 0;
-                $valorpension = 0;
-                $valorprestaciones = 0;
-                $valorvacaciones = 0;
-                $valorajustevac = 0;
-                $subtotal = 0;
-                $admon = 0;
-                $total = 0;
-                foreach ($detallescostolaboral as $val){
-                    $arl = \app\models\Arl::findOne($val->id_arl);
-                    $parametros = \app\models\Parametros::findOne(1);
-                    $valorarl = ($val->salario) * $arl->arl / 100;
-                    $valorpension = ($val->salario) * $parametros->pension / 100;
-                    $valorcaja = ($val->salario) * $parametros->caja / 100;
-                    $valorprestaciones = ($val->salario + $val->auxilio_transporte) * $parametros->prestaciones / 100;
-                    $valorvacaciones = $val->salario * $parametros->vacaciones / 100;
-                    $valorajustevac = $valorvacaciones * $parametros->ajuste / 100;
-                    $subtotal = $val->salario + $val->auxilio_transporte + $valorarl + $valorpension + $valorcaja + $valorprestaciones + $valorvacaciones + $valorajustevac;
-                    $admon = ($subtotal * $parametros->admon) / 100;
-                    $total = ($subtotal + $admon) * $val->nro_empleados;
-                    $totaldetalle = $totaldetalle + $total;
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',18])->all()){
+                $model = $this->findModel($id);
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    $detallescostolaboral = \app\models\CostoLaboralDetalle::find()->all();
+                    $totaldetalle = 0;
+                    $totalpersonal = 0;
+                    $valorarl = 0;
+                    $valorpension = 0;
+                    $valorprestaciones = 0;
+                    $valorvacaciones = 0;
+                    $valorajustevac = 0;
+                    $subtotal = 0;
+                    $admon = 0;
+                    $total = 0;
+                    foreach ($detallescostolaboral as $val){
+                        $arl = \app\models\Arl::findOne($val->id_arl);
+                        $parametros = \app\models\Parametros::findOne(1);
+                        $valorarl = ($val->salario) * $arl->arl / 100;
+                        $valorpension = ($val->salario) * $parametros->pension / 100;
+                        $valorcaja = ($val->salario) * $parametros->caja / 100;
+                        $valorprestaciones = ($val->salario + $val->auxilio_transporte) * $parametros->prestaciones / 100;
+                        $valorvacaciones = $val->salario * $parametros->vacaciones / 100;
+                        $valorajustevac = $valorvacaciones * $parametros->ajuste / 100;
+                        $subtotal = $val->salario + $val->auxilio_transporte + $valorarl + $valorpension + $valorcaja + $valorprestaciones + $valorvacaciones + $valorajustevac;
+                        $admon = ($subtotal * $parametros->admon) / 100;
+                        $total = ($subtotal + $admon) * $val->nro_empleados;
+                        $totaldetalle = $totaldetalle + $total;
 
-                    $totalpersonal = $totalpersonal + $val->nro_empleados;
+                        $totalpersonal = $totalpersonal + $val->nro_empleados;
+                    }
+                    $totaldetalle = $totaldetalle / $totalpersonal;
+                    $model->valor_dia = round($totaldetalle / $model->dia_mes, 1);
+                    $model->valor_hora = round($model->valor_dia / $model->dia, 1);
+                    $model->valor_minuto = round($model->valor_hora / $model->minutos, 1);
+                    $model->valor_segundo = round($model->valor_minuto / $model->segundos, 1);
+                    $model->update();
                 }
-                $totaldetalle = $totaldetalle / $totalpersonal;
-                $model->valor_dia = round($totaldetalle / $model->dia_mes, 1);
-                $model->valor_hora = round($model->valor_dia / $model->dia, 1);
-                $model->valor_minuto = round($model->valor_hora / $model->minutos, 1);
-                $model->valor_segundo = round($model->valor_minuto / $model->segundos, 1);
-                $model->update();
-            }
 
-            return $this->render('costolaboralhora', [
-                'model' => $model,
-            ]);
+                return $this->render('costolaboralhora', [
+                    'model' => $model,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
         }else{
-            return $this->redirect(['site/sinpermiso']);
-        }    
+            return $this->redirect(['site/login']);
+        }
     }
     
     
