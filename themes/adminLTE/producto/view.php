@@ -10,6 +10,7 @@ use yii\bootstrap\ActiveForm;
 $this->title = 'Detalle Producto';
 $this->params['breadcrumbs'][] = ['label' => 'Productos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idproducto;
+$view = 'producto';
 ?>
 <div class="producto-view">
 
@@ -25,6 +26,7 @@ $this->params['breadcrumbs'][] = $model->idproducto;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 9, 'codigo' => $model->idproducto,'view' => $view], ['class' => 'btn btn-default']); ?>
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">

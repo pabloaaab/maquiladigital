@@ -131,7 +131,8 @@
                                         'icon' => 'question',
                                         'url' => '#',
                                         'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsulta']],
+                                            ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/indexconsulta']],
                                         ],    
                                     ],
                                     [
@@ -183,6 +184,7 @@
                                         'icon' => 'question',
                                         'url' => '#',
                                         'items' => [
+                                            ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/indexconsulta']],
                                             ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/indexconsulta']],                                            
                                         ],    
                                     ],

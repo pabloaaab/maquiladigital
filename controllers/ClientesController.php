@@ -283,6 +283,7 @@ class ClientesController extends Controller {
     }
     
     public function actionIndexconsulta() {
+        if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',39])->all()){
             $form = new FormFiltroConsultaCliente;
             $cedulanit = null;
@@ -337,6 +338,9 @@ class ClientesController extends Controller {
             ]);
         }else{
             return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
         }
     }
     

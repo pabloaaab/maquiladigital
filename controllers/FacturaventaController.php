@@ -572,6 +572,7 @@ class FacturaventaController extends Controller
     }
     
     public function actionIndexconsulta() {
+        if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',40])->all()){
             $form = new FormFiltroConsultaFacturaventa();
             $idcliente = null;
@@ -637,6 +638,9 @@ class FacturaventaController extends Controller
             ]);
         }else{
             return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
         }
     }
     

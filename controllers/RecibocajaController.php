@@ -31,6 +31,7 @@ use app\models\UsuarioDetalle;
 use app\models\Banco;
 use app\models\FormRecibocajalibre;
 use app\models\FormRecibocajanuevodetallelibre;
+use app\models\FormFiltroConsultaRecibocaja;
 
 /**
  * RecibocajaController implements the CRUD actions for Recibocaja model.
@@ -594,4 +595,169 @@ class RecibocajaController extends Controller
             
         ]);
     }
+    
+    public function actionIndexconsulta() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',40])->all()){
+            $form = new FormFiltroConsultaRecibocaja();
+            $idcliente = null;
+            $desde = null;
+            $hasta = null;
+            $numero = null;
+            $tipo = null;
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $desde = Html::encode($form->desde);
+                    $hasta = Html::encode($form->hasta);
+                    $numero = Html::encode($form->numero);
+                    $tipo = Html::encode($form->tipo);
+                    $table = Recibocaja::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['>=', 'fecharecibo', $desde])
+                            ->andFilterWhere(['<=', 'fecharecibo', $hasta])
+                            ->andFilterWhere(['=', 'numero', $numero])
+                            ->andFilterWhere(['=', 'idtiporecibo', $tipo]);
+                    $table = $table->orderBy('idrecibo desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 20,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if(isset($_POST['excel'])){
+                        $table = $table->all();
+                        $this->actionExcelconsulta($table);
+                    }
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = Recibocaja::find()
+                        ->orderBy('idrecibo desc');
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 20,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+                if(isset($_POST['excel'])){
+                    $table = $table->all();
+                    $this->actionExcelconsulta($table);
+                }
+            }
+            $to = $count->count();
+            return $this->render('index_consulta', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
+    
+    public function actionViewconsulta($id)
+    {
+        $modeldetalles = Recibocajadetalle::find()->Where(['=', 'idrecibo', $id])->all();
+        $modeldetalle = new Recibocajadetalle();
+        $mensaje = "";
+        return $this->render('view_consulta', [
+            'model' => $this->findModel($id),
+            'modeldetalle' => $modeldetalle,
+            'modeldetalles' => $modeldetalles,
+            'mensaje' => $mensaje,
+        ]);
+    }
+    
+    public function actionExcelconsulta($table) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);                       
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Id')
+                    ->setCellValue('B1', 'N° Recibo')
+                    ->setCellValue('C1', 'Cliente')
+                    ->setCellValue('D1', 'Fecha Recibo')
+                    ->setCellValue('E1', 'Fecha Pago')
+                    ->setCellValue('F1', 'Tipo')
+                    ->setCellValue('G1', 'Municipio')
+                    ->setCellValue('H1', 'Vlr Pagado')
+                    ->setCellValue('I1', 'Autorizado')
+                    ->setCellValue('J1', 'Observacion');
+        $i = 2;
+        
+        foreach ($table as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->idrecibo)
+                    ->setCellValue('B' . $i, $val->numero)
+                    ->setCellValue('C' . $i, $val->cliente->nombreClientes)
+                    ->setCellValue('D' . $i, $val->fecharecibo)
+                    ->setCellValue('E' . $i, $val->fechapago)
+                    ->setCellValue('F' . $i, $val->tiporecibo->concepto)
+                    ->setCellValue('G' . $i, $val->municipio->municipio.' - '.$val->municipio->departamento->departamento)
+                    ->setCellValue('H' . $i, round($val->valorpagado,0))
+                    ->setCellValue('I' . $i, $val->autorizar)
+                    ->setCellValue('J' . $i, $val->observacion);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('recibo_de_caja');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="recibo_de_caja.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
 }

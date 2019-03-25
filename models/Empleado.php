@@ -147,6 +147,11 @@ class Empleado extends \yii\db\ActiveRecord
         return "{$this->nombre1} {$this->nombre2} {$this->apellido1} {$this->apellido2}";
     }
     
+    public function getNombreEmpleados()
+    {
+        return "{$this->nombrecorto} - {$this->identificacion}";
+    }
+    
     public function getContratado()
     {
         if($this->contrato == 1){
