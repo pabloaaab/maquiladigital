@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\FormFiltroOrdenProduccionProceso;
+use app\models\FormFiltroConsultaFichaoperacion;
 use app\models\FormFiltroConsultaOrdenproduccion;
 use app\models\Producto;
 use app\models\Productodetalle;
@@ -459,6 +460,7 @@ class OrdenProduccionController extends Controller {
     }
     
     public function actionProceso() {
+        if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',28])->all()){
             $form = new FormFiltroOrdenProduccionProceso();
             $idcliente = null;
@@ -515,6 +517,9 @@ class OrdenProduccionController extends Controller {
             ]);
          }else{
             return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
         }
     }
 
@@ -837,14 +842,14 @@ class OrdenProduccionController extends Controller {
     
     public function actionIndexconsulta() {
         if (Yii::$app->user->identity){
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',42])->all()){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',44])->all()){
             $form = new FormFiltroConsultaOrdenproduccion();
             $idcliente = null;
             $desde = null;
             $hasta = null;
+            $codigoproducto = null;
             $facturado = null;
             $tipo = null;
-            $codigoproducto = null;
             $ordenproduccionint = null;
             $ordenproduccionext = null;
             if ($form->load(Yii::$app->request->get())) {
@@ -852,20 +857,19 @@ class OrdenProduccionController extends Controller {
                     $idcliente = Html::encode($form->idcliente);
                     $desde = Html::encode($form->desde);
                     $hasta = Html::encode($form->hasta);
-                    $tipo = Html::encode($form->tipo);
-                    $facturado = Html::encode($form->facturado);
                     $codigoproducto = Html::encode($form->codigoproducto);
+                    $facturado = Html::encode($form->facturado);
+                    $tipo = Html::encode($form->tipo);
                     $ordenproduccionint = Html::encode($form->ordenproduccionint);
                     $ordenproduccionext = Html::encode($form->ordenproduccionext);
                     $table = Ordenproduccion::find()
                             ->andFilterWhere(['=', 'idcliente', $idcliente])
                             ->andFilterWhere(['>=', 'fechallegada', $desde])
                             ->andFilterWhere(['<=', 'fechallegada', $hasta])
-                            ->andFilterWhere(['=', 'idtipo', $tipo])
                             ->andFilterWhere(['=', 'facturado', $facturado])
-                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
+                            ->andFilterWhere(['=', 'idtipo', $tipo])
                             ->andFilterWhere(['=', 'ordenproduccion', $ordenproduccionint])
-                            ->andFilterWhere(['=', 'ordenproduccionext', $ordenproduccionext]);                            
+                            ->andFilterWhere(['=', 'ordenproduccionext', $ordenproduccionext]);
                     $table = $table->orderBy('idordenproduccion desc');
                     $count = clone $table;
                     $to = $count->count();
@@ -915,15 +919,112 @@ class OrdenProduccionController extends Controller {
         }
     }
     
+    public function actionIndexconsultaficha() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',47])->all()){
+            $form = new FormFiltroConsultaFichaoperacion();
+            $idcliente = null;
+            $ordenproduccion = null;
+            $idtipo = null;
+            $codigoproducto = null;
+            $clientes = Cliente::find()->all();
+            $ordenproducciontipos = Ordenproducciontipo::find()->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $ordenproduccion = Html::encode($form->ordenproduccion);
+                    $idtipo = Html::encode($form->idtipo);
+                    $codigoproducto = Html::encode($form->codigoproducto);
+                    $table = Ordenproduccion::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['like', 'ordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
+                            ->andFilterWhere(['=', 'idtipo', $idtipo])
+                            ->orderBy('idordenproduccion desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 20,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if(isset($_POST['excel'])){
+                        $table = $table->all();
+                        $this->actionExcelconsultaficha($table);
+                    }
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = Ordenproduccion::find()
+                        ->orderBy('idordenproduccion desc');
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 20,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+                if(isset($_POST['excel'])){
+                        $table = $table->all();
+                        $this->actionExcelconsultaficha($table);
+                }
+            }
+
+            return $this->render('index_consulta_ficha', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                        'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
+    
     public function actionViewconsulta($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
-                      
+        $mensaje = "";
+              
         return $this->render('view_consulta', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,
                     'modeldetalles' => $modeldetalles,
-                    
+                    'mensaje' => $mensaje,
+        ]);
+    }
+    
+    public function actionViewconsultaficha($id) {
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $modeldetalle = new Ordenproducciondetalle();
+        return $this->render('view_consulta_ficha', [
+                    'model' => $this->findModel($id),
+                    'modeldetalle' => $modeldetalle,                    
+                    'modeldetalles' => $modeldetalles,
+        ]);
+    }
+    
+    public function actionDetalle_proceso_consulta($idordenproduccion, $iddetalleorden) {
+        $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
+        $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
+        $error = 0;
+        $cont = count($procesos);
+        
+        return $this->renderAjax('_formdetalleprocesoconsulta', [
+                    'procesos' => $procesos,
+                    'cont' => $cont,
+                    'idordenproduccion' => $idordenproduccion,
+                    'iddetalleorden' => $iddetalleorden,
         ]);
     }
     
@@ -997,6 +1098,83 @@ class OrdenProduccionController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="ordenes_produccion.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+    public function actionExcelconsultaficha($table) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+                               
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'Id')
+                    ->setCellValue('B1', 'Cod Producto')
+                    ->setCellValue('C1', 'Cliente')
+                    ->setCellValue('D1', 'Orden Prod Int')
+                    ->setCellValue('E1', 'Orden Prod Ext')
+                    ->setCellValue('F1', 'Fecha Llegada')
+                    ->setCellValue('G1', 'Fecha Proceso')
+                    ->setCellValue('H1', 'Fecha Entrega')
+                    ->setCellValue('I1', 'Cantidad')
+                    ->setCellValue('J1', 'Tipo')                    
+                    ->setCellValue('K1', 'Porcentaje');
+        $i = 2;
+        
+        foreach ($table as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->idordenproduccion)
+                    ->setCellValue('B' . $i, $val->codigoproducto)
+                    ->setCellValue('C' . $i, $val->cliente->nombreClientes)
+                    ->setCellValue('D' . $i, $val->ordenproduccion)
+                    ->setCellValue('E' . $i, $val->ordenproduccionext)
+                    ->setCellValue('F' . $i, $val->fechallegada)
+                    ->setCellValue('G' . $i, $val->fechaprocesada)
+                    ->setCellValue('H' . $i, $val->fechaentrega)
+                    ->setCellValue('I' . $i, $val->cantidad)
+                    ->setCellValue('J' . $i, $val->tipo->tipo)
+                    ->setCellValue('K' . $i, 'Proceso '.round($val->porcentaje_proceso,1).' % - Cantidad '.round($val->porcentaje_cantidad,1).' %');
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Ficha_operaciones');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Ficha_operaciones.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-
 use Yii;
 use app\models\Recibocaja;
 use app\models\RecibocajaSearch;
@@ -598,7 +597,7 @@ class RecibocajaController extends Controller
     
     public function actionIndexconsulta() {
         if (Yii::$app->user->identity){
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',40])->all()){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',44])->all()){
             $form = new FormFiltroConsultaRecibocaja();
             $idcliente = null;
             $desde = null;
