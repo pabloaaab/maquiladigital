@@ -110,11 +110,32 @@ use app\models\Ordenproducciondetalle;
                             <th scope="col"><?= (number_format($totalsegundos / 60 ,1)) ?></th>
                         </tr>
                     </table>
-                </div>
+                </div>                
                 <div class="panel-footer text-right">
                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                    <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimirficha', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir/Cerrar", ["class" => "btn btn-success", 'name' => 'ac']) ?>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle"
+                                data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-export"></span> Exportar
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><?= Html::a('<span></span> Pdf', ['imprimirficha', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden]) ?></li>
+                          <li><?= Html::a('<span></span> Excel', ['exceloperaciones', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden]) ?></li>
+                        </ul>
+                    </div>
+                    <!-- <?= Html::a('<span class="glyphicon glyphicon-export"></span> Pdf', ['imprimirficha', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden], ['class' => 'btn btn-primary']) ?> -->
+                    <!-- <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['exceloperaciones', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden], ['class' => 'btn btn-success']) ?> -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle"
+                                data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-transfer"></span> Abrir/Cerrar Todo 
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir", ["class" => "btn btn-success", 'name' => 'acabrir']) ?>  </li>
+                          <li><?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Cerrar", ["class" => "btn btn-success", 'name' => 'accerrar']) ?>  </li>
+                        </ul>
+                    </div>                    
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir/Cerrar", ["class" => "btn btn-success", 'name' => 'ac']) ?>                    
                     <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Editar", ["class" => "btn btn-primary", 'name' => 'editar']) ?>
                     <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger", 'name' => 'eliminar']) ?>
                 </div>

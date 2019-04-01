@@ -1187,5 +1187,103 @@ class OrdenProduccionController extends Controller {
         $objWriter->save('php://output');
         exit;
     }
+    
+    public function actionExceloperaciones($id,$iddetalleorden) {
+        $orden = Ordenproduccion::findOne($id);
+        $ordendetalle = Ordenproducciondetalle::findOne($iddetalleorden);
+        $ordendetalleproceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$iddetalleorden])->all();
+        $items = count($ordendetalleproceso);
+        $totalsegundos = 0;
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('2')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('4')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('6')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+                               
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'FICHA OPERACIONES')
+                    ->setCellValue('A2', 'NIT:')
+                    ->setCellValue('B2', $orden->cliente->cedulanit . '-' . $orden->cliente->dv)
+                    ->setCellValue('C2', 'FECHA LLEGADA:')
+                    ->setCellValue('D2', $orden->fechallegada)
+                    ->setCellValue('A3', 'CLIENTE:')
+                    ->setCellValue('B3', $orden->cliente->nombrecorto)
+                    ->setCellValue('C3', 'FECHA ENTREGA:')
+                    ->setCellValue('D3', $orden->fechaentrega)
+                    ->setCellValue('A4', 'COD PRODUCTO:')
+                    ->setCellValue('B4', $orden->codigoproducto)
+                    ->setCellValue('C4', 'ORDEN PRODUCCION:')
+                    ->setCellValue('D4', $orden->ordenproduccion)
+                    ->setCellValue('A5', 'PRODUCTO:')
+                    ->setCellValue('B5', $ordendetalle->productodetalle->prendatipo->prenda.' / '.$ordendetalle->productodetalle->prendatipo->talla->talla)
+                    ->setCellValue('C5', 'TIPO ORDEN:')
+                    ->setCellValue('D5', $orden->tipo->tipo)
+                    ->setCellValue('A6', 'ID')
+                    ->setCellValue('B6', 'PROCESO')
+                    ->setCellValue('C6', 'DURACION(SEG)')
+                    ->setCellValue('D6', 'PONDERACION (SEG)')
+                    ->setCellValue('E6', 'TOTAL (SEG)');                    
+        $i = 7;
+        
+        foreach ($ordendetalleproceso as $val) {
+            $totalsegundos = $totalsegundos + $val->total;                      
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->iddetalleproceso)
+                    ->setCellValue('B' . $i, $val->proceso)
+                    ->setCellValue('C' . $i, $val->duracion)
+                    ->setCellValue('D' . $i, $val->ponderacion)
+                    ->setCellValue('E' . $i, $val->total);
+            $i++;
+        }
+        $j = $i + 1;
+        $objPHPExcel->getActiveSheet()->getStyle($j)->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('C' . $j, 'Items: '.$items)
+                ->setCellValue('D' . $j, 'Total Segundos: '. $totalsegundos)
+                ->setCellValue('E' . $j, 'Total Minutos: '. round($totalsegundos / 60),1);
+        
+        $objPHPExcel->getActiveSheet()->setTitle('ficha_operaciones');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="ficha_operaciones.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
 
 }
