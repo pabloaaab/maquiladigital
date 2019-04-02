@@ -632,7 +632,7 @@ class FacturaventaController extends Controller
             $factura = Facturaventa::findOne($id);
             if ($factura->nrofactura == 0){
                 $model->autorizado = 0;
-                $model->update();
+                $model->save(false);
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else {
                 Yii::$app->getSession()->setFlash('error', 'No se puede desautorizar el registro, ya fue generado el número de factura.');
