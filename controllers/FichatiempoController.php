@@ -504,10 +504,11 @@ class FichatiempoController extends Controller
                     ->setCellValue('C1', 'Empleado')
                     ->setCellValue('D1', 'Desde')
                     ->setCellValue('E1', 'Hasta')
-                    ->setCellValue('F1', 'Referencia')                    
-                    ->setCellValue('G1', 'Total Segundos')
-                    ->setCellValue('H1', 'Cerrado')
-                    ->setCellValue('I1', 'Observacion');
+                    ->setCellValue('F1', '% Cumplimiento')
+                    ->setCellValue('G1', 'Referencia')                    
+                    ->setCellValue('H1', 'Total Segundos')
+                    ->setCellValue('I1', 'Cerrado')
+                    ->setCellValue('J1', 'Observacion');
         $i = 2;
         
         foreach ($table as $val) {
@@ -518,10 +519,11 @@ class FichatiempoController extends Controller
                     ->setCellValue('C' . $i, $val->empleado->nombreEmpleado)
                     ->setCellValue('D' . $i, $val->desde)
                     ->setCellValue('E' . $i, $val->hasta)
-                    ->setCellValue('F' . $i, $val->referencia)                    
-                    ->setCellValue('G' . $i, $val->total_segundos)
-                    ->setCellValue('H' . $i, $val->cerrado)
-                    ->setCellValue('I' . $i, $val->observacion);
+                    ->setCellValue('F' . $i, $val->cumplimiento)
+                    ->setCellValue('G' . $i, $val->referencia)                    
+                    ->setCellValue('H' . $i, $val->total_segundos)
+                    ->setCellValue('I' . $i, $val->cerrado)
+                    ->setCellValue('J' . $i, $val->observacion);
             $i++;
         }
 

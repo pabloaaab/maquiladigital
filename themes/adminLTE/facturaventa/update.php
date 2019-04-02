@@ -13,11 +13,19 @@ $this->params['breadcrumbs'][] = 'Editar';
 <div class="facturaventa-update">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
-
-    <?= $this->render('_form', [
+    <?php
+    if ($model->libre == 1){
+        echo $this->render('_formlibre', [
+        'model' => $model,
+        'clientes' => $clientes,
+        'facturastipo' => $facturastipo,
+    ]);
+    } else {
+    echo $this->render('_form', [
         'model' => $model,
         'clientes' => $clientes,
         'ordenesproduccion' => $ordenesproduccion,
-    ]) ?>
-
+    ]);
+    }
+    ?>
 </div>

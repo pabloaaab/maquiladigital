@@ -6,6 +6,7 @@ use yii\widgets\Pjax;
 use yii\helpers\ArrayHelper;
 use app\models\Cliente;
 use app\models\Facturaventa;
+use app\models\Matriculaempresa;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FacturaventaSearch */
@@ -13,6 +14,8 @@ use app\models\Facturaventa;
 
 $this->title = 'Facturas de ventas';
 $this->params['breadcrumbs'][] = $this->title;
+$empresa = \app\models\Matriculaempresa::findOne(1);
+        
 ?>
 <div class="facturaventa-index">
 
@@ -20,6 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
+    <?php if ($empresa->factura_venta_libre == 0){ ?>
+        <?php $newButton2 = ''; ?>
+    <?php }else{ ?>
+        <?php $newButton2 = Html::a('Nuevo Libre ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['createlibre'], ['class' => 'btn btn-success']);?>
+    <?php } ?>
+    
     <?php Pjax::begin() ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -89,9 +98,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			
         ],
         'tableOptions' => ['class' => 'table table-bordered table-success'],
-        'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',
-
-        'layout' => '{summary}{items}</div><div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton . '</div></div>',
+        'summary' => '<div class="panel panel-success "><div class="panel-heading">Registros: {totalCount}</div>',        
+        'layout' => '{summary}{items}</div><div class="row"><div class="col-sm-8">{pager}</div><div class="col-sm-4 text-right">' . $newButton2 .' ' . $newButton .'</div></div>',                                
         'pager' => [
             'nextPageLabel' => '<i class="fa fa-forward"></i>',
             'prevPageLabel'  => '<i class="fa fa-backward"></i>',

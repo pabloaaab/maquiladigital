@@ -611,7 +611,12 @@ class OrdenProduccionController extends Controller {
                             $table = Ordenproducciondetalleproceso::findOne($intCodigo);
                             $table->duracion = $_POST["duracion"][$intIndice];
                             $table->ponderacion = $_POST["ponderacion"][$intIndice];
-                            $table->cantidad_operada = $_POST["cantidad_operada"][$intIndice];
+                            if ($_POST["cantidad_operada_todo"] <= 0){
+                                $table->cantidad_operada = $_POST["cantidad_operada"][$intIndice];
+                            }else{
+                                $table->cantidad_operada = $_POST["cantidad_operada_todo"];
+                            }
+                            
                             $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
                             $table->totalproceso = $detalle->cantidad * $table->total;
                             if ($_POST["cantidad_operada"][$intIndice] <= $detalle->cantidad) {//se valida que la cantidad a operada no sea mayor a la cantidad a operar
@@ -687,6 +692,33 @@ class OrdenProduccionController extends Controller {
                     }
                 }
             }
+            if (isset($_POST["acabrir"])) {//abrir/cerrar en la ejecucion del proceso si esta terminado o no ha sido terminado
+                if (isset($_POST["iddetalleproceso1"])) {
+                    $intIndice = 0;
+                    foreach ($_POST["iddetalleproceso1"] as $intCodigo) {
+                        if ($_POST["estado"][$intIndice] >= 0) {
+                            $table = Ordenproducciondetalleproceso::findOne($intCodigo);                            
+                            $table->estado = 0;
+                            $table->update();
+                        }
+                        $intIndice++;
+                    }
+                }
+            }
+            if (isset($_POST["accerrar"])) {//abrir/cerrar en la ejecucion del proceso si esta terminado o no ha sido terminado
+                if (isset($_POST["iddetalleproceso1"])) {
+                    $intIndice = 0;
+                    foreach ($_POST["iddetalleproceso1"] as $intCodigo) {
+                        if ($_POST["estado"][$intIndice] >= 0) {
+                            $table = Ordenproducciondetalleproceso::findOne($intCodigo);                            
+                            $table->estado = 1;
+                            $table->update();
+                        }
+                        $intIndice++;
+                    }
+                }
+            }
+            
             $this->porcentajeproceso($iddetalleorden);
             $this->progresoproceso($iddetalleorden, $idordenproduccion);
             $this->progresocantidad($iddetalleorden, $idordenproduccion);

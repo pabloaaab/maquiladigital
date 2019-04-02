@@ -66,7 +66,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(25, 5, utf8_decode("ORDEN PROD INT:"), 0, 0, 'J', 1);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(25, 5, utf8_decode($factura->ordenproduccion->ordenproduccion), 0, 0, 'L', 1);
+        if ($factura->libre == 0){
+            $this->Cell(25, 5, utf8_decode($factura->ordenproduccion->ordenproduccion), 0, 0, 'L', 1);
+        }else{
+            $this->Cell(25, 5, utf8_decode('N/A'), 0, 0, 'L', 1);
+        }        
         $this->SetXY(10, 69);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(23, 5, utf8_decode("DIRECCIÓN:"), 0, 0, 'L', 1);
@@ -75,7 +79,11 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 7.5);
         $this->Cell(25, 5, utf8_decode("TIPO SERVICIO:"), 0, 0, 'J', 1);
         $this->SetFont('Arial', '', 7.5);
-        $this->Cell(25, 5, utf8_decode(substr($factura->ordenproduccion->tipo->tipo,0,13)), 0, 0, 'L', 1);        
+        if ($factura->libre == 0){
+            $this->Cell(25, 5, utf8_decode(substr($factura->ordenproduccion->tipo->tipo,0,13)), 0, 0, 'L', 1);
+        }else{
+            $this->Cell(25, 5, utf8_decode(substr($factura->facturaventatipo->concepto,0,13)), 0, 0, 'L', 1);
+        }                
         $this->SetXY(10, 74);
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(23, 5, utf8_decode("TELÉFONO:"), 0, 0, 'l', 1);

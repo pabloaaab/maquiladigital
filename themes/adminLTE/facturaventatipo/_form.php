@@ -5,11 +5,9 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\TipoRecibo */
+/* @var $model app\models\Facturaventatipo */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-
 
     <?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
@@ -23,17 +21,17 @@ use yii\helpers\Url;
     
  <div class="panel panel-success">
     <div class="panel-heading">
-        Información Tipo Recibo
+        Información Factura Venta Tipo
     </div>
     <div class="panel-body">        														   		
         <div class="row">
             <?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
         </div>
 	<div class="row">
-            <?= $form->field($model, 'activo')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
+            <?= $form->field($model, 'estado')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
         </div>		
         <div class="panel-footer text-right">                
-            <a href="<?= Url::toRoute("tipo-recibo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <a href="<?= Url::toRoute("facturaventatipo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
         </div>
 	</div>

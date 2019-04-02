@@ -24,7 +24,7 @@
             </div>
         </form>
         <!-- /.search form -->
-
+        
         <?= dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
@@ -222,7 +222,8 @@
                                         'icon' => 'database',
                                         'url' => '#',
                                         'items' => [
-                                            ['label' => 'Conceptos Notas', 'icon' => 'plus-square-o', 'url' => ['conceptonota/index']],                                            
+                                            ['label' => 'Conceptos Notas', 'icon' => 'plus-square-o', 'url' => ['conceptonota/index']],
+                                            ['label' => 'Factura de Venta Tipo', 'icon' => 'plus-square-o', 'url' => ['facturaventatipo/index']],
                                         ],    
                                     ],
                                     [

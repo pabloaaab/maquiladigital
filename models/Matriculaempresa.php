@@ -30,6 +30,7 @@ use Yii;
  * @property string $nombresistema
  * @property int $gran_contribuyente
  * @property int $agente_retenedor
+ * @property int $factura_venta_libre
  *
  * @property Banco $bancoFactura
  * @property TipoRegimen $tipoRegimen
@@ -65,6 +66,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
             [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
             [['idresolucion'], 'exist', 'skipOnError' => true, 'targetClass' => Resolucion::className(), 'targetAttribute' => ['idresolucion' => 'idresolucion']],
+            [['factura_venta_libre'], 'default'],
         ];
     }
 

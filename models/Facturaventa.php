@@ -140,6 +140,14 @@ class Facturaventa extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Resolucion::className(), ['idresolucion' => 'idresolucion']);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFacturaventatipo()
+    {
+        return $this->hasOne(Facturaventatipo::className(), ['id_factura_venta_tipo' => 'id_factura_venta_tipo']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery

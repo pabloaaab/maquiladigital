@@ -12,6 +12,10 @@ use app\models\Facturaventa;
 use app\models\FacturaventaSearch;
 use app\models\Facturaventadetalle;
 use app\models\FormFiltroConsultaFacturaventa;
+use app\models\FormFacturaventalibre;
+use app\models\FormFacturaventanuevodetallelibre;
+use app\models\Productodetalle;
+use app\models\Facturaventatipo;
 use app\models\Matriculaempresa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -139,6 +143,50 @@ class FacturaventaController extends Controller
             'ordenesproduccion' => ArrayHelper::map($ordenesproduccion, "idordenproduccion", "idordenproduccion"),
         ]);
     }
+    
+    public function actionCreatelibre()
+    {
+        $model = new FormFacturaventalibre();
+        $clientes = Cliente::find()->all();
+        $facturastipo = Facturaventatipo::find()->all();
+        $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
+        if ($model->load(Yii::$app->request->post())) {            
+            $table = Cliente::find()->where(['=', 'idcliente', $model->idcliente])->one();
+            $fecha = date( $model->fechainicio);
+            $nuevafecha = strtotime ( '+'.$table->plazopago.' day' , strtotime ( $fecha ) ) ;
+            $nuevafecha = date ( 'Y-m-j' , $nuevafecha );
+            $facturalibre = new Facturaventa;
+            $facturalibre->fechainicio = $model->fechainicio;
+            $facturalibre->idcliente = $model->idcliente;
+            $facturalibre->observacion = $model->observacion;
+            $facturalibre->nrofactura = 0;
+            $facturalibre->fechavcto = $nuevafecha;
+            $facturalibre->formapago = $table->formapago;
+            $facturalibre->plazopago = $table->plazopago;
+            $facturalibre->porcentajefuente = 0;
+            $facturalibre->porcentajeiva = 0;
+            $facturalibre->porcentajereteiva = 0;
+            $facturalibre->subtotal = 0;
+            $facturalibre->retencionfuente = 0;
+            $facturalibre->retencioniva = 0;
+            $facturalibre->impuestoiva = 0;
+            $facturalibre->saldo = 0;
+            $facturalibre->totalpagar = 0;
+            $facturalibre->valorletras = "-" ;
+            $facturalibre->usuariosistema = Yii::$app->user->identity->username;
+            $facturalibre->idresolucion = $resolucion->idresolucion;
+            $facturalibre->libre = 1;
+            $facturalibre->id_factura_venta_tipo = $model->id_factura_venta_tipo;
+            $facturalibre->save(false);
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('_formlibre', [
+            'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
+            'facturastipo' => ArrayHelper::map($facturastipo, "id_factura_venta_tipo", "concepto"),
+        ]);
+    }
 
     /**
      * Updates an existing Facturaventa model.
@@ -150,22 +198,84 @@ class FacturaventaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $clientes = Cliente::find()->all();
-        $table = Facturaventa::find()->where(['idfactura' => $id])->one();
-        $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $table->idordenproduccion])->all();
-        $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
-        if(Facturaventadetalle::find()->where(['=', 'idfactura', $id])->all() or $model->estado <> 0){
-           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        if ($model->libre == 1){
+            return $this->redirect(['updatelibre', 'id' => $id]);
+        }else{
+            $clientes = Cliente::find()->all();
+            $table = Facturaventa::find()->where(['idfactura' => $id])->one();
+            $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $table->idordenproduccion])->all();
+            $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
+            if(Facturaventadetalle::find()->where(['=', 'idfactura', $id])->all() or $model->estado <> 0){
+               Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+            }
+            else if($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['index']);
+            }
         }
-        else if($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        }
+        
 
         return $this->render('update', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
             'ordenesproduccion' => $ordenesproduccion,
 
+        ]);
+    }
+    
+    public function actionUpdatelibre($id) {
+        $model = new FormFacturaventalibre;
+        $clientes = Cliente::find()->all();
+        $facturastipo = Facturaventatipo::find()->all();
+        $table = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if(Facturaventadetalle::find()->where(['=', 'idfactura', $id])->all() or $table->estado <> 0){
+           Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        }
+        else{
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                
+                if ($table) {
+                    $table->idcliente = $model->idcliente;
+                    $table->fechainicio = $model->fechainicio;                    
+                    $table->observacion = $model->observacion;
+                    $table->id_factura_venta_tipo = $model->id_factura_venta_tipo;
+                    
+                    if ($table->update(false)) {
+                        $msg = "El registro ha sido actualizado correctamente";
+                        return $this->redirect(["index"]);
+                    } else {
+                        $msg = "El registro no sufrio ningun cambio";
+                        return $this->redirect(["index"]);
+                    }
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                }
+            } else {
+                $model->getErrors();
+            }
+        }
+        }
+        if (Yii::$app->request->get("id")) {
+            $table = $this->findModel($id);
+            if ($table) {
+                $model->idcliente = $table->idcliente;
+                $model->fechainicio = $table->fechainicio;
+                $model->id_factura_venta_tipo = $table->id_factura_venta_tipo;                
+                $model->observacion = $table->observacion;                
+            } else {
+                return $this->redirect(["index"]);
+            }
+        } else {
+            return $this->redirect(["index"]);
+        }
+        return $this->render('_formlibre', [
+            'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
+            'facturastipo' => ArrayHelper::map($facturastipo, "id_factura_venta_tipo", "concepto"),
         ]);
     }
 
@@ -260,6 +370,32 @@ class FacturaventaController extends Controller
 
         ]);
     }
+    
+    public function actionNuevodetallelibre($id) {
+        $model = new FormFacturaventanuevodetallelibre;
+        $factura = Facturaventa::findOne($id);        
+        $productos = Producto::find()->where(['=','idcliente',$factura->idcliente])->all();        
+        if ($model->load(Yii::$app->request->post())) {
+            $productodetalle = Productodetalle::find()->where(['=','idproducto',$model->idproducto])->all();
+            foreach ($productodetalle as $val){
+                $producto = Producto::findOne($model->idproducto);                
+                $table = new Facturaventadetalle();
+                $table->idfactura = $id;
+                $table->idproductodetalle = $val->idproductodetalle;
+                $table->codigoproducto = $producto->codigo;                                
+                $table->cantidad = 1;
+                $table->preciounitario = $model->valor;
+                $table->total = $table->preciounitario * $table->cantidad;                
+                $table->save(false);                
+            }
+            $this->calculos($id);
+            return $this->redirect(['view','id' => $id]);
+        }
+        return $this->renderAjax('_formnuevodetallelibre', [
+            'model' => $model,
+            'productos' => ArrayHelper::map($productos, "idproducto", "codigo"),
+        ]);        
+    }
 
     public function actionEditardetalle()
     {
@@ -277,7 +413,7 @@ class FacturaventaController extends Controller
                     $table->preciounitario = Html::encode($_POST["preciounitario"]);
                     $table->total = Html::encode($_POST["cantidad"]) * Html::encode($_POST["preciounitario"]);
                     $table->idfactura = Html::encode($_POST["idfactura"]);
-                    $table->update();
+                    $table->save(false);
 
                     $factura = Facturaventa::findOne($table->idfactura);
                     $factura->subtotal = $factura->subtotal - Html::encode($_POST["total"]);
@@ -303,7 +439,7 @@ class FacturaventaController extends Controller
                     }
                     $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
                     $factura->saldo = $factura->totalpagar;
-                    $factura->update();
+                    $factura->save(false);
 
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
 
@@ -402,7 +538,7 @@ class FacturaventaController extends Controller
                     }
                     $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
                     $factura->saldo = $factura->totalpagar;
-                    $factura->update();
+                    $factura->save(false);
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
                 }
                 else
@@ -486,7 +622,7 @@ class FacturaventaController extends Controller
             $reg = count($detalles);
             if ($reg <> 0) {
                 $model->autorizado = 1;
-                $model->update();
+                $model->save(false);
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{
                 Yii::$app->getSession()->setFlash('error', 'Para autorizar el registro, debe tener ordenes relacionados en la factura de venta.');
@@ -511,15 +647,20 @@ class FacturaventaController extends Controller
         $mensaje = "";
         if ($model->autorizado == 1){
             $factura = Facturaventa::findOne($id);
-            $ordenProduccion = Ordenproduccion::findOne($factura->idordenproduccion);
+            if ($factura->libre == 0){
+                $ordenProduccion = Ordenproduccion::findOne($factura->idordenproduccion);
+            }
+            
             if ($factura->nrofactura == 0){
                 $consecutivo = Consecutivo::findOne(1);// 1 factura de venta
                 $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                 $factura->nrofactura = $consecutivo->consecutivo;
-                $factura->update();
-                $consecutivo->update();
-                $ordenProduccion->facturado = 1;
-                $ordenProduccion->save(false);
+                $factura->save(false);
+                $consecutivo->save(false);
+                if ($factura->libre == 0){
+                    $ordenProduccion->facturado = 1;
+                    $ordenProduccion->save(false);
+                }                
                 //$this->afectarcantidadfacturada($id);//se resta o descuenta las cantidades facturadas en los productos por cliente
                 $this->redirect(["facturaventa/view",'id' => $id]);
             }else{
@@ -560,7 +701,40 @@ class FacturaventaController extends Controller
             $producto->stock = $producto->stock - $dato->cantidad;
             $producto->update();
         }
-    }         
+    }
+    
+    protected function calculos($id)
+    {        
+        $detalles = Facturaventadetalle::find()->where(['idfactura' => $id])->all();
+        $subtotal = 0;
+        foreach ($detalles as $val) {
+            $subtotal = $subtotal + $val->total;
+        }
+        $factura = Facturaventa::findOne($id);
+        $factura->subtotal = round($subtotal);
+        $config = Matriculaempresa::findOne(1);
+        $cliente = Cliente::findOne($factura->idcliente);
+        $factura->porcentajeiva = round($config->porcentajeiva);
+        $factura->porcentajereteiva = $config->porcentajereteiva;
+        $factura->impuestoiva = round($factura->subtotal * $factura->porcentajeiva / 100);
+        if ($factura->subtotal >= $config->retefuente){
+            if ($cliente->retencioniva == 1){
+                $factura->porcentajefuente = $config->porcentajeretefuente;
+                $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+            }
+        }else{
+            $factura->retencionfuente = 0;
+        }
+        if ($cliente->autoretenedor == 1){
+            $factura->retencioniva = round($factura->impuestoiva * $config->porcentajereteiva / 100);
+        }else{
+            $factura->retencioniva = 0;
+        }
+        $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva);
+        $factura->saldo = $factura->totalpagar;
+        $factura->save(false);
+        
+    }
     
     public function actionImprimir($id)
     {

@@ -75,6 +75,18 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><b>Estado</td>
                             <td align="center"><input type="checkbox" onclick="marcar(this);"/></td>
                         </tr>
+                        <tr>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"><input type="text" name="cantidad_operada_todo" value="0" size="2"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                        </tr>
                         </thead>
                         <tbody>
                         <?php $totalsegundos = 0; ?>
@@ -131,8 +143,8 @@ use app\models\Ordenproducciondetalle;
                             <span class="glyphicon glyphicon-transfer"></span> Abrir/Cerrar Todo 
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                          <li><?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir", ["class" => "btn btn-success", 'name' => 'acabrir']) ?>  </li>
-                          <li><?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Cerrar", ["class" => "btn btn-success", 'name' => 'accerrar']) ?>  </li>
+                          <li><?= Html::submitButton("<span class=''></span> Abrir", ["class" => "label label-default", 'name' => 'acabrir']) ?>  </li>
+                          <li><?= Html::submitButton("<span class=''></span> Cerrar", ["class" => "label label-default", 'name' => 'accerrar']) ?>  </li>
                         </ul>
                     </div>                    
                     <?= Html::submitButton("<span class='glyphicon glyphicon-transfer'></span> Abrir/Cerrar", ["class" => "btn btn-success", 'name' => 'ac']) ?>                    
