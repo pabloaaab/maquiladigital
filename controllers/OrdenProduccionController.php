@@ -901,6 +901,7 @@ class OrdenProduccionController extends Controller {
                             ->andFilterWhere(['=', 'facturado', $facturado])
                             ->andFilterWhere(['=', 'idtipo', $tipo])
                             ->andFilterWhere(['=', 'ordenproduccion', $ordenproduccionint])
+                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
                             ->andFilterWhere(['=', 'ordenproduccionext', $ordenproduccionext]);
                     $table = $table->orderBy('idordenproduccion desc');
                     $count = clone $table;

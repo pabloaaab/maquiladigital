@@ -340,8 +340,8 @@ class SeguimientoProduccionController extends Controller
         $seguimientodetalle->porcentaje_produccion = $seguimientodetalletemporal->porcentaje_produccion;
         $seguimientodetalle->total_venta = $seguimientodetalletemporal->total_venta;
         $seguimientodetalle->insert();
-        //return $this->redirect(['view', 'id' => $idseguimiento]);
-        return ;
+        return $this->redirect(['view', 'id' => $idseguimiento]);
+        //return ;
     }
     
     public function actionEliminardetalle($id,$idseguimiento)
