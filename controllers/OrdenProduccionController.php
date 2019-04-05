@@ -669,10 +669,17 @@ class OrdenProduccionController extends Controller {
             if (isset($_POST["eliminar"])) {
                 if (isset($_POST["iddetalleproceso2"])) {
                     foreach ($_POST["iddetalleproceso2"] as $intCodigo) {
-
-                        if (Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $intCodigo])) {
-                            
+                        $proceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleproceso',$intCodigo])->one();
+                        $detallesordenes = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
+                        foreach ($detallesordenes as $val){
+                            $detallesproceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$val->iddetalleorden])->andwhere(['=','idproceso',$proceso->idproceso])->one();
+                            if ($detallesproceso){
+                                Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $detallesproceso->iddetalleproceso]);
+                            }
                         }
+                        /*if (Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $intCodigo])) {
+                            
+                        }*/
                     }
                 } else {
                     Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
