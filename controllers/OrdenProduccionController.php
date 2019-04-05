@@ -674,13 +674,16 @@ class OrdenProduccionController extends Controller {
                         foreach ($detallesordenes as $val){
                             $detallesproceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$val->iddetalleorden])->andwhere(['=','idproceso',$proceso->idproceso])->one();
                             if ($detallesproceso){
-                                Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $detallesproceso->iddetalleproceso]);
+                                $detallesproceso->delete();
                             }
                         }
                         /*if (Ordenproducciondetalleproceso::deleteAll("iddetalleproceso=:iddetalleproceso", [":iddetalleproceso" => $intCodigo])) {
                             
                         }*/
                     }
+                    $this->porcentajeproceso($iddetalleorden);
+                    $this->progresoproceso($iddetalleorden, $idordenproduccion);
+                    $this->progresocantidad($iddetalleorden, $idordenproduccion);
                 } else {
                     Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
                     $this->redirect(["orden-produccion/view_detalle", 'id' => $idordenproduccion]);
