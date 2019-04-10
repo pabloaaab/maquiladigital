@@ -296,6 +296,7 @@ class ClientesController extends Controller {
                             ->andFilterWhere(['like', 'cedulanit', $cedulanit])
                             ->andFilterWhere(['like', 'nombrecorto', $nombrecorto])
                             ->orderBy('idcliente desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -307,8 +308,8 @@ class ClientesController extends Controller {
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -316,6 +317,7 @@ class ClientesController extends Controller {
             } else {
                 $table = Cliente::find()
                         ->orderBy('idcliente desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 10,
@@ -326,8 +328,8 @@ class ClientesController extends Controller {
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -351,7 +353,7 @@ class ClientesController extends Controller {
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -416,7 +418,7 @@ class ClientesController extends Controller {
                     ->setCellValue('Y1', 'Observacion');                    
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->idcliente)

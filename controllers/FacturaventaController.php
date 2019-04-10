@@ -770,6 +770,7 @@ class FacturaventaController extends Controller
                         $table = $table->andFilterWhere(['>', 'saldo', $pendiente]);
                     }        
                     $table = $table->orderBy('idfactura desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -781,8 +782,8 @@ class FacturaventaController extends Controller
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -795,13 +796,13 @@ class FacturaventaController extends Controller
                     'pageSize' => 20,
                     'totalCount' => $count->count(),
                 ]);
+                $tableexcel = $table->all();
                 $model = $table
                         ->offset($pages->offset)
                         ->limit($pages->limit)
                         ->all();
-                if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                if(isset($_POST['excel'])){                    
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -831,7 +832,7 @@ class FacturaventaController extends Controller
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -886,7 +887,7 @@ class FacturaventaController extends Controller
                     ->setCellValue('T1', 'Observacion');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->idfactura)

@@ -914,6 +914,7 @@ class OrdenProduccionController extends Controller {
                             ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
                             ->andFilterWhere(['=', 'ordenproduccionext', $ordenproduccionext]);
                     $table = $table->orderBy('idordenproduccion desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -925,8 +926,8 @@ class OrdenProduccionController extends Controller {
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -934,6 +935,7 @@ class OrdenProduccionController extends Controller {
             } else {
                 $table = Ordenproduccion::find()
                         ->orderBy('idordenproduccion desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -944,8 +946,8 @@ class OrdenProduccionController extends Controller {
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -984,6 +986,7 @@ class OrdenProduccionController extends Controller {
                             ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
                             ->andFilterWhere(['=', 'idtipo', $idtipo])
                             ->orderBy('idordenproduccion desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -995,8 +998,8 @@ class OrdenProduccionController extends Controller {
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsultaficha($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsultaficha($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -1004,6 +1007,7 @@ class OrdenProduccionController extends Controller {
             } else {
                 $table = Ordenproduccion::find()
                         ->orderBy('idordenproduccion desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -1014,8 +1018,8 @@ class OrdenProduccionController extends Controller {
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsultaficha($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsultaficha($tableexcel);
                 }
             }
 
@@ -1071,7 +1075,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -1115,7 +1119,7 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('N1', 'Observacion');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->idordenproduccion)
@@ -1154,7 +1158,7 @@ class OrdenProduccionController extends Controller {
         exit;
     }
     
-    public function actionExcelconsultaficha($table) {                
+    public function actionExcelconsultaficha($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -1195,7 +1199,7 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('K1', 'Porcentaje');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->idordenproduccion)

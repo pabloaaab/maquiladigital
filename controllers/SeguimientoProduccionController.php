@@ -482,6 +482,7 @@ class SeguimientoProduccionController extends Controller
                             ->andFilterWhere(['=', 'codigoproducto', $codigoproducto]);
                             
                     $table = $table->orderBy('id_seguimiento_produccion desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -502,6 +503,7 @@ class SeguimientoProduccionController extends Controller
             } else {
                 $table = SeguimientoProduccion::find()
                         ->orderBy('id_seguimiento_produccion desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -512,8 +514,8 @@ class SeguimientoProduccionController extends Controller
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -541,7 +543,7 @@ class SeguimientoProduccionController extends Controller
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -585,7 +587,7 @@ class SeguimientoProduccionController extends Controller
                     ->setCellValue('I1', 'Cod Producto');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->id_seguimiento_produccion)

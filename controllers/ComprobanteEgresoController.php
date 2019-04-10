@@ -608,6 +608,7 @@ class ComprobanteEgresoController extends Controller
                             ->andFilterWhere(['=', 'numero', $numero])
                             ->andFilterWhere(['=', 'id_comprobante_egreso_tipo', $tipo]);
                     $table = $table->orderBy('id_comprobante_egreso desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -619,8 +620,8 @@ class ComprobanteEgresoController extends Controller
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -628,6 +629,7 @@ class ComprobanteEgresoController extends Controller
             } else {
                 $table = ComprobanteEgreso::find()
                         ->orderBy('id_comprobante_egreso desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -638,8 +640,8 @@ class ComprobanteEgresoController extends Controller
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -669,7 +671,7 @@ class ComprobanteEgresoController extends Controller
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -714,7 +716,7 @@ class ComprobanteEgresoController extends Controller
                     ->setCellValue('J1', 'Observacion');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->id_comprobante_egreso)

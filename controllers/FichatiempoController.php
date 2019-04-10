@@ -408,6 +408,7 @@ class FichatiempoController extends Controller
                             ->andFilterWhere(['=', 'referencia', $referencia]);
                             
                     $table = $table->orderBy('id_ficha_tiempo desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -419,8 +420,8 @@ class FichatiempoController extends Controller
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -428,6 +429,7 @@ class FichatiempoController extends Controller
             } else {
                 $table = Fichatiempo::find()
                         ->orderBy('id_ficha_tiempo desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -438,8 +440,8 @@ class FichatiempoController extends Controller
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -466,7 +468,7 @@ class FichatiempoController extends Controller
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -511,7 +513,7 @@ class FichatiempoController extends Controller
                     ->setCellValue('J1', 'Observacion');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->id_ficha_tiempo)

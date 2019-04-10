@@ -618,6 +618,7 @@ class RecibocajaController extends Controller
                             ->andFilterWhere(['=', 'numero', $numero])
                             ->andFilterWhere(['=', 'idtiporecibo', $tipo]);
                     $table = $table->orderBy('idrecibo desc');
+                    $tableexcel = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
@@ -629,8 +630,8 @@ class RecibocajaController extends Controller
                             ->limit($pages->limit)
                             ->all();
                     if(isset($_POST['excel'])){
-                        $table = $table->all();
-                        $this->actionExcelconsulta($table);
+                        //$table = $table->all();
+                        $this->actionExcelconsulta($tableexcel);
                     }
                 } else {
                     $form->getErrors();
@@ -638,6 +639,7 @@ class RecibocajaController extends Controller
             } else {
                 $table = Recibocaja::find()
                         ->orderBy('idrecibo desc');
+                $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
                     'pageSize' => 20,
@@ -648,8 +650,8 @@ class RecibocajaController extends Controller
                         ->limit($pages->limit)
                         ->all();
                 if(isset($_POST['excel'])){
-                    $table = $table->all();
-                    $this->actionExcelconsulta($table);
+                    //$table = $table->all();
+                    $this->actionExcelconsulta($tableexcel);
                 }
             }
             $to = $count->count();
@@ -679,7 +681,7 @@ class RecibocajaController extends Controller
         ]);
     }
     
-    public function actionExcelconsulta($table) {                
+    public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -724,7 +726,7 @@ class RecibocajaController extends Controller
                     ->setCellValue('J1', 'Observacion');
         $i = 2;
         
-        foreach ($table as $val) {
+        foreach ($tableexcel as $val) {
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->idrecibo)
