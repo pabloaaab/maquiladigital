@@ -51,7 +51,7 @@ $view = 'orden-produccion';
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => 'Esta seguro de eliminar el registro?',
-                    'method' => 'post',
+                    'method' => 'post' ,
                 ],
             ]) ?>
             <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);

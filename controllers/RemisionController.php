@@ -254,7 +254,7 @@ class RemisionController extends Controller
                     if ($table['t42'] == 1){
                         $table['42'] = $_POST["42"][$intIndice];
                     }
-                    $table->estado = $_POST["estado"][$intIndice];
+                    $table->estado = $_POST["estado"][$intIndice]; 
                     $table->save(false);
                     $this->Calculos($table);
                     $intIndice++;
