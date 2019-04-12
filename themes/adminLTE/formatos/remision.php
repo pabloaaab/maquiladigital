@@ -65,7 +65,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(33, 5, utf8_decode("FECHA ENTREGA:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
-        $this->Cell(40, 5, utf8_decode($remision->ordenproduccion->fechaentrega), 0, 0, 'J');
+        $this->Cell(40, 5, utf8_decode($remision->fechacreacion), 0, 0, 'J');
         $this->SetXY(10, 69); //FILA 3
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("TELÉFONO:"), 0, 0, 'c');

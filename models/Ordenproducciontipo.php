@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $idtipo
  * @property string $tipo
+ * @property int $remision
  * @property int $activo
  *
  * @property Ordenproduccion[] $ordenproduccions
@@ -39,6 +40,7 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
         return [
             [['tipo'], 'required'],
             [['activo'], 'integer'],
+            [['remision'], 'integer'],
             [['tipo'], 'string', 'max' => 50],
         ];
     }
@@ -52,6 +54,7 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
             'idtipo' => 'Id',
             'tipo' => 'Tipo',
             'activo' => 'Activo',
+            'remision' => 'Requiere Remisión',
         ];
     }
 
@@ -71,5 +74,15 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
             $estado = "SI";
         }
         return $estado;
+    }
+    
+    public function getRremision()
+    {
+        if($this->remision == 1){
+            $remision = "SI";
+        }else{
+            $remision = "NO";
+        }
+        return $remision;
     }
 }

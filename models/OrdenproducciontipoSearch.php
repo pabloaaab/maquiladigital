@@ -18,7 +18,7 @@ class OrdenproducciontipoSearch extends Ordenproducciontipo
     public function rules()
     {
         return [
-            [['idtipo', 'activo'], 'integer'],
+            [['idtipo', 'activo','remision'], 'integer'],
             [['tipo'], 'safe'],
         ];
     }
@@ -61,6 +61,7 @@ class OrdenproducciontipoSearch extends Ordenproducciontipo
         $query->andFilterWhere([
             'idtipo' => $this->idtipo,
             'activo' => $this->activo,
+            'remision' => $this->remision,
         ]);
 
         $query->andFilterWhere(['like', 'tipo', $this->tipo]);

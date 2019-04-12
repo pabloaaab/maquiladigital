@@ -36,8 +36,10 @@ $this->params['breadcrumbs'][] = $model->idtipo;
                     <td><?= Html::encode($model->idtipo) ?></td>
                     <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'remision') ?>:</th>
+                    <td><?= Html::encode($model->rremision) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->estado) ?></td>                    
+                    <td><?= Html::encode($model->estado) ?></td>
                 </tr>                
             </table>
         </div>

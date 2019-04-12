@@ -278,145 +278,149 @@ class RemisionController extends Controller
             $c20 = 0; $c22 = 0; $c28 = 0; $c30 = 0; $c32 = 0; $c34 = 0; $c36 = 0; $c38 = 0; $c42 = 0;
             $tallasremision = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->one();
             $cantidadesremision = Remisiondetalle::find()->where(['=','id_remision',$remision->id_remision])->all();
-            foreach ($cantidadesremision as $val){
-                if ($val->txs == 1){
-                    $cxs = $cxs+ $val->xs;
-                }
-                if ($val->ts == 1){
-                    $cs = $cs + $val->s;
-                }
-                if ($val->tm == 1){
-                    $cm = $cm + $val->m;
-                }
-                if ($val->tl == 1){
-                    $cl = $cl + $val->l;
-                }
-                if ($val->txl == 1){
-                    $cxl = $cxl + $val->xl;
-                }
-                if ($val->t2 == 1){
-                    $c2 = $c2 + $val['2'];
-                }
-                if ($val->t4 == 1){
-                    $c4 = $c4 + $val['4'];
-                }
-                if ($val->t6 == 1){
-                    $c6 = $c6 + $val['6'];
-                }
-                if ($val->t8 == 1){
-                    $c8 = $c8 + $val['8'];
-                }
-                if ($val->t10 == 1){
-                    $c10 = $c10 + $val['10'];
-                }
-                if ($val->t12 == 1){
-                    $c12 = $c12 + $val['12'];
-                }
-                if ($val->t14 == 1){
-                    $c14 = $c14 + $val['14'];
-                }
-                if ($val->t16 == 1){
-                    $c16 = $c16 + $val['16'];
-                }
-                if ($val->t18 == 1){
-                    $c18 = $c18 + $val['18'];
-                }
-                if ($val->t20 == 1){
-                    $c20 = $c20 + $val['20'];
-                }
-                if ($val->t22 == 1){
-                    $c22 = $c22 + $val['22'];
-                }
-                if ($val->t28 == 1){
-                    $c28 = $c28 + $val['28'];
-                }
-                if ($val->t30 == 1){
-                    $c30 = $c30 + $val['30'];
-                }
-                if ($val->t32 == 1){
-                    $c32 = $c32 +$val['32'];
-                }
-                if ($val->t34 == 1){
-                    $c34 = $c34 + $val['34'];
-                }
-                if ($val->t36 == 1){
-                    $c36 = $c36 + $val['36'];
-                }
-                if ($val->t38 == 1){
-                    $c38 = $c38 + $val['38'];
-                }
-                if ($val->t42 == 1){
-                    $c42 = $c42 + $val['42'];
+            if ($cantidadesremision){
+                foreach ($cantidadesremision as $val){
+                    if ($val->txs == 1){
+                        $cxs = $cxs+ $val->xs;
+                    }
+                    if ($val->ts == 1){
+                        $cs = $cs + $val->s;
+                    }
+                    if ($val->tm == 1){
+                        $cm = $cm + $val->m;
+                    }
+                    if ($val->tl == 1){
+                        $cl = $cl + $val->l;
+                    }
+                    if ($val->txl == 1){
+                        $cxl = $cxl + $val->xl;
+                    }
+                    if ($val->t2 == 1){
+                        $c2 = $c2 + $val['2'];
+                    }
+                    if ($val->t4 == 1){
+                        $c4 = $c4 + $val['4'];
+                    }
+                    if ($val->t6 == 1){
+                        $c6 = $c6 + $val['6'];
+                    }
+                    if ($val->t8 == 1){
+                        $c8 = $c8 + $val['8'];
+                    }
+                    if ($val->t10 == 1){
+                        $c10 = $c10 + $val['10'];
+                    }
+                    if ($val->t12 == 1){
+                        $c12 = $c12 + $val['12'];
+                    }
+                    if ($val->t14 == 1){
+                        $c14 = $c14 + $val['14'];
+                    }
+                    if ($val->t16 == 1){
+                        $c16 = $c16 + $val['16'];
+                    }
+                    if ($val->t18 == 1){
+                        $c18 = $c18 + $val['18'];
+                    }
+                    if ($val->t20 == 1){
+                        $c20 = $c20 + $val['20'];
+                    }
+                    if ($val->t22 == 1){
+                        $c22 = $c22 + $val['22'];
+                    }
+                    if ($val->t28 == 1){
+                        $c28 = $c28 + $val['28'];
+                    }
+                    if ($val->t30 == 1){
+                        $c30 = $c30 + $val['30'];
+                    }
+                    if ($val->t32 == 1){
+                        $c32 = $c32 +$val['32'];
+                    }
+                    if ($val->t34 == 1){
+                        $c34 = $c34 + $val['34'];
+                    }
+                    if ($val->t36 == 1){
+                        $c36 = $c36 + $val['36'];
+                    }
+                    if ($val->t38 == 1){
+                        $c38 = $c38 + $val['38'];
+                    }
+                    if ($val->t42 == 1){
+                        $c42 = $c42 + $val['42'];
+                    }
                 }
             }
-            if ($tallasremision->txs == 1){
-                $datostallas[] = 'XS';
-            }
-            if ($tallasremision->ts == 1){
-                $datostallas[] = 'S';
-            }
-            if ($tallasremision->tm == 1){
-                $datostallas[] = 'M';
-            }
-            if ($tallasremision->tl == 1){
-                $datostallas[] = 'L';
-            }
-            if ($tallasremision->txl == 1){
-                $datostallas[] = 'XL';
-            }
-            if ($tallasremision->t2 == 1){
-                $datostallas[] = '2';
-            }
-            if ($tallasremision->t4 == 1){
-                $datostallas[] = '4';
-            }
-            if ($tallasremision->t6 == 1){
-                $datostallas[] = '6';
-            }
-            if ($tallasremision->t8 == 1){
-                $datostallas[] = '8';
-            }
-            if ($tallasremision->t10 == 1){
-                $datostallas[] = '10';
-            }
-            if ($tallasremision->t12 == 1){
-                $datostallas[] = '12';
-            }
-            if ($tallasremision->t14 == 1){
-                $datostallas[] = '14';
-            }
-            if ($tallasremision->t16 == 1){
-                $datostallas[] = '16';
-            }
-            if ($tallasremision->t18 == 1){
-                $datostallas[] = '18';
-            }
-            if ($tallasremision->t20 == 1){
-                $datostallas[] = '20';
-            }
-            if ($tallasremision->t22 == 1){
-                $datostallas[] = '22';
-            }
-            if ($tallasremision->t28 == 1){
-                $datostallas[] = '28';
-            }
-            if ($tallasremision->t30 == 1){
-                $datostallas[] = '30';
-            }
-            if ($tallasremision->t32 == 1){
-                $datostallas[] = '32';
-            }
-            if ($tallasremision->t34 == 1){
-                $datostallas[] = '34';
-            }
-            if ($tallasremision->t36 == 1){
-                $datostallas[] = '36';
-            }
-            if ($tallasremision->t38 == 1){
-                $datostallas[] = '38';
-            }
-            if ($tallasremision->t42 == 1){
-                $datostallas[] = '42';
+            if ($tallasremision){
+                if ($tallasremision->txs == 1){
+                    $datostallas[] = 'XS';
+                }
+                if ($tallasremision->ts == 1){
+                    $datostallas[] = 'S';
+                }
+                if ($tallasremision->tm == 1){
+                    $datostallas[] = 'M';
+                }
+                if ($tallasremision->tl == 1){
+                    $datostallas[] = 'L';
+                }
+                if ($tallasremision->txl == 1){
+                    $datostallas[] = 'XL';
+                }
+                if ($tallasremision->t2 == 1){
+                    $datostallas[] = '2';
+                }
+                if ($tallasremision->t4 == 1){
+                    $datostallas[] = '4';
+                }
+                if ($tallasremision->t6 == 1){
+                    $datostallas[] = '6';
+                }
+                if ($tallasremision->t8 == 1){
+                    $datostallas[] = '8';
+                }
+                if ($tallasremision->t10 == 1){
+                    $datostallas[] = '10';
+                }
+                if ($tallasremision->t12 == 1){
+                    $datostallas[] = '12';
+                }
+                if ($tallasremision->t14 == 1){
+                    $datostallas[] = '14';
+                }
+                if ($tallasremision->t16 == 1){
+                    $datostallas[] = '16';
+                }
+                if ($tallasremision->t18 == 1){
+                    $datostallas[] = '18';
+                }
+                if ($tallasremision->t20 == 1){
+                    $datostallas[] = '20';
+                }
+                if ($tallasremision->t22 == 1){
+                    $datostallas[] = '22';
+                }
+                if ($tallasremision->t28 == 1){
+                    $datostallas[] = '28';
+                }
+                if ($tallasremision->t30 == 1){
+                    $datostallas[] = '30';
+                }
+                if ($tallasremision->t32 == 1){
+                    $datostallas[] = '32';
+                }
+                if ($tallasremision->t34 == 1){
+                    $datostallas[] = '34';
+                }
+                if ($tallasremision->t36 == 1){
+                    $datostallas[] = '36';
+                }
+                if ($tallasremision->t38 == 1){
+                    $datostallas[] = '38';
+                }
+                if ($tallasremision->t42 == 1){
+                    $datostallas[] = '42';
+                }
             }
             
             $ct = $cxs + $cs + $cm + $cl + $cxl + $c2; $c4 + $c6 + $c8 + $c10 + $c12 + $c14 + $c16 + $c18 + $c20 + $c22 + $c28 + $c30 + $c32 + $c34 + $c36 + $c38 + $c42;

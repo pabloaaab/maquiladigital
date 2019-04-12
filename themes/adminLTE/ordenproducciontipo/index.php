@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [                
                 'attribute' => 'tipo',
-                'contentOptions' => ['class' => 'col-lg-6'],                
+                'contentOptions' => ['class' => 'col-lg-3'],                
             ],
             [
                 'attribute' => 'activo',
@@ -34,8 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $orden->estado;
                 },
                 'filter' => ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(),'activo','estado'),
-                'contentOptions' => ['class' => 'col-lg-5'],
-            ],            		
+                'contentOptions' => ['class' => 'col-lg-3'],
+            ],
+            [
+                'attribute' => 'remision',
+                'value' => function($model){
+                    $orden = app\models\Ordenproducciontipo::findOne($model->idtipo);                    
+                    return $orden->rremision;
+                },
+                'filter' => ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(),'remision','rremision'),
+                'contentOptions' => ['class' => 'col-lg-3'],
+            ],            
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

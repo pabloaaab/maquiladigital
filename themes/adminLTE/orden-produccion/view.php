@@ -61,12 +61,12 @@ $view = 'orden-produccion';
                 echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
                 echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);                
                 if ($remision){
-                   if ($model->idtipo == 2)
+                   if ($model->tipo->remision == 1)
                    {    
                         echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);                             
                    }
                 }else{
-                    if ($model->idtipo == 2)
+                    if ($model->tipo->remision == 1)
                     {
                     ?>
                     <!-- Editar modal detalle -->
