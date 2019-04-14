@@ -2204,8 +2204,8 @@ CREATE TABLE `ordenproduccion` (
 
 insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`codigoproducto`,`fechallegada`,`fechaprocesada`,`fechaentrega`,`cantidad`,`totalorden`,`valorletras`,`observacion`,`estado`,`ordenproduccion`,`idtipo`,`usuariosistema`,`autorizado`,`facturado`,`proceso_control`,`porcentaje_proceso`,`ponderacion`,`porcentaje_cantidad`,`ordenproduccionext`,`segundosficha`,`duracion`) values 
 (1,1,'','2018-12-11 00:00:00','2018-12-11 00:00:00','2018-12-22 00:00:00',1972,16813785,NULL,'este lote fue recogido en un cliente, y no lleva lavandería',0,'12679',1,'71268830',1,1,0,0,0,0,'11091',0,NULL),
-(2,1,'','2018-12-21 00:00:00','2018-12-21 00:00:00','2018-12-22 00:00:00',1972,1015101,NULL,'Lote recogido en el cliente',0,'12679',2,'71268830',1,1,0,0,0,0,'12517',0,NULL),
-(3,1,'','2018-12-13 00:00:00','2018-12-26 00:00:00','2019-01-08 00:00:00',1971,9556039,NULL,'este lote lleva lavanderia',0,'12676',1,'71268830',1,1,0,0,0,30.1877,'10676',2944,NULL),
+(2,1,'','2018-12-21 00:00:00','2018-12-21 00:00:00','2018-12-22 00:00:00',1972,1015101,NULL,'Lote recogido en el cliente',0,'12679',2,'71268830',1,1,0,0,0,0,'12517',NULL,NULL),
+(3,1,'','2018-12-13 00:00:00','2018-12-26 00:00:00','2019-01-08 00:00:00',1971,9556039,NULL,'este lote lleva lavanderia',0,'12676',1,'71268830',1,1,0,0,0,0,'10676',NULL,NULL),
 (4,1,'','2019-01-03 00:00:00','2019-01-03 00:00:00','2019-01-09 00:00:00',1970,2662338.559,NULL,'Esta prenda llevo lavanderia',0,'12676',2,'71268830',1,1,0,0,0,0,'12902',0,NULL),
 (5,1,'','2018-12-27 00:00:00','2019-01-03 00:00:00','2019-01-11 00:00:00',1293,10481679,NULL,'Esta referencia no lleva lavanderia',0,'13980',1,'ADMINISTRADOR',1,1,0,11.092,0,11.092,'12233',5830,NULL),
 (6,1,'','2019-01-11 00:00:00','2019-01-14 00:00:00','2019-01-19 00:00:00',992,5632774,NULL,'Esta orden de produccion no lleva lavanderia',0,'14341',1,'ADMINISTRADOR',1,1,0,36.996,0,0,'12971',2688,NULL),
@@ -2255,15 +2255,15 @@ insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproductodetalle`,`codi
 (3,3,'108',510,8526.26,4348392.6,1,NULL,NULL,0,0,0,0,0,NULL,0),
 (4,4,'108',240,8526.26,2046302.4,1,NULL,NULL,0,0,0,0,0,NULL,0),
 (5,5,'108',152,8526.26,1295991.52,1,NULL,NULL,0,0,0,0,0,NULL,0),
-(11,1,'108',459,514.757,236273.463,2,NULL,NULL,0,0,0,0,0,NULL,0),
+(11,1,'108',459,514.757,236273.463,2,NULL,NULL,0,0,0,0,0,0,NULL),
 (12,2,'108',611,514.757,314516.527,2,NULL,NULL,0,0,0,0,0,NULL,0),
 (13,3,'108',510,514.757,262526.07,2,NULL,NULL,0,0,0,0,0,NULL,0),
 (14,4,'108',240,514.757,123541.68,2,NULL,NULL,0,0,0,0,0,NULL,0),
 (15,5,'108',152,514.757,78243.064,2,NULL,NULL,0,0,0,0,0,NULL,0),
-(20,11,'133',227,4848.32,1100568.64,3,NULL,NULL,100,0,0,3178,0,0,736),
-(21,12,'133',511,4848.32,2477491.52,3,NULL,NULL,100,0,0,7154,0,0,736),
-(22,13,'133',638,4848.32,3093228.16,3,NULL,NULL,100,0,0,8932,0,0,736),
-(23,14,'133',595,4848.32,2884750.4,3,NULL,NULL,0,0,1400,0,8330,437920,736),
+(20,11,'133',227,4848.32,1100568.64,3,NULL,NULL,0,0,0,0,0,0,NULL),
+(21,12,'133',511,4848.32,2477491.52,3,NULL,NULL,0,0,0,0,0,0,22),
+(22,13,'133',638,4848.32,3093228.16,3,NULL,NULL,0,0,0,0,0,0,22),
+(23,14,'133',595,4848.32,2884750.4,3,NULL,NULL,0,0,0,0,0,0,22),
 (24,11,'133',227,1351.441,306777.107,4,NULL,NULL,0,0,0,0,0,NULL,0),
 (25,12,'133',511,1351.441,690586.351,4,NULL,NULL,0,0,0,0,0,NULL,0),
 (26,13,'133',638,1351.44,862218.72,4,NULL,NULL,0,0,0,0,0,NULL,0),
@@ -2342,62 +2342,6 @@ CREATE TABLE `ordenproducciondetalleproceso` (
 /*Data for the table `ordenproducciondetalleproceso` */
 
 insert  into `ordenproducciondetalleproceso`(`iddetalleproceso`,`proceso`,`duracion`,`ponderacion`,`total`,`totalproceso`,`porcentajeproceso`,`idproceso`,`estado`,`iddetalleorden`,`cantidad_operada`) values 
-(1,'ENRESORTAR ESPALDA',72,0,72,16344,9.78261,1,1,20,0),
-(2,'ARMAR TIRA LIBRE',37,0,37,8399,5.02717,2,1,20,0),
-(3,'ASENTAR TIRA LIBRE',51,0,51,11577,6.92935,3,1,20,0),
-(4,'SESGAR ESPALDA',16,0,16,3632,2.17391,14,1,20,0),
-(5,'SESGAR FRENTE X 2',23,0,23,5221,3.125,15,1,20,0),
-(6,'SESGAR SISAS X 2',32,0,32,7264,4.34783,16,1,20,0),
-(7,'ASENTAR PERILLA',83,0,83,18841,11.2772,17,1,20,0),
-(8,'CERRAR COSTADOS X 2',54,0,54,12258,7.33696,18,1,20,0),
-(9,'MONTAR TIRAS A HOMBRO X 4',68,0,68,15436,9.23913,19,1,20,0),
-(10,'ASENTAR COMPLETO',115,0,115,26105,15.625,20,1,20,0),
-(11,'PINZA ESPALDA',10,0,10,2270,1.3587,21,1,20,0),
-(12,'MARQUILLA ESPALDA',17,0,17,3859,2.30978,22,1,20,0),
-(13,'RUEDO BAJO',100,0,100,22700,13.587,23,1,20,0),
-(14,'OJAL X 8',58,0,58,13166,7.88043,24,1,20,0),
-(15,'ENRESORTAR ESPALDA',72,0,72,36792,9.78261,1,1,21,0),
-(16,'ARMAR TIRA LIBRE',37,0,37,18907,5.02717,2,1,21,0),
-(17,'ASENTAR TIRA LIBRE',51,0,51,26061,6.92935,3,1,21,0),
-(18,'SESGAR ESPALDA',16,0,16,8176,2.17391,14,1,21,0),
-(19,'SESGAR FRENTE X 2',23,0,23,11753,3.125,15,1,21,0),
-(20,'SESGAR SISAS X 2',32,0,32,16352,4.34783,16,1,21,0),
-(21,'ASENTAR PERILLA',83,0,83,42413,11.2772,17,1,21,0),
-(22,'CERRAR COSTADOS X 2',54,0,54,27594,7.33696,18,1,21,0),
-(23,'MONTAR TIRAS A HOMBRO X 4',68,0,68,34748,9.23913,19,1,21,0),
-(24,'ASENTAR COMPLETO',115,0,115,58765,15.625,20,1,21,0),
-(25,'PINZA ESPALDA',10,0,10,5110,1.3587,21,1,21,0),
-(26,'MARQUILLA ESPALDA',17,0,17,8687,2.30978,22,1,21,0),
-(27,'RUEDO BAJO',100,0,100,51100,13.587,23,1,21,0),
-(28,'OJAL X 8',58,0,58,29638,7.88043,24,1,21,0),
-(29,'ENRESORTAR ESPALDA',72,0,72,45936,9.78261,1,1,22,0),
-(30,'ARMAR TIRA LIBRE',37,0,37,23606,5.02717,2,1,22,0),
-(31,'ASENTAR TIRA LIBRE',51,0,51,32538,6.92935,3,1,22,0),
-(32,'SESGAR ESPALDA',16,0,16,10208,2.17391,14,1,22,0),
-(33,'SESGAR FRENTE X 2',23,0,23,14674,3.125,15,1,22,0),
-(34,'SESGAR SISAS X 2',32,0,32,20416,4.34783,16,1,22,0),
-(35,'ASENTAR PERILLA',83,0,83,52954,11.2772,17,1,22,0),
-(36,'CERRAR COSTADOS X 2',54,0,54,34452,7.33696,18,1,22,0),
-(37,'MONTAR TIRAS A HOMBRO X 4',68,0,68,43384,9.23913,19,1,22,0),
-(38,'ASENTAR COMPLETO',115,0,115,73370,15.625,20,1,22,0),
-(39,'PINZA ESPALDA',10,0,10,6380,1.3587,21,1,22,0),
-(40,'MARQUILLA ESPALDA',17,0,17,10846,2.30978,22,1,22,0),
-(41,'RUEDO BAJO',100,0,100,63800,13.587,23,1,22,0),
-(42,'OJAL X 8',58,0,58,37004,7.88043,24,1,22,0),
-(43,'ENRESORTAR ESPALDA',72,0,72,42840,9.78261,1,0,23,595),
-(44,'ARMAR TIRA LIBRE',37,0,37,22015,5.02717,2,0,23,595),
-(45,'ASENTAR TIRA LIBRE',51,0,51,30345,6.92935,3,0,23,595),
-(46,'SESGAR ESPALDA',16,0,16,9520,2.17391,14,0,23,595),
-(47,'SESGAR FRENTE X 2',23,0,23,13685,3.125,15,0,23,595),
-(48,'SESGAR SISAS X 2',32,0,32,19040,4.34783,16,0,23,595),
-(49,'ASENTAR PERILLA',83,0,83,49385,11.2772,17,0,23,595),
-(50,'CERRAR COSTADOS X 2',54,0,54,32130,7.33696,18,0,23,595),
-(51,'MONTAR TIRAS A HOMBRO X 4',68,0,68,40460,9.23913,19,0,23,595),
-(52,'ASENTAR COMPLETO',115,0,115,68425,15.625,20,0,23,595),
-(53,'PINZA ESPALDA',10,0,10,5950,1.3587,21,0,23,595),
-(54,'MARQUILLA ESPALDA',17,0,17,10115,2.30978,22,0,23,595),
-(55,'RUEDO BAJO',100,0,100,59500,13.587,23,0,23,595),
-(56,'OJAL X 8',58,0,58,34510,7.88043,24,0,23,595),
 (57,'ASENTAR COMPLETO',60,0,60,23580,4.75436,20,0,28,0),
 (58,'PREPARAR BANDA CUELLO',41,0,41,16113,3.24881,25,0,28,0),
 (59,'ARMAR CUELLO',50,0,50,19650,3.96197,27,0,28,0),
@@ -2700,14 +2644,15 @@ CREATE TABLE `ordenproducciontipo` (
   `idtipo` int(15) NOT NULL AUTO_INCREMENT,
   `tipo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `activo` tinyint(1) NOT NULL DEFAULT '0',
+  `remision` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idtipo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `ordenproducciontipo` */
 
-insert  into `ordenproducciontipo`(`idtipo`,`tipo`,`activo`) values 
-(1,'CONFECCIÓN',0),
-(2,'TERMINACION',0);
+insert  into `ordenproducciontipo`(`idtipo`,`tipo`,`activo`,`remision`) values 
+(1,'CONFECCIÓN',0,0),
+(2,'TERMINACION',0,0);
 
 /*Table structure for table `parametros` */
 
@@ -3355,7 +3300,7 @@ CREATE TABLE `seguimiento_produccion` (
 
 insert  into `seguimiento_produccion`(`id_seguimiento_produccion`,`fecha_inicio_produccion`,`hora_inicio`,`idcliente`,`idordenproduccion`,`minutos`,`horas_a_trabajar`,`operarias`,`prendas_reales`,`descanso`,`ordenproduccionint`,`ordenproduccionext`,`codigoproducto`) values 
 (1,'2019-03-05','06:30 AM',1,13,29.42,9,8,0,0,'14962','13659','220'),
-(2,'2019-02-23','07:00 AM',1,14,1,9,8,120,0,'14633','13695','527');
+(2,'2019-02-23','07:00 AM',1,14,1,9,8,12,0,'14633','13695','527');
 
 /*Table structure for table `seguimiento_produccion_detalle` */
 
@@ -3382,7 +3327,7 @@ CREATE TABLE `seguimiento_produccion_detalle` (
   PRIMARY KEY (`id_seguimiento_produccion_detalle`),
   KEY `id_seguimiento_produccion` (`id_seguimiento_produccion`),
   CONSTRAINT `seguimiento_produccion_detalle_ibfk_1` FOREIGN KEY (`id_seguimiento_produccion`) REFERENCES `seguimiento_produccion` (`id_seguimiento_produccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `seguimiento_produccion_detalle` */
 
@@ -3391,7 +3336,12 @@ insert  into `seguimiento_produccion_detalle`(`id_seguimiento_produccion_detalle
 (20,2,'2019-02-23','07:00:00','2019-02-18','23:00:19',2,9,30,270,8,2160,240,3840,22,0.57,0),
 (21,2,'2019-02-23','07:00:00','2019-02-18','23:00:48',2,9,30,270,8,2160,240,3840,3500,91.15,0),
 (22,2,'2019-02-23','07:00:00','2019-02-18','23:02:30',8,9,7.5,67.5,8,540,60,972,3500,360.08,0),
-(29,2,'2019-02-23','07:00 AM','2019-03-21','15:22:22',1,9,60,540,8,4320,480,3945.6,120,3.04,73560);
+(29,2,'2019-02-23','07:00 AM','2019-03-21','15:22:22',1,9,60,540,8,4320,480,3945.6,120,3.04,73560),
+(30,2,'2019-02-23','07:00 AM','2019-04-03','18:34:03',1,9,60,540,8,4320,480,5443.2,10,0.18,6130),
+(31,2,'2019-02-23','07:00 AM','2019-04-03','18:34:03',1,9,60,540,8,4320,480,5443.2,10,0.18,6130),
+(32,2,'2019-02-23','07:00 AM','2019-04-03','18:34:03',1,9,60,540,8,4320,480,5443.2,10,0.18,6130),
+(33,2,'2019-02-23','07:00 AM','2019-04-03','18:34:03',1,9,60,540,8,4320,480,5443.2,10,0.18,6130),
+(34,2,'2019-02-23','07:00 AM','2019-04-03','18:36:02',1,9,60,540,8,4320,480,5452.8,12,0.22,7356);
 
 /*Table structure for table `seguimiento_produccion_detalle2` */
 
@@ -3421,7 +3371,7 @@ CREATE TABLE `seguimiento_produccion_detalle2` (
 /*Data for the table `seguimiento_produccion_detalle2` */
 
 insert  into `seguimiento_produccion_detalle2`(`id_seguimiento_produccion_detalle`,`id_seguimiento_produccion`,`fecha_inicio`,`hora_inicio`,`fecha_consulta`,`hora_consulta`,`minutos`,`horas_a_trabajar`,`cantidad_por_hora`,`cantidad_total_por_hora`,`operarias`,`total_unidades_por_dia`,`total_unidades_por_hora`,`prendas_sistema`,`prendas_reales`,`porcentaje_produccion`,`total_venta`) values 
-(1,NULL,'2019-02-23','07:00 AM','2019-03-21','15:22:22',1,9,60,540,8,4320,480,3945.6,120,3.04,73560);
+(1,NULL,'2019-02-23','07:00 AM','2019-04-03','18:36:02',1,9,60,540,8,4320,480,5452.8,12,0.22,7356);
 
 /*Table structure for table `stockdescargas` */
 
