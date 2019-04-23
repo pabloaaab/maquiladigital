@@ -450,7 +450,9 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
     </div>
     <div class="panel-footer text-right">
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['remision/nuevodetalle', 'id' => $model->id_remision, 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-success']); ?>        
+        <?php if ($datostallas) { ?>
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar y Nuevo", ["class" => "btn btn-success", 'name' => 'actualizarynuevo']) ?>
+        <?php } ?>
         <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success", 'name' => 'actualizar']) ?>
     </div>
 </div>
