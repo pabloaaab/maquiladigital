@@ -179,7 +179,7 @@
                                         'icon' => 'cube',
                                         'url' => '#',
                                         'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Contabiizar', 'icon' => 'plus-square-o', 'url' => ['/contabilizar/contabilizar']],                                            
                                         ],    
                                     ],
                                     [
