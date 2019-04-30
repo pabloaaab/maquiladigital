@@ -67,6 +67,7 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><b>Id</td>
                             <td align="center"><b>Proceso</td>
                             <td align="center"><b>Duración (Seg)</td>
+                            <td align="center"><b>Total Opera</td>
                             <td align="center"><b>Ponderación (Seg)</td>
                             <td align="center"><b>Total (Seg)</td>
                             <td align="center"><b>Total Proceso (Seg)</td>
@@ -76,6 +77,7 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><input type="checkbox" onclick="marcar(this);"/></td>
                         </tr>
                         <tr>
+                            <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
@@ -95,6 +97,7 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><?= $val->iddetalleproceso ?></td>
                             <td align="center"><?= $val->proceso ?></td>
                             <td align="center"><input type="text" name="duracion[]" value="<?= $val->duracion ?>" size="2" required></td>
+                            <td align="center"><?= number_format(60 / $val->duracion * 60,1) ?></td>
                             <td align="center"><input type="text" name="ponderacion[]" value="<?= $val->ponderacion ?>" size="2" required></td>
                             <td align="center"><?= number_format($val->total,1) ?></td>
                             <td align="center"><?= number_format($val->totalproceso,1) ?></td>

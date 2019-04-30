@@ -1293,8 +1293,9 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('A6', 'ID')
                     ->setCellValue('B6', 'PROCESO')
                     ->setCellValue('C6', 'DURACION(SEG)')
-                    ->setCellValue('D6', 'PONDERACION (SEG)')
-                    ->setCellValue('E6', 'TOTAL (SEG)');                    
+                    ->setCellValue('D6', 'TOTAL OPERACION')
+                    ->setCellValue('E6', 'PONDERACION (SEG)')
+                    ->setCellValue('F6', 'TOTAL (SEG)');                    
         $i = 7;
         
         foreach ($ordendetalleproceso as $val) {
@@ -1303,8 +1304,9 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('A' . $i, $val->iddetalleproceso)
                     ->setCellValue('B' . $i, $val->proceso)
                     ->setCellValue('C' . $i, $val->duracion)
-                    ->setCellValue('D' . $i, $val->ponderacion)
-                    ->setCellValue('E' . $i, $val->total);
+                    ->setCellValue('D' . $i, 60 / $val->duracion * 60)
+                    ->setCellValue('E' . $i, $val->ponderacion)                    
+                    ->setCellValue('F' . $i, $val->total);
             $i++;
         }
         $j = $i + 1;
