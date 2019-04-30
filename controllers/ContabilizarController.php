@@ -19,6 +19,15 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use app\models\UsuarioDetalle;
 use app\models\Contabilidad;
+use app\models\Recibocaja;
+use app\models\Recibocajadetalle;
+use app\models\Compra;
+use app\models\Notacredito;
+use app\models\Notacreditodetalle;
+use app\models\ComprobanteEgreso;
+use app\models\ComprobanteEgresoDetalle;
+use app\models\Facturaventa;
+use app\models\Facturaventadetalle;
 
 class ContabilizarController extends Controller {        
     
@@ -30,21 +39,25 @@ class ContabilizarController extends Controller {
             $fechadesde = null;
             $fechahasta = null;
             if ($form->load(Yii::$app->request->get())) {
-                if ($form->validate()) {
-                    
+                if ($form->validate()) {                    
                     $proceso = Html::encode($form->proceso);
                     $fechadesde = Html::encode($form->desde);
                     $fechahasta = Html::encode($form->hasta);
+                    //se realiza la inserción de los registros en la tabla contabilidad
+                    if ($proceso){
+                        $this->Generar($proceso,$fechadesde,$fechahasta);
+                    }
+                    //fin proceso
                     $table = Contabilidad::find()
-                            ->andFilterWhere(['like', 'proceso', $proceso])
+                            ->andFilterWhere(['=', 'comprobante', $proceso])
                             ->andFilterWhere(['>=', 'fecha', $fechadesde])
                             ->andFilterWhere(['<=', 'fecha', $fechahasta])
                             ->orderBy('fecha asc');
-                    $excel = $table->all();
+                    $exportar = $table->all();
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 10,
+                        'pageSize' => 15,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -53,18 +66,22 @@ class ContabilizarController extends Controller {
                             ->all();
                     if(isset($_POST['excel'])){
                         //$table = $table->all();
-                        $this->actionExcel($excel);
+                        $this->actionExcel($exportar);
+                    }
+                    if(isset($_POST['contai'])){
+                        //$table = $table->all();
+                        $this->actionContai($exportar);
                     }
                 } else {
                     $form->getErrors();
                 }
             } else {
-                $table = Contabilidad::find()
+                $table = Contabilidad::find()->where(['=','consecutivo', 0])
                         ->orderBy('fecha asc');
-                $excel = $table->all();
+                $exportar = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 10,
+                    'pageSize' => 15,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table
@@ -73,7 +90,11 @@ class ContabilizarController extends Controller {
                         ->all();
                 if(isset($_POST['excel'])){
                     //$table = $table->all();
-                    $this->actionExcel($excel);
+                    $this->actionExcel($exportar);
+                }
+                if(isset($_POST['contai'])){
+                    //$table = $table->all();
+                    $this->actionContai($exportar);
                 }
             }
             $to = $count->count();
@@ -88,9 +109,134 @@ class ContabilizarController extends Controller {
         }else{
             return $this->redirect(['site/login']);
         }
-    }        
+    }
     
-    public function actionExcel($excel) {                
+    protected function Generar($proceso,$fechadesde,$fechahasta) {        
+        //inicio borrar registros
+        Contabilidad::deleteAll('consecutivo <> 0');
+        //fin borrar registros
+        if ($proceso == 1){  //recibo de caja
+            $reciboscaja = Recibocaja::find()->where(['>=','fechapago',$fechadesde])->andWhere(['<=','fechapago',$fechahasta])->all();
+            foreach ($reciboscaja as $recibo) {
+                $recibosdetalles = Recibocajadetalle::find()->where(['=','idrecibo',$recibo->idrecibo])->all();
+                foreach ($recibosdetalles as $detalle){
+                    $contabilidad = new Contabilidad;
+                    $contabilidad->cuenta = 1001;
+                    $contabilidad->comprobante = $proceso;
+                    $contabilidad->proceso = 'recibo de caja';
+                    $contabilidad->fecha = $recibo->fecharecibo;
+                    $contabilidad->documento = $recibo->numero;
+                    $contabilidad->documento_ref = $recibo->numero;
+                    $contabilidad->nit = $recibo->cliente->cedulanit;
+                    $contabilidad->detalle = $recibo->tiporecibo->concepto;
+                    $contabilidad->tipo = 1;
+                    $contabilidad->valor = $detalle->vlrabono;
+                    $contabilidad->base = 0;
+                    $contabilidad->centro_costo = '';
+                    $contabilidad->transporte = '';
+                    $contabilidad->plazo = 0;
+                    $contabilidad->save(false);
+                }    
+            }
+        }
+        if ($proceso == 2){  //Comprobantes de Egresos
+            $comprobantesegreso = ComprobanteEgreso::find()->where(['>=','fecha_comprobante',$fechadesde])->andWhere(['<=','fecha_comprobante',$fechahasta])->all();
+            foreach ($comprobantesegreso as $comprobante) {
+                $comprobantesdetalles = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->all();
+                foreach ($comprobantesdetalles as $detalle){
+                    $contabilidad = new Contabilidad;
+                    $contabilidad->cuenta = 1001;
+                    $contabilidad->comprobante = $proceso;
+                    $contabilidad->proceso = 'comprobante de egreso';
+                    $contabilidad->fecha = $comprobante->fecha_comprobante;
+                    $contabilidad->documento = $comprobante->numero;
+                    $contabilidad->documento_ref = $comprobante->numero;
+                    $contabilidad->nit = $comprobante->proveedor->cedulanit;
+                    $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                    $contabilidad->tipo = 1;
+                    $contabilidad->valor = $detalle->vlr_abono;
+                    $contabilidad->base = 0;
+                    $contabilidad->centro_costo = '';
+                    $contabilidad->transporte = '';
+                    $contabilidad->plazo = 0;
+                    $contabilidad->save(false);
+                }    
+            }
+        }
+        if ($proceso == 4){  //Compras
+            $compras = Compra::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->all();
+            foreach ($compras as $compra) {                
+                    $contabilidad = new Contabilidad;
+                    $contabilidad->cuenta = 1001;
+                    $contabilidad->comprobante = $proceso;
+                    $contabilidad->proceso = 'compras';
+                    $contabilidad->fecha = $compra->fechainicio;
+                    $contabilidad->documento = $compra->numero;
+                    $contabilidad->documento_ref = $compra->numero;
+                    $contabilidad->nit = $compra->proveedor->cedulanit;
+                    $contabilidad->detalle = $compra->compraConcepto->concepto;
+                    $contabilidad->tipo = 1;
+                    $contabilidad->valor = $compra->total;
+                    $contabilidad->base = 0;
+                    $contabilidad->centro_costo = '';
+                    $contabilidad->transporte = '';
+                    $contabilidad->plazo = 0;
+                    $contabilidad->save(false);                    
+            }
+        }
+        if ($proceso == 7){  //Facturacion
+            $facturas = Facturaventa::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->all();
+            foreach ($facturas as $factura) {
+                $facturasdetalles = Facturaventadetalle::find()->where(['=','idfactura',$factura->idfactura])->all();
+                foreach ($facturasdetalles as $detalle){
+                    $contabilidad = new Contabilidad;
+                    $contabilidad->cuenta = 1001;
+                    $contabilidad->comprobante = $proceso;
+                    $contabilidad->proceso = 'Facturacion';
+                    $contabilidad->fecha = $factura->fechainicio;
+                    $contabilidad->documento = $factura->nrofactura;
+                    $contabilidad->documento_ref = $factura->nrofactura;
+                    $contabilidad->nit = $factura->cliente->cedulanit;
+                    $contabilidad->detalle = $detalle->productodetalle->prendatipo->prenda;
+                    $contabilidad->tipo = 1;
+                    $contabilidad->valor = $detalle->total;
+                    $contabilidad->base = 0;
+                    $contabilidad->centro_costo = '';
+                    $contabilidad->transporte = '';
+                    $contabilidad->plazo = 0;
+                    $contabilidad->save(false);
+                }    
+            }
+        }
+        if ($proceso == 9){  //Notas Credito
+            $notascredito = Notacredito::find()->where(['>=','fecha',$fechadesde])->andWhere(['<=','fecha',$fechahasta])->all();
+            foreach ($notascredito as $nota) {
+                $notasdetalles = Notacreditodetalle::find()->where(['=','idnotacredito',$nota->idnotacredito])->all();
+                foreach ($notasdetalles as $detalle){
+                    $contabilidad = new Contabilidad;
+                    $contabilidad->cuenta = 1001;
+                    $contabilidad->comprobante = $proceso;
+                    $contabilidad->proceso = 'nota credito';
+                    $contabilidad->fecha = $nota->fecha;
+                    $contabilidad->documento = $nota->numero;
+                    $contabilidad->documento_ref = $nota->numero;
+                    $contabilidad->nit = $nota->cliente->cedulanit;
+                    $contabilidad->detalle = $nota->conceptonota->concepto;
+                    $contabilidad->tipo = 1;
+                    $contabilidad->valor = $detalle->valor;
+                    $contabilidad->base = 0;
+                    $contabilidad->centro_costo = '';
+                    $contabilidad->transporte = '';
+                    $contabilidad->plazo = 0;
+                    $contabilidad->save(false);
+                }    
+            }
+        }
+        return;
+        
+    }
+    
+    public function actionExcel($exportar) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -203,6 +349,77 @@ class ContabilizarController extends Controller {
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
         exit;
+    }
+    
+    public function actionContai($exportar) {                
+        ob_clean();
+        $strArchivo = "plano". ".txt";                
+        
+        $ar = fopen($strArchivo, "a") or
+                die("Problemas en la creacion del archivo plano");                
+        /*fputs($ar, "C CUENTA  ");
+        fputs($ar, "CTE  ");
+        fputs($ar, "FECHADO   ");
+        fputs($ar, "DOCUMENTO");
+        fputs($ar, "DOC REF  ");
+        fputs($ar, "        NIT");
+        fputs($ar, "DETALLE                     ");
+        fputs($ar, "T" . "\t");
+        fputs($ar, "                VALOR");
+        fputs($ar, "               V BASE");
+        fputs($ar, "CCOSTO ");
+        fputs($ar, "TE ");
+        fputs($ar, "PZO");
+        
+        fputs($ar, "\n");*/
+        foreach ($exportar as $dato) {
+            //$floValor = 0;
+            /*if($arRegistroExportar->getTipo() == 1) {
+                $floValor = $arRegistroExportar->getDebito();
+            } else {
+                $floValor = $arRegistroExportar->getCredito();
+            }*/
+            fputs($ar, $this->RellenarNr($dato->cuenta, " ", 10) . "\t");            
+            fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5) . "\t");
+            fputs($ar, $dato->fecha . "\t");
+            fputs($ar, $this->RellenarNr($dato->documento, "0", 9) . "\t");
+            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9) . "\t");            
+            fputs($ar, $dato->nit    . "\t");
+            fputs($ar, $dato->detalle . "\t");
+            fputs($ar, $dato->tipo . "\t");
+            fputs($ar, $dato->valor . "\t");
+            fputs($ar, $dato->base . "\t");
+            fputs($ar, $dato->centro_costo . "\t");
+            fputs($ar, $dato->transporte . "\t");
+            fputs($ar, $dato->plazo . "\t");
+            fputs($ar, "" . "\t");
+            fputs($ar, "" . "\t");
+            fputs($ar, "\n");
+        }
+        fclose($ar);
+
+        //$strSql = "TRUNCATE TABLE ctb_registro_exportar";           
+        //$em->getConnection()->executeQuery($strSql);                    
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/csv; charset=ISO-8859-15');
+        header('Content-Disposition: attachment; filename='.basename($strArchivo));
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($strArchivo));
+        readfile($strArchivo);                 
+        exit;
+    }
+    
+    public static function RellenarNr($Nro, $Str, $NroCr) {
+        $Longitud = strlen($Nro);
+
+        $Nc = $NroCr - $Longitud;
+        for ($i = 0; $i < $Nc; $i++)
+            $Nro = $Str . $Nro;
+
+        return (string) $Nro;
     }
 
 }

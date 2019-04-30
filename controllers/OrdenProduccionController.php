@@ -484,7 +484,7 @@ class OrdenProduccionController extends Controller {
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 10,
+                        'pageSize' => 15,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -499,7 +499,7 @@ class OrdenProduccionController extends Controller {
                         ->orderBy('idordenproduccion desc');
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 10,
+                    'pageSize' => 15,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table

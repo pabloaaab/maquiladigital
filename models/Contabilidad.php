@@ -30,7 +30,7 @@ class Contabilidad extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'cantabilidad';
+        return 'contabilidad';
     }
 
     /**

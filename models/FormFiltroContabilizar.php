@@ -17,7 +17,7 @@ class FormFiltroContabilizar extends Model
     public function rules()
     {
         return [
-
+            [['proceso','desde','hasta'], 'required', 'message' => 'Campo requerido'],
             ['proceso', 'match', 'pattern' => '/^[0-9a-z\s]+$/i', 'message' => 'Sólo se aceptan letras y números'],
             ['desde', 'safe'],
             ['hasta', 'safe'],            

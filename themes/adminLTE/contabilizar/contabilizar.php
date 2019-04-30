@@ -14,6 +14,7 @@ use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
+use app\models\ContabilidadComprobanteTipo;
 
 $this->title = 'Contabilizar';
 $this->params['breadcrumbs'][] = $this->title;
@@ -40,11 +41,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
 
 ]);
+
+
+$tipos = ArrayHelper::map(ContabilidadComprobanteTipo::find()->all(), 'codigo', 'tipo');
 ?>
 
 <div class="panel panel-success panel-filters">
     <div class="panel-heading" onclick="mostrarfiltro()">
-        Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
+        Filtros <i class="glyphicon glyphicon-filter"></i>
     </div>
 	
     <div class="panel-body" id="filtrocontabilizar" style="display:none">
@@ -54,21 +58,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
+                    'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
             ?>
-            <?= $formulario->field($form, "proceso")->input("search") ?>
+            <?= $formulario->field($form, 'proceso')->dropDownList($tipos, ['prompt' => 'Seleccione un proceso...']) ?>
             <?= $formulario->field($form, 'hasta')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
-                    'format' => 'yyyy-m-d',
+                    'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
             ?>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-check'></span> Generar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("contabilizar/contabilizar") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-check'></span> Generar", ["class" => "btn btn-primary",]) ?>            
         </div>
     </div>
 </div>
@@ -83,21 +86,37 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-hover">
             <thead>
             <tr>                
-                <th scope="col">Cedula/Nit</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Municipio</th>                                               
+                <th scope="col">Cuenta</th>
+                <th scope="col">Comprobante</th>
+                <th scope="col">proceso</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Documento</th>                                               
+                <th scope="col">Nit</th>                                               
+                <th scope="col">Detalle</th>                                               
+                <th scope="col">Tipo</th>                                               
+                <th scope="col">Valor</th>   
+                <th scope="col">Base</th>   
+                <th scope="col">Centro Costo</th>   
+                <th scope="col">Transporte</th>   
+                <th scope="col">Plazo</th>   
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
-                <td><?= $val->consecutivo ?></td>
-                <td><?= $val->consecutivo ?></td>
-                <td><?= $val->consecutivo ?></td>
-                <td><?= $val->consecutivo ?></td>
-                <td><?= $val->consecutivo ?></td>                
+            <tr>                                
+                <td><?= $val->cuenta ?></td>
+                <td><?= $val->comprobante ?></td>
+                <td><?= $val->proceso ?></td>
+                <td><?= $val->fecha ?></td>
+                <td><?= $val->documento ?></td>
+                <td><?= $val->nit ?></td>
+                <td><?= $val->detalle ?></td>
+                <td><?= $val->tipo ?></td>
+                <td><?= $val->valor ?></td>
+                <td><?= $val->base ?></td>
+                <td><?= $val->centro_costo ?></td>
+                <td><?= $val->transporte ?></td>
+                <td><?= $val->plazo ?></td>
             </tr>
             </tbody>
             <?php endforeach; ?>
@@ -108,7 +127,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             "method" => "post",                            
                         ]);
                 ?>    
-                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary ']); ?>
+                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Exportar", ['name' => 'contai','class' => 'btn btn-primary ']); ?>
             <?php $form->end() ?>
         </div>
     </div>
