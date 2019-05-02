@@ -59,7 +59,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
             'hasta' => 'Hasta',
             'referencia' => 'Referencia',
             'estado' => 'Estado',
-            'total_segundos' => 'Total Segundos',
+            'total_segundos' => 'Total Segundos',            
         ];
     }
 

@@ -130,6 +130,23 @@ $view = 'clientes';
         </table>
     </div>
     <div class="panel-heading">
+        Información Confección
+    </div>
+    <div class="panel-body">
+        <table class="table table-bordered">
+            <tr>
+                <th>Minuto Confección:</th>
+                <td><?= $table->minuto_confeccion ?></td>
+                <th>Minuto Terminación:</th>
+                <td><?= $table->minuto_terminacion ?></td>
+                <th></th>
+                <td></td>
+                <th></th>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-heading">
         Observaciones
     </div>
     <div class="panel-body">

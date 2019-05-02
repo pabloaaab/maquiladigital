@@ -355,23 +355,22 @@ class ContabilizarController extends Controller {
         ob_clean();
         $strArchivo = "plano". ".txt";                
         
-        $ar = fopen($strArchivo, "a") or
+        $ar = fopen($strArchivo, "w") or
                 die("Problemas en la creacion del archivo plano");                
-        /*fputs($ar, "C CUENTA  ");
-        fputs($ar, "CTE  ");
+        fputs($ar, "C CUENTA  ");
+        fputs($ar, "CTE ");
         fputs($ar, "FECHADO   ");
         fputs($ar, "DOCUMENTO");
         fputs($ar, "DOC REF  ");
         fputs($ar, "        NIT");
         fputs($ar, "DETALLE                     ");
-        fputs($ar, "T" . "\t");
+        fputs($ar, "T");
         fputs($ar, "                VALOR");
         fputs($ar, "               V BASE");
         fputs($ar, "CCOSTO ");
         fputs($ar, "TE ");
-        fputs($ar, "PZO");
-        
-        fputs($ar, "\n");*/
+        fputs($ar, "PZO");        
+        fputs($ar, "\n");
         foreach ($exportar as $dato) {
             //$floValor = 0;
             /*if($arRegistroExportar->getTipo() == 1) {
@@ -379,18 +378,18 @@ class ContabilizarController extends Controller {
             } else {
                 $floValor = $arRegistroExportar->getCredito();
             }*/
-            fputs($ar, $this->RellenarNr($dato->cuenta, " ", 10) . "\t");            
-            fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5) . "\t");
-            fputs($ar, $dato->fecha . "\t");
-            fputs($ar, $this->RellenarNr($dato->documento, "0", 9) . "\t");
-            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9) . "\t");            
-            fputs($ar, $dato->nit    . "\t");
-            fputs($ar, $dato->detalle . "\t");
-            fputs($ar, $dato->tipo . "\t");
-            fputs($ar, $dato->valor . "\t");
-            fputs($ar, $dato->base . "\t");
-            fputs($ar, $dato->centro_costo . "\t");
-            fputs($ar, $dato->transporte . "\t");
+            fputs($ar, $this->RellenarNr($dato->cuenta, " ", 10));            
+            fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5));
+            fputs($ar, $dato->fecha);
+            fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
+            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
+            fputs($ar, $dato->nit);
+            fputs($ar, $dato->detalle);
+            fputs($ar, $dato->tipo);
+            fputs($ar, $dato->valor);
+            fputs($ar, $dato->base);
+            fputs($ar, $dato->centro_costo);
+            fputs($ar, $dato->transporte);
             fputs($ar, $dato->plazo . "\t");
             fputs($ar, "" . "\t");
             fputs($ar, "" . "\t");

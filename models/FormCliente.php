@@ -39,6 +39,8 @@ class FormCliente extends Model
     public $retencionfuente;
     public $observacion;
     public $fechaingreso;
+    public $minuto_confeccion;
+    public $minuto_terminacion;
 
     public function rules()
     {
@@ -74,6 +76,8 @@ class FormCliente extends Model
             ['retencioniva', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['retencionfuente', 'required', 'message' => 'Campo requerido'],
             ['retencionfuente', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['minuto_confeccion', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['minuto_terminacion', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['observacion', 'default'],
         ];
     }
@@ -103,6 +107,8 @@ class FormCliente extends Model
             'retencionfuente' => 'Retención Fte:',
             'dv' => '',
             'observacion' => 'Observaciones:',
+            'minuto_confeccion' => 'Minuto Confección:',
+            'minuto_terminacion' => 'Minuto Terminación:',
 
         ];
     }

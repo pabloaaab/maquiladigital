@@ -10,12 +10,17 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Session;
 use yii\db\ActiveQuery;
+use app\models\Cliente;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Fichatiempo */
 
 $this->title = 'Detalle Ficha Tiempo';
 $this->params['breadcrumbs'][] = ['label' => 'Fichas Tiempos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
+?>
+<?php
+$clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto');
 ?>
 <div class="Fichatiempo-view">
 
@@ -105,12 +110,15 @@ $form = ActiveForm::begin([
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
+                    <th scope="col">Cliente</th>
                     <th scope="col">Día</th>
                     <th scope="col">Hora Desde</th>
                     <th scope="col">Hora Hasta</th>
-                    <th scope="col">Total Segundos</th>
+                    <th scope="col">Total Seg</th>
                     <th scope="col">Total Operaciones</th>
-                    <th scope="col">Operaciones Realizadas</th>
+                    <th scope="col">Op Realizadas</th>
+                    <th scope="col">Vlr Op</th>
+                    <th scope="col">Vlr Pagar</th>
                     <th scope="col">Cumplimiento</th>
                     <th scope="col">Observación</th>                    
                     <th scope="col"></th>
@@ -120,12 +128,15 @@ $form = ActiveForm::begin([
             <tbody>
                 <?php foreach ($fichatiempodetalle as $val): ?>
                     <tr>                    
+                        <td style="padding-left: 1;padding-right: 1;"><?= Html::dropDownList('idcliente[]', $val->idcliente, $clientes, ['class' => 'col-sm-12', 'prompt' => 'Seleccion...', 'required' => true]) ?></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="4" required></td>                        
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="10" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="5" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->total_operacion ?></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="17" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="8" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_operacion ?></td>
+                        <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_pagar ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->cumplimiento ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->observacion ?></td>                        
                         <td style="padding-left: 0;padding-right: 0;"><input type="hidden" name="id_ficha_tiempo_detalle[]" value="<?= $val->id_ficha_tiempo_detalle ?>"></td>

@@ -59,7 +59,10 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
         </div>
         <div class="row">
             <?= $form->field($model, 'admon')->textInput(['maxlength' => true]) ?>    
-        </div>        
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'porcentaje_empleado')->textInput(['maxlength' => true]) ?>    
+        </div>
         <div class="panel-footer text-right">			                        
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
         </div>

@@ -17,6 +17,7 @@ use Yii;
  * @property double $salario_minimo
  * @property int $id_arl
  * @property int $admon
+ * @property float $porcentaje_empleado
  *
  * @property Arl $arl
  */
@@ -36,8 +37,8 @@ class Parametros extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo', 'id_arl','admon'], 'required'],
-            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo','admon'], 'number'],
+            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo', 'id_arl','admon','porcentaje_empleado'], 'required'],
+            [['auxilio_transporte', 'pension', 'caja', 'prestaciones', 'vacaciones', 'ajuste', 'salario_minimo','admon','porcentaje_empleado'], 'number'],
             [['id_arl'], 'integer'],
             [['id_arl'], 'exist', 'skipOnError' => true, 'targetClass' => Arl::className(), 'targetAttribute' => ['id_arl' => 'id_arl']],
         ];
@@ -59,6 +60,7 @@ class Parametros extends \yii\db\ActiveRecord
             'salario_minimo' => 'Salario Minimo:',
             'id_arl' => 'Arl:',
             'admon' => 'Administración:',
+            'porcentaje_empleado' => '% Empleado:',
         ];
     }
 

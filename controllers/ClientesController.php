@@ -118,6 +118,8 @@ class ClientesController extends Controller {
                 $table->retencionfuente = $model->retencionfuente;
                 $table->retencioniva = $model->retencioniva;
                 $table->observacion = $model->observacion;
+                $table->minuto_confeccion = $model->minuto_confeccion;
+                $table->minuto_terminacion = $model->minuto_terminacion;
                 $table->dv = $dv;
                 if ($model->idtipo == 1) {
                     $table->nombrecorto = $model->nombrecliente . " " . $model->apellidocliente;
@@ -176,6 +178,8 @@ class ClientesController extends Controller {
                     $table->retencionfuente = $model->retencionfuente;
                     $table->retencioniva = $model->retencioniva;
                     $table->observacion = $model->observacion;
+                    $table->minuto_confeccion = $model->minuto_confeccion;
+                    $table->minuto_terminacion = $model->minuto_terminacion;
                     $table->dv = $dv;
                     if ($model->idtipo == 1) {
                         $table->nombrecorto = strtoupper($model->nombrecliente . " " . $model->apellidocliente);
@@ -230,6 +234,8 @@ class ClientesController extends Controller {
                 $model->retencioniva = $table->retencioniva;
                 $model->dv = $table->dv;
                 $model->observacion = $table->observacion;
+                $model->minuto_confeccion = $table->minuto_confeccion;
+                $model->minuto_terminacion = $table->minuto_terminacion;
             } else {
                 return $this->redirect(["clientes/index"]);
             }

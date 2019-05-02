@@ -33,6 +33,8 @@ use Yii;
  * @property string $retencionfuente
  * @property string $observacion
  * @property string $fechaingreso
+ * @property float $minuto_confeccion
+ * @property float $minuto_terminacion
  *
  * @property Tipodocumento $tipo
  * @property Departamento $departamento
@@ -41,6 +43,7 @@ use Yii;
  * @property Ordenproduccion[] $ordenproduccions
  * @property Producto[] $productos
  * @property Recibocaja[] $recibocajas
+ * @property Fichatiempodetalle[] $fichatiempodetalle
  */
 class Cliente extends \yii\db\ActiveRecord
 {
@@ -123,6 +126,14 @@ class Cliente extends \yii\db\ActiveRecord
     public function getRecibocajas()
     {
         return $this->hasMany(Recibocaja::className(), ['idcliente' => 'idcliente']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFichatiempodetalle()
+    {
+        return $this->hasMany(Fichatiempodetalle::className(), ['idcliente' => 'idcliente']);
     }
 
     public function getNombreClientes()

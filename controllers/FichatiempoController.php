@@ -8,6 +8,8 @@ use app\models\Fichatiempodetalle;
 use app\models\FichatiempoSearch;
 use app\models\Fichatiempocalificacion;
 use app\models\FormFiltroConsultaFichatiempo;
+use app\models\Parametros;
+use app\models\Cliente;
 use yii\web\Controller;
 use app\models\UsuarioDetalle;
 //use alexgx\phpexcel\ExcelDataReader;
@@ -83,6 +85,7 @@ class FichatiempoController extends Controller
             $intIndice = 0;
             foreach ($_POST["id_ficha_tiempo_detalle"] as $intCodigo) {                
                 $table = Fichatiempodetalle::findOne($intCodigo);
+                $table->idcliente = $_POST["idcliente"][$intIndice];
                 $table->dia = $_POST["dia"][$intIndice];
                 $table->desde = $_POST["horadesde"][$intIndice];
                 $table->hasta = $_POST["horahasta"][$intIndice];
@@ -193,7 +196,7 @@ class FichatiempoController extends Controller
     }
     
     public function actionNuevodetalle($id)
-    {
+    {              
         $ficha = Fichatiempo::findOne($id);
         $model = new Fichatiempodetalle();
         $model->id_ficha_tiempo = $ficha->id_ficha_tiempo;                
@@ -247,6 +250,14 @@ class FichatiempoController extends Controller
                 $table->observacion = $val->observacion;
             }            
         }
+        //calculo valor a pagar por producccion
+        $parametros = Parametros::findOne(1);        
+        $cliente = Cliente::findOne($table->idcliente);
+        $minutoconfeccion = $cliente->minuto_confeccion;
+        $minutoterminacion = $cliente->minuto_terminacion;
+        $valorsegundo = ($minutoconfeccion / 60 * $parametros->porcentaje_empleado) / 100;        
+        $table->valor_operacion = round($table->total_segundos * $valorsegundo,0);
+        $table->valor_pagar = round($table->realizadas * $table->valor_operacion);
         $table->update();
     }
     
@@ -317,7 +328,9 @@ class FichatiempoController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":j".(1));
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":l".(1));
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'RESULTADO DE LA PRUEBA TECNICA')
                     ->setCellValue('A2', 'Referencia')
@@ -328,8 +341,10 @@ class FichatiempoController extends Controller
                     ->setCellValue('F2', 'Total Segundos')
                     ->setCellValue('G2', 'Total Operacion')
                     ->setCellValue('H2', 'OP. Realizadas')
-                    ->setCellValue('I2', 'Cumplimiento')
-                    ->setCellValue('J2', 'Estado');
+                    ->setCellValue('I2', 'Valor Operacion')
+                    ->setCellValue('J2', 'Valor a Pagar')
+                    ->setCellValue('K2', 'Cumplimiento')
+                    ->setCellValue('L2', 'Estado');
         $j = 3;
         
         $objPHPExcel->setActiveSheetIndex(0)
@@ -352,15 +367,17 @@ class FichatiempoController extends Controller
                     ->setCellValue('F' . $i, $val->total_segundos)
                     ->setCellValue('G' . $i, $val->total_operacion)
                     ->setCellValue('H' . $i, $val->realizadas)
-                    ->setCellValue('I' . $i, $val->cumplimiento)
-                    ->setCellValue('J' . $i, $val->observacion);
+                    ->setCellValue('I' . $i, $val->valor_operacion)
+                    ->setCellValue('J' . $i, $val->valor_pagar)
+                    ->setCellValue('K' . $i, $val->cumplimiento)
+                    ->setCellValue('L' . $i, $val->observacion);
             $i++;
         }        
         $bold = $i;
         $objPHPExcel->getActiveSheet()->getStyle($bold)->getFont()->setBold(true);        
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('I' . $i, $ficha->cumplimiento)
-                    ->setCellValue('J' . $i, $ficha->observacion);
+                    ->setCellValue('K' . $i, $ficha->cumplimiento)
+                    ->setCellValue('L' . $i, $ficha->observacion);
 
         $objPHPExcel->getActiveSheet()->setTitle('Ficha_Tiempo_detalle');
         $objPHPExcel->setActiveSheetIndex(0);
@@ -506,11 +523,13 @@ class FichatiempoController extends Controller
                     ->setCellValue('C1', 'Empleado')
                     ->setCellValue('D1', 'Desde')
                     ->setCellValue('E1', 'Hasta')
-                    ->setCellValue('F1', '% Cumplimiento')
-                    ->setCellValue('G1', 'Referencia')                    
-                    ->setCellValue('H1', 'Total Segundos')
-                    ->setCellValue('I1', 'Cerrado')
-                    ->setCellValue('J1', 'Observacion');
+                    ->setCellValue('F1', 'Valor Operacion')
+                    ->setCellValue('G1', 'Valor a Pagar')
+                    ->setCellValue('H1', '% Cumplimiento')
+                    ->setCellValue('I1', 'Referencia')                    
+                    ->setCellValue('J', 'Total Segundos')
+                    ->setCellValue('K1', 'Cerrado')
+                    ->setCellValue('L1', 'Observacion');
         $i = 2;
         
         foreach ($tableexcel as $val) {
@@ -521,11 +540,13 @@ class FichatiempoController extends Controller
                     ->setCellValue('C' . $i, $val->empleado->nombreEmpleado)
                     ->setCellValue('D' . $i, $val->desde)
                     ->setCellValue('E' . $i, $val->hasta)
-                    ->setCellValue('F' . $i, $val->cumplimiento)
-                    ->setCellValue('G' . $i, $val->referencia)                    
-                    ->setCellValue('H' . $i, $val->total_segundos)
-                    ->setCellValue('I' . $i, $val->cerrado)
-                    ->setCellValue('J' . $i, $val->observacion);
+                    ->setCellValue('F' . $i, $val->valor_operacion)
+                    ->setCellValue('G' . $i, $val->valor_pagar)
+                    ->setCellValue('H' . $i, $val->cumplimiento)
+                    ->setCellValue('I' . $i, $val->referencia)                    
+                    ->setCellValue('J' . $i, $val->total_segundos)
+                    ->setCellValue('K' . $i, $val->cerrado)
+                    ->setCellValue('L' . $i, $val->observacion);
             $i++;
         }
 
