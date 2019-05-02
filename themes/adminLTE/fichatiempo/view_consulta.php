@@ -91,6 +91,8 @@ $form = ActiveForm::begin([
                     <th scope="col">Total Segundos</th>
                     <th scope="col">Total Operaciones</th>
                     <th scope="col">Operaciones Realizadas</th>
+                    <th scope="col">Valor Operacion</th>
+                    <th scope="col">Valor a Pagar</th>
                     <th scope="col">Cumplimiento</th>
                     <th scope="col">Observación</th>                                        
                 </tr>
@@ -104,6 +106,8 @@ $form = ActiveForm::begin([
                         <td><?= $val->total_segundos ?></td>
                         <td><?= $val->total_operacion ?></td>
                         <td><?= $val->realizadas ?></td>
+                        <td><?= $val->valor_operacion ?></td>
+                        <td><?= $val->valor_pagar ?></td>
                         <td><?= $val->cumplimiento ?></td>
                         <td><?= $val->observacion ?></td>                                                                        
                     </tr>

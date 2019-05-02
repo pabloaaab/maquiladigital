@@ -522,14 +522,12 @@ class FichatiempoController extends Controller
                     ->setCellValue('B1', 'Identificacion')
                     ->setCellValue('C1', 'Empleado')
                     ->setCellValue('D1', 'Desde')
-                    ->setCellValue('E1', 'Hasta')
-                    ->setCellValue('F1', 'Valor Operacion')
-                    ->setCellValue('G1', 'Valor a Pagar')
-                    ->setCellValue('H1', '% Cumplimiento')
-                    ->setCellValue('I1', 'Referencia')                    
-                    ->setCellValue('J', 'Total Segundos')
-                    ->setCellValue('K1', 'Cerrado')
-                    ->setCellValue('L1', 'Observacion');
+                    ->setCellValue('E1', 'Hasta')                    
+                    ->setCellValue('F1', '% Cumplimiento')
+                    ->setCellValue('G1', 'Referencia')                    
+                    ->setCellValue('H1', 'Total Segundos')
+                    ->setCellValue('I1', 'Cerrado')
+                    ->setCellValue('J1', 'Observacion');
         $i = 2;
         
         foreach ($tableexcel as $val) {
@@ -539,14 +537,12 @@ class FichatiempoController extends Controller
                     ->setCellValue('B' . $i, $val->empleado->identificacion)
                     ->setCellValue('C' . $i, $val->empleado->nombreEmpleado)
                     ->setCellValue('D' . $i, $val->desde)
-                    ->setCellValue('E' . $i, $val->hasta)
-                    ->setCellValue('F' . $i, $val->valor_operacion)
-                    ->setCellValue('G' . $i, $val->valor_pagar)
-                    ->setCellValue('H' . $i, $val->cumplimiento)
-                    ->setCellValue('I' . $i, $val->referencia)                    
-                    ->setCellValue('J' . $i, $val->total_segundos)
-                    ->setCellValue('K' . $i, $val->cerrado)
-                    ->setCellValue('L' . $i, $val->observacion);
+                    ->setCellValue('E' . $i, $val->hasta)                    
+                    ->setCellValue('F' . $i, $val->cumplimiento)
+                    ->setCellValue('G' . $i, $val->referencia)                    
+                    ->setCellValue('H' . $i, $val->total_segundos)
+                    ->setCellValue('I' . $i, $val->cerrado)
+                    ->setCellValue('J' . $i, $val->observacion);
             $i++;
         }
 
