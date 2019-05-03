@@ -305,7 +305,7 @@ class FichatiempoController extends Controller
     
     public function actionGenerarexcel($id) {        
         $ficha = Fichatiempo::findOne($id);
-        $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->all();
+        $model = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->orderBy([ 'dia' => SORT_ASC, 'desde' =>SORT_ASC ])->all();
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -352,14 +352,8 @@ class FichatiempoController extends Controller
                     ->setCellValue('B' . $j, $ficha->empleado->identificacion)
                     ->setCellValue('C' . $j, $ficha->empleado->nombrecorto);    
         $i = 3;
-        
-        foreach ($model as $val) {
-            
-            /*$cliente = "";
-            if ($costoproducciondiario->idcliente){
-                $arCliente = \app\models\Cliente::findOne($costoproducciondiario->idcliente);
-                $cliente = $arCliente->nombrecorto;
-            }*/            
+        $fecha = 0;
+        foreach ($model as $val) {                            
             
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('D' . $i, $val->dia)
@@ -370,14 +364,36 @@ class FichatiempoController extends Controller
                     ->setCellValue('I' . $i, $val->valor_operacion)
                     ->setCellValue('J' . $i, $val->valor_pagar)
                     ->setCellValue('K' . $i, $val->cumplimiento)
-                    ->setCellValue('L' . $i, $val->observacion);
-            $i++;
-        }        
-        $bold = $i;
+                    ->setCellValue('L' . $i, $val->observacion);            
+            $i++;                        
+        }
+        //promedio por dia
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("           
+           SELECT AVG(cumplimiento) as cumplimiento, dia FROM fichatiempodetalle WHERE id_ficha_tiempo = ".$id." GROUP BY dia");
+        $result = $command->queryAll();
+        $observacion = '';
+        foreach ($result as $promedio){
+            $calificacion = Fichatiempocalificacion::find()->all();
+            foreach ($calificacion as $val){
+                if ($promedio['cumplimiento'] > $val->rango1 && $promedio['cumplimiento'] <= $val->rango2){
+                    $observacion = $val->observacion;
+                }            
+            }
+            $objPHPExcel->getActiveSheet()->getStyle($i)->getFont()->setBold(true); 
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('J' . $i, "Promedio dia: ".$promedio['dia'])
+                    ->setCellValue('K' . $i, round($promedio['cumplimiento'],2))
+                    ->setCellValue('L' . $i, $observacion);
+            $i++;            
+        }
+        //fin promedio por dia
+        $bold = $i++;
         $objPHPExcel->getActiveSheet()->getStyle($bold)->getFont()->setBold(true);        
         $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('K' . $i, $ficha->cumplimiento)
-                    ->setCellValue('L' . $i, $ficha->observacion);
+                    ->setCellValue('J' . $bold, "Promedio Total:")
+                    ->setCellValue('K' . $bold, $ficha->cumplimiento)
+                    ->setCellValue('L' . $bold, $ficha->observacion);
 
         $objPHPExcel->getActiveSheet()->setTitle('Ficha_Tiempo_detalle');
         $objPHPExcel->setActiveSheetIndex(0);
