@@ -525,7 +525,7 @@ class OrdenProduccionController extends Controller {
 
     public function actionNuevo_detalle_proceso($id, $iddetalleorden) {
         $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
-        $procesos = ProcesoProduccion::find()->orderBy('proceso asc')->all();
+        $procesos = ProcesoProduccion::find()->orderBy('idproceso asc')->all();
         $cont = count($procesos);
         if (isset($_POST["idproceso"])) {
             $intIndice = 0;

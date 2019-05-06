@@ -388,7 +388,7 @@ class ContabilizarController extends Controller {
             fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
             fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
             fputs($ar, $this->RellenarNr($dato->nit, " ", 11));
-            fputs($ar, str_pad($dato->detalle, 28));
+            fputs($ar, str_pad(utf8_decode($dato->detalle), 28));
             fputs($ar, $dato->tipo);
             fputs($ar, $this->RellenarNr(bcdiv($dato->valor, '1', 2), " ", 21));
             if($dato->base == 0){
