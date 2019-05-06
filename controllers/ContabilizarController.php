@@ -115,13 +115,14 @@ class ContabilizarController extends Controller {
         //inicio borrar registros
         Contabilidad::deleteAll('consecutivo <> 0');
         //fin borrar registros
+        $cuenta = 1;
         if ($proceso == 1){  //recibo de caja
             $reciboscaja = Recibocaja::find()->where(['>=','fechapago',$fechadesde])->andWhere(['<=','fechapago',$fechahasta])->all();
             foreach ($reciboscaja as $recibo) {
                 $recibosdetalles = Recibocajadetalle::find()->where(['=','idrecibo',$recibo->idrecibo])->all();
                 foreach ($recibosdetalles as $detalle){
                     $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = 1001;
+                    $contabilidad->cuenta = $cuenta;
                     $contabilidad->comprobante = $proceso;
                     $contabilidad->proceso = 'recibo de caja';
                     $contabilidad->fecha = $recibo->fecharecibo;
@@ -136,6 +137,7 @@ class ContabilizarController extends Controller {
                     $contabilidad->transporte = '';
                     $contabilidad->plazo = 0;
                     $contabilidad->save(false);
+                    $cuenta = $cuenta + 520;
                 }    
             }
         }
@@ -185,12 +187,13 @@ class ContabilizarController extends Controller {
             }
         }
         if ($proceso == 7){  //Facturacion
+            $cuenta = 10;
             $facturas = Facturaventa::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->all();
             foreach ($facturas as $factura) {
                 $facturasdetalles = Facturaventadetalle::find()->where(['=','idfactura',$factura->idfactura])->all();
                 foreach ($facturasdetalles as $detalle){
                     $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = 1001;
+                    $contabilidad->cuenta = $cuenta;
                     $contabilidad->comprobante = $proceso;
                     $contabilidad->proceso = 'Facturacion';
                     $contabilidad->fecha = $factura->fechainicio;
@@ -205,6 +208,7 @@ class ContabilizarController extends Controller {
                     $contabilidad->transporte = '';
                     $contabilidad->plazo = 0;
                     $contabilidad->save(false);
+                    $cuenta = $cuenta + 502;
                 }    
             }
         }
@@ -355,10 +359,10 @@ class ContabilizarController extends Controller {
         ob_clean();
         $strArchivo = "plano". ".txt";                
         
-        $ar = fopen($strArchivo, "w") or
+        $ar = fopen($strArchivo, "a") or
                 die("Problemas en la creacion del archivo plano");                
         fputs($ar, "C CUENTA  ");
-        fputs($ar, "CTE ");
+        fputs($ar, "CTE  ");
         fputs($ar, "FECHADO   ");
         fputs($ar, "DOCUMENTO");
         fputs($ar, "DOC REF  ");
@@ -378,21 +382,23 @@ class ContabilizarController extends Controller {
             } else {
                 $floValor = $arRegistroExportar->getCredito();
             }*/
-            fputs($ar, $this->RellenarNr($dato->cuenta, " ", 10));            
+            fputs($ar, str_pad($dato->cuenta, 10));            
             fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5));
-            fputs($ar, $dato->fecha);
+            fputs($ar, date("d/m/Y", strtotime($dato->fecha)));
             fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
             fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
-            fputs($ar, $dato->nit);
-            fputs($ar, $dato->detalle);
+            fputs($ar, $this->RellenarNr($dato->nit, " ", 11));
+            fputs($ar, str_pad($dato->detalle, 28));
             fputs($ar, $dato->tipo);
-            fputs($ar, $dato->valor);
-            fputs($ar, $dato->base);
-            fputs($ar, $dato->centro_costo);
-            fputs($ar, $dato->transporte);
-            fputs($ar, $dato->plazo . "\t");
-            fputs($ar, "" . "\t");
-            fputs($ar, "" . "\t");
+            fputs($ar, $this->RellenarNr(bcdiv($dato->valor, '1', 2), " ", 21));
+            if($dato->base == 0){
+                fputs($ar, $this->RellenarNr(bcdiv($dato->base, '1', 2), " ", 21));
+            }else{
+                fputs($ar, $this->RellenarNr(bcdiv($dato->base, '1', 2), " ", 21));
+            }            
+            fputs($ar, "       ");
+            fputs($ar, "   ");
+            fputs($ar, $this->RellenarNr($dato->plazo, " ", 3));             
             fputs($ar, "\n");
         }
         fclose($ar);
@@ -407,8 +413,10 @@ class ContabilizarController extends Controller {
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Length: ' . filesize($strArchivo));
-        readfile($strArchivo);                 
+        readfile($strArchivo);
+        unlink($strArchivo);
         exit;
+        
     }
     
     public static function RellenarNr($Nro, $Str, $NroCr) {

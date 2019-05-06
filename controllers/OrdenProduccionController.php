@@ -1304,7 +1304,7 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('A' . $i, $val->iddetalleproceso)
                     ->setCellValue('B' . $i, $val->proceso)
                     ->setCellValue('C' . $i, $val->duracion)
-                    ->setCellValue('D' . $i, 60 / $val->duracion * 60)
+                    ->setCellValue('D' . $i, round(60 / $val->duracion * 60))
                     ->setCellValue('E' . $i, $val->ponderacion)                    
                     ->setCellValue('F' . $i, $val->total);
             $i++;

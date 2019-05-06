@@ -85,13 +85,13 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 8);
         $this->Cell(40, 5, utf8_decode($ordenproduccion->tipo->tipo), 0, 0, 'J');        
         //Lineas del encabezado
-        $this->Line(10, 86, 10, 220);//x1,y1,x2,y2        
-        $this->Line(20, 86, 20, 220);
-        $this->Line(113, 86, 113, 220);
-        $this->Line(133, 86, 133, 220);
-        $this->Line(153, 86, 153, 220);
-        $this->Line(183, 86, 183, 220);
-        $this->Line(201, 86, 201, 220);
+        $this->Line(10, 86, 10, 269);//x1,y1,x2,y2        
+        $this->Line(20, 86, 20, 269);
+        $this->Line(113, 86, 113, 269);
+        $this->Line(133, 86, 133, 269);
+        $this->Line(153, 86, 153, 269);
+        $this->Line(183, 86, 183, 269);
+        $this->Line(201, 86, 201, 269);
         //$this->Line(10, 200, 201, 140); //linea horizontal inferior x1,y1,x2,y2
                 
         //Detalle factura
@@ -133,19 +133,19 @@ class PDF extends FPDF {
             $pdf->Cell(10, 5, $detalle->iddetalleproceso, 0, 0, 'J');          
             $pdf->Cell(93, 5, utf8_decode($detalle->proceso), 0, 0, 'L');
             $pdf->Cell(20, 4, $detalle->duracion,0,0, 'R');
-            $pdf->Cell(20, 4, 60 / $detalle->duracion * 60 ,0,0, 'R');
+            $pdf->Cell(20, 4, round(60 / $detalle->duracion * 60) ,0,0, 'R');
             $pdf->Cell(30, 4, $detalle->ponderacion,0,0, 'R');
             $pdf->Cell(18, 4, number_format($detalle->total,1),0,0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
         $this->SetFillColor(200, 200, 200);
-        $pdf->SetXY(10, 220);
+        $pdf->SetXY(10, 269);
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(71, 8, 'ITEMS: '.$items, 1, 'J');
-        $pdf->SetXY(81, 220);
+        $pdf->SetXY(81, 269);
         $pdf->MultiCell(62, 8, 'TOTAL SEGUNDOS: '.$totalsegundos, 1, 'J');
-        $pdf->SetXY(143, 220);        
+        $pdf->SetXY(143, 269);        
         $pdf->MultiCell(58, 8, 'TOTAL MINUTOS: '.(number_format($totalsegundos / 60 ,1)), 1, 'J');
         
         
