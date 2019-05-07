@@ -116,22 +116,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         </td>
                         <td><?= $val->cantidad_operada ?></td>
                             <td>
-                                <!-- Inicio Nuevo Detalle proceso -->
-                                <?php echo Html::a('<span class="glyphicon glyphicon-log-in"></span>',
-                                    ['/orden-produccion/nuevo_detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],
-                                    [
-                                        'title' => 'Nuevo Detalle Proceso',
-                                        'data-toggle'=>'modal',
-                                        'data-target'=>'#modaldetallenuevo',
-                                    ]
-                                );
-                                ?>
-                                <div class="modal remote fade" id="modaldetallenuevo">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content"></div>
-                                    </div>
-                                </div>
-                                <!-- Fin Nuevo Detalle proceso -->
+                                
+                                <?= Html::a('<span class="glyphicon glyphicon-log-in"></span>', ['/orden-produccion/nuevo_detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden]) ?>
                                 <!-- Inicio Vista,Eliminar,Editar -->
                                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                     ['/orden-produccion/detalle_proceso','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],

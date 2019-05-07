@@ -3,24 +3,22 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
+use yii\bootstrap\Modal;
+
+$this->title = 'Nuevo Detalle Proceso';
+$this->params['breadcrumbs'][] = ['label' => 'Ficha de operaciones detalle', 'url' => ['view_detalle', 'id' => $id ]];
+$this->params['breadcrumbs'][] = $iddetalleorden;
+
 ?>
-
-<?php $form = ActiveForm::begin([
-
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-]); ?>
     <?php $model = Ordenproduccion::findOne($id); ?>
     <?php $modeldetalle = Ordenproducciondetalle::findOne($iddetalleorden); ?>
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"></h4>
-    </div>
+    
     <div class="modal-body">
+        <p>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view_detalle', 'id' => $id ], ['class' => 'btn btn-primary']) ?>
+        </p>
         <div class="panel panel-success">
             <div class="panel-heading">
                 Operaciones
@@ -46,10 +44,53 @@ use app\models\Ordenproducciondetalle;
                 </table>
             </div>
         </div>
+        
+        <?php $formulario = ActiveForm::begin([
+            "method" => "get",
+            "action" => Url::toRoute(["orden-produccion/nuevo_detalle_proceso", 'id' => $id, 'iddetalleorden' => $iddetalleorden]),
+            "enableClientValidation" => true,
+            'options' => ['class' => 'form-horizontal'],
+            'fieldConfig' => [
+                            'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+                            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+                            'options' => []
+                        ],
+
+        ]);
+        ?>
+
+        <div class="panel panel-success panel-filters">
+            <div class="panel-heading">
+                Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
+            </div>
+
+            <div class="panel-body" id="filtrocliente">
+                <div class="row" >
+                    <?= $formulario->field($formul, "id")->input("search") ?>
+                    <?= $formulario->field($formul, "proceso")->input("search") ?>
+                </div>
+                <div class="panel-footer text-right">
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
+                    <a align="right" href="<?= Url::toRoute(["orden-produccion/nuevo_detalle_proceso", 'id' => $id, 'iddetalleorden' => $iddetalleorden]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+                </div>
+            </div>
+        </div>
+
+        <?php $formulario->end() ?>
+        
+        
+        <?php $form = ActiveForm::begin([
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-3 control-label'],
+                'options' => []
+            ],
+        ]); ?>
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                   Procesos: <?php echo $cont; ?>
+                   Procesos: <?= $pagination->totalCount ?>
                 </div>
                 <div class="panel-body">
                     <table class="table table-responsive">
@@ -77,11 +118,13 @@ use app\models\Ordenproducciondetalle;
                     </table>
                 </div>
                 <div class="panel-footer text-right">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar y Nuevo", ["class" => "btn btn-success", 'name' => 'guardarynuevo']) ?>
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success", 'name' => 'guardar']) ?>
                 </div>
 
             </div>
+            <?= LinkPager::widget(['pagination' => $pagination]) ?>
         </div>
+        
     </div>
 <?php ActiveForm::end(); ?>

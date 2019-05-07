@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use app\models\FormFiltroOrdenProduccionProceso;
 use app\models\FormFiltroConsultaFichaoperacion;
 use app\models\FormFiltroConsultaOrdenproduccion;
+use app\models\FormFiltroProcesosOperaciones;
 use app\models\Producto;
 use app\models\Productodetalle;
 use yii\db\ActiveQuery;
@@ -525,8 +526,47 @@ class OrdenProduccionController extends Controller {
 
     public function actionNuevo_detalle_proceso($id, $iddetalleorden) {
         $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
-        $procesos = ProcesoProduccion::find()->orderBy('idproceso asc')->all();
-        $cont = count($procesos);
+        $formul = new FormFiltroProcesosOperaciones();
+        $idproceso = null;
+        $proceso = null;        
+        if ($formul->load(Yii::$app->request->get())) {
+            if ($formul->validate()) {
+                if ($formul->validate()) {
+                    $idproceso = Html::encode($formul->id);
+                    $proceso = Html::encode($formul->proceso);                                        
+                    $procesos = ProcesoProduccion::find()
+                            ->andFilterWhere(['=', 'idproceso', $idproceso])
+                            ->andFilterWhere(['like', 'proceso', $proceso]);                            
+                    $procesos = $procesos->orderBy('proceso desc');                    
+                    $count = clone $procesos;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 30,
+                        'totalCount' => $count->count()
+                    ]);
+                    $procesos = $procesos
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();                    
+                } else {
+                    $formul->getErrors();
+                }
+            }
+        }else {
+            $procesos = ProcesoProduccion::find()->orderBy('proceso asc');
+            //$cont = count($procesos);
+            $count = clone $procesos;
+            $pages = new Pagination([
+                'pageSize' => 30,
+                'totalCount' => $count->count(),
+            ]);
+            $procesos = $procesos
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        }
+        
+        if (isset($_POST["guardar"])) {
         if (isset($_POST["idproceso"])) {
             $intIndice = 0;
             foreach ($_POST["idproceso"] as $intCodigo) {
@@ -588,15 +628,80 @@ class OrdenProduccionController extends Controller {
             }
             $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
         }
-
-        return $this->renderAjax('_formnuevodetalleproceso', [
+        }
+        if (isset($_POST["guardarynuevo"])) {
+        if (isset($_POST["idproceso"])) {
+            $intIndice = 0;
+            foreach ($_POST["idproceso"] as $intCodigo) {
+                if ($_POST["duracion"][$intIndice] > 0) {
+                    $detalles = Ordenproducciondetalleproceso::find()
+                            ->where(['=', 'idproceso', $intCodigo])
+                            ->andWhere(['=', 'iddetalleorden', $iddetalleorden])
+                            ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table = new Ordenproducciondetalleproceso();
+                        $table->idproceso = $intCodigo;
+                        $table->proceso = $_POST["proceso"][$intIndice];
+                        $table->duracion = $_POST["duracion"][$intIndice];
+                        $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                        $table->cantidad_operada = 0;
+                        $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
+                        $table->totalproceso = $detalleorden->cantidad * $table->total;
+                        $table->iddetalleorden = $iddetalleorden;
+                        $table->insert();
+                    }
+                }
+                $intIndice++;
+            }
+            $this->porcentajeproceso($iddetalleorden);
+            $this->progresoproceso($iddetalleorden, $detalleorden->idordenproduccion);
+            $this->progresocantidad($iddetalleorden, $detalleorden->idordenproduccion);
+            //se replica los procesos a detalles que contengan el mismo codigo de producto, para agilizar la insercion de cada uno de las operaciones por detalle            
+            $detallesordenproduccion = Ordenproducciondetalle::find()
+                    ->where(['<>', 'iddetalleorden', $iddetalleorden])
+                    ->andWhere(['idordenproduccion' => $detalleorden->idordenproduccion])
+                    ->all();
+            foreach ($detallesordenproduccion as $dato) {
+                if ($dato->codigoproducto == $detalleorden->codigoproducto) {
+                    $detallesprocesos = Ordenproducciondetalleproceso::find()->where(['iddetalleorden' => $iddetalleorden])->all();
+                    foreach ($detallesprocesos as $val) {
+                        $detallesp = Ordenproducciondetalleproceso::find()
+                                ->where(['=', 'idproceso', $val->idproceso])
+                                ->andWhere(['=', 'iddetalleorden', $dato->iddetalleorden])
+                                ->all();
+                        $reg2 = count($detallesp);
+                        if ($reg2 == 0) {
+                            $tableprocesos = new Ordenproducciondetalleproceso();
+                            $tableprocesos->idproceso = $val->idproceso;
+                            $tableprocesos->proceso = $val->proceso;
+                            $tableprocesos->duracion = $val->duracion;
+                            $tableprocesos->ponderacion = $val->ponderacion;
+                            $tableprocesos->total = $val->total;
+                            $tableprocesos->cantidad_operada = 0;
+                            $tableprocesos->totalproceso = $dato->cantidad * $tableprocesos->total;
+                            $tableprocesos->iddetalleorden = $dato->iddetalleorden;
+                            $tableprocesos->insert();
+                        }
+                    }
+                    $this->porcentajeproceso($dato->iddetalleorden);
+                    $this->progresoproceso($dato->iddetalleorden, $dato->idordenproduccion);
+                    $this->progresocantidad($dato->iddetalleorden, $dato->idordenproduccion);
+                }
+            }
+            //$this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
+        }
+        }
+        return $this->render('_formnuevodetalleproceso', [
                     'procesos' => $procesos,
-                    'cont' => $cont,
+                    //'cont' => $cont,
+                    'formul' => $formul,
+                    'pagination' => $pages,
                     'id' => $id,
                     'iddetalleorden' => $iddetalleorden,
         ]);
+    
     }
-
     public function actionDetalle_proceso($idordenproduccion, $iddetalleorden) {
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
         $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
