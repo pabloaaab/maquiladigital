@@ -90,7 +90,7 @@ class CostoLaboralController extends Controller
                 }
                 $this->totales($id);
                 $costolaboral = CostoLaboral::findOne($id);
-                $costolaboraldetalle = CostoLaboralDetalle::find()->where(['=', 'id_costo_laboral', $id])->all();
+                $costolaboraldetalle = CostoLaboralDetalle::find()->where(['=', 'id_costo_laboral', $id])->all();                                
                 return $this->render('costolaboraldetalle', [
                             'costolaboral' => $costolaboral,
                             'costolaboraldetalle' => $costolaboraldetalle,
