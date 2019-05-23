@@ -344,13 +344,17 @@ class FacturaventaController extends Controller
                                 $factura->porcentajefuente = $config->porcentajeretefuente;
                                 $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
                             }
+                            if ($cliente->retencionfuente == 1){
+                                $factura->porcentajefuente = $config->porcentajeretefuente;
+                                $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+                            }
                         }else{
                             $factura->retencionfuente = 0;
                         }
                         if ($cliente->autoretenedor == 1){
                             $factura->retencioniva = round($factura->impuestoiva * $config->porcentajereteiva / 100);
                         }else{
-                            $factura->retencioniva = 0;
+                            $factura->retencioniva = 0;                            
                         }
                         $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva);
                         $factura->saldo = $factura->totalpagar;
@@ -429,6 +433,10 @@ class FacturaventaController extends Controller
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
                         }
+                        if ($cliente->retencionfuente == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+                        }
                     }else{
                         $factura->retencionfuente = 0;
                     }
@@ -480,6 +488,10 @@ class FacturaventaController extends Controller
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
                         }
+                        if ($cliente->retencionfuente == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+                        }
                     }else{
                         $factura->retencionfuente = 0;
                     }
@@ -527,6 +539,10 @@ class FacturaventaController extends Controller
                         if ($cliente->retencioniva == 1){
                             $factura->porcentajefuente = $config->porcentajeretefuente;
                             $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
+                        }
+                        if ($cliente->retencionfuente == 1){
+                            $factura->porcentajefuente = $config->porcentajeretefuente;
+                            $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
                         }
                     }else{
                         $factura->retencionfuente = 0;
@@ -586,13 +602,17 @@ class FacturaventaController extends Controller
                                 $factura->porcentajefuente = $config->porcentajeretefuente;
                                 $factura->retencionfuente = $factura->subtotal * $factura->porcentajefuente / 100;
                             }
+                            if ($cliente->retencionfuente == 1){
+                                $factura->porcentajefuente = $config->porcentajeretefuente;
+                                $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+                            }
                         }else{
                             $factura->retencionfuente = 0;
                         }
                         if ($cliente->autoretenedor == 1){
                             $factura->retencioniva = $factura->impuestoiva * $config->porcentajereteiva / 100;
                         }else{
-                            $factura->retencioniva = 0;
+                            $factura->retencioniva = 0;                           
                         }
                         $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
                         $factura->saldo = $factura->totalpagar;
@@ -722,13 +742,22 @@ class FacturaventaController extends Controller
                 $factura->porcentajefuente = $config->porcentajeretefuente;
                 $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
             }
+            if ($cliente->retencionfuente == 1){
+                $factura->porcentajefuente = $config->porcentajeretefuente;
+                $factura->retencionfuente = round($factura->subtotal * $factura->porcentajefuente / 100);
+            }
         }else{
             $factura->retencionfuente = 0;
         }
         if ($cliente->autoretenedor == 1){
             $factura->retencioniva = round($factura->impuestoiva * $config->porcentajereteiva / 100);
         }else{
-            $factura->retencioniva = 0;
+            if ($cliente->retencionfuente == 1){
+                $factura->retencioniva = round($factura->impuestoiva * $config->porcentajereteiva / 100);
+            }else {
+                $factura->retencioniva = 0;
+            }
+
         }
         $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva);
         $factura->saldo = $factura->totalpagar;
