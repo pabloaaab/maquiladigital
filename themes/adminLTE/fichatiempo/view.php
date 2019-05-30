@@ -115,11 +115,11 @@ $form = ActiveForm::begin([
                     <th scope="col">Hora Desde</th>
                     <th scope="col">Hora Hasta</th>
                     <th scope="col">Total Seg</th>
-                    <th scope="col">Total Operaciones</th>
+                    <th scope="col" title="TOTAL OPERACIONES">Total Op</th>
                     <th scope="col">Op Realizadas</th>
                     <th scope="col">Vlr Op</th>
                     <th scope="col">Vlr Pagar</th>
-                    <th scope="col">Cumplimiento</th>
+                    <th scope="col" title="CUMPLIMIENTO">Cump</th>
                     <th scope="col">Observación</th>                    
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -129,12 +129,12 @@ $form = ActiveForm::begin([
                 <?php foreach ($fichatiempodetalle as $val): ?>
                     <tr>                    
                         <td style="padding-left: 1;padding-right: 1;"><?= Html::dropDownList('idcliente[]', $val->idcliente, $clientes, ['class' => 'col-sm-12', 'prompt' => 'Seleccion...', 'required' => true]) ?></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="4" required></td>                        
-                        <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="5" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="2" required></td>                        
+                        <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="2" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="2" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->total_operacion ?></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="8" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_operacion ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_pagar ?></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->cumplimiento ?></td>
