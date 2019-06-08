@@ -5,10 +5,15 @@ namespace app\controllers;
 use Yii;
 use app\models\TipoRecibo;
 use app\models\TipoReciboSearch;
+use app\models\Tiporecibocuenta;
+use app\models\FormTipoReciboCuentaNuevo;
+use app\models\CuentaPub;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\UsuarioDetalle;
+use yii\helpers\Html;
+use yii\data\Pagination;
 
 /**
  * TipoReciboController implements the CRUD actions for TipoRecibo model.
@@ -61,8 +66,35 @@ class TipoReciboController extends Controller
      */
     public function actionView($id)
     {
+        $modeldetalles = Tiporecibocuenta::find()->Where(['=', 'idtiporecibo', $id])->all();
+        
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["idtiporecibocuenta"])) {
+                    foreach ($_POST["idtiporecibocuenta"] as $intCodigo) {
+                        try {
+                            $eliminar = Tiporecibocuenta::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["tipo-recibo/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["tipo-recibo/view", 'id' => $id]);
+                   }
+        }        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalles' => $modeldetalles,
         ]);
     }
 
@@ -124,6 +156,87 @@ class TipoReciboController extends Controller
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el tipo de recibo, tiene registros asociados en otros procesos');
             $this->redirect(["tipo-recibo/index"]);
         }
+    }
+    
+    public function actionNuevodetalles($idtiporecibo)
+    {
+        $cuentas = CuentaPub::find()->all();
+        $form = new FormTipoReciboCuentaNuevo;
+        $nombre = null;
+        $cuenta = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $nombre = Html::encode($form->nombre);
+                $cuenta = Html::encode($form->cuenta);                
+                $table = CuentaPub::find()
+                        ->andFilterWhere(['like', 'nombre_cuenta', $nombre])
+                        ->andFilterWhere(['like', 'codigo_cuenta', $cuenta]);                        
+                $count = clone $table;
+                $to = $count->count();
+                $pages = new Pagination([
+                    'pageSize' => 15,
+                    'totalCount' => $count->count()
+                ]);
+                $cuentas = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();           
+            } else {
+                $form->getErrors();
+            }                    
+                    
+                       
+        } else {
+            $table = CuentaPub::find();
+            $count = clone $table;
+            $to = $count->count();
+            $pages = new Pagination([
+                'pageSize' => 15,
+                'totalCount' => $count->count()
+            ]);
+            $cuentas = $table
+                    ->offset($pages->offset)
+                    ->limit($pages->limit)
+                    ->all();
+        }
+        if (isset($_POST["codigo_cuenta"])) {
+                $intIndice = 0;
+                foreach ($_POST["codigo_cuenta"] as $intCodigo) {
+                    $table = new Tiporecibocuenta();
+                    $cuenta = CuentaPub::find()->where(['codigo_cuenta' => $intCodigo])->one();
+                    $detalles = Tiporecibocuenta::find()
+                        ->where(['=', 'cuenta', $cuenta->codigo_cuenta])
+                        ->andWhere(['=', 'idtiporecibo', $idtiporecibo])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        if ($_POST["tipo"][$intIndice] == 1 or $_POST["tipo"][$intIndice] == 2){
+                            $table->idtiporecibo = $idtiporecibo;
+                            $table->cuenta = $cuenta->codigo_cuenta;
+                            $table->tipocuenta = $_POST["tipo"][$intIndice];
+                            //$table->usuariosistema = Yii::$app->user->identity->username;
+                            $table->insert();
+                            $this->redirect(["tipo-recibo/view", 'id' => $idtiporecibo]);
+                        }else{
+                            $mensaje = "Debe Ingresar el tipo de cuenta 1(débito), 2(crédito), si se ingresa valor 0 o diferente a 1 ó 2, el sistema no registra la cuenta";
+                        }
+                                                                                                                        
+                    }
+                    $intIndice++;
+                }
+                
+            }else{
+                
+            }
+        return $this->render('_formnuevodetalles', [
+            'cuentas' => $cuentas,            
+            'mensaje' => $mensaje,
+            'idtiporecibo' => $idtiporecibo,
+            'form' => $form,
+            'pagination' => $pages,
+
+        ]);
     }
 
     /**

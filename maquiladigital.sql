@@ -4239,6 +4239,26 @@ insert  into `tiporecibo`(`idtiporecibo`,`concepto`,`activo`) values
 (13,'REGALO NAVIDEÑO',0),
 (14,'REGISTRO DE ENTRADA',0);
 
+/*Table structure for table `tiporecibocuenta` */
+
+DROP TABLE IF EXISTS `tiporecibocuenta`;
+
+CREATE TABLE `tiporecibocuenta` (
+  `idtiporecibocuenta` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta` int(11) NOT NULL,
+  `tipocuenta` int(2) NOT NULL,
+  `idtiporecibo` int(10) NOT NULL,
+  PRIMARY KEY (`idtiporecibocuenta`),
+  KEY `idtiporecibo` (`idtiporecibo`),
+  CONSTRAINT `tiporecibocuenta_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `tiporecibocuenta` */
+
+insert  into `tiporecibocuenta`(`idtiporecibocuenta`,`cuenta`,`tipocuenta`,`idtiporecibo`) values 
+(17,1,1,3),
+(18,11,2,3);
+
 /*Table structure for table `usuario` */
 
 DROP TABLE IF EXISTS `usuario`;
