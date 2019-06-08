@@ -95,7 +95,7 @@ if ($mensaje != ""){
                 <tr>
                     <th scope="col">Cuenta</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Tipo</th>
+                    <th scope="col">Tipo (1. Debi / 2. Cred)</th>
                     <th scope="col">Exige Mov</th>
                     <th scope="col">Exige Nit</th>
                     <th scope="col">Exige Centro. C</th>

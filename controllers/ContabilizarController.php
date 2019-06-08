@@ -28,6 +28,8 @@ use app\models\ComprobanteEgreso;
 use app\models\ComprobanteEgresoDetalle;
 use app\models\Facturaventa;
 use app\models\Facturaventadetalle;
+use app\models\Tiporecibocuenta;
+use app\models\CuentaPub;
 
 class ContabilizarController extends Controller {        
     
@@ -57,7 +59,7 @@ class ContabilizarController extends Controller {
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 15,
+                        'pageSize' => 22,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -81,7 +83,7 @@ class ContabilizarController extends Controller {
                 $exportar = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 15,
+                    'pageSize' => 22,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table
@@ -121,23 +123,37 @@ class ContabilizarController extends Controller {
             foreach ($reciboscaja as $recibo) {
                 $recibosdetalles = Recibocajadetalle::find()->where(['=','idrecibo',$recibo->idrecibo])->all();
                 foreach ($recibosdetalles as $detalle){
-                    $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = $cuenta;
-                    $contabilidad->comprobante = $proceso;
-                    $contabilidad->proceso = 'recibo de caja';
-                    $contabilidad->fecha = $recibo->fecharecibo;
-                    $contabilidad->documento = $recibo->numero;
-                    $contabilidad->documento_ref = $recibo->numero;
-                    $contabilidad->nit = $recibo->cliente->cedulanit;
-                    $contabilidad->detalle = $recibo->tiporecibo->concepto;
-                    $contabilidad->tipo = 1;
-                    $contabilidad->valor = $detalle->vlrabono;
-                    $contabilidad->base = 0;
-                    $contabilidad->centro_costo = '';
-                    $contabilidad->transporte = '';
-                    $contabilidad->plazo = 0;
-                    $contabilidad->save(false);
-                    $cuenta = $cuenta + 520;
+                    $tipos = Tiporecibocuenta::find()->where(['=','idtiporecibo',$recibo->idtiporecibo])->all();
+                    foreach ($tipos as $tipo){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'recibo de caja';
+                        $contabilidad->fecha = $recibo->fechapago;
+                        $contabilidad->documento = $recibo->numero;
+                        $contabilidad->documento_ref = $recibo->numero;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $recibo->cliente->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;
+                        $contabilidad->detalle = $recibo->tiporecibo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->vlrabono;
+                        $contabilidad->base = 0;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 520;
+                    }
+                    
                 }    
             }
         }
