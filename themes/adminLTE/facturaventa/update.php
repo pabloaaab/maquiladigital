@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = 'Editar';
         'model' => $model,
         'clientes' => $clientes,
         'ordenesproduccion' => $ordenesproduccion,
+        'facturastipo' => $facturastipo,
     ]);
     }
     ?>

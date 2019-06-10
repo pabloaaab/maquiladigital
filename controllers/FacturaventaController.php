@@ -109,6 +109,7 @@ class FacturaventaController extends Controller
     {
         $model = new Facturaventa();
         $clientes = Cliente::find()->all();
+        $facturastipo = Facturaventatipo::find()->all();
         $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->all();
         $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -131,8 +132,7 @@ class FacturaventaController extends Controller
             $model->saldo = 0;
             $model->totalpagar = 0;
             $model->valorletras = "-" ;
-            $model->usuariosistema = Yii::$app->user->identity->username;
-            $model->idresolucion = $resolucion->idresolucion;
+            $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();
             return $this->redirect(['index']);
         }
@@ -141,6 +141,7 @@ class FacturaventaController extends Controller
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreclientes"),
             'ordenesproduccion' => ArrayHelper::map($ordenesproduccion, "idordenproduccion", "idordenproduccion"),
+            'facturastipo' => ArrayHelper::map($facturastipo, "id_factura_venta_tipo", "concepto"),
         ]);
     }
     
@@ -203,6 +204,7 @@ class FacturaventaController extends Controller
         }else{
             $clientes = Cliente::find()->all();
             $table = Facturaventa::find()->where(['idfactura' => $id])->one();
+            $facturastipo = Facturaventatipo::find()->all();
             $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'idordenproduccion', $table->idordenproduccion])->all();
             $ordenesproduccion = ArrayHelper::map($ordenesproduccion, "idordenproduccion", "ordenProduccion");
             if(Facturaventadetalle::find()->where(['=', 'idfactura', $id])->all() or $model->estado <> 0){
@@ -218,6 +220,7 @@ class FacturaventaController extends Controller
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
             'ordenesproduccion' => $ordenesproduccion,
+            'facturastipo' => ArrayHelper::map($facturastipo, "id_factura_venta_tipo", "concepto"),
 
         ]);
     }

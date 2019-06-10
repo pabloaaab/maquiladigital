@@ -31,10 +31,12 @@ use Yii;
  * @property int $idresolucion
  * @property int $estado
  * @property int $autorizado
- *
+ * @property int $id_factura_venta_tipo
+ * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
  * @property Resolucion $resolucion
+ * @property Facturaventatipo $facturaventatipo
  * @property Facturaventadetalle[] $facturaventadetalles
  * @property Recibocajadetalle[] $recibocajadetalles
  */
@@ -63,7 +65,7 @@ class Facturaventa extends \yii\db\ActiveRecord
     {
         return [
             [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','estado','autorizado'], 'integer'],
-            [['fechainicio', 'idcliente', 'idordenproduccion'], 'required', 'message' => 'Campo requerido'],
+            [['fechainicio', 'idcliente', 'idordenproduccion','id_factura_venta_tipo'], 'required', 'message' => 'Campo requerido'],
             [['fechainicio', 'fechavcto', 'fechacreacion'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
             [['valorletras','observacion'], 'string'],
@@ -104,6 +106,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             'estado' => 'Estado',
             'autorizado' => 'Autorizado',
             'observacion' => 'Observaciones',
+            'id_factura_venta_tipo' => 'Factura Tipo',
         ];
     }
 

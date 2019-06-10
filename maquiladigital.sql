@@ -1434,7 +1434,7 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`),
   CONSTRAINT `facturaventa_ibfk_4` FOREIGN KEY (`id_factura_venta_tipo`) REFERENCES `facturaventatipo` (`id_factura_venta_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
@@ -1453,7 +1453,8 @@ insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`
 (13,31,'2019-01-30','2019-02-14','2019-01-30 15:03:35','2',15,19,4,15,10915686,436627,2073980,311097,0,12241942,'-',1,9,'71268830',3,2,1,'ASAS',0,NULL),
 (14,35,'2019-04-01','2019-04-01','2019-04-01 16:29:51','1',0,0,0,0,0,0,0,0,0,0,'-',2,NULL,'71268830',3,0,1,'HOLA',1,1),
 (16,36,'2019-04-01','2019-04-01','2019-04-01 21:34:32','1',0,19,0,15,828116,0,157342,23601,961857,961857,'-',2,NULL,'71268830',3,0,1,'DFDFDFF',1,1),
-(17,0,'2019-04-01','2019-04-16','2019-04-01 21:44:44','2',15,19,0,15,17050,0,3239.5,485.925,19803.575,19803.575,'-',1,15,'71268830',3,0,0,'',0,NULL);
+(17,0,'2019-04-01','2019-04-16','2019-04-01 21:44:44','2',15,19,0,15,17050,0,3239.5,485.925,19803.575,19803.575,'-',1,15,'71268830',3,0,0,'',0,NULL),
+(19,0,'2019-06-10','2019-06-25','2019-06-10 11:57:56','2',15,0,0,0,0,0,0,0,0,0,'-',1,15,'71268830',NULL,0,0,'AAAA',0,2);
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -1544,12 +1545,46 @@ CREATE TABLE `facturaventatipo` (
   `concepto` varchar(45) COLLATE utf8_spanish_ci NOT NULL,
   `estado` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id_factura_venta_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `facturaventatipo` */
 
 insert  into `facturaventatipo`(`id_factura_venta_tipo`,`concepto`,`estado`) values 
-(1,'ARRIENDO SYSTIME',1);
+(1,'ARRIENDO SYSTIME',1),
+(2,'CONFECCION',1),
+(3,'TERMINACION',1);
+
+/*Table structure for table `facturaventatipocuenta` */
+
+DROP TABLE IF EXISTS `facturaventatipocuenta`;
+
+CREATE TABLE `facturaventatipocuenta` (
+  `id_factura_venta_tipo_cuenta` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta` int(11) NOT NULL,
+  `tipocuenta` int(2) NOT NULL,
+  `id_factura_venta_tipo` int(11) NOT NULL,
+  `base` tinyint(1) DEFAULT '0',
+  `subtotal` tinyint(1) DEFAULT '0',
+  `iva` tinyint(1) DEFAULT '0',
+  `rete_fuente` tinyint(1) DEFAULT '0',
+  `rete_iva` tinyint(1) DEFAULT '0',
+  `total` tinyint(1) DEFAULT '0',
+  `base_rete_fuente` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id_factura_venta_tipo_cuenta`),
+  KEY `id_factura_venta_tipo` (`id_factura_venta_tipo`),
+  CONSTRAINT `facturaventatipocuenta_ibfk_1` FOREIGN KEY (`id_factura_venta_tipo`) REFERENCES `facturaventatipo` (`id_factura_venta_tipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `facturaventatipocuenta` */
+
+insert  into `facturaventatipocuenta`(`id_factura_venta_tipo_cuenta`,`cuenta`,`tipocuenta`,`id_factura_venta_tipo`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`) values 
+(7,1,2,1,0,1,0,0,0,0,0),
+(8,11,2,1,1,0,1,0,0,0,0),
+(9,1105,1,1,1,0,0,1,0,0,0),
+(10,110505,1,1,1,0,0,0,1,0,0),
+(11,11050505,1,1,0,0,0,0,0,1,0),
+(12,11050510,1,1,1,0,0,0,0,0,1),
+(13,1110,2,1,1,0,0,0,0,0,1);
 
 /*Table structure for table `fichatiempo` */
 
@@ -4251,7 +4286,7 @@ CREATE TABLE `tiporecibocuenta` (
   PRIMARY KEY (`idtiporecibocuenta`),
   KEY `idtiporecibo` (`idtiporecibo`),
   CONSTRAINT `tiporecibocuenta_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `tiporecibocuenta` */
 

@@ -5,6 +5,9 @@ namespace app\controllers;
 use Yii;
 use app\models\Facturaventatipo;
 use app\models\FacturaventatipoSearch;
+use app\models\Facturaventatipocuenta;
+use app\models\CuentaPub;
+use app\models\FormFacturaventatipocuentanuevo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -74,8 +77,34 @@ class FacturaventatipoController extends Controller
      */
     public function actionView($id)
     {
+        $modeldetalles = Facturaventatipocuenta::find()->Where(['=', 'id_factura_venta_tipo', $id])->all();
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["id_factura_venta_tipo_cuenta"])) {
+                    foreach ($_POST["id_factura_venta_tipo_cuenta"] as $intCodigo) {
+                        try {
+                            $eliminar = Facturaventatipocuenta::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["facturaventatipo/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["facturaventatipo/view", 'id' => $id]);
+                   }
+        }        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalles' => $modeldetalles,
         ]);
     }
 
@@ -129,6 +158,39 @@ class FacturaventatipoController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+    
+    public function actionNuevodetalles($id_factura_venta_tipo)
+    {
+        $model = new FormFacturaventatipocuentanuevo();
+        $cuentas = CuentaPub::find()->all();         
+        if ($model->load(Yii::$app->request->post())) {
+            $cuenta = CuentaPub::find()->where(['=','codigo_cuenta',$model->cuenta])->one();
+            if ($cuenta){
+                $table = new Facturaventatipocuenta;
+                $table->id_factura_venta_tipo = $id_factura_venta_tipo;
+                $table->cuenta = $model->cuenta;
+                $table->tipocuenta = $model->tipocuenta;
+                $table->base = $model->base;
+                $table->subtotal = $model->subtotal;
+                $table->iva = $model->iva;
+                $table->rete_fuente = $model->rete_fuente;
+                $table->rete_iva = $model->rete_iva;
+                $table->total = $model->total;
+                $table->base_rete_fuente = $model->base_rete_fuente;
+                $table->save(false);
+                $this->redirect(["facturaventatipo/view", 'id' => $id_factura_venta_tipo]);
+            }else{                
+                Yii::$app->getSession()->setFlash('error', 'No exite la cuenta que desea ingresar, verificar en las cuentas del PUB!');
+            }
+            
+        }
+
+        return $this->render('_formnuevodetalles', [
+            'model' => $model,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'id' => $id_factura_venta_tipo
+        ]);
     }
 
     /**
