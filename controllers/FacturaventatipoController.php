@@ -78,6 +78,7 @@ class FacturaventatipoController extends Controller
     public function actionView($id)
     {
         $modeldetalles = Facturaventatipocuenta::find()->Where(['=', 'id_factura_venta_tipo', $id])->all();
+        $registros = count($modeldetalles);
         if (Yii::$app->request->post()) {
             if (isset($_POST["eliminar"])) {
                 if (isset($_POST["id_factura_venta_tipo_cuenta"])) {
@@ -105,6 +106,7 @@ class FacturaventatipoController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'modeldetalles' => $modeldetalles,
+            'registros' => $registros,
         ]);
     }
 

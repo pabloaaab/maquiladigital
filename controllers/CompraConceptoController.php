@@ -6,6 +6,9 @@ use Yii;
 use app\models\CompraConcepto;
 use app\models\CompraConceptoSearch;
 use app\models\CompraTipo;
+use app\models\CompraConceptoCuenta;
+use app\models\CuentaPub;
+use app\models\FormCompraConceptoCuentaNuevo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -75,8 +78,36 @@ class CompraConceptoController extends Controller
      */
     public function actionView($id)
     {
+        $modeldetalles = CompraConceptoCuenta::find()->Where(['=', 'id_compra_concepto', $id])->all();
+        $registros = count($modeldetalles);
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["id_compra_concepto_cuenta"])) {
+                    foreach ($_POST["id_compra_concepto_cuenta"] as $intCodigo) {
+                        try {
+                            $eliminar = CompraConceptoCuenta::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["compra-concepto/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["facturaventatipo/view", 'id' => $id]);
+                   }
+        }        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalles' => $modeldetalles,
+            'registros' => $registros,
         ]);
     }
 
@@ -140,6 +171,39 @@ class CompraConceptoController extends Controller
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar concepto, tiene registros asociados en otros procesos');
             $this->redirect(["compra-concepto/index"]);
         }
+    }
+    
+    public function actionNuevodetalles($id_compra_concepto)
+    {
+        $model = new FormCompraConceptoCuentaNuevo();
+        $cuentas = CuentaPub::find()->all();         
+        if ($model->load(Yii::$app->request->post())) {
+            $cuenta = CuentaPub::find()->where(['=','codigo_cuenta',$model->cuenta])->one();
+            if ($cuenta){
+                $table = new CompraConceptoCuenta;
+                $table->id_compra_concepto = $id_compra_concepto;
+                $table->cuenta = $model->cuenta;
+                $table->tipocuenta = $model->tipocuenta;
+                $table->base = $model->base;
+                $table->subtotal = $model->subtotal;
+                $table->iva = $model->iva;
+                $table->rete_fuente = $model->rete_fuente;
+                $table->rete_iva = $model->rete_iva;
+                $table->total = $model->total;
+                $table->base_rete_fuente = $model->base_rete_fuente;
+                $table->save(false);
+                $this->redirect(["compra-concepto/view", 'id' => $id_compra_concepto]);
+            }else{                
+                Yii::$app->getSession()->setFlash('error', 'No exite la cuenta que desea ingresar, verificar en las cuentas del PUB!');
+            }
+            
+        }
+
+        return $this->render('_formnuevodetalles', [
+            'model' => $model,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'id' => $id_compra_concepto
+        ]);
     }
 
     /**

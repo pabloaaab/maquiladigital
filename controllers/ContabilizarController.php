@@ -30,6 +30,8 @@ use app\models\Facturaventa;
 use app\models\Facturaventadetalle;
 use app\models\Tiporecibocuenta;
 use app\models\CuentaPub;
+use app\models\Facturaventatipocuenta;
+use app\models\CompraConceptoCuenta;
 
 class ContabilizarController extends Controller {        
     
@@ -182,49 +184,301 @@ class ContabilizarController extends Controller {
             }
         }
         if ($proceso == 4){  //Compras
-            $compras = Compra::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->all();
-            foreach ($compras as $compra) {                
-                    $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = 1001;
-                    $contabilidad->comprobante = $proceso;
-                    $contabilidad->proceso = 'compras';
-                    $contabilidad->fecha = $compra->fechainicio;
-                    $contabilidad->documento = $compra->numero;
-                    $contabilidad->documento_ref = $compra->numero;
-                    $contabilidad->nit = $compra->proveedor->cedulanit;
-                    $contabilidad->detalle = $compra->compraConcepto->concepto;
-                    $contabilidad->tipo = 1;
-                    $contabilidad->valor = $compra->total;
-                    $contabilidad->base = 0;
-                    $contabilidad->centro_costo = '';
-                    $contabilidad->transporte = '';
-                    $contabilidad->plazo = 0;
-                    $contabilidad->save(false);                    
+            $compras = Compra::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->andWhere(['>','numero',0])->all();
+            foreach ($compras as $compra) {
+                $compraconceptocuentas = CompraConceptoCuenta::find()->where(['=','id_compra_concepto',$compra->id_compra_concepto])->all();
+                foreach ($compraconceptocuentas as $detalle){
+                    if ($detalle->subtotal == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $compra->subtotal;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $compra->impuestoiva;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $compra->retencionfuente;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->rete_iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $compra->retencioniva;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->total == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $compra->total;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->base_rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Compras';
+                        $contabilidad->fecha = $compra->fechainicio;
+                        $contabilidad->documento = $compra->numero;
+                        $contabilidad->documento_ref = $compra->factura;
+                        $contabilidad->nit = $compra->proveedor->cedulanit;
+                        $contabilidad->detalle = $compra->compraConcepto->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = 10 * $compra->retencionfuente / 100;
+                        if ($detalle->base == 1){
+                            $base = $compra->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                }    
             }
         }
         if ($proceso == 7){  //Facturacion
             $cuenta = 10;
-            $facturas = Facturaventa::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->all();
+            $facturas = Facturaventa::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->andWhere(['>','nrofactura',0])->all();
             foreach ($facturas as $factura) {
-                $facturasdetalles = Facturaventadetalle::find()->where(['=','idfactura',$factura->idfactura])->all();
-                foreach ($facturasdetalles as $detalle){
-                    $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = $cuenta;
-                    $contabilidad->comprobante = $proceso;
-                    $contabilidad->proceso = 'Facturacion';
-                    $contabilidad->fecha = $factura->fechainicio;
-                    $contabilidad->documento = $factura->nrofactura;
-                    $contabilidad->documento_ref = $factura->nrofactura;
-                    $contabilidad->nit = $factura->cliente->cedulanit;
-                    $contabilidad->detalle = $detalle->productodetalle->prendatipo->prenda;
-                    $contabilidad->tipo = 1;
-                    $contabilidad->valor = $detalle->total;
-                    $contabilidad->base = 0;
-                    $contabilidad->centro_costo = '';
-                    $contabilidad->transporte = '';
-                    $contabilidad->plazo = 0;
-                    $contabilidad->save(false);
-                    $cuenta = $cuenta + 502;
+                $facturastiposcuentas = Facturaventatipocuenta::find()->where(['=','id_factura_venta_tipo',$factura->id_factura_venta_tipo])->all();
+                foreach ($facturastiposcuentas as $detalle){
+                    if ($detalle->subtotal == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $factura->subtotal;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
+                    if ($detalle->iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $factura->impuestoiva;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
+                    if ($detalle->rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $factura->retencionfuente;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
+                    if ($detalle->rete_iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $factura->retencioniva;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
+                    if ($detalle->total == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $factura->totalpagar;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
+                    if ($detalle->base_rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Facturacion';
+                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->documento = $factura->nrofactura;
+                        $contabilidad->documento_ref = $factura->nrofactura;
+                        $contabilidad->nit = $factura->cliente->cedulanit;
+                        $contabilidad->detalle = $factura->facturaventatipo->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = 10 * $factura->retencionfuente / 100;
+                        if ($detalle->base == 1){
+                            $base = $factura->totalpagar;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                        $cuenta = $cuenta + 502;
+                    }
                 }    
             }
         }

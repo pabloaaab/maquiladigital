@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $model->id_factura_venta_tipo;
     <div class="table-responsive">
         <div class="panel panel-success ">
             <div class="panel-heading">
-                Cuentas
+                Cuentas:  <?= $registros ?>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
