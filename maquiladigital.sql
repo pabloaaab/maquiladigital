@@ -255,6 +255,35 @@ insert  into `compra_concepto`(`id_compra_concepto`,`concepto`,`cuenta`,`id_comp
 (2,'SERVICIOS OTROS',2222,1,0,19,0,0,0),
 (3,'TEMPORALES',452,2,925000,19,1,0,10);
 
+/*Table structure for table `compra_concepto_cuenta` */
+
+DROP TABLE IF EXISTS `compra_concepto_cuenta`;
+
+CREATE TABLE `compra_concepto_cuenta` (
+  `id_compra_concepto_cuenta` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta` int(11) NOT NULL,
+  `tipocuenta` int(2) NOT NULL,
+  `id_compra_concepto` int(11) NOT NULL,
+  `base` tinyint(1) DEFAULT '0',
+  `subtotal` tinyint(1) DEFAULT '0',
+  `iva` tinyint(1) DEFAULT '0',
+  `rete_fuente` tinyint(1) DEFAULT '0',
+  `rete_iva` tinyint(1) DEFAULT '0',
+  `total` tinyint(1) DEFAULT '0',
+  `base_rete_fuente` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id_compra_concepto_cuenta`),
+  KEY `id_compra_concepto` (`id_compra_concepto`),
+  CONSTRAINT `compra_concepto_cuenta_ibfk_1` FOREIGN KEY (`id_compra_concepto`) REFERENCES `compra_concepto` (`id_compra_concepto`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `compra_concepto_cuenta` */
+
+insert  into `compra_concepto_cuenta`(`id_compra_concepto_cuenta`,`cuenta`,`tipocuenta`,`id_compra_concepto`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`) values 
+(1,1,1,1,0,1,0,0,0,0,0),
+(2,11,1,1,1,0,1,0,0,0,0),
+(3,1105,2,1,1,0,0,1,0,0,0),
+(4,110505,2,1,0,0,0,0,0,1,0);
+
 /*Table structure for table `compra_tipo` */
 
 DROP TABLE IF EXISTS `compra_tipo`;
@@ -354,6 +383,27 @@ CREATE TABLE `comprobante_egreso_tipo` (
 insert  into `comprobante_egreso_tipo`(`id_comprobante_egreso_tipo`,`concepto`,`activo`) values 
 (1,'PRUEBA',0);
 
+/*Table structure for table `comprobante_egreso_tipo_cuenta` */
+
+DROP TABLE IF EXISTS `comprobante_egreso_tipo_cuenta`;
+
+CREATE TABLE `comprobante_egreso_tipo_cuenta` (
+  `id_comprobante_egreso_tipo_cuenta` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta` int(11) NOT NULL,
+  `tipocuenta` int(2) NOT NULL,
+  `base` tinyint(1) DEFAULT '0',
+  `id_comprobante_egreso_tipo` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_comprobante_egreso_tipo_cuenta`),
+  KEY `id_comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
+  CONSTRAINT `comprobante_egreso_tipo_cuenta_ibfk_1` FOREIGN KEY (`id_comprobante_egreso_tipo`) REFERENCES `comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `comprobante_egreso_tipo_cuenta` */
+
+insert  into `comprobante_egreso_tipo_cuenta`(`id_comprobante_egreso_tipo_cuenta`,`cuenta`,`tipocuenta`,`base`,`id_comprobante_egreso_tipo`) values 
+(1,1,1,0,1),
+(2,11,2,1,1);
+
 /*Table structure for table `conceptonota` */
 
 DROP TABLE IF EXISTS `conceptonota`;
@@ -369,6 +419,29 @@ CREATE TABLE `conceptonota` (
 
 insert  into `conceptonota`(`idconceptonota`,`concepto`,`estado`) values 
 (1,'NOTA CREDITO',0);
+
+/*Table structure for table `conceptonotacuenta` */
+
+DROP TABLE IF EXISTS `conceptonotacuenta`;
+
+CREATE TABLE `conceptonotacuenta` (
+  `idconceptonotacuenta` int(11) NOT NULL AUTO_INCREMENT,
+  `cuenta` int(11) NOT NULL,
+  `tipocuenta` int(2) NOT NULL,
+  `idconceptonota` int(11) DEFAULT NULL,
+  `base` tinyint(1) DEFAULT '0',
+  `subtotal` tinyint(1) DEFAULT '0',
+  `iva` tinyint(1) DEFAULT '0',
+  `rete_fuente` tinyint(1) DEFAULT '0',
+  `rete_iva` tinyint(1) DEFAULT '0',
+  `total` tinyint(1) DEFAULT '0',
+  `base_rete_fuente` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`idconceptonotacuenta`),
+  KEY `idconceptonota` (`idconceptonota`),
+  CONSTRAINT `conceptonotacuenta_ibfk_1` FOREIGN KEY (`idconceptonota`) REFERENCES `conceptonota` (`idconceptonota`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `conceptonotacuenta` */
 
 /*Table structure for table `consecutivo` */
 
@@ -412,19 +485,9 @@ CREATE TABLE `contabilidad` (
   `transporte` varchar(12) COLLATE utf8_spanish_ci DEFAULT NULL,
   `plazo` int(11) DEFAULT '0',
   PRIMARY KEY (`consecutivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=1543 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1661 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `contabilidad` */
-
-insert  into `contabilidad`(`consecutivo`,`cuenta`,`comprobante`,`proceso`,`fecha`,`documento`,`documento_ref`,`nit`,`detalle`,`tipo`,`valor`,`base`,`centro_costo`,`transporte`,`plazo`) values 
-(1535,'1001','1','recibo de caja','2019-01-30','2','2','890920043','RECIBO DE CAJA',1,2985812.782517,0,'','',0),
-(1536,'1001','1','recibo de caja','2019-01-30','8','8','890920043','RECIBO DE CAJA',1,18856661,0,'','',0),
-(1537,'1001','1','recibo de caja','2019-01-30','9','9','890920043','RECIBO DE CAJA',1,833538,0,'','',0),
-(1538,'1001','1','recibo de caja','2019-01-30','9','9','890920043','RECIBO DE CAJA',1,12241942,0,'','',0),
-(1539,'1001','1','recibo de caja','2019-01-30','9','9','890920043','RECIBO DE CAJA',1,12650563,0,'','',0),
-(1540,'1001','1','recibo de caja','2019-01-30','9','9','890920043','RECIBO DE CAJA',1,1188160,0,'','',0),
-(1541,'1001','1','recibo de caja','2019-01-30','9','9','890920043','RECIBO DE CAJA',1,598749.2634997,0,'','',0),
-(1542,'1001','1','recibo de caja','2019-01-30','3','3','890920043','REGALO NAVIDEÑO',1,20000,0,'','',0);
 
 /*Table structure for table `contabilidad_comprobante_tipo` */
 
@@ -1439,21 +1502,21 @@ CREATE TABLE `facturaventa` (
 /*Data for the table `facturaventa` */
 
 insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`fechacreacion`,`formapago`,`plazopago`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`saldo`,`totalpagar`,`valorletras`,`idcliente`,`idordenproduccion`,`usuariosistema`,`idresolucion`,`estado`,`autorizado`,`observacion`,`libre`,`id_factura_venta_tipo`) values 
-(1,16,'2018-12-22','2018-12-22','2018-12-20 16:54:53','1',0,19,4,15,16813785,672551,3194619,479193,-37713323,18856660,'-',1,1,'71268830',3,2,1,'ENTREGA TOTAL DE LA REFERENCIA 108, SEGúN REMISIóN DE ENTREGA N° 00009',0,NULL),
-(3,18,'2019-01-08','2019-01-08','2019-01-07 16:00:29','1',0,19,4,15,9556039,382242,1815647,272347,10717097,10717097,'-',1,3,'71268830',3,0,1,'SE ENTREGA LA REFENCIA N 133 EN LA REMISION DE ENTREGA N 00010',0,NULL),
-(4,19,'2019-01-08','2019-01-08','2019-01-08 15:10:49','1',0,19,4,15,2662338.638,106493.54552,505844.34122,75876.651183,0,2985812.782517,'-',1,4,'71268830',3,2,1,'SE ENTREGA LA REFERENCIA N. 133 EN LA REMISION DE ENTREGA N.00010',0,NULL),
-(5,20,'2019-01-13','2019-01-13','2019-01-11 12:55:16','1',0,19,4,15,10473572.52,418942.9008,1989978.7788,298496.81682,11746111.58118,11746111.58118,'-',1,5,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 536 EN LA REMISION DE ENTREGA NRO 00011',0,NULL),
-(6,21,'2019-01-13','2019-01-13','2019-01-12 16:07:40','1',0,19,4,15,1092821.25,43712.85,207636.0375,31145.405625,1225599.031875,1225599.031875,'-',1,8,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA TERMINACION DE LA REF. 536 EN LA REMISION DE ENTREGA 00011',0,NULL),
-(7,22,'2019-01-19','2019-01-19','2019-01-19 15:19:58','1',0,19,4,15,11280039,451202,2143207,321481,0,12650563,'-',1,7,'ADMINISTRADOR',3,2,1,'SE ENTREGA REFE. 271 EN LA REMISION DE ENTREGA NO 00012',0,NULL),
-(8,23,'2019-01-19','2019-01-19','2019-01-19 15:39:12','1',0,19,4,15,1059439,42378,201293,30194,0,1188160,'-',1,11,'ADMINISTRADOR',3,2,1,'SE HACE ENTREGA DE TERMINACION DE LA REFERENCIA NO 271 EN LA REMISION DE ENTREGA NO 00012',0,NULL),
-(9,24,'2019-01-24','2019-02-08','2019-01-24 09:33:13','2',15,19,0,15,515496.5678,0,97944.347882,14691.6521823,0,598749.2634997,'-',1,12,'ADMINISTRADOR',3,2,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013',0,NULL),
-(10,25,'2019-01-24','2019-02-08','2019-01-24 09:39:55','2',15,19,4,15,5632774,225311,1070227,160534,6317156,6317156,'-',1,6,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013',0,NULL),
-(11,26,'2019-01-29','2019-02-13','2019-01-29 14:05:03','2',15,19,4,15,8482958,339318,1611762,241764,9513638,9513638,'-',1,10,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA REFERENCIA 527 EN LA ORDEN DE REMSION DE ENTREGA N  0014',0,NULL),
-(12,27,'2019-01-29','2019-02-13','2019-01-29 14:53:01','2',15,19,4,15,717639,0,136351,20453,-1,833537,'-',1,14,'ADMINISTRADOR',3,2,1,'SE ENTREGA LA TERMINACION DE LA REFERENCIA 527',0,NULL),
-(13,31,'2019-01-30','2019-02-14','2019-01-30 15:03:35','2',15,19,4,15,10915686,436627,2073980,311097,0,12241942,'-',1,9,'71268830',3,2,1,'ASAS',0,NULL),
-(14,35,'2019-04-01','2019-04-01','2019-04-01 16:29:51','1',0,0,0,0,0,0,0,0,0,0,'-',2,NULL,'71268830',3,0,1,'HOLA',1,1),
+(1,16,'2018-12-22','2018-12-22','2018-12-20 16:54:53','1',0,19,4,15,16813785,672551,3194619,479193,-37713323,18856660,'-',1,1,'71268830',3,2,1,'ENTREGA TOTAL DE LA REFERENCIA 108, SEGúN REMISIóN DE ENTREGA N° 00009',0,2),
+(3,18,'2019-01-08','2019-01-08','2019-01-07 16:00:29','1',0,19,4,15,9556039,382242,1815647,272347,10717097,10717097,'-',1,3,'71268830',3,0,1,'SE ENTREGA LA REFENCIA N 133 EN LA REMISION DE ENTREGA N 00010',0,2),
+(4,19,'2019-01-08','2019-01-08','2019-01-08 15:10:49','1',0,19,4,15,2662338.638,106493.54552,505844.34122,75876.651183,0,2985812.782517,'-',1,4,'71268830',3,2,1,'SE ENTREGA LA REFERENCIA N. 133 EN LA REMISION DE ENTREGA N.00010',0,2),
+(5,20,'2019-01-13','2019-01-13','2019-01-11 12:55:16','1',0,19,4,15,10473572.52,418942.9008,1989978.7788,298496.81682,11746111.58118,11746111.58118,'-',1,5,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 536 EN LA REMISION DE ENTREGA NRO 00011',0,2),
+(6,21,'2019-01-13','2019-01-13','2019-01-12 16:07:40','1',0,19,4,15,1092821.25,43712.85,207636.0375,31145.405625,1225599.031875,1225599.031875,'-',1,8,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA TERMINACION DE LA REF. 536 EN LA REMISION DE ENTREGA 00011',0,2),
+(7,22,'2019-01-19','2019-01-19','2019-01-19 15:19:58','1',0,19,4,15,11280039,451202,2143207,321481,0,12650563,'-',1,7,'ADMINISTRADOR',3,2,1,'SE ENTREGA REFE. 271 EN LA REMISION DE ENTREGA NO 00012',0,2),
+(8,23,'2019-01-19','2019-01-19','2019-01-19 15:39:12','1',0,19,4,15,1059439,42378,201293,30194,0,1188160,'-',1,11,'ADMINISTRADOR',3,2,1,'SE HACE ENTREGA DE TERMINACION DE LA REFERENCIA NO 271 EN LA REMISION DE ENTREGA NO 00012',0,2),
+(9,24,'2019-01-24','2019-02-08','2019-01-24 09:33:13','2',15,19,0,15,515496.5678,0,97944.347882,14691.6521823,0,598749.2634997,'-',1,12,'ADMINISTRADOR',3,2,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013',0,2),
+(10,25,'2019-01-24','2019-02-08','2019-01-24 09:39:55','2',15,19,4,15,5632774,225311,1070227,160534,6317156,6317156,'-',1,6,'ADMINISTRADOR',3,0,1,'SE ENTREGA REFERENCIA 147 EN LA ORDEN DE REMISION NO 00013',0,2),
+(11,26,'2019-01-29','2019-02-13','2019-01-29 14:05:03','2',15,19,4,15,8482958,339318,1611762,241764,9513638,9513638,'-',1,10,'ADMINISTRADOR',3,0,1,'SE ENTREGA LA REFERENCIA 527 EN LA ORDEN DE REMSION DE ENTREGA N  0014',0,2),
+(12,27,'2019-01-29','2019-02-13','2019-01-29 14:53:01','2',15,19,4,15,717639,0,136351,20453,-1,833537,'-',1,14,'ADMINISTRADOR',3,2,1,'SE ENTREGA LA TERMINACION DE LA REFERENCIA 527',0,2),
+(13,31,'2019-01-30','2019-02-14','2019-01-30 15:03:35','2',15,19,4,15,10915686,436627,2073980,311097,0,12241942,'-',1,9,'71268830',3,2,1,'ASAS',0,2),
+(14,0,'2019-04-01','2019-04-01','2019-04-01 16:29:51','1',0,0,0,0,0,0,0,0,0,0,'-',2,NULL,'71268830',3,0,1,'HOLA',1,1),
 (16,36,'2019-04-01','2019-04-01','2019-04-01 21:34:32','1',0,19,0,15,828116,0,157342,23601,961857,961857,'-',2,NULL,'71268830',3,0,1,'DFDFDFF',1,1),
-(17,0,'2019-04-01','2019-04-16','2019-04-01 21:44:44','2',15,19,0,15,17050,0,3239.5,485.925,19803.575,19803.575,'-',1,15,'71268830',3,0,0,'',0,NULL),
+(17,0,'2019-04-01','2019-04-16','2019-04-01 21:44:44','2',15,19,0,15,17050,0,3239.5,485.925,19803.575,19803.575,'-',1,15,'71268830',3,0,0,'',0,2),
 (19,0,'2019-06-10','2019-06-25','2019-06-10 11:57:56','2',15,0,0,0,0,0,0,0,0,0,'-',1,15,'71268830',NULL,0,0,'AAAA',0,2);
 
 /*Table structure for table `facturaventadetalle` */
@@ -1573,7 +1636,7 @@ CREATE TABLE `facturaventatipocuenta` (
   PRIMARY KEY (`id_factura_venta_tipo_cuenta`),
   KEY `id_factura_venta_tipo` (`id_factura_venta_tipo`),
   CONSTRAINT `facturaventatipocuenta_ibfk_1` FOREIGN KEY (`id_factura_venta_tipo`) REFERENCES `facturaventatipo` (`id_factura_venta_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `facturaventatipocuenta` */
 
@@ -1584,7 +1647,14 @@ insert  into `facturaventatipocuenta`(`id_factura_venta_tipo_cuenta`,`cuenta`,`t
 (10,110505,1,1,1,0,0,0,1,0,0),
 (11,11050505,1,1,0,0,0,0,0,1,0),
 (12,11050510,1,1,1,0,0,0,0,0,1),
-(13,1110,2,1,1,0,0,0,0,0,1);
+(13,1110,2,1,1,0,0,0,0,0,1),
+(14,1,2,2,0,1,0,0,0,0,0),
+(15,11,2,2,1,0,1,0,0,0,0),
+(16,1105,1,2,1,0,0,1,0,0,0),
+(17,110505,1,2,1,0,0,0,1,0,0),
+(18,11050505,1,2,0,0,0,0,0,1,0),
+(19,11050510,1,2,1,0,0,0,0,0,1),
+(20,1110,2,2,1,0,0,0,0,0,1);
 
 /*Table structure for table `fichatiempo` */
 
@@ -2880,9 +2950,12 @@ CREATE TABLE `notacredito` (
   KEY `idconceptonota` (`idconceptonota`),
   CONSTRAINT `notacredito_ibfk_1` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`),
   CONSTRAINT `notacredito_ibfk_2` FOREIGN KEY (`idconceptonota`) REFERENCES `conceptonota` (`idconceptonota`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `notacredito` */
+
+insert  into `notacredito`(`idnotacredito`,`idcliente`,`fecha`,`fechapago`,`idconceptonota`,`valor`,`iva`,`reteiva`,`retefuente`,`total`,`numero`,`autorizado`,`anulado`,`usuariosistema`,`observacion`) values 
+(1,1,'2019-06-11 16:01:13',NULL,1,0,NULL,NULL,NULL,NULL,0,0,0,'71268830','AAA');
 
 /*Table structure for table `notacreditodetalle` */
 
@@ -4286,7 +4359,7 @@ CREATE TABLE `tiporecibocuenta` (
   PRIMARY KEY (`idtiporecibocuenta`),
   KEY `idtiporecibo` (`idtiporecibo`),
   CONSTRAINT `tiporecibocuenta_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `tiporecibocuenta` */
 

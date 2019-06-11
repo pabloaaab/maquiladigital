@@ -32,6 +32,8 @@ use app\models\Tiporecibocuenta;
 use app\models\CuentaPub;
 use app\models\Facturaventatipocuenta;
 use app\models\CompraConceptoCuenta;
+use app\models\ComprobanteEgresoTipoCuenta;
+use app\models\Conceptonotacuenta;
 
 class ContabilizarController extends Controller {        
     
@@ -160,26 +162,44 @@ class ContabilizarController extends Controller {
             }
         }
         if ($proceso == 2){  //Comprobantes de Egresos
-            $comprobantesegreso = ComprobanteEgreso::find()->where(['>=','fecha_comprobante',$fechadesde])->andWhere(['<=','fecha_comprobante',$fechahasta])->all();
+            $comprobantesegreso = ComprobanteEgreso::find()->where(['>=','fecha_comprobante',$fechadesde])->andWhere(['<=','fecha_comprobante',$fechahasta])->andWhere(['>','numero',0])->all();
             foreach ($comprobantesegreso as $comprobante) {
-                $comprobantesdetalles = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->all();
-                foreach ($comprobantesdetalles as $detalle){
-                    $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = 1001;
-                    $contabilidad->comprobante = $proceso;
-                    $contabilidad->proceso = 'comprobante de egreso';
-                    $contabilidad->fecha = $comprobante->fecha_comprobante;
-                    $contabilidad->documento = $comprobante->numero;
-                    $contabilidad->documento_ref = $comprobante->numero;
-                    $contabilidad->nit = $comprobante->proveedor->cedulanit;
-                    $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
-                    $contabilidad->tipo = 1;
-                    $contabilidad->valor = $detalle->vlr_abono;
-                    $contabilidad->base = 0;
-                    $contabilidad->centro_costo = '';
-                    $contabilidad->transporte = '';
-                    $contabilidad->plazo = 0;
-                    $contabilidad->save(false);
+                $comprobantedetalles = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->all();
+                foreach ($comprobantedetalles as $detalle){
+                    $tipos = ComprobanteEgresoTipoCuenta::find()->where(['=','id_comprobante_egreso_tipo',$comprobante->id_comprobante_egreso_tipo])->all();
+                    foreach ($tipos as $tipo){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->vlr_abono;
+                        $contabilidad->base = 0;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                        
+                    }                    
                 }    
             }
         }
@@ -483,26 +503,148 @@ class ContabilizarController extends Controller {
             }
         }
         if ($proceso == 9){  //Notas Credito
-            $notascredito = Notacredito::find()->where(['>=','fecha',$fechadesde])->andWhere(['<=','fecha',$fechahasta])->all();
-            foreach ($notascredito as $nota) {
-                $notasdetalles = Notacreditodetalle::find()->where(['=','idnotacredito',$nota->idnotacredito])->all();
-                foreach ($notasdetalles as $detalle){
-                    $contabilidad = new Contabilidad;
-                    $contabilidad->cuenta = 1001;
-                    $contabilidad->comprobante = $proceso;
-                    $contabilidad->proceso = 'nota credito';
-                    $contabilidad->fecha = $nota->fecha;
-                    $contabilidad->documento = $nota->numero;
-                    $contabilidad->documento_ref = $nota->numero;
-                    $contabilidad->nit = $nota->cliente->cedulanit;
-                    $contabilidad->detalle = $nota->conceptonota->concepto;
-                    $contabilidad->tipo = 1;
-                    $contabilidad->valor = $detalle->valor;
-                    $contabilidad->base = 0;
-                    $contabilidad->centro_costo = '';
-                    $contabilidad->transporte = '';
-                    $contabilidad->plazo = 0;
-                    $contabilidad->save(false);
+            $notascreditos = Notacredito::find()->where(['>=','fecha',$fechadesde])->andWhere(['<=','fecha',$fechahasta])->andWhere(['>','numero',0])->all();
+            foreach ($notascreditos as $notacredito) {
+                $conceptonotacuentas = Conceptonotacuenta::find()->where(['=','idconceptonota',$notacredito->idconceptonota])->all();
+                foreach ($compraconceptocuentas as $detalle){
+                    if ($detalle->subtotal == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $notacredito->valor;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $notacredito->iva;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $notacredito->retefuente;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->rete_iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $notacredito->reteiva;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
+                    if ($detalle->total == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = $notacredito->total;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                   
+                    }
+                    if ($detalle->base_rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $detalle->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Notas Credito';
+                        $contabilidad->fecha = $notacredito->fecha;
+                        $contabilidad->documento = $notacredito->numero;
+                        $contabilidad->documento_ref = $notacredito->factura;
+                        $contabilidad->nit = $notacredito->cliente->cedulanit;
+                        $contabilidad->detalle = $notacredito->conceptonota->concepto;
+                        $contabilidad->tipo = $detalle->tipocuenta;
+                        $contabilidad->valor = 10 * $notacredito->retefuente / 100;
+                        if ($detalle->base == 1){
+                            $base = $notacredito->total;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);                    
+                    }
                 }    
             }
         }

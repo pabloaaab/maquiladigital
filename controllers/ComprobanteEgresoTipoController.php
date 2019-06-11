@@ -9,6 +9,10 @@ use app\models\UsuarioDetalle;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\CuentaPub;
+use app\models\ComprobanteEgresoTipoCuenta;
+use app\models\FormComprobanteEgresoTipoCuentaNuevo;
+use yii\helpers\ArrayHelper;
 
 /**
  * ComprobanteEgresoTipoController implements the CRUD actions for ComprobanteEgresoTipo model.
@@ -61,8 +65,36 @@ class ComprobanteEgresoTipoController extends Controller
      */
     public function actionView($id)
     {
+        $modeldetalles = ComprobanteEgresoTipoCuenta::find()->Where(['=', 'id_comprobante_egreso_tipo', $id])->all();
+        $registros = count($modeldetalles);
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminar"])) {
+                if (isset($_POST["id_comprobante_egreso_tipo_cuenta"])) {
+                    foreach ($_POST["id_comprobante_egreso_tipo_cuenta"] as $intCodigo) {
+                        try {
+                            $eliminar = ComprobanteEgresoTipoCuenta::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["comprobante-egreso-tipo/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                            //$this->redirect(["producto/view", 'id' => $id]);
+                        }
+                    }
+                    //$this->redirect(["producto/view", 'id' => $id]);
+                }
+            } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                    $this->redirect(["facturaventatipo/view", 'id' => $id]);
+                   }
+        }        
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'modeldetalles' => $modeldetalles,
+            'registros' => $registros,
         ]);
     }
 
@@ -124,6 +156,33 @@ class ComprobanteEgresoTipoController extends Controller
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
             $this->redirect(["comprobante-egreso-tipo/index"]);
         }
+    }
+    
+    public function actionNuevodetalles($id_comprobante_egreso_tipo)
+    {
+        $model = new FormComprobanteEgresoTipoCuentaNuevo();
+        $cuentas = CuentaPub::find()->all();         
+        if ($model->load(Yii::$app->request->post())) {
+            $cuenta = CuentaPub::find()->where(['=','codigo_cuenta',$model->cuenta])->one();
+            if ($cuenta){
+                $table = new ComprobanteEgresoTipoCuenta;
+                $table->id_comprobante_egreso_tipo = $id_comprobante_egreso_tipo;
+                $table->cuenta = $model->cuenta;
+                $table->tipocuenta = $model->tipocuenta;
+                $table->base = $model->base;                
+                $table->save(false);
+                $this->redirect(["comprobante-egreso-tipo/view", 'id' => $id_comprobante_egreso_tipo]);
+            }else{                
+                Yii::$app->getSession()->setFlash('error', 'No exite la cuenta que desea ingresar, verificar en las cuentas del PUB!');
+            }
+            
+        }
+
+        return $this->render('_formnuevodetalles', [
+            'model' => $model,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'id' => $id_comprobante_egreso_tipo
+        ]);
     }
 
     /**
