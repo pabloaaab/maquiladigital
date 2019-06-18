@@ -120,8 +120,7 @@ class ContabilizarController extends Controller {
     protected function Generar($proceso,$fechadesde,$fechahasta) {        
         //inicio borrar registros
         Contabilidad::deleteAll('consecutivo <> 0');
-        //fin borrar registros
-        $cuenta = 1;
+        //fin borrar registros        
         if ($proceso == 1){  //recibo de caja
             $reciboscaja = Recibocaja::find()->where(['>=','fechapago',$fechadesde])->andWhere(['<=','fechapago',$fechahasta])->all();
             foreach ($reciboscaja as $recibo) {
@@ -154,8 +153,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 520;
+                        $contabilidad->save(false);                        
                     }
                     
                 }    
@@ -349,8 +347,7 @@ class ContabilizarController extends Controller {
                 }    
             }
         }
-        if ($proceso == 7){  //Facturacion
-            $cuenta = 10;
+        if ($proceso == 7){  //Facturacion            
             $facturas = Facturaventa::find()->where(['>=','fechainicio',$fechadesde])->andWhere(['<=','fechainicio',$fechahasta])->andWhere(['>','nrofactura',0])->all();
             foreach ($facturas as $factura) {
                 $facturastiposcuentas = Facturaventatipocuenta::find()->where(['=','id_factura_venta_tipo',$factura->id_factura_venta_tipo])->all();
@@ -376,8 +373,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                     if ($detalle->iva == 1){
                         $contabilidad = new Contabilidad;
@@ -400,8 +396,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                     if ($detalle->rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -424,8 +419,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                     if ($detalle->rete_iva == 1){
                         $contabilidad = new Contabilidad;
@@ -448,8 +442,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                     if ($detalle->total == 1){
                         $contabilidad = new Contabilidad;
@@ -472,8 +465,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                     if ($detalle->base_rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -496,8 +488,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
-                        $cuenta = $cuenta + 502;
+                        $contabilidad->save(false);                        
                     }
                 }    
             }
