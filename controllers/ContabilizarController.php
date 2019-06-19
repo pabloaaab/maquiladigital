@@ -762,7 +762,7 @@ class ContabilizarController extends Controller {
         ob_clean();
         $strArchivo = "plano".".txt";                
         
-        $ar = fopen($strArchivo, "w") or
+        $ar = fopen($strArchivo, "a+") or
                 die("Problemas en la creacion del archivo plano");                
         fputs($ar, "C CUENTA  ");
         fputs($ar, "CTE  ");
