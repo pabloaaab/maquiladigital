@@ -760,7 +760,7 @@ class ContabilizarController extends Controller {
     
     public function actionContai($exportar) {                
         ob_clean();
-        $strArchivo = "plano". ".txt";                
+        $strArchivo = "plano".".txt";                
         
         $ar = fopen($strArchivo, "a") or
                 die("Problemas en la creacion del archivo plano");                
