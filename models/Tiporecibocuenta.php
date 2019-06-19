@@ -32,7 +32,7 @@ class Tiporecibocuenta extends \yii\db\ActiveRecord
         return [
             [['cuenta', 'tipocuenta', 'idtiporecibo'], 'required'],
             [['cuenta', 'tipocuenta', 'idtiporecibo'], 'integer'],
-            [['idtiporecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Tiporecibo::className(), 'targetAttribute' => ['idtiporecibo' => 'idtiporecibo']],
+            [['idtiporecibo'], 'exist', 'skipOnError' => true, 'targetClass' => TipoRecibo::className(), 'targetAttribute' => ['idtiporecibo' => 'idtiporecibo']],
         ];
     }
 
