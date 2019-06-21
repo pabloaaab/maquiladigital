@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id_compra_tipo
  * @property string $tipo
- * @property double $porcentaje
  * @property int $cuenta
  *
  * @property Compra[] $compras
