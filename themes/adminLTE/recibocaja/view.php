@@ -107,7 +107,7 @@ $view = 'recibocaja';
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Id Factura</th>
+                        <th scope="col">N° Factura</th>
                         <th scope="col">Rete Fuente</th>
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Valor Abono</th>
@@ -122,7 +122,7 @@ $view = 'recibocaja';
                     <tr>
                         <td><?= $val->iddetallerecibo ?></td>
                         <?php if($val->idfactura){ ?>
-                            <td><?= $val->idfactura ?></td>
+                            <td><?= $val->factura->nrofactura ?></td>
                         <?php }else{ ?>
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
