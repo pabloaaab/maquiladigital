@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Conceptonota */
 
@@ -67,6 +69,7 @@ $this->params['breadcrumbs'][] = $model->idconceptonota;
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Total Fact</th>
                         <th scope="col">Base % Rete Fte</th>
+                        <th></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                     </thead>
@@ -91,6 +94,9 @@ $this->params['breadcrumbs'][] = $model->idconceptonota;
                         <td><?= $reteiva ?></td>
                         <td><?= $total ?></td>
                         <td><?= $base_rete_fuente ?></td>
+                        <td>
+                            <a href="<?= Url::toRoute(["conceptonota/editardetalle", "idconceptonotacuenta" => $val->idconceptonotacuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                         <td><input type="checkbox" name="idconceptonotacuenta[]" value="<?= $val->idconceptonotacuenta ?>"></td>
                     </tr>
                     </tbody>

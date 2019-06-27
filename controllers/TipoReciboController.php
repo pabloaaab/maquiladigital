@@ -7,6 +7,7 @@ use app\models\TipoRecibo;
 use app\models\TipoReciboSearch;
 use app\models\Tiporecibocuenta;
 use app\models\FormTipoReciboCuentaNuevo;
+use app\models\FormReciboCajaTipoDetalleEditar;
 use app\models\CuentaPub;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
 use app\models\UsuarioDetalle;
 use yii\helpers\Html;
 use yii\data\Pagination;
+use yii\helpers\ArrayHelper;
 
 /**
  * TipoReciboController implements the CRUD actions for TipoRecibo model.
@@ -237,6 +239,31 @@ class TipoReciboController extends Controller
             'pagination' => $pages,
 
         ]);
+    }
+    
+    public function actionEditardetalle($idtiporecibocuenta) {
+        $model = new FormReciboCajaTipoDetalleEditar;
+        $cuentas = CuentaPub::find()->all();        
+        $tiporecibocuenta = Tiporecibocuenta::findOne($idtiporecibocuenta);
+        
+        if ($model->load(Yii::$app->request->post())) {                        
+            $tiporecibocuenta->cuenta = $model->cuenta;
+            $tiporecibocuenta->tipocuenta = $model->tipocuenta;                           
+            $tiporecibocuenta->save(false);                                      
+            return $this->redirect(['tipo-recibo/view','id' => $tiporecibocuenta->idtiporecibo]);
+        }
+        if (Yii::$app->request->get("idtiporecibocuenta")) {
+            $table = Tiporecibocuenta::find()->where(['idtiporecibocuenta' => $idtiporecibocuenta])->one();
+            if ($table) {
+                $model->cuenta = $table->cuenta;
+                $model->tipocuenta = $table->tipocuenta;
+            }    
+        }
+        return $this->render('_formeditardetalle', [
+            'model' => $model,
+            'tiporecibocuenta' => $tiporecibocuenta,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+        ]);        
     }
 
     /**

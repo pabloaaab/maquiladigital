@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgresoTipo */
@@ -63,7 +64,8 @@ $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
                         <th scope="col">Id</th>
                         <th scope="col">Cuenta</th>
                         <th scope="col">Tipo</th>
-                        <th scope="col">Base</th>                        
+                        <th scope="col">Base</th>
+                        <th></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                     </thead>
@@ -75,7 +77,10 @@ $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
                         <td><?= $val->id_comprobante_egreso_tipo_cuenta ?></td>                        
                         <td><?= $val->cuenta ?></td>
                         <td><?= $tipo ?></td>
-                        <td><?= $base ?></td>                        
+                        <td><?= $base ?></td>
+                        <td>
+                            <a href="<?= Url::toRoute(["comprobante-egreso-tipo/editardetalle", "id_comprobante_egreso_tipo_cuenta" => $val->id_comprobante_egreso_tipo_cuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                         <td><input type="checkbox" name="id_comprobante_egreso_tipo_cuenta[]" value="<?= $val->id_comprobante_egreso_tipo_cuenta ?>"></td>
                     </tr>
                     </tbody>

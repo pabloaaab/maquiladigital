@@ -702,6 +702,7 @@ class OrdenProduccionController extends Controller {
         ]);
     
     }
+    
     public function actionDetalle_proceso($idordenproduccion, $iddetalleorden) {
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
         $detalle = Ordenproducciondetalle::findOne($iddetalleorden);

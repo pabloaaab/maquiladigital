@@ -18,7 +18,7 @@ use kartik\depdrop\DepDrop;
 
 <?php $form = ActiveForm::begin([
 		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-	'fieldConfig' => [
+                'fieldConfig' => [
                     'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
                     'labelOptions' => ['class' => 'col-sm-3 control-label'],
                     'options' => []

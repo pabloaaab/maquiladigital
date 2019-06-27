@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CompraConcepto */
@@ -80,6 +81,7 @@ $this->params['breadcrumbs'][] = $model->id_compra_concepto;
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Total Fact</th>
                         <th scope="col">Base % Rete Fte</th>
+                        <th></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                     </thead>
@@ -104,6 +106,9 @@ $this->params['breadcrumbs'][] = $model->id_compra_concepto;
                         <td><?= $reteiva ?></td>
                         <td><?= $total ?></td>
                         <td><?= $base_rete_fuente ?></td>
+                        <td>
+                            <a href="<?= Url::toRoute(["compra-concepto/editardetalle", "id_compra_concepto_cuenta" => $val->id_compra_concepto_cuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                         <td><input type="checkbox" name="id_compra_concepto_cuenta[]" value="<?= $val->id_compra_concepto_cuenta ?>"></td>
                     </tr>
                     </tbody>

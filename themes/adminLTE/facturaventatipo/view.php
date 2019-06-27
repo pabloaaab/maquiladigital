@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventatipo */
@@ -70,6 +71,7 @@ $this->params['breadcrumbs'][] = $model->id_factura_venta_tipo;
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Total Fact</th>
                         <th scope="col">Base % Rete Fte</th>
+                        <th></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                     </thead>
@@ -94,6 +96,9 @@ $this->params['breadcrumbs'][] = $model->id_factura_venta_tipo;
                         <td><?= $reteiva ?></td>
                         <td><?= $total ?></td>
                         <td><?= $base_rete_fuente ?></td>
+                        <td>
+                            <a href="<?= Url::toRoute(["facturaventatipo/editardetalle", "id_factura_venta_tipo_cuenta" => $val->id_factura_venta_tipo_cuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                         <td><input type="checkbox" name="id_factura_venta_tipo_cuenta[]" value="<?= $val->id_factura_venta_tipo_cuenta ?>"></td>
                     </tr>
                     </tbody>

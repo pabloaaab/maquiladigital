@@ -9,6 +9,7 @@ use app\models\CompraTipo;
 use app\models\CompraConceptoCuenta;
 use app\models\CuentaPub;
 use app\models\FormCompraConceptoCuentaNuevo;
+use app\models\FormCompraConceptoDetalleEditar;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -204,6 +205,45 @@ class CompraConceptoController extends Controller
             'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
             'id' => $id_compra_concepto
         ]);
+    }
+    
+    public function actionEditardetalle($id_compra_concepto_cuenta) {
+        $model = new FormCompraConceptoDetalleEditar;
+        $cuentas = CuentaPub::find()->all();        
+        $compraconceptocuenta = CompraConceptoCuenta::findOne($id_compra_concepto_cuenta);
+        
+        if ($model->load(Yii::$app->request->post())) {                        
+            $compraconceptocuenta->cuenta = $model->cuenta;
+            $compraconceptocuenta->tipocuenta = $model->tipocuenta;
+            $compraconceptocuenta->base = $model->base;
+            $compraconceptocuenta->subtotal = $model->subtotal;
+            $compraconceptocuenta->iva = $model->iva;
+            $compraconceptocuenta->rete_fuente = $model->rete_fuente;
+            $compraconceptocuenta->rete_iva = $model->rete_iva;
+            $compraconceptocuenta->total = $model->total;
+            $compraconceptocuenta->base_rete_fuente = $model->base_rete_fuente;
+            $compraconceptocuenta->save(false);                                      
+            return $this->redirect(['compra-concepto/view','id' => $compraconceptocuenta->id_compra_concepto]);
+        }
+        if (Yii::$app->request->get("id_compra_concepto_cuenta")) {
+            $table = CompraConceptoCuenta::find()->where(['id_compra_concepto_cuenta' => $id_compra_concepto_cuenta])->one();
+            if ($table) {
+                $model->cuenta = $table->cuenta;
+                $model->tipocuenta = $table->tipocuenta;
+                $model->base = $table->base;
+                $model->subtotal = $table->subtotal;
+                $model->iva = $table->iva;
+                $model->rete_fuente = $table->rete_fuente;
+                $model->rete_iva = $table->rete_iva;
+                $model->total = $table->total;
+                $model->base_rete_fuente = $table->base_rete_fuente;
+            }    
+        }
+        return $this->render('_formeditardetalle', [
+            'model' => $model,
+            'compraconceptocuenta' => $compraconceptocuenta,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+        ]);        
     }
 
     /**

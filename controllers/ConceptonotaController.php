@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use app\models\UsuarioDetalle;
 use app\models\Conceptonotacuenta;
 use app\models\FormConceptoNotaCuentaNuevo;
+use app\models\FormConceptoNotaDetalleEditar;
 use app\models\CuentaPub;
 use yii\helpers\ArrayHelper;
 
@@ -189,6 +190,45 @@ class ConceptonotaController extends Controller
             'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
             'id' => $idconceptonota
         ]);
+    }
+    
+    public function actionEditardetalle($idconceptonotacuenta) {
+        $model = new FormConceptoNotaDetalleEditar;
+        $cuentas = CuentaPub::find()->all();        
+        $conceptonotacuenta = Conceptonotacuenta::findOne($idconceptonotacuenta);
+        
+        if ($model->load(Yii::$app->request->post())) {                        
+            $conceptonotacuenta->cuenta = $model->cuenta;
+            $conceptonotacuenta->tipocuenta = $model->tipocuenta;
+            $conceptonotacuenta->base = $model->base;
+            $conceptonotacuenta->subtotal = $model->subtotal;
+            $conceptonotacuenta->iva = $model->iva;
+            $conceptonotacuenta->rete_fuente = $model->rete_fuente;
+            $conceptonotacuenta->rete_iva = $model->rete_iva;
+            $conceptonotacuenta->total = $model->total;
+            $conceptonotacuenta->base_rete_fuente = $model->base_rete_fuente;
+            $conceptonotacuenta->save(false);                                      
+            return $this->redirect(['conceptonota/view','id' => $conceptonotacuenta->idconceptonota]);
+        }
+        if (Yii::$app->request->get("idconceptonotacuenta")) {
+            $table = Conceptonotacuenta::find()->where(['idconceptonotacuenta' => $idconceptonotacuenta])->one();
+            if ($table) {
+                $model->cuenta = $table->cuenta;
+                $model->tipocuenta = $table->tipocuenta;
+                $model->base = $table->base;
+                $model->subtotal = $table->subtotal;
+                $model->iva = $table->iva;
+                $model->rete_fuente = $table->rete_fuente;
+                $model->rete_iva = $table->rete_iva;
+                $model->total = $table->total;
+                $model->base_rete_fuente = $table->base_rete_fuente;
+            }    
+        }
+        return $this->render('_formeditardetalle', [
+            'model' => $model,
+            'conceptonotacuenta' => $conceptonotacuenta,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+        ]);        
     }
 
     /**

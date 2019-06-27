@@ -8,6 +8,7 @@ use app\models\FacturaventatipoSearch;
 use app\models\Facturaventatipocuenta;
 use app\models\CuentaPub;
 use app\models\FormFacturaventatipocuentanuevo;
+use app\models\FormFacturaVentaTipoDetalleEditar;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -193,6 +194,45 @@ class FacturaventatipoController extends Controller
             'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
             'id' => $id_factura_venta_tipo
         ]);
+    }
+    
+    public function actionEditardetalle($id_factura_venta_tipo_cuenta) {
+        $model = new FormFacturaVentaTipoDetalleEditar;
+        $cuentas = CuentaPub::find()->all();        
+        $facturaventatipocuenta = Facturaventatipocuenta::findOne($id_factura_venta_tipo_cuenta);
+        
+        if ($model->load(Yii::$app->request->post())) {                        
+            $facturaventatipocuenta->cuenta = $model->cuenta;
+            $facturaventatipocuenta->tipocuenta = $model->tipocuenta;
+            $facturaventatipocuenta->base = $model->base;
+            $facturaventatipocuenta->subtotal = $model->subtotal;
+            $facturaventatipocuenta->iva = $model->iva;
+            $facturaventatipocuenta->rete_fuente = $model->rete_fuente;
+            $facturaventatipocuenta->rete_iva = $model->rete_iva;
+            $facturaventatipocuenta->total = $model->total;
+            $facturaventatipocuenta->base_rete_fuente = $model->base_rete_fuente;
+            $facturaventatipocuenta->save(false);                                      
+            return $this->redirect(['facturaventatipo/view','id' => $facturaventatipocuenta->id_factura_venta_tipo]);
+        }
+        if (Yii::$app->request->get("id_factura_venta_tipo_cuenta")) {
+            $table = Facturaventatipocuenta::find()->where(['id_factura_venta_tipo_cuenta' => $id_factura_venta_tipo_cuenta])->one();
+            if ($table) {
+                $model->cuenta = $table->cuenta;
+                $model->tipocuenta = $table->tipocuenta;
+                $model->base = $table->base;
+                $model->subtotal = $table->subtotal;
+                $model->iva = $table->iva;
+                $model->rete_fuente = $table->rete_fuente;
+                $model->rete_iva = $table->rete_iva;
+                $model->total = $table->total;
+                $model->base_rete_fuente = $table->base_rete_fuente;
+            }    
+        }
+        return $this->render('_formeditardetalle', [
+            'model' => $model,
+            'facturaventatipocuenta' => $facturaventatipocuenta,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+        ]);        
     }
 
     /**

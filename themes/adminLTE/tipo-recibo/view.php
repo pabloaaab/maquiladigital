@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TipoRecibo */
@@ -62,7 +63,8 @@ $this->params['breadcrumbs'][] = $model->idtiporecibo;
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Cuenta</th>                        
-                        <th scope="col">Tipo</th>                        
+                        <th scope="col">Tipo</th>
+                        <th scope="col"></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                     </thead>
@@ -74,6 +76,9 @@ $this->params['breadcrumbs'][] = $model->idtiporecibo;
                         <td><?= $val->idtiporecibocuenta ?></td>                        
                         <td><?= $val->cuenta ?></td>
                         <td><?= $dato ?></td>
+                        <td>
+                            <a href="<?= Url::toRoute(["tipo-recibo/editardetalle", "idtiporecibocuenta" => $val->idtiporecibocuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        </td>
                         <td><input type="checkbox" name="idtiporecibocuenta[]" value="<?= $val->idtiporecibocuenta ?>"></td>
                     </tr>
                     </tbody>

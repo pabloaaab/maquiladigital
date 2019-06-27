@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use app\models\CuentaPub;
 use app\models\ComprobanteEgresoTipoCuenta;
 use app\models\FormComprobanteEgresoTipoCuentaNuevo;
+use app\models\FormComprobanteEgresoTipoDetalleEditar;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -183,6 +184,33 @@ class ComprobanteEgresoTipoController extends Controller
             'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
             'id' => $id_comprobante_egreso_tipo
         ]);
+    }
+    
+    public function actionEditardetalle($id_comprobante_egreso_tipo_cuenta) {
+        $model = new FormComprobanteEgresoTipoDetalleEditar;
+        $cuentas = CuentaPub::find()->all();        
+        $comprobanteegresotipocuenta = ComprobanteEgresoTipoCuenta::findOne($id_comprobante_egreso_tipo_cuenta);
+        
+        if ($model->load(Yii::$app->request->post())) {                        
+            $comprobanteegresotipocuenta->cuenta = $model->cuenta;
+            $comprobanteegresotipocuenta->tipocuenta = $model->tipocuenta;
+            $comprobanteegresotipocuenta->base = $model->base;
+            $comprobanteegresotipocuenta->save(false);                                      
+            return $this->redirect(['comprobante-egreso-tipo/view','id' => $comprobanteegresotipocuenta->id_comprobante_egreso_tipo]);
+        }
+        if (Yii::$app->request->get("id_comprobante_egreso_tipo_cuenta")) {
+            $table = ComprobanteEgresoTipoCuenta::find()->where(['id_comprobante_egreso_tipo_cuenta' => $id_comprobante_egreso_tipo_cuenta])->one();
+            if ($table) {
+                $model->cuenta = $table->cuenta;
+                $model->tipocuenta = $table->tipocuenta;
+                $model->base = $table->base;
+            }    
+        }
+        return $this->render('_formeditardetalle', [
+            'model' => $model,
+            'comprobanteegresotipocuenta' => $comprobanteegresotipocuenta,
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+        ]);        
     }
 
     /**
