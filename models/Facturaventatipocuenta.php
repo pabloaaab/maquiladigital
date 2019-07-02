@@ -18,6 +18,7 @@ use Yii;
  * @property int $rete_iva
  * @property int $total
  * @property int $base_rete_fuente
+ * @property int $porcentaje_base
  *
  * @property Facturaventatipo $facturaVentaTipo
  */
@@ -38,7 +39,7 @@ class Facturaventatipocuenta extends \yii\db\ActiveRecord
     {
         return [
             [['cuenta', 'tipocuenta', 'id_factura_venta_tipo'], 'required'],
-            [['cuenta', 'tipocuenta', 'id_factura_venta_tipo', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente'], 'integer'],
+            [['cuenta', 'tipocuenta', 'id_factura_venta_tipo', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente','porcentaje_base'], 'integer'],
             [['id_factura_venta_tipo'], 'exist', 'skipOnError' => true, 'targetClass' => Facturaventatipo::className(), 'targetAttribute' => ['id_factura_venta_tipo' => 'id_factura_venta_tipo']],
         ];
     }
@@ -60,6 +61,7 @@ class Facturaventatipocuenta extends \yii\db\ActiveRecord
             'rete_iva' => 'Rete Iva',
             'total' => 'Total',
             'base_rete_fuente' => 'Base Rete Fuente',
+            'porcentaje_base' => '% Base',
         ];
     }
 

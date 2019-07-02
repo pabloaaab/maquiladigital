@@ -181,6 +181,7 @@ class FacturaventatipoController extends Controller
                 $table->rete_iva = $model->rete_iva;
                 $table->total = $model->total;
                 $table->base_rete_fuente = $model->base_rete_fuente;
+                $table->porcentaje_base = $model->porcentaje_base;
                 $table->save(false);
                 $this->redirect(["facturaventatipo/view", 'id' => $id_factura_venta_tipo]);
             }else{                
@@ -211,6 +212,7 @@ class FacturaventatipoController extends Controller
             $facturaventatipocuenta->rete_iva = $model->rete_iva;
             $facturaventatipocuenta->total = $model->total;
             $facturaventatipocuenta->base_rete_fuente = $model->base_rete_fuente;
+            $facturaventatipocuenta->porcentaje_base = $model->porcentaje_base;
             $facturaventatipocuenta->save(false);                                      
             return $this->redirect(['facturaventatipo/view','id' => $facturaventatipocuenta->id_factura_venta_tipo]);
         }
@@ -226,6 +228,7 @@ class FacturaventatipoController extends Controller
                 $model->rete_iva = $table->rete_iva;
                 $model->total = $table->total;
                 $model->base_rete_fuente = $table->base_rete_fuente;
+                $model->porcentaje_base = $table->porcentaje_base;
             }    
         }
         return $this->render('_formeditardetalle', [

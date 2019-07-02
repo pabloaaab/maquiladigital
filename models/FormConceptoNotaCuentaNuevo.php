@@ -19,12 +19,13 @@ class FormConceptoNotaCuentaNuevo extends Model
     public $rete_iva;
     public $total;
     public $base_rete_fuente;
+    public $porcentaje_base;
     
     public function rules()
     {
         return [            
             [['cuenta','tipocuenta'], 'required'],            
-            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente'], 'integer'],                                    
+            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente','porcentaje_base'], 'integer'],                                    
         ];
     }
 
@@ -40,6 +41,7 @@ class FormConceptoNotaCuentaNuevo extends Model
             'rete_iva' => 'Rete Iva:', 
             'total' => 'Valor Fact:', 
             'base_rete_fuente' => 'Base Rte Fte:', 
+            'porcentaje_base' => '% Base:',
         ];
     }
     

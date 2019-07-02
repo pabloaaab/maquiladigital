@@ -65,6 +65,9 @@ $this->title = 'Editar Concepto Nota Cuenta';
         <div class="row">
             <?= $form->field($model, 'base_rete_fuente')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'porcentaje_base')->textInput(['maxlength' => true]) ?>  					
+        </div>
         <div class="panel-footer text-right">                        
             <a href="<?= Url::toRoute(["conceptonota/view", 'id' => $conceptonotacuenta->idconceptonota]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

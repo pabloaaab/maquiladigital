@@ -19,11 +19,12 @@ class FormCompraConceptoDetalleEditar extends Model
     public $rete_iva;
     public $total;
     public $base_rete_fuente;    
+    public $porcentaje_base;
     
     public function rules()
     {
         return [            
-            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente'], 'required'],            
+            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente','porcentaje_base'], 'required'],            
         ];
     }
 
@@ -38,7 +39,8 @@ class FormCompraConceptoDetalleEditar extends Model
             'rete_fuente' => 'Rete Fuente:',
             'rete_iva' => 'Rete Iva:',
             'total' => 'Total Factura:',
-            'base_rete_fuente' => 'Base Rete Fuente:',            
+            'base_rete_fuente' => 'Base Rete Fuente:',
+            'porcentaje_base' => '% Base',
         ];
     }
     

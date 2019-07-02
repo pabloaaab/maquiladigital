@@ -219,7 +219,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $compra->subtotal;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -265,7 +265,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $compra->retencionfuente;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -288,7 +288,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $compra->retencioniva;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -332,9 +332,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $compra->proveedor->cedulanit;
                         $contabilidad->detalle = $compra->compraConcepto->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = 10 * $compra->retencionfuente / 100;
+                        $contabilidad->valor = $detalle->porcentaje_base * $compra->retencionfuente / 100;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -365,7 +365,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $factura->subtotal;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -388,7 +388,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $factura->impuestoiva;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -411,7 +411,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $factura->retencionfuente;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -434,7 +434,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $factura->retencioniva;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -457,7 +457,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $factura->totalpagar;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -478,9 +478,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $factura->cliente->cedulanit;
                         $contabilidad->detalle = $factura->facturaventatipo->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = 10 * $factura->retencionfuente / 100;
+                        $contabilidad->valor = $detalle->porcentaje_base * $factura->retencionfuente / 100;
                         if ($detalle->base == 1){
-                            $base = $factura->totalpagar;
+                            $base = $factura->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -624,7 +624,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $notacredito->cliente->cedulanit;
                         $contabilidad->detalle = $notacredito->conceptonota->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = 10 * $notacredito->retefuente / 100;
+                        $contabilidad->valor = $detalle->porcentaje_base * $notacredito->retefuente / 100;
                         if ($detalle->base == 1){
                             $base = $notacredito->total;
                         }else{
@@ -764,7 +764,7 @@ class ContabilizarController extends Controller {
         
         $ar = fopen($strArchivo, "a+") or
                 die("Problemas en la creacion del archivo plano");                
-        fputs($ar, "C CUENTA  ");
+        /*fputs($ar, "C CUENTA  ");
         fputs($ar, "CTE  ");
         fputs($ar, "FECHADO   ");
         fputs($ar, "DOCUMENTO");
@@ -777,7 +777,7 @@ class ContabilizarController extends Controller {
         fputs($ar, "CCOSTO ");
         fputs($ar, "TE ");
         fputs($ar, "PZO");        
-        fputs($ar, "\n");
+        fputs($ar, "\n");*/
         foreach ($exportar as $dato) {
             //$floValor = 0;
             /*if($arRegistroExportar->getTipo() == 1) {
@@ -787,7 +787,7 @@ class ContabilizarController extends Controller {
             }*/
             fputs($ar, str_pad($dato->cuenta, 10));            
             fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5));
-            fputs($ar, date("d/m/Y", strtotime($dato->fecha)));
+            fputs($ar, date("m/d/Y", strtotime($dato->fecha)));
             fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
             fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
             fputs($ar, $this->RellenarNr($dato->nit, " ", 11));

@@ -192,6 +192,7 @@ class CompraConceptoController extends Controller
                 $table->rete_iva = $model->rete_iva;
                 $table->total = $model->total;
                 $table->base_rete_fuente = $model->base_rete_fuente;
+                $table->porcentaje_base = $model->porcentaje_base;
                 $table->save(false);
                 $this->redirect(["compra-concepto/view", 'id' => $id_compra_concepto]);
             }else{                
@@ -222,6 +223,7 @@ class CompraConceptoController extends Controller
             $compraconceptocuenta->rete_iva = $model->rete_iva;
             $compraconceptocuenta->total = $model->total;
             $compraconceptocuenta->base_rete_fuente = $model->base_rete_fuente;
+            $compraconceptocuenta->porcentaje_base = $model->porcentaje_base;
             $compraconceptocuenta->save(false);                                      
             return $this->redirect(['compra-concepto/view','id' => $compraconceptocuenta->id_compra_concepto]);
         }
@@ -237,6 +239,7 @@ class CompraConceptoController extends Controller
                 $model->rete_iva = $table->rete_iva;
                 $model->total = $table->total;
                 $model->base_rete_fuente = $table->base_rete_fuente;
+                $model->porcentaje_base = $table->porcentaje_base;
             }    
         }
         return $this->render('_formeditardetalle', [
