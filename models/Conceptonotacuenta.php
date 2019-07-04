@@ -18,7 +18,7 @@ use Yii;
  * @property int $rete_iva
  * @property int $total
  * @property int $base_rete_fuente
- * @property int $porcentaje_base
+ * @property double $porcentaje_base
  *
  * @property Conceptonota $conceptonota
  */
@@ -39,7 +39,8 @@ class Conceptonotacuenta extends \yii\db\ActiveRecord
     {
         return [
             [['cuenta', 'tipocuenta'], 'required'],
-            [['cuenta', 'tipocuenta', 'idconceptonota', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente','porcentaje_base'], 'integer'],
+            [['cuenta', 'tipocuenta', 'idconceptonota', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente'], 'integer'],
+            [['porcentaje_base'], 'number'],
             [['idconceptonota'], 'exist', 'skipOnError' => true, 'targetClass' => Conceptonota::className(), 'targetAttribute' => ['idconceptonota' => 'idconceptonota']],
         ];
     }

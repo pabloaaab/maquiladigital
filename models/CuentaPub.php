@@ -79,4 +79,9 @@ class CuentaPub extends \yii\db\ActiveRecord
         }
         return $exigecc;
     }
+    
+    public function getCuentanombre()
+    {
+        return "{$this->codigo_cuenta} - {$this->nombre_cuenta}";
+    }
 }

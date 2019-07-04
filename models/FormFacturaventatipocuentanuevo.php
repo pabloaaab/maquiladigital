@@ -24,8 +24,9 @@ class FormFacturaventatipocuentanuevo extends Model
     public function rules()
     {
         return [            
-            [['cuenta','tipocuenta'], 'required'],            
-            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente','porcentaje_base'], 'integer'],                                    
+            [['cuenta','tipocuenta','porcentaje_base'], 'required'],            
+            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente'], 'integer'],                                    
+            [['porcentaje_base'], 'number'],
         ];
     }
 

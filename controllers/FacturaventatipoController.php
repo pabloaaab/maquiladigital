@@ -192,7 +192,7 @@ class FacturaventatipoController extends Controller
 
         return $this->render('_formnuevodetalles', [
             'model' => $model,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
             'id' => $id_factura_venta_tipo
         ]);
     }
@@ -234,7 +234,7 @@ class FacturaventatipoController extends Controller
         return $this->render('_formeditardetalle', [
             'model' => $model,
             'facturaventatipocuenta' => $facturaventatipocuenta,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
         ]);        
     }
 

@@ -9,16 +9,24 @@ use yii\base\Model;
  * ContactForm is the model behind the contact form.
  */
 class FormComprobanteEgresoTipoCuentaNuevo extends Model
-{        
+{            
     public $cuenta;
     public $tipocuenta;    
-    public $base;    
+    public $base;
+    public $subtotal;
+    public $iva;
+    public $rete_fuente;
+    public $rete_iva;
+    public $total;
+    public $base_rete_fuente;
+    public $porcentaje_base;
     
     public function rules()
     {
         return [            
-            [['cuenta','tipocuenta'], 'required'],            
-            [['cuenta','tipocuenta','base'], 'integer'],                                    
+            [['cuenta','tipocuenta','porcentaje_base'], 'required'],          
+            [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente'], 'integer'],
+            [['porcentaje_base'], 'number']
         ];
     }
 
@@ -27,7 +35,14 @@ class FormComprobanteEgresoTipoCuentaNuevo extends Model
         return [                        
             'cuenta' => 'Cuenta:',                      
             'tipocuenta' => 'Tipo:',
-            'base' => 'Base:',             
+            'base' => 'Base:',
+            'subtotal' => 'Subtotal:', 
+            'iva' => 'Iva:', 
+            'rete_fuente' => 'Rete Fte:', 
+            'rete_iva' => 'Rete Iva:', 
+            'total' => 'Valor Fact:', 
+            'base_rete_fuente' => 'Base Rte Fte:', 
+            'porcentaje_base' => '% Base:',             
         ];
     }
     

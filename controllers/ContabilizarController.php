@@ -242,7 +242,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $compra->impuestoiva;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -311,7 +311,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $compra->total;
                         if ($detalle->base == 1){
-                            $base = $compra->total;
+                            $base = $compra->subtotal;
                         }else{
                             $base = 0;
                         }
@@ -332,7 +332,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $compra->proveedor->cedulanit;
                         $contabilidad->detalle = $compra->compraConcepto->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $detalle->porcentaje_base * $compra->retencionfuente / 100;
+                        $contabilidad->valor = $compra->subtotal * $compra->retencionfuente / 100;
                         if ($detalle->base == 1){
                             $base = $compra->subtotal;
                         }else{
@@ -478,7 +478,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $factura->cliente->cedulanit;
                         $contabilidad->detalle = $factura->facturaventatipo->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $detalle->porcentaje_base * $factura->retencionfuente / 100;
+                        $contabilidad->valor = $factura->subtotal * $factura->retencionfuente / 100;
                         if ($detalle->base == 1){
                             $base = $factura->subtotal;
                         }else{
@@ -511,7 +511,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $notacredito->valor;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }
@@ -534,7 +534,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $notacredito->iva;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }
@@ -557,7 +557,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $notacredito->retefuente;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }
@@ -580,7 +580,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $notacredito->reteiva;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }
@@ -603,7 +603,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->tipo = $detalle->tipocuenta;
                         $contabilidad->valor = $notacredito->total;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }
@@ -624,9 +624,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $notacredito->cliente->cedulanit;
                         $contabilidad->detalle = $notacredito->conceptonota->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $detalle->porcentaje_base * $notacredito->retefuente / 100;
+                        $contabilidad->valor = $notacredito->valor * $notacredito->retefuente / 100;
                         if ($detalle->base == 1){
-                            $base = $notacredito->total;
+                            $base = $notacredito->valor;
                         }else{
                             $base = 0;
                         }

@@ -47,6 +47,27 @@ $this->title = 'Editar Comprobante Egreso Tipo Cuenta';
         <div class="row">
             <?= $form->field($model, 'base')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'subtotal')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'iva')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'rete_fuente')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'rete_iva')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'total')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'base_rete_fuente')->dropdownList(['0' => 'NO', '1' => 'SI']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'porcentaje_base')->textInput(['maxlength' => true]) ?>  					
+        </div>
         <div class="panel-footer text-right">                        
             <a href="<?= Url::toRoute(["comprobante-egreso-tipo/view", 'id' => $comprobanteegresotipocuenta->id_comprobante_egreso_tipo]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

@@ -65,6 +65,13 @@ $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
                         <th scope="col">Cuenta</th>
                         <th scope="col">Tipo</th>
                         <th scope="col">Base</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Iva</th>
+                        <th scope="col">Rete Fuente</th>
+                        <th scope="col">Rete Iva</th>
+                        <th scope="col">Total Fact</th>
+                        <th scope="col">Base % Rete Fte</th>
+                        <th scope="col">% Base</th>
                         <th></th>
                         <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
@@ -73,11 +80,24 @@ $this->params['breadcrumbs'][] = $model->id_comprobante_egreso_tipo;
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
                         <?php if ($val->tipocuenta == 1){$tipo = "DEBITO";}else{$tipo = "CREDITO";} ?>                        
-                        <?php if ($val->base == 0){$base = "NO";}else{$base = "SI";} ?>                        
+                        <?php if ($val->base == 0){$base = "NO";}else{$base = "SI";} ?>
+                        <?php if ($val->subtotal == 0){$subtotal = "NO";}else{$subtotal = "SI";} ?>
+                        <?php if ($val->iva == 0){$iva = "NO";}else{$iva = "SI";} ?>
+                        <?php if ($val->rete_fuente == 0){$retefuente = "NO";}else{$retefuente = "SI";} ?>
+                        <?php if ($val->rete_iva == 0){$reteiva = "NO";}else{$reteiva = "SI";} ?>
+                        <?php if ($val->total == 0){$total = "NO";}else{$total = "SI";} ?>
+                        <?php if ($val->base_rete_fuente == 0){$base_rete_fuente = "NO";}else{$base_rete_fuente = "SI";} ?>                       
                         <td><?= $val->id_comprobante_egreso_tipo_cuenta ?></td>                        
                         <td><?= $val->cuenta ?></td>
                         <td><?= $tipo ?></td>
                         <td><?= $base ?></td>
+                        <td><?= $subtotal ?></td>
+                        <td><?= $iva ?></td>
+                        <td><?= $retefuente ?></td>
+                        <td><?= $reteiva ?></td>
+                        <td><?= $total ?></td>
+                        <td><?= $base_rete_fuente ?></td>
+                        <td><?= $val->porcentaje_base ?></td>
                         <td>
                             <a href="<?= Url::toRoute(["comprobante-egreso-tipo/editardetalle", "id_comprobante_egreso_tipo_cuenta" => $val->id_comprobante_egreso_tipo_cuenta]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
                         </td>

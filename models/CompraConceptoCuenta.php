@@ -18,7 +18,7 @@ use Yii;
  * @property int $rete_iva
  * @property int $total
  * @property int $base_rete_fuente
- * @property int $porcentaje_base
+ * @property double $porcentaje_base
  *
  * @property CompraConcepto $compraConcepto
  */
@@ -39,7 +39,8 @@ class CompraConceptoCuenta extends \yii\db\ActiveRecord
     {
         return [
             [['cuenta', 'tipocuenta', 'id_compra_concepto'], 'required'],
-            [['cuenta', 'tipocuenta', 'id_compra_concepto', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente','porcentaje_base'], 'integer'],
+            [['cuenta', 'tipocuenta', 'id_compra_concepto', 'base', 'subtotal', 'iva', 'rete_fuente', 'rete_iva', 'total', 'base_rete_fuente'], 'integer'],
+            [['porcentaje_base'], 'number'],
             [['id_compra_concepto'], 'exist', 'skipOnError' => true, 'targetClass' => CompraConcepto::className(), 'targetAttribute' => ['id_compra_concepto' => 'id_compra_concepto']],
         ];
     }

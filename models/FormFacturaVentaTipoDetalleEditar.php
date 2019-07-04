@@ -25,6 +25,7 @@ class FormFacturaVentaTipoDetalleEditar extends Model
     {
         return [            
             [['cuenta','tipocuenta','base','subtotal','iva','rete_fuente','rete_iva','total','base_rete_fuente','porcentaje_base'], 'required'],            
+            [['porcentaje_base'], 'number'],
         ];
     }
 

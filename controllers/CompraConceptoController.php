@@ -203,7 +203,7 @@ class CompraConceptoController extends Controller
 
         return $this->render('_formnuevodetalles', [
             'model' => $model,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
             'id' => $id_compra_concepto
         ]);
     }
@@ -245,7 +245,7 @@ class CompraConceptoController extends Controller
         return $this->render('_formeditardetalle', [
             'model' => $model,
             'compraconceptocuenta' => $compraconceptocuenta,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
         ]);        
     }
 

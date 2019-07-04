@@ -170,7 +170,14 @@ class ComprobanteEgresoTipoController extends Controller
                 $table->id_comprobante_egreso_tipo = $id_comprobante_egreso_tipo;
                 $table->cuenta = $model->cuenta;
                 $table->tipocuenta = $model->tipocuenta;
-                $table->base = $model->base;                
+                $table->base = $model->base;
+                $table->subtotal = $model->subtotal;
+                $table->iva = $model->iva;
+                $table->rete_fuente = $model->rete_fuente;
+                $table->rete_iva = $model->rete_iva;
+                $table->total = $model->total;
+                $table->base_rete_fuente = $model->base_rete_fuente;
+                $table->porcentaje_base = $model->porcentaje_base;               
                 $table->save(false);
                 $this->redirect(["comprobante-egreso-tipo/view", 'id' => $id_comprobante_egreso_tipo]);
             }else{                
@@ -181,7 +188,7 @@ class ComprobanteEgresoTipoController extends Controller
 
         return $this->render('_formnuevodetalles', [
             'model' => $model,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
             'id' => $id_comprobante_egreso_tipo
         ]);
     }
@@ -195,6 +202,14 @@ class ComprobanteEgresoTipoController extends Controller
             $comprobanteegresotipocuenta->cuenta = $model->cuenta;
             $comprobanteegresotipocuenta->tipocuenta = $model->tipocuenta;
             $comprobanteegresotipocuenta->base = $model->base;
+            $comprobanteegresotipocuenta->base = $model->base;
+            $comprobanteegresotipocuenta->subtotal = $model->subtotal;
+            $comprobanteegresotipocuenta->iva = $model->iva;
+            $comprobanteegresotipocuenta->rete_fuente = $model->rete_fuente;
+            $comprobanteegresotipocuenta->rete_iva = $model->rete_iva;
+            $comprobanteegresotipocuenta->total = $model->total;
+            $comprobanteegresotipocuenta->base_rete_fuente = $model->base_rete_fuente;
+            $comprobanteegresotipocuenta->porcentaje_base = $model->porcentaje_base;
             $comprobanteegresotipocuenta->save(false);                                      
             return $this->redirect(['comprobante-egreso-tipo/view','id' => $comprobanteegresotipocuenta->id_comprobante_egreso_tipo]);
         }
@@ -204,12 +219,19 @@ class ComprobanteEgresoTipoController extends Controller
                 $model->cuenta = $table->cuenta;
                 $model->tipocuenta = $table->tipocuenta;
                 $model->base = $table->base;
+                $model->subtotal = $table->subtotal;
+                $model->iva = $table->iva;
+                $model->rete_fuente = $table->rete_fuente;
+                $model->rete_iva = $table->rete_iva;
+                $model->total = $table->total;
+                $model->base_rete_fuente = $table->base_rete_fuente;
+                $model->porcentaje_base = $table->porcentaje_base;
             }    
         }
         return $this->render('_formeditardetalle', [
             'model' => $model,
             'comprobanteegresotipocuenta' => $comprobanteegresotipocuenta,
-            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "codigo_cuenta"),
+            'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
         ]);        
     }
 
