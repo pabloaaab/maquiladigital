@@ -499,7 +499,7 @@ class RecibocajaController extends Controller
                 $this->redirect(["recibocaja/view",'id' => $id]);
             } else {
                 $model->autorizado = 0;
-                $model->update();
+                $model->save(false);
                 $this->redirect(["recibocaja/view",'id' => $id]);
             }
         }

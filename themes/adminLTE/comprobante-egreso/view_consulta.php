@@ -39,39 +39,47 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'Proveedor') ?>:</th>
                     <?php if ($model->id_proveedor){ ?>
                         <td><?= Html::encode($model->proveedor->nombrecorto) ?></td>
-                    <?php } ?>
-                    
-                    <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
-                    <td><?= Html::encode($model->comprobanteEgresoTipo->concepto) ?></td>
+                    <?php } ?>                    
+                    <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->subtotal,1)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'id_banco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
                     <td><?= Html::encode($model->banco->producto) ?></td>
-                    <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
-                    <td><?= Html::encode($model->numero) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'iva') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->iva,1)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fecha_comprobante') ?>:</th>
                     <td><?= Html::encode($model->fecha_comprobante) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
                     <td><?= Html::encode($model->municipio->municipioCompleto) ?></td>
-                    <th></th>
-                    <td></td>
+                    <th><?= Html::activeLabel($model, 'rete_fuente') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->retefuente,1)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
                     <td><?= Html::encode($model->fecha) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'valor') ?>:</th>
-                    <td align="right"><?= Html::encode('$ '.number_format($model->valor,0)) ?></td>
+                    <th><?= Html::activeLabel($model, 'rete_iva') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->reteiva,1)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
+                    <td><?= Html::encode($model->comprobanteEgresoTipo->concepto) ?></td>
+                    <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
+                    <td><?= Html::encode($model->numero) ?></td>
+                    <th><?= Html::activeLabel($model, 'base_aiu') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->base_aiu,1)) ?></td>
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
-
+                    <td colspan="3"><?= Html::encode($model->observacion) ?></td>
+                    <th><?= Html::activeLabel($model, 'Total') ?>:</th>
+                    <td align="right"><?= Html::encode('$ '.number_format($model->valor,0)) ?></td>
                 </tr>
             </table>
         </div>
@@ -87,6 +95,8 @@ $view = 'comprobante-egreso';
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">Factura</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Iva</th>
                         <th scope="col">Rete Fuente</th>
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Base Aiu</th>
@@ -96,8 +106,18 @@ $view = 'comprobante-egreso';
                     </tr>
                     </thead>
                     <tbody>
+                        <?php $subtotal = 0; ?>
+                        <?php $iva = 0; ?>
+                        <?php $retefuente = 0; ?>
+                        <?php $reteiva = 0; ?>
+                        <?php $baseaiu = 0; ?>
                         <?php $calculo = 0; ?>
                     <?php foreach ($modeldetalles as $val): ?>
+                        <?php $subtotal = $subtotal + $val->subtotal; ?>
+                        <?php $iva = $iva + $val->iva; ?>
+                        <?php $retefuente = $retefuente + $val->retefuente; ?>
+                        <?php $reteiva = $reteiva + $val->reteiva; ?>
+                        <?php $baseaiu = $baseaiu + $val->base_aiu; ?>
                         <?php $calculo = $calculo + $val->vlr_abono; ?>
                     <tr>
                         <td><?= $val->id_comprobante_egreso_detalle ?></td>
@@ -107,24 +127,28 @@ $view = 'comprobante-egreso';
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
                         
-                        <td><?= '$ '.number_format($val->retefuente,0) ?></td>
-                        <td><?= '$ '.number_format($val->reteiva,0) ?></td>
-                        <td><?= '$ '.number_format($val->base_aiu,0) ?></td>
-                        <td><?= '$ '.number_format($val->vlr_abono,0) ?></td>
-                        <td><?= '$ '.number_format($val->vlr_saldo,0) ?></td>
+                        <td><?= '$ '.  number_format($val->subtotal,1) ?></td>
+                            <td><?= '$ '.  number_format($val->iva,1) ?></td>
+                            <td><?= '$ '.  number_format($val->retefuente,1) ?></td>
+                            <td><?= '$ '.  number_format($val->reteiva,1) ?></td>
+                            <td><?= '$ '.  number_format($val->base_aiu,1) ?></td>
+                            <td><?= '$ '.  number_format($val->vlr_abono,1) ?></td>
+                            <td><?= '$ '.  number_format($val->vlr_saldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             
                         <?php } ?>
                     </tr>                    
                     </tbody>
                     <?php endforeach; ?>
-                    <tr>
+                    <tr><b>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>                        
-                        <td align="right"><b>Total:</b></td>
-                        <td><?= '$ '.number_format($calculo,0); ?></td>
+                        <td><b>Totales:</td></b>
+                        <td align="left"><b><?= '$ '. number_format($subtotal,1); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($iva,1); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($retefuente,1); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($reteiva,1); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($baseaiu,1); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($calculo,0); ?></td></b>
                     </tr>
                 </table>
             </div>

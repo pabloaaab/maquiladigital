@@ -170,6 +170,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->proceso = 'Egresos';
                         $contabilidad->fecha = $comprobante->fecha_comprobante;
                         $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
                         if (isset($detalle->compra->factura) <> ""){                            
                             $nfactura = $detalle->compra->factura;
                         }else{
@@ -228,7 +229,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->iva;
+                        $contabilidad->valor = $comprobante->iva;
                         if ($tipo->base == 1){
                             $base = $comprobante->subtotal;
                         }else{
@@ -238,7 +239,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                        
                     }
                     if ($tipo->rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -247,6 +250,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->proceso = 'Egresos';
                         $contabilidad->fecha = $comprobante->fecha_comprobante;
                         $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
                         if (isset($detalle->compra->factura) <> ""){                            
                             $nfactura = $detalle->compra->factura;
                         }else{
@@ -266,7 +270,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->retefuente;
+                        $contabilidad->valor = $comprobante->retefuente;
                         if ($tipo->base == 1){
                             $base = $comprobante->subtotal;
                         }else{
@@ -276,7 +280,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     }
                     if ($tipo->rete_iva == 1){
                         $contabilidad = new Contabilidad;
@@ -285,6 +291,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->proceso = 'Egresos';
                         $contabilidad->fecha = $comprobante->fecha_comprobante;
                         $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
                         if (isset($detalle->compra->factura) <> ""){                            
                             $nfactura = $detalle->compra->factura;
                         }else{
@@ -304,7 +311,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->reteiva;
+                        $contabilidad->valor = $comprobante->reteiva;
                         if ($tipo->base == 1){
                             $base = $comprobante->subtotal;
                         }else{
@@ -314,7 +321,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     }
                     if ($tipo->total == 1){
                         $contabilidad = new Contabilidad;
@@ -323,6 +332,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->proceso = 'Egresos';
                         $contabilidad->fecha = $comprobante->fecha_comprobante;
                         $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
                         if (isset($detalle->compra->factura) <> ""){                            
                             $nfactura = $detalle->compra->factura;
                         }else{
@@ -342,7 +352,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->vlr_abono;
+                        $contabilidad->valor = $comprobante->valor;
                         if ($tipo->base == 1){
                             $base = $comprobante->subtotal;
                         }else{
@@ -352,7 +362,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     }
                     if ($tipo->base_rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -361,6 +373,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->proceso = 'Egresos';
                         $contabilidad->fecha = $comprobante->fecha_comprobante;
                         $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
                         if (isset($detalle->compra->factura) <> ""){                            
                             $nfactura = $detalle->compra->factura;
                         }else{
@@ -380,7 +393,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->subtotal * $tipo->porcentaje_base / 100;
+                        $contabilidad->valor = $comprobante->subtotal * $tipo->porcentaje_base / 100;
                         if ($tipo->base == 1){
                             $base = $comprobante->subtotal;
                         }else{
@@ -390,7 +403,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     }
                 }                  
             }
@@ -421,7 +436,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->iva == 1){
                         $contabilidad = new Contabilidad;
@@ -444,7 +461,10 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        $contabilidad->save(false);
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     }
                     if ($detalle->rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -467,7 +487,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->rete_iva == 1){
                         $contabilidad = new Contabilidad;
@@ -490,7 +512,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->total == 1){
                         $contabilidad = new Contabilidad;
@@ -513,7 +537,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->base_rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -536,7 +562,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                   
                     }
                 }    
             }
@@ -567,8 +595,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
-                    }
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }
                     if ($detalle->iva == 1){
                         $contabilidad = new Contabilidad;
                         $contabilidad->cuenta = $detalle->cuenta;
@@ -590,7 +619,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                        
                     }
                     if ($detalle->rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -613,7 +644,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                       
                     }
                     if ($detalle->rete_iva == 1){
                         $contabilidad = new Contabilidad;
@@ -636,7 +669,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                      
                     }
                     if ($detalle->total == 1){
                         $contabilidad = new Contabilidad;
@@ -659,7 +694,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                        
                     }
                     if ($detalle->base_rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -682,7 +719,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                       
                     }
                 }    
             }
@@ -713,7 +752,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                   
                     }
                     if ($detalle->iva == 1){
                         $contabilidad = new Contabilidad;
@@ -736,7 +777,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -759,7 +802,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                    
                     }
                     if ($detalle->rete_iva == 1){
                         $contabilidad = new Contabilidad;
@@ -782,7 +827,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                  
                     }
                     if ($detalle->total == 1){
                         $contabilidad = new Contabilidad;
@@ -805,7 +852,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                   
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                  
                     }
                     if ($detalle->base_rete_fuente == 1){
                         $contabilidad = new Contabilidad;
@@ -828,7 +877,9 @@ class ContabilizarController extends Controller {
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                    
+                        if ($contabilidad->valor > 0){
+                            $contabilidad->save(false);
+                        }                
                     }
                 }    
             }
@@ -836,7 +887,7 @@ class ContabilizarController extends Controller {
         return;
         
     }
-    
+    }
     public function actionExcel($exportar) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
