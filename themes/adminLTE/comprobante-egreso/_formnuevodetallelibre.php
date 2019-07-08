@@ -28,7 +28,22 @@ use yii\bootstrap\ActiveForm;
                 <div class="panel-body">
                     <div class="row">            
                         <?= $form->field($model, 'vlr_abono')->textInput(['maxlength' => true]) ?>
-                    </div>                    
+                    </div>
+                    <div class="row">            
+                        <?= $form->field($model, 'subtotal')->textInput(['maxlength' => true, 'value' => 0]) ?>
+                    </div>
+                    <div class="row">            
+                        <?= $form->field($model, 'iva')->textInput(['maxlength' => true, 'value' => 0]) ?>
+                    </div>
+                    <div class="row">            
+                        <?= $form->field($model, 'retefuente')->textInput(['maxlength' => true, 'value' => 0]) ?>
+                    </div>
+                    <div class="row">            
+                        <?= $form->field($model, 'reteiva')->textInput(['maxlength' => true, 'value' => 0]) ?>
+                    </div>
+                    <div class="row">            
+                        <?= $form->field($model, 'base_aiu')->textInput(['maxlength' => true, 'value' => 0]) ?>
+                    </div>
                 </div>
                 <div class="panel-footer">
                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>                    

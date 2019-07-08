@@ -154,18 +154,16 @@ class ContabilizarController extends Controller {
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
                         $contabilidad->save(false);                        
-                    }
-                    
+                    }                    
                 }    
             }
         }
         if ($proceso == 2){  //Comprobantes de Egresos
             $comprobantesegreso = ComprobanteEgreso::find()->where(['>=','fecha_comprobante',$fechadesde])->andWhere(['<=','fecha_comprobante',$fechahasta])->andWhere(['>','numero',0])->all();
-            foreach ($comprobantesegreso as $comprobante) {
-                $comprobantedetalles = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->all();
-                foreach ($comprobantedetalles as $detalle){
-                    $tipos = ComprobanteEgresoTipoCuenta::find()->where(['=','id_comprobante_egreso_tipo',$comprobante->id_comprobante_egreso_tipo])->all();
-                    foreach ($tipos as $tipo){
+            foreach ($comprobantesegreso as $comprobante) {                
+                $tipos = ComprobanteEgresoTipoCuenta::find()->where(['=','id_comprobante_egreso_tipo',$comprobante->id_comprobante_egreso_tipo])->all();
+                foreach ($tipos as $tipo){
+                    if ($tipo->subtotal == 1){
                         $contabilidad = new Contabilidad;
                         $contabilidad->cuenta = $tipo->cuenta;
                         $contabilidad->comprobante = $proceso;
@@ -188,17 +186,213 @@ class ContabilizarController extends Controller {
                         }else {
                             $nit = "";
                         }
-                        $contabilidad->nit = $nit;
+                        $contabilidad->nit = $nit;                            
                         $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
                         $contabilidad->tipo = $tipo->tipocuenta;
-                        $contabilidad->valor = $detalle->vlr_abono;
-                        $contabilidad->base = 0;
+                        $contabilidad->valor = $comprobante->subtotal;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
                         $contabilidad->centro_costo = '';
                         $contabilidad->transporte = '';
                         $contabilidad->plazo = 0;
-                        $contabilidad->save(false);                        
-                    }                    
-                }    
+                        $contabilidad->save(false);
+                    }
+                    if ($tipo->iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        $detalle = ComprobanteEgresoDetalle::find()->where(['=','id_comprobante_egreso',$comprobante->id_comprobante_egreso])->one();
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;                            
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->iva;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                    }
+                    if ($tipo->rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;                            
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->retefuente;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                    }
+                    if ($tipo->rete_iva == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;                            
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->reteiva;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                    }
+                    if ($tipo->total == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;                            
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->vlr_abono;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                    }
+                    if ($tipo->base_rete_fuente == 1){
+                        $contabilidad = new Contabilidad;
+                        $contabilidad->cuenta = $tipo->cuenta;
+                        $contabilidad->comprobante = $proceso;
+                        $contabilidad->proceso = 'Egresos';
+                        $contabilidad->fecha = $comprobante->fecha_comprobante;
+                        $contabilidad->documento = $comprobante->numero;
+                        if (isset($detalle->compra->factura) <> ""){                            
+                            $nfactura = $detalle->compra->factura;
+                        }else{
+                            $nfactura = "";
+                        }
+                        $contabilidad->documento_ref = $nfactura;
+                        $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
+                        if ($empresa){
+                            if ($empresa->exige_nit == 1){
+                                $nit = $comprobante->proveedor->cedulanit;
+                            }else{
+                                $nit = "";
+                            }                                                         
+                        }else {
+                            $nit = "";
+                        }
+                        $contabilidad->nit = $nit;                            
+                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->tipo = $tipo->tipocuenta;
+                        $contabilidad->valor = $detalle->subtotal * $tipo->porcentaje_base / 100;
+                        if ($tipo->base == 1){
+                            $base = $comprobante->subtotal;
+                        }else{
+                            $base = 0;
+                        }
+                        $contabilidad->base = $base;
+                        $contabilidad->centro_costo = '';
+                        $contabilidad->transporte = '';
+                        $contabilidad->plazo = 0;
+                        $contabilidad->save(false);
+                    }
+                }                  
             }
         }
         if ($proceso == 4){  //Compras
@@ -332,7 +526,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $compra->proveedor->cedulanit;
                         $contabilidad->detalle = $compra->compraConcepto->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $compra->subtotal * $compra->retencionfuente / 100;
+                        $contabilidad->valor = $compra->subtotal * $detalle->porcentaje_base / 100;
                         if ($detalle->base == 1){
                             $base = $compra->subtotal;
                         }else{
@@ -357,7 +551,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
@@ -380,7 +574,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
@@ -403,7 +597,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
@@ -426,7 +620,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
@@ -449,7 +643,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
@@ -472,13 +666,13 @@ class ContabilizarController extends Controller {
                         $contabilidad->cuenta = $detalle->cuenta;
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'Facturacion';
-                        $contabilidad->fecha = $factura->fechavcto;
+                        $contabilidad->fecha = $factura->fechainicio;
                         $contabilidad->documento = $factura->nrofactura;
                         $contabilidad->documento_ref = $factura->nrofactura;
                         $contabilidad->nit = $factura->cliente->cedulanit;
                         $contabilidad->detalle = $factura->facturaventatipo->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $factura->subtotal * $factura->retencionfuente / 100;
+                        $contabilidad->valor = $factura->subtotal * $detalle->porcentaje_base / 100;
                         if ($detalle->base == 1){
                             $base = $factura->subtotal;
                         }else{
@@ -624,7 +818,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->nit = $notacredito->cliente->cedulanit;
                         $contabilidad->detalle = $notacredito->conceptonota->concepto;
                         $contabilidad->tipo = $detalle->tipocuenta;
-                        $contabilidad->valor = $notacredito->valor * $notacredito->retefuente / 100;
+                        $contabilidad->valor = $notacredito->valor * $detalle->porcentaje_base / 100;
                         if ($detalle->base == 1){
                             $base = $notacredito->valor;
                         }else{

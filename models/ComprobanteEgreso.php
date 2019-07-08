@@ -21,6 +21,12 @@ use Yii;
  * @property int $autorizado
  * @property int $libre
  * @property int $id_banco
+ * @property double $subtotal
+ * @property double $iva
+ * @property double $retefuente
+ * @property double $reteiva
+ * @property double $reteica
+ * @property double $base_aiu
  *
  * @property Municipio $municipio
  * @property ComprobanteEgresoTipo $comprobanteEgresoTipo
@@ -47,7 +53,7 @@ class ComprobanteEgreso extends \yii\db\ActiveRecord
             [['id_municipio', 'fecha_comprobante', 'id_comprobante_egreso_tipo', 'id_proveedor', 'id_banco'], 'required'],
             [['fecha', 'fecha_comprobante'], 'safe'],
             [['numero', 'id_comprobante_egreso_tipo', 'id_proveedor', 'estado', 'autorizado', 'libre', 'id_banco'], 'integer'],
-            [['valor'], 'number'],
+            [['valor','subtotal','iva','retefuente','reteiva','reteica','base_aiu'], 'number'],
             [['observacion'], 'string'],
             [['id_municipio'], 'string', 'max' => 15],
             [['usuariosistema'], 'string', 'max' => 30],

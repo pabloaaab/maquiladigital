@@ -295,8 +295,11 @@ class ComprobanteEgresoController extends Controller
                         $table->id_compra = $compra->id_compra;
                         $table->vlr_abono = $compra->total;
                         $table->vlr_saldo = $compra->saldo;
+                        $table->subtotal = $compra->subtotal;
+                        $table->iva = $compra->impuestoiva;
                         $table->retefuente = $compra->retencionfuente;
                         $table->reteiva = $compra->retencioniva;
+                        $table->base_aiu = $compra->base_aiu;
                         $table->id_comprobante_egreso = $id_comprobante_egreso;
                         $table->insert();
                         //$recibo = ComprobanteEgreso::findOne($id_comprobante_egreso);                        
@@ -322,10 +325,12 @@ class ComprobanteEgresoController extends Controller
             $table->vlr_abono = $model->vlr_abono;
             $table->id_comprobante_egreso = $id;
             $table->vlr_saldo = 0;
-            $table->retefuente = 0;
-            $table->reteiva = 0;
+            $table->subtotal = $model->subtotal;
+            $table->retefuente = $model->retefuente;
+            $table->iva = $model->iva;
+            $table->reteiva = $model->reteiva;
             $table->reteica = 0;
-            $table->base_aiu = 0;
+            $table->base_aiu = $model->base_aiu;
             $table->save(false);
             return $this->redirect(['view','id' => $id]);
         }
@@ -498,6 +503,11 @@ class ComprobanteEgresoController extends Controller
                     ->where(['id_comprobante_egreso' => $id])
                     ->all();
                 $total = 0;
+                $subtotal = 0;
+                $iva = 0;
+                $retefuente = 0;
+                $reteiva = 0;
+                $baseaiu = 0;                
                 $error = 0;
                 if ($model->libre == 0){
                     foreach ($comprobantedetalles as $dato){
@@ -514,6 +524,11 @@ class ComprobanteEgresoController extends Controller
                             $comprobantedetalle = ComprobanteEgresoDetalle::findOne($val->id_comprobante_egreso_detalle);
                             $comprobantedetalle->vlr_saldo = ($comprobantedetalle->vlr_saldo) - ($comprobantedetalle->vlr_abono);
                             $total = $total + $val->vlr_abono;
+                            $subtotal = $subtotal + $val->subtotal;
+                            $iva = $iva + $val->iva;
+                            $retefuente = $retefuente + $val->retefuente;
+                            $reteiva = $reteiva + $val->reteiva;
+                            $baseaiu = $baseaiu + $val->base_aiu;
                             $comprobantedetalle->update();
                             $compra = Compra::findOne($val->id_compra);
                             $compra->saldo = $comprobantedetalle->vlr_saldo;
@@ -522,9 +537,14 @@ class ComprobanteEgresoController extends Controller
                             }elseif ($compra->saldo >= 0){
                                 $compra->estado = 1; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por otro procesos (saldo 0 en la compra), estado 4 = descuento por otro proceso
                             }
-                            $compra->update();
+                            $compra->save(false);
                         }
                         $model->valor = $total;
+                        $model->subtotal = $subtotal;
+                        $model->iva = $iva;
+                        $model->retefuente = $retefuente;
+                        $model->reteiva = $reteiva;
+                        $model->base_aiu = $baseaiu;
                         //$model->fechapago = date('Y-m-d');
                         //generar consecutivo numero de la nota credito
                         $consecutivo = Consecutivo::findOne(6);//6 comprobante de egreso
@@ -536,9 +556,19 @@ class ComprobanteEgresoController extends Controller
                         $this->redirect(["comprobante-egreso/view",'id' => $id]);
                     }else{
                         foreach ($comprobantedetalles as $val) {                            
-                            $total = $total + $val->vlr_abono;                            
+                            $total = $total + $val->vlr_abono;
+                            $subtotal = $subtotal + $val->subtotal;
+                            $iva = $iva + $val->iva;
+                            $retefuente = $retefuente + $val->retefuente;
+                            $reteiva = $reteiva + $val->reteiva;
+                            $baseaiu = $baseaiu + $val->base_aiu;                           
                         }
-                        $model->valor = $total;                        
+                        $model->valor = $total;
+                        $model->subtotal = $subtotal;
+                        $model->iva = $iva;
+                        $model->retefuente = $retefuente;
+                        $model->reteiva = $reteiva;
+                        $model->base_aiu = $baseaiu;                        
                         $consecutivo = Consecutivo::findOne(6);//6 comprobante de egreso
                         $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
                         $model->numero = $consecutivo->consecutivo;

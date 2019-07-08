@@ -72,59 +72,77 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 10);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->direccionproveedor), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("SUBTOTAL:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->subtotal,1)), 0, 0, 'L');
         $this->SetXY(10, 76); //FILA 4
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("CIUDAD:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->municipio->municipio . " - " . $comprobanteEgreso->proveedor->departamento->departamento), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 6, utf8_decode("VALOR PAGADO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("IVA:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->valor)), 0, 0, 'L');
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->iva,1)), 0, 0, 'L');
         $this->SetXY(10, 82); //FILA 5
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("TELÉFONO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->telefonoproveedor), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("RETE FUENTE:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
-        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->valor)), 0, 0, 'L');
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->retefuente,1)), 0, 0, 'L');
         $this->SetXY(10, 88); //FILA 6
         $this->SetFont('Arial', 'B', 10);
         $this->Cell(25, 6, utf8_decode("BANCO:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->banco->entidad), 0, 0, 'L');                
         $this->SetFont('Arial', 'B', 10);
-        $this->Cell(35, 6, utf8_decode("PRODUCTO:"), 0, 0, 'L');
+        $this->Cell(35, 6, utf8_decode("RETE IVA:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 9);
-        $this->Cell(50, 6, utf8_decode($comprobanteEgreso->banco->producto), 0, 0, 'L');
-        $this->SetXY(10, 93); //FILA 7
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->reteiva,1)), 0, 0, 'L');
+        $this->SetXY(10, 94); //FILA 7
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(25, 6, utf8_decode("PRODUCTO:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($comprobanteEgreso->banco->producto), 0, 0, 'L');                
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(35, 6, utf8_decode("BASE AIU:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 9);
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->base_aiu,1)), 0, 0, 'L');
+        $this->SetXY(10, 100); //FILA 8
+        $this->SetFont('Arial', 'B', 9);
+        $this->Cell(25, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 10);        
+        $this->Cell(90, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');                
+        $this->SetFont('Arial', 'B', 10);
+        $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
+        $this->SetFont('Arial', '', 9);
+        $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->valor)), 0, 0, 'L');
+        $this->SetXY(10, 106); //FILA 9
         $this->SetFont('Arial', 'B', 10);
         $this->MultiCell(30, 6, utf8_decode('OBSERVACIÓN:'), 0, 'J');
-        $this->SetXY(40, 93); //FILA 7
+        $this->SetXY(40, 106); 
         $this->SetFont('Arial', '', 10);
         $this->MultiCell(162, 6, utf8_decode($comprobanteEgreso->observacion), 0, 'J');
         //Lineas del encabezado
-        $this->Line(10, 102, 10, 138); //x1,y1,x2,y2        
-        $this->Line(84, 102, 84, 138); //x1,y1,x2,y2        
-        $this->Line(105, 102, 105, 138); //x1,y1,x2,y2
-        $this->Line(126, 102, 126, 138); //x1,y1,x2,y2
-        $this->Line(147, 102, 147, 138); //x1,y1,x2,y2
-        $this->Line(168, 102, 168, 138); //x1,y1,x2,y2
-        $this->Line(185, 102, 185, 138); //x1,y1,x2,y2
-        $this->Line(202, 102, 202, 138); //x1,y1,x2,y2
-        $this->Line(10, 138, 202, 138); //linea horizontal inferior x1,y1,x2,y2
+        $this->Line(10, 118, 10, 154); //x1,y1,x2,y2        
+        $this->Line(84, 118, 84, 154); //x1,y1,x2,y2        
+        $this->Line(105, 118, 105, 154); //x1,y1,x2,y2
+        $this->Line(126, 118, 126, 154); //x1,y1,x2,y2
+        $this->Line(147, 118, 147, 154); //x1,y1,x2,y2
+        $this->Line(168, 118, 168, 154); //x1,y1,x2,y2
+        $this->Line(185, 118, 185, 154); //x1,y1,x2,y2
+        $this->Line(202, 118, 202, 154); //x1,y1,x2,y2
+        $this->Line(10, 154, 202, 154); //linea horizontal inferior x1,y1,x2,y2
         //Detalle factura
         $this->EncabezadoDetalles();
     }
 
     function EncabezadoDetalles() {
         $this->Ln(3);
-        $header = array('CONCEPTO', utf8_decode('N° FACTURA'), 'VLR ABONO', 'VLR SALDO', 'RTE FUENTE', 'RTE IVA', 'BASE AIU');
+        $header = array('CONCEPTO', utf8_decode('N° FACTURA'), 'VLR ABONO', 'VLR SALDO', 'SUBTOTAL', 'RTE IVA', 'BASE AIU');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -166,11 +184,11 @@ class PDF extends FPDF {
             }else{
                 $pdf->Cell(21, 5, 'No Aplica', 0, 0, 'L');
             }            
-            $pdf->Cell(21, 5, number_format($detalle->vlr_abono, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(21, 5, number_format($detalle->vlr_saldo, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(21, 5, number_format($detalle->retefuente, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(17, 5, number_format($detalle->reteiva, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(17, 5, number_format($detalle->base_aiu, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(21, 5, number_format($detalle->vlr_abono, 1, '.', ','), 0, 0, 'R');
+            $pdf->Cell(21, 5, number_format($detalle->vlr_saldo, 1, '.', ','), 0, 0, 'R');
+            $pdf->Cell(21, 5, number_format($detalle->subtotal, 1, '.', ','), 0, 0, 'R');
+            $pdf->Cell(17, 5, number_format($detalle->reteiva, 1, '.', ','), 0, 0, 'R');
+            $pdf->Cell(17, 5, number_format($detalle->base_aiu, 1, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
