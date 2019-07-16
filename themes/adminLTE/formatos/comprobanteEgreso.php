@@ -127,15 +127,15 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 10);
         $this->MultiCell(162, 6, utf8_decode($comprobanteEgreso->observacion), 0, 'J');
         //Lineas del encabezado
-        $this->Line(10, 118, 10, 154); //x1,y1,x2,y2        
-        $this->Line(84, 118, 84, 154); //x1,y1,x2,y2        
-        $this->Line(105, 118, 105, 154); //x1,y1,x2,y2
-        $this->Line(126, 118, 126, 154); //x1,y1,x2,y2
-        $this->Line(147, 118, 147, 154); //x1,y1,x2,y2
-        $this->Line(168, 118, 168, 154); //x1,y1,x2,y2
-        $this->Line(185, 118, 185, 154); //x1,y1,x2,y2
-        $this->Line(202, 118, 202, 154); //x1,y1,x2,y2
-        $this->Line(10, 154, 202, 154); //linea horizontal inferior x1,y1,x2,y2
+        $this->Line(10, 118, 10, 275); //x1,y1,x2,y2        
+        $this->Line(84, 118, 84, 275); //x1,y1,x2,y2        
+        $this->Line(105, 118, 105, 275); //x1,y1,x2,y2
+        $this->Line(126, 118, 126, 275); //x1,y1,x2,y2
+        $this->Line(147, 118, 147, 275); //x1,y1,x2,y2
+        $this->Line(168, 118, 168, 275); //x1,y1,x2,y2
+        $this->Line(185, 118, 185, 275); //x1,y1,x2,y2
+        $this->Line(202, 118, 202, 275); //x1,y1,x2,y2
+        $this->Line(10, 275, 202, 275); //linea horizontal inferior x1,y1,x2,y2
         //Detalle factura
         $this->EncabezadoDetalles();
     }

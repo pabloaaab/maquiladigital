@@ -125,7 +125,7 @@ class OrdenProduccionController extends Controller {
         $model = new Ordenproduccion();
         $clientes = Cliente::find()->all();
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        $codigos = Producto::find()->all();        
+        $codigos = Producto::find()->orderBy('idproducto desc')->all();        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
@@ -139,7 +139,7 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
-                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
         ]);
     }
 
