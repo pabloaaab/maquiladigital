@@ -221,8 +221,8 @@ class FichatiempoController extends Controller
                 $dato3;
             }
             $dato4 = $dato3.':'.$dhasta[1];
-            $model->desde = date($dato2.':'.$ddesde[2]);
-            $model->hasta = date($dato4.':'.$dhasta[2]);        
+            $model->desde = date($dato2.':00');
+            $model->hasta = date($dato4.':00');        
         }else{
             $model->desde = date('06:00:00');
             $model->hasta = date('07:00:00');
