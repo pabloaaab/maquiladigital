@@ -133,7 +133,7 @@ class ContabilizarController extends Controller {
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'recibo de caja';
                         $contabilidad->fecha = $recibo->fechapago;
-                        $contabilidad->documento = $recibo->numero;
+                        $contabilidad->documento = $detalle->factura->nrofactura;
                         $contabilidad->documento_ref = $recibo->numero;
                         $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
                         if ($empresa){
@@ -188,7 +188,7 @@ class ContabilizarController extends Controller {
                             $nit = "";
                         }
                         $contabilidad->nit = $nit;                            
-                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->detalle = substr($comprobante->comprobanteEgresoTipo->concepto, 0, 27);
                         $contabilidad->tipo = $tipo->tipocuenta;
                         $contabilidad->valor = $comprobante->subtotal;
                         if ($tipo->base == 1){
@@ -227,7 +227,7 @@ class ContabilizarController extends Controller {
                             $nit = "";
                         }
                         $contabilidad->nit = $nit;                            
-                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->detalle = substr($comprobante->comprobanteEgresoTipo->concepto, 0, 27);
                         $contabilidad->tipo = $tipo->tipocuenta;
                         $contabilidad->valor = $comprobante->iva;
                         if ($tipo->base == 1){
@@ -309,7 +309,7 @@ class ContabilizarController extends Controller {
                             $nit = "";
                         }
                         $contabilidad->nit = $nit;                            
-                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->detalle = substr($comprobante->comprobanteEgresoTipo->concepto, 0, 27);
                         $contabilidad->tipo = $tipo->tipocuenta;
                         $contabilidad->valor = $comprobante->reteiva;
                         if ($tipo->base == 1){
@@ -350,7 +350,7 @@ class ContabilizarController extends Controller {
                             $nit = "";
                         }
                         $contabilidad->nit = $nit;                            
-                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->detalle = substr($comprobante->comprobanteEgresoTipo->concepto, 0, 27);
                         $contabilidad->tipo = $tipo->tipocuenta;
                         $contabilidad->valor = $comprobante->valor;
                         if ($tipo->base == 1){
@@ -391,7 +391,7 @@ class ContabilizarController extends Controller {
                             $nit = "";
                         }
                         $contabilidad->nit = $nit;                            
-                        $contabilidad->detalle = $comprobante->comprobanteEgresoTipo->concepto;
+                        $contabilidad->detalle = substr($comprobante->comprobanteEgresoTipo->concepto, 0, 27);
                         $contabilidad->tipo = $tipo->tipocuenta;
                         $contabilidad->valor = $comprobante->subtotal * $tipo->porcentaje_base / 100;
                         if ($tipo->base == 1){
@@ -598,6 +598,7 @@ class ContabilizarController extends Controller {
                         if ($contabilidad->valor > 0){
                             $contabilidad->save(false);
                         }
+                    }    
                     if ($detalle->iva == 1){
                         $contabilidad = new Contabilidad;
                         $contabilidad->cuenta = $detalle->cuenta;
@@ -884,10 +885,9 @@ class ContabilizarController extends Controller {
                 }    
             }
         }
-        return;
-        
+        return;            
     }
-    }
+    
     public function actionExcel($exportar) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
@@ -1033,10 +1033,10 @@ class ContabilizarController extends Controller {
             fputs($ar, str_pad($dato->cuenta, 10));            
             fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5));
             fputs($ar, date("m/d/Y", strtotime($dato->fecha)));
-            fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
-            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
+            fputs($ar, $this->RellenarNr($dato->documento, "0", 14));
+            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 14));            
             fputs($ar, $this->RellenarNr($dato->nit, " ", 11));
-            fputs($ar, str_pad(utf8_decode($dato->detalle), 28));
+            fputs($ar, str_pad(utf8_decode($dato->detalle), 28));            
             fputs($ar, $dato->tipo);
             fputs($ar, $this->RellenarNr(round($dato->valor, 2), " ", 21));
             if($dato->base == 0){

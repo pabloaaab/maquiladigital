@@ -201,8 +201,32 @@ class FichatiempoController extends Controller
         $model = new Fichatiempodetalle();
         $model->id_ficha_tiempo = $ficha->id_ficha_tiempo;                
         $model->dia = date('Y-m-d');
-        $model->desde = date('12:00:00');
-        $model->hasta = date('12:00:00');
+        $registros = Fichatiempodetalle::find()->where(['=','id_ficha_tiempo',$id])->orderBy('id_ficha_tiempo_detalle desc')->one();
+        if ($registros){
+            $desde = $registros->desde;
+            $hasta = $registros->hasta;
+            $ddesde = explode(":",$desde);
+            $dato1 = $ddesde[0] + 1;
+            if (strlen($dato1)  == 1){
+                $dato1 = '0'.$dato1;
+            }else{
+                $dato1;
+            }
+            $dato2 = $dato1.':'.$ddesde[1];
+            $dhasta = explode(":",$hasta);
+            $dato3 = $dhasta[0] + 1;
+            if (strlen($dato3)  == 1){
+                $dato3 = '0'.$dato3;
+            }else{
+                $dato3;
+            }
+            $dato4 = $dato3.':'.$dhasta[1];
+            $model->desde = date($dato2.':'.$ddesde[2]);
+            $model->hasta = date($dato4.':'.$dhasta[2]);        
+        }else{
+            $model->desde = date('06:00:00');
+            $model->hasta = date('07:00:00');
+        }                
         $model->total_segundos = $ficha->total_segundos;
         if  ($model->total_segundos <= 0){
             $model->total_operacion = 0;
