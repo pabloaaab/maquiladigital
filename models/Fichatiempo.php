@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id_ficha_tiempo
  * @property int $id_empleado
+ * @property int $id_horario
  * @property double $cumplimiento
  * @property date $fechacreacion
  * @property date $desde
@@ -19,6 +20,7 @@ use Yii;
  * @property float $total_segundos
  *
  * @property Empleado $empleado
+ * @property Horarios $horario
  */
 class Fichatiempo extends \yii\db\ActiveRecord
 {
@@ -36,12 +38,12 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado','referencia','total_segundos'], 'required'],
-            [['id_empleado','estado'], 'integer'],
+            [['id_empleado','referencia','total_segundos','id_horario'], 'required'],
+            [['id_empleado','estado','id_horario'], 'integer',],
             [['cumplimiento','total_segundos'], 'number'],
             [['observacion','referencia'], 'string'],
             [['desde','hasta'], 'safe'],
-            [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],
+            [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],            
         ];
     }
 
@@ -53,6 +55,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
         return [
             'id_ficha_tiempo' => 'Id',
             'id_empleado' => 'Empleado',
+            'id_horario' => 'Horario',
             'cumplimiento' => 'Cumplimiento',
             'observacion' => 'Observacion',
             'desde' => 'Desde',
@@ -69,6 +72,14 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function getEmpleado()
     {
         return $this->hasOne(Empleado::className(), ['id_empleado' => 'id_empleado']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHorario()
+    {
+        return $this->hasOne(Horario::className(), ['id_horario' => 'id_horario']);
     }
     
     public function getCerrado()

@@ -221,17 +221,48 @@ class FichatiempoController extends Controller
                 $dato3;
             }
             $dato4 = $dato3.':'.$dhasta[1];
-            $model->desde = date($dato2.':00');
-            $model->hasta = date($dato4.':00');        
-        }else{
-            $model->desde = date('06:00:00');
-            $model->hasta = date('07:00:00');
+            if (date('Y-m-d') == $registros->dia){
+                $model->desde = date($dato2.':00');
+                $model->hasta = date($dato4.':00');
+            }else{
+                $model->desde = $ficha->horario->desde;
+                $hhasta = explode(":",$ficha->horario->desde);
+                $dato5 = $hhasta[0] + 1;
+                if (strlen($dato5)  == 1){
+                    $dato5 = '0'.$dato5;
+                }else{
+                    $dato5;
+                }
+                $model->hasta = date($dato5.':00');                
+            }
+            
+                    
+        }else{             
+            $model->desde = $ficha->horario->desde;
+            $hhasta = explode(":",$ficha->horario->desde);
+            $dato5 = $hhasta[0] + 1;
+            if (strlen($dato5)  == 1){
+                $dato5 = '0'.$dato5;
+            }else{
+                $dato5;
+            }
+            $model->hasta = date($dato5.':00');
         }                
         $model->total_segundos = $ficha->total_segundos;
         if  ($model->total_segundos <= 0){
             $model->total_operacion = 0;
         }else{
-            $model->total_operacion = round((60 / $model->total_segundos) * 60,2);
+            $horad = explode(":", $model->desde);
+            $horah = explode(":", $model->hasta);
+            $sumarh = $horah[0] - $horad[0];
+            $sumarm = $horah[1] + $horad[1];
+            if ($sumarh >= 1){
+                $sumarh = $sumarh * 60;
+                $sumarm = $sumarh + $sumarm;
+            }else{
+                $sumarm = $sumarh + $sumarm;
+            }
+            $model->total_operacion = round(($sumarm / $model->total_segundos) * $sumarm,2);
         }        
         $model->realizadas = 0;
         $model->cumplimiento = 0;
@@ -250,12 +281,27 @@ class FichatiempoController extends Controller
     
     protected function Calculos($table)
     {                
-        $totalsegundos = $table->total_segundos;
+        $datosficha = Fichatiempo::find()->where(['=','id_ficha_tiempo',$table->id_ficha_tiempo])->one();
+        $horad = explode(":", $table->desde);
+        $horah = explode(":", $table->hasta);
+        $sumarh = $horah[0] - $horad[0];
+        $sumarm = $horah[1] + $horad[1];
+        if ($sumarh >= 1){            
+            $sumarm = $sumarh + $sumarm;
+            $totalh = $sumarm;
+            $totalminutos = $totalh * 60;
+        }else{
+            $sumarm = $sumarh + $sumarm;
+            $totalh = $sumarm / 60;
+            $totalminutos = $totalh;
+        }
+        
+        $totalsegundos = $datosficha->total_segundos * $totalh;
         if ($totalsegundos == 0){
             $totalsegundos = 1;
         }
-        $table->total_operacion = round((60 /$totalsegundos) * 60,2);
-        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,2);
+        $table->total_operacion = round(($totalminutos / $totalsegundos) * $totalminutos,3);
+        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,3);
         /*if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
@@ -282,6 +328,7 @@ class FichatiempoController extends Controller
         $valorsegundo = ($minutoconfeccion / 60 * $parametros->porcentaje_empleado) / 100;        
         $table->valor_operacion = round($table->total_segundos * $valorsegundo,0);
         $table->valor_pagar = round($table->realizadas * $table->valor_operacion);
+        $table->total_segundos = $totalsegundos;
         $table->update();
     }
     

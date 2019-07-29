@@ -72,6 +72,14 @@ $clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto')
                     <td><?= Html::encode($model->hasta) ?></td>
                 </tr>
                 <tr>
+                    <th><?= Html::activeLabel($model, 'horario') ?>:</th>
+                    <td><?= Html::encode($model->horario->horario) ?></td>
+                    <th><?= Html::activeLabel($model, 'h_desde') ?>:</th>
+                    <td><?= Html::encode($model->horario->desde) ?></td>
+                    <th><?= Html::activeLabel($model, 'h_hasta') ?>:</th>
+                    <td><?= Html::encode($model->horario->hasta) ?></td>
+                </tr>
+                <tr>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="3"><?= Html::encode($model->observacion) ?></td>
                     <th><?= Html::activeLabel($model, 'total_segundos') ?>:</th>
@@ -132,7 +140,7 @@ $form = ActiveForm::begin([
                         <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="2" required></td>                        
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="2" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="2" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required readonly></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->total_operacion ?></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_operacion ?></td>

@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Fichatiempo */
+/* @var $model app\models\horario */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -20,29 +20,23 @@ $form = ActiveForm::begin([
             ],
         ]);
 ?>
-<?php
-$empleado = ArrayHelper::map(app\models\Empleado::find()->all(), 'id_empleado', 'nombrecorto');
-$horario = ArrayHelper::map(app\models\horario::find()->all(), 'id_horario', 'nombreHorario');
-?>
+
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Ficha Tiempo
+        Información Horario
     </div>
     <div class="panel-body">        														   		
         <div class="row">
-            <?= $form->field($model, 'id_empleado')->dropDownList($empleado, ['prompt' => 'Seleccione...']) ?>    
+            <?= $form->field($model, 'horario')->textInput(['maxlength' => true]) ?>            
         </div>
-        <div class="row">
-            <?= $form->field($model, 'id_horario')->dropDownList($horario, ['prompt' => 'Seleccione...']) ?>    
+        <div class="row">            
+            <?= $form->field($model, 'desde')->input('time') ?>         
         </div>
-        <div class="row">
-            <?= $form->field($model, 'referencia')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'total_segundos')->textInput(['maxlength' => true]) ?>
+        <div class="row">            
+            <?= $form->field($model, 'hasta')->input('time') ?>         
         </div>
         <div class="panel-footer text-right">			
-            <a href="<?= Url::toRoute("fichatiempo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <a href="<?= Url::toRoute("horario/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
     </div>
