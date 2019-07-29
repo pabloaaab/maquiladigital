@@ -59,6 +59,7 @@
                                             ['label' => 'Tipo Cargo', 'icon' => 'plus-square-o', 'url' => ['tipocargo/index']],
                                             ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/index']],                                    
                                             ['label' => 'Empleado', 'icon' => 'plus-square-o', 'url' => ['/empleado/index']],
+                                            ['label' => 'Horario', 'icon' => 'plus-square-o', 'url' => ['/horario/index']],
                                         ],    
                                     ],
                                     [

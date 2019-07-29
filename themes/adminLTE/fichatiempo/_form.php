@@ -23,6 +23,7 @@ $form = ActiveForm::begin([
 <?php
 $empleado = ArrayHelper::map(app\models\Empleado::find()->all(), 'id_empleado', 'nombrecorto');
 $horario = ArrayHelper::map(app\models\horario::find()->all(), 'id_horario', 'nombreHorario');
+$referencia = ArrayHelper::map(app\models\Producto::find()->all(), 'codigo', 'codigo');
 ?>
 <div class="panel panel-success">
     <div class="panel-heading">
@@ -36,7 +37,7 @@ $horario = ArrayHelper::map(app\models\horario::find()->all(), 'id_horario', 'no
             <?= $form->field($model, 'id_horario')->dropDownList($horario, ['prompt' => 'Seleccione...']) ?>    
         </div>
         <div class="row">
-            <?= $form->field($model, 'referencia')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'referencia')->dropDownList($referencia, ['prompt' => 'Seleccione...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'total_segundos')->textInput(['maxlength' => true]) ?>
