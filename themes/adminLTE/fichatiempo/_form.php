@@ -22,7 +22,7 @@ $form = ActiveForm::begin([
 ?>
 <?php
 $empleado = ArrayHelper::map(app\models\Empleado::find()->all(), 'id_empleado', 'nombrecorto');
-$horario = ArrayHelper::map(app\models\horario::find()->all(), 'id_horario', 'nombreHorario');
+$horario = ArrayHelper::map(app\models\Horario::find()->all(), 'id_horario', 'nombreHorario');
 $referencia = ArrayHelper::map(app\models\Producto::find()->all(), 'codigo', 'codigo');
 ?>
 <div class="panel panel-success">
