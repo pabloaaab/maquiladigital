@@ -1033,8 +1033,8 @@ class ContabilizarController extends Controller {
             fputs($ar, str_pad($dato->cuenta, 10));            
             fputs($ar, $this->RellenarNr($dato->comprobante, "0", 5));
             fputs($ar, date("m/d/Y", strtotime($dato->fecha)));
-            fputs($ar, $this->RellenarNr($dato->documento, "0", 14));
-            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 14));            
+            fputs($ar, $this->RellenarNr($dato->documento, "0", 9));
+            fputs($ar, $this->RellenarNr($dato->documento_ref, "0", 9));            
             fputs($ar, $this->RellenarNr($dato->nit, " ", 11));
             fputs($ar, str_pad(utf8_decode($dato->detalle), 28));            
             fputs($ar, $dato->tipo);
