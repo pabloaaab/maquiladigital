@@ -300,8 +300,8 @@ class FichatiempoController extends Controller
         if ($totalsegundos == 0){
             $totalsegundos = 1;
         }
-        $table->total_operacion = round(($totalminutos / $totalsegundos) * $totalminutos,3);
-        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,3);
+        $table->total_operacion = round(($totalminutos / $totalsegundos) * $totalminutos,4);
+        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,4);
         /*if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
