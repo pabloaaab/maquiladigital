@@ -296,12 +296,12 @@ class FichatiempoController extends Controller
             $totalminutos = $totalh;
         }
         
-        $totalsegundos = $datosficha->total_segundos * $totalh;
+        $totalsegundos = $table->total_segundos * $totalh;
         if ($totalsegundos == 0){
             $totalsegundos = 1;
         }
-        $table->total_operacion = round(($totalminutos / $totalsegundos) * $totalminutos,4);
-        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,4);
+        $table->total_operacion = round(($totalminutos / $totalsegundos) * $totalminutos,0);
+        $table->cumplimiento = round(($table->realizadas * 100) / $table->total_operacion,0);
         /*if ($table->cumplimiento < 80){
             $table->observacion = 'No cumple con el perfil de la empresa'; 
         }
@@ -328,7 +328,7 @@ class FichatiempoController extends Controller
         $valorsegundo = ($minutoconfeccion / 60 * $parametros->porcentaje_empleado) / 100;        
         $table->valor_operacion = round($table->total_segundos * $valorsegundo,0);
         $table->valor_pagar = round($table->realizadas * $table->valor_operacion);
-        $table->total_segundos = $totalsegundos;
+        //$table->total_segundos = $totalsegundos;
         $table->update();
     }
     

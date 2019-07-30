@@ -140,7 +140,7 @@ $form = ActiveForm::begin([
                         <td style="padding-left: 1;padding-right: 1;"><input type="date" name="dia[]" value="<?= $val->dia ?>" size="2" required></td>                        
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horadesde[]" value="<?= $val->desde ?>" size="2" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="time" name="horahasta[]" value="<?= $val->hasta ?>" size="2" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required readonly></td>
+                        <td style="padding-left: 1;padding-right: 1;"><input type="text" name="totalsegundos[]" value="<?= $val->total_segundos ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->total_operacion ?></td>
                         <td style="padding-left: 1;padding-right: 1;"><input type="text" name="realizadas[]" value="<?= $val->realizadas ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 1;padding-right: 0;"><?= $val->valor_operacion ?></td>
