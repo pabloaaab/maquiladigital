@@ -17,8 +17,11 @@ use Yii;
  * @property double $total_confeccion
  * @property double $total_despachadas
  * @property string $fechacreacion
+ * @property string $color
+ * @property int $id_color
  *
  * @property Ordenproduccion $ordenproduccion
+ * @property Color $color0
  * @property Remisiondetalle[] $remisiondetalles
  */
 class Remision extends \yii\db\ActiveRecord
@@ -37,11 +40,12 @@ class Remision extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idordenproduccion', 'numero', 'total_tulas'], 'integer'],
+            [['idordenproduccion', 'numero', 'total_tulas', 'id_color'], 'integer'],
             [['total_exportacion', 'totalsegundas', 'total_colombia', 'total_confeccion', 'total_despachadas'], 'number'],
-            [['color'], 'string'],
             [['fechacreacion'], 'safe'],
+            [['color'], 'string', 'max' => 25],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
+            [['id_color'], 'exist', 'skipOnError' => true, 'targetClass' => Color::className(), 'targetAttribute' => ['id_color' => 'id']],
         ];
     }
 
@@ -51,17 +55,18 @@ class Remision extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_remision' => 'Id',
-            'idordenproduccion' => 'Id Orden Produccion',
+            'id_remision' => 'Id Remision',
+            'idordenproduccion' => 'Idordenproduccion',
             'numero' => 'Numero',
             'total_tulas' => 'Total Tulas',
             'total_exportacion' => 'Total Exportacion',
-            'totalsegundas' => 'Total Segundas',
+            'totalsegundas' => 'Totalsegundas',
             'total_colombia' => 'Total Colombia',
             'total_confeccion' => 'Total Confeccion',
             'total_despachadas' => 'Total Despachadas',
-            'fechacreacion' => 'Fecha',
+            'fechacreacion' => 'Fechacreacion',
             'color' => 'Color',
+            'id_color' => 'Id Color',
         ];
     }
 
@@ -71,6 +76,14 @@ class Remision extends \yii\db\ActiveRecord
     public function getOrdenproduccion()
     {
         return $this->hasOne(Ordenproduccion::className(), ['idordenproduccion' => 'idordenproduccion']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getColor0()
+    {
+        return $this->hasOne(Color::className(), ['id' => 'id_color']);
     }
 
     /**

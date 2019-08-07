@@ -7,7 +7,10 @@ use Yii;
 /**
  * This is the model class for table "color".
  *
+ * @property int $id
  * @property string $color
+ *
+ * @property Remision[] $remisions
  */
 class Color extends \yii\db\ActiveRecord
 {
@@ -37,7 +40,16 @@ class Color extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'color' => 'Color',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRemisions()
+    {
+        return $this->hasMany(Remision::className(), ['id_color' => 'id']);
     }
 }

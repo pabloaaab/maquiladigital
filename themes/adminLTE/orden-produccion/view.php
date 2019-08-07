@@ -80,7 +80,7 @@ $view = 'orden-produccion';
                                 </div>                            
                                 <?= Html::beginForm(Url::toRoute(["remision/remision", 'id' => $model->idordenproduccion]), "POST") ?>                            
                                 <?php
-                                    $colores = ArrayHelper::map(Color::find()->all(), 'color', 'color');
+                                    $colores = ArrayHelper::map(Color::find()->all(), 'id', 'color');
                                 ?>
                                 <div class="modal-body">
                                     <div class="panel panel-success">

@@ -59,7 +59,7 @@
                                             ['label' => 'Tipo Cargo', 'icon' => 'plus-square-o', 'url' => ['tipocargo/index']],
                                             ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/index']],                                    
                                             ['label' => 'Empleado', 'icon' => 'plus-square-o', 'url' => ['/empleado/index']],
-                                            ['label' => 'Horario', 'icon' => 'plus-square-o', 'url' => ['/horario/index']],
+                                            ['label' => 'Horario', 'icon' => 'plus-square-o', 'url' => ['/horario/index']],                                            
                                         ],    
                                     ],
                                     [
@@ -111,6 +111,8 @@
                                         ['label' => 'Operación Producción', 'icon' => 'plus-square-o', 'url' => ['proceso-produccion/index']],
                                         ['label' => 'Tipo Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/ordenproducciontipo/index']],
                                         ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => ['/producto/index']],    
+                                        ['label' => 'Calificación Ficha', 'icon' => 'plus-square-o', 'url' => ['/fichatiempocalificacion/index']],        
+                                        ['label' => 'Colores', 'icon' => 'plus-square-o', 'url' => ['/color/index']],    
                                     ],    
                                     ],
                                     [

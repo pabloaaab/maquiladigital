@@ -137,7 +137,7 @@ $form = ActiveForm::begin([
         ]);
 ?>
 <?php
-$colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
+$colores = ArrayHelper::map(app\models\Color::find()->all(), 'id', 'color');
 
 ?>
 <div class="panel panel-success ">
@@ -171,7 +171,7 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'color', 'color');
                 ?>
                 <?php foreach ($remisiondetalle as $val): ?>                
                     <tr>                                            
-                        <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->color ,$colores, ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
+                        <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->id_color ,$colores, ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php if ($val->oc == 1) { ?>
                             <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
                         <?php } else { ?>    

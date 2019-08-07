@@ -85,7 +85,9 @@ class RemisionController extends Controller
                 $table->total_confeccion = 0;
                 $table->total_despachadas = 0;
                 $table->fechacreacion = date('Y-m-d');
-                $table->color = $_POST['color'];
+                $table->id_color = $_POST['color'];
+                $color = \app\models\Color::find()->where(['=','id',$table->id_color])->one();
+                $table->color = $color->color;
                 $table->insert();
                 $model = Remision::findOne($table->id_remision);
                 $remisiondetalle = Remisiondetalle::find()->where(['=','id_remision',$id])->all();
@@ -97,7 +99,9 @@ class RemisionController extends Controller
                 $intIndice = 0;
                 foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
                     $table = Remisiondetalle::findOne($intCodigo);
-                    $table->color = $_POST["color"][$intIndice];
+                    $table->id_color = $_POST["color"][$intIndice];
+                    $color = \app\models\Color::find()->where(['=','id',$_POST["color"][$intIndice]])->one();
+                    $table->color = $color->color;
                     $table->oc = $_POST["oc"][$intIndice];
                     $table->tula = $_POST["tula"][$intIndice];
                     if ($table->txs == 1){
@@ -182,7 +186,9 @@ class RemisionController extends Controller
                 $intIndice = 0;
                 foreach ($_POST["id_remision_detalle"] as $intCodigo) {                
                     $table = Remisiondetalle::findOne($intCodigo);
-                    $table->color = $_POST["color"][$intIndice];
+                    $table->id_color = $_POST["color"][$intIndice];
+                    $color = \app\models\Color::find()->where(['=','id',$_POST["color"][$intIndice]])->one();
+                    $table->color = $color->color;
                     $table->oc = $_POST["oc"][$intIndice];
                     $table->tula = $_POST["tula"][$intIndice];
                     if ($table->txs == 1){
@@ -446,6 +452,7 @@ class RemisionController extends Controller
         $model = new Remisiondetalle();
         $model->id_remision = $id;
         $model->tula = 1;
+        $model->id_color = $remision->id_color;
         $model->color = $remision->color;
         $detalleorden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
         foreach ($detalleorden as $val){
