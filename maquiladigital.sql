@@ -171,21 +171,23 @@ insert  into `cliente`(`idcliente`,`idtipo`,`cedulanit`,`dv`,`razonsocial`,`nomb
 DROP TABLE IF EXISTS `color`;
 
 CREATE TABLE `color` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `color` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  PRIMARY KEY (`color`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `color` (`color`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `color` */
 
-insert  into `color`(`color`) values 
-('Amarillo'),
-('Azul'),
-('Blanco'),
-('Naranja'),
-('Negro'),
-('Rojo'),
-('Rosado'),
-('Verde');
+insert  into `color`(`id`,`color`) values 
+(1,'Amarillo'),
+(2,'Azul'),
+(3,'Blanco'),
+(4,'Naranja'),
+(5,'Negro'),
+(6,'Rojo'),
+(7,'Rosado'),
+(8,'Verde');
 
 /*Table structure for table `compra` */
 
@@ -220,14 +222,20 @@ CREATE TABLE `compra` (
   KEY `id_compra_concepto` (`id_compra_concepto`),
   CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`idproveedor`),
   CONSTRAINT `compra_ibfk_3` FOREIGN KEY (`id_compra_concepto`) REFERENCES `compra_concepto` (`id_compra_concepto`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `compra` */
 
 insert  into `compra`(`id_compra`,`id_compra_concepto`,`porcentajeiva`,`porcentajefuente`,`porcentajereteiva`,`porcentajeaiu`,`subtotal`,`retencionfuente`,`impuestoiva`,`retencioniva`,`base_aiu`,`saldo`,`total`,`id_proveedor`,`usuariosistema`,`estado`,`autorizado`,`observacion`,`fechacreacion`,`fechainicio`,`fechavencimiento`,`numero`,`factura`) values 
 (2,1,19,4,15,0,10915686,436627,2073980,311097,NULL,0,12241942,6,'71268830',2,1,'hola','2019-02-25 00:00:00','2019-02-27','2019-02-27',2,'123'),
-(3,1,19,4,15,0,3000000,120000,570000,85500,NULL,3364500,3364500,6,'71268830',0,1,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',0,'145'),
-(4,3,19,1,0,10,20366082,20366,386956,0,2036608,0,20732672,3,'71268830',2,1,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',3,'5258');
+(3,1,19,0,15,10,3000000,0,57000,8550,300000,-3048450,3048450,3,'71268830',2,1,'ffff','2019-02-27 22:30:30','2019-02-27','2019-02-28',6,'145'),
+(4,3,19,1,0,10,20366082,20366,386956,0,2036608,0,20732672,3,'71268830',2,1,'hola','2019-03-01 11:46:05','2019-03-01','2019-02-28',3,'5258'),
+(5,3,19,0,0,10,205000,0,3895,0,20500,0,208895,3,'71268830',2,1,'dsd','2019-07-07 19:59:28','2019-07-07','2019-07-07',5,'2323'),
+(6,1,19,0,15,10,4256900,0,80881,12132,425690,0,4325649,3,'71268830',2,1,'sdsd','2019-07-07 20:00:32','2019-07-07','2019-07-07',4,'2122'),
+(7,3,19,0,0,10,3100000,0,58900,0,310000,0,3158900,4,'71268830',2,1,'asd','2019-07-07 21:21:21','2019-07-07','2019-07-07',8,'2356'),
+(8,1,19,0,15,10,567800,0,10788,1618,56780,0,576970,4,'71268830',2,1,'sss','2019-07-07 21:21:49','2019-07-07','2019-07-07',7,'1111'),
+(9,2,19,0,0,0,980000,0,186200,0,0,0,1166200,4,'71268830',2,1,'v','2019-07-07 21:24:23','2019-07-07','2019-07-07',9,'3456'),
+(10,1,19,0,15,10,325750,0,6189,928,32575,331011,331011,2,'71268830',0,1,'x','2019-07-07 21:56:21','2019-07-07','2019-07-07',10,'988');
 
 /*Table structure for table `compra_concepto` */
 
@@ -271,6 +279,7 @@ CREATE TABLE `compra_concepto_cuenta` (
   `rete_iva` tinyint(1) DEFAULT '0',
   `total` tinyint(1) DEFAULT '0',
   `base_rete_fuente` tinyint(1) DEFAULT '0',
+  `porcentaje_base` double DEFAULT '0',
   PRIMARY KEY (`id_compra_concepto_cuenta`),
   KEY `id_compra_concepto` (`id_compra_concepto`),
   CONSTRAINT `compra_concepto_cuenta_ibfk_1` FOREIGN KEY (`id_compra_concepto`) REFERENCES `compra_concepto` (`id_compra_concepto`)
@@ -278,11 +287,11 @@ CREATE TABLE `compra_concepto_cuenta` (
 
 /*Data for the table `compra_concepto_cuenta` */
 
-insert  into `compra_concepto_cuenta`(`id_compra_concepto_cuenta`,`cuenta`,`tipocuenta`,`id_compra_concepto`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`) values 
-(1,1,1,1,0,1,0,0,0,0,0),
-(2,11,1,1,1,0,1,0,0,0,0),
-(3,1105,2,1,1,0,0,1,0,0,0),
-(4,110505,2,1,0,0,0,0,0,1,0);
+insert  into `compra_concepto_cuenta`(`id_compra_concepto_cuenta`,`cuenta`,`tipocuenta`,`id_compra_concepto`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`,`porcentaje_base`) values 
+(1,1,1,1,0,1,0,0,0,0,0,0),
+(2,11,1,1,1,0,1,0,0,0,0,0),
+(3,1105,2,1,1,0,0,1,0,0,0,0),
+(4,110505,2,1,0,0,0,0,0,1,0,0);
 
 /*Table structure for table `compra_tipo` */
 
@@ -311,7 +320,7 @@ CREATE TABLE `comprobante_egreso` (
   `fecha_comprobante` date NOT NULL,
   `numero` int(11) DEFAULT NULL,
   `id_comprobante_egreso_tipo` int(11) NOT NULL,
-  `valor` double DEFAULT NULL,
+  `valor` double DEFAULT '0',
   `id_proveedor` int(11) NOT NULL,
   `observacion` text,
   `usuariosistema` varchar(30) DEFAULT NULL,
@@ -319,6 +328,12 @@ CREATE TABLE `comprobante_egreso` (
   `autorizado` tinyint(1) DEFAULT NULL,
   `libre` tinyint(1) DEFAULT NULL,
   `id_banco` int(11) NOT NULL,
+  `subtotal` double NOT NULL DEFAULT '0',
+  `iva` double NOT NULL DEFAULT '0',
+  `retefuente` double NOT NULL DEFAULT '0',
+  `reteiva` double NOT NULL DEFAULT '0',
+  `reteica` double NOT NULL DEFAULT '0',
+  `base_aiu` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_comprobante_egreso`),
   KEY `id_municipio` (`id_municipio`),
   KEY `id_comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
@@ -328,14 +343,19 @@ CREATE TABLE `comprobante_egreso` (
   CONSTRAINT `comprobante_egreso_ibfk_2` FOREIGN KEY (`id_comprobante_egreso_tipo`) REFERENCES `comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
   CONSTRAINT `comprobante_egreso_ibfk_3` FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor` (`idproveedor`),
   CONSTRAINT `comprobante_egreso_ibfk_4` FOREIGN KEY (`id_banco`) REFERENCES `banco` (`idbanco`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 /*Data for the table `comprobante_egreso` */
 
-insert  into `comprobante_egreso`(`id_comprobante_egreso`,`id_municipio`,`fecha`,`fecha_comprobante`,`numero`,`id_comprobante_egreso_tipo`,`valor`,`id_proveedor`,`observacion`,`usuariosistema`,`estado`,`autorizado`,`libre`,`id_banco`) values 
-(1,'05001','2019-03-08 10:46:46','2019-03-08',2,1,12241942,6,'aaaaa','71268830',NULL,1,NULL,1021),
-(2,'05001','2019-03-08 11:57:30','2019-03-08',3,1,15000,4,'bbbb','71268830',NULL,1,1,1021),
-(3,'05001','2019-03-11 14:17:35','2019-03-21',4,1,20732672,3,'sasas','71268830',NULL,1,NULL,1);
+insert  into `comprobante_egreso`(`id_comprobante_egreso`,`id_municipio`,`fecha`,`fecha_comprobante`,`numero`,`id_comprobante_egreso_tipo`,`valor`,`id_proveedor`,`observacion`,`usuariosistema`,`estado`,`autorizado`,`libre`,`id_banco`,`subtotal`,`iva`,`retefuente`,`reteiva`,`reteica`,`base_aiu`) values 
+(1,'05001','2019-03-08 10:46:46','2019-03-08',2,1,12241942,6,'aaaaa','71268830',NULL,1,NULL,1021,0,0,0,0,0,0),
+(2,'05001','2019-03-08 11:57:30','2019-03-08',3,1,15000,4,'bbbb','71268830',NULL,1,1,1021,0,0,0,0,0,0),
+(3,'05001','2019-03-11 14:17:35','2019-03-21',4,1,20732672,3,'sasas','71268830',NULL,1,NULL,1,0,0,0,0,0,0),
+(4,'05001','2019-07-07 19:58:04','2019-07-07',5,1,7582994,3,'ggg','71268830',NULL,1,NULL,1021,7461900,141776,0,20682,0,746190),
+(5,'05001','2019-07-07 21:22:26','2019-07-07',6,1,4902070,4,'z','71268830',NULL,1,NULL,1,4647800,255888,0,1618,0,366780),
+(6,'05001','2019-07-07 21:27:09','2019-07-07',7,1,13123,5,'z','71268830',NULL,1,1,1021,246.8,125.8,123.6,128.2,0,129.4),
+(7,'05001','2019-07-07 21:55:59','2019-07-07',NULL,1,0,2,'x','71268830',NULL,NULL,NULL,1021,0,0,0,0,0,0),
+(8,'05001','2019-07-07 21:59:52','2019-07-07',NULL,1,0,3,'s','71268830',NULL,NULL,1,1,0,0,0,0,0,0);
 
 /*Table structure for table `comprobante_egreso_detalle` */
 
@@ -352,20 +372,31 @@ CREATE TABLE `comprobante_egreso_detalle` (
   `reteica` double DEFAULT '0',
   `iva` double DEFAULT '0',
   `base_aiu` double DEFAULT '0',
+  `subtotal` double DEFAULT '0',
   `observacion` text COLLATE utf8_spanish_ci,
   PRIMARY KEY (`id_comprobante_egreso_detalle`),
   KEY `id_compra` (`id_compra`),
   KEY `id_comprobante_egreso` (`id_comprobante_egreso`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_1` FOREIGN KEY (`id_compra`) REFERENCES `compra` (`id_compra`),
   CONSTRAINT `comprobante_egreso_detalle_ibfk_2` FOREIGN KEY (`id_comprobante_egreso`) REFERENCES `comprobante_egreso` (`id_comprobante_egreso`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `comprobante_egreso_detalle` */
 
-insert  into `comprobante_egreso_detalle`(`id_comprobante_egreso_detalle`,`id_compra`,`id_comprobante_egreso`,`vlr_abono`,`vlr_saldo`,`retefuente`,`reteiva`,`reteica`,`iva`,`base_aiu`,`observacion`) values 
-(6,2,1,12241942,0,436627,311097,0,0,0,NULL),
-(8,NULL,2,15000,0,0,0,0,0,0,NULL),
-(9,4,3,20732672,0,20366,0,0,0,0,NULL);
+insert  into `comprobante_egreso_detalle`(`id_comprobante_egreso_detalle`,`id_compra`,`id_comprobante_egreso`,`vlr_abono`,`vlr_saldo`,`retefuente`,`reteiva`,`reteica`,`iva`,`base_aiu`,`subtotal`,`observacion`) values 
+(6,2,1,12241942,0,436627,311097,0,0,0,0,NULL),
+(8,NULL,2,15000,0,0,0,0,0,0,0,NULL),
+(9,4,3,20732672,0,20366,0,0,0,0,0,NULL),
+(18,3,4,3048450,-3048450,0,8550,0,57000,300000,3000000,NULL),
+(19,5,4,208895,0,0,0,0,3895,20500,205000,NULL),
+(20,6,4,4325649,0,0,12132,0,80881,425690,4256900,NULL),
+(21,7,5,3158900,0,0,0,0,58900,310000,3100000,NULL),
+(22,8,5,576970,0,0,1618,0,10788,56780,567800,NULL),
+(23,9,5,1166200,0,0,0,0,186200,0,980000,NULL),
+(27,NULL,6,13000,0,0,4.5,0,2.3,5.6,123.4,NULL),
+(28,NULL,6,123,0,123.6,123.7,0,123.5,123.8,123.4,NULL),
+(29,10,7,331011,331011,0,928,0,6189,32575,325750,NULL),
+(30,NULL,8,123,0,0,0,0,0,0,0,NULL);
 
 /*Table structure for table `comprobante_egreso_tipo` */
 
@@ -391,18 +422,30 @@ CREATE TABLE `comprobante_egreso_tipo_cuenta` (
   `id_comprobante_egreso_tipo_cuenta` int(11) NOT NULL AUTO_INCREMENT,
   `cuenta` int(11) NOT NULL,
   `tipocuenta` int(2) NOT NULL,
-  `base` tinyint(1) DEFAULT '0',
   `id_comprobante_egreso_tipo` int(11) DEFAULT NULL,
+  `base` tinyint(1) DEFAULT '0',
+  `subtotal` tinyint(1) DEFAULT '0',
+  `iva` tinyint(1) DEFAULT '0',
+  `rete_fuente` tinyint(1) DEFAULT '0',
+  `rete_iva` tinyint(1) DEFAULT '0',
+  `total` tinyint(1) DEFAULT '0',
+  `base_rete_fuente` tinyint(1) DEFAULT '0',
+  `porcentaje_base` double DEFAULT '0',
   PRIMARY KEY (`id_comprobante_egreso_tipo_cuenta`),
   KEY `id_comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`),
   CONSTRAINT `comprobante_egreso_tipo_cuenta_ibfk_1` FOREIGN KEY (`id_comprobante_egreso_tipo`) REFERENCES `comprobante_egreso_tipo` (`id_comprobante_egreso_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `comprobante_egreso_tipo_cuenta` */
 
-insert  into `comprobante_egreso_tipo_cuenta`(`id_comprobante_egreso_tipo_cuenta`,`cuenta`,`tipocuenta`,`base`,`id_comprobante_egreso_tipo`) values 
-(1,1,1,0,1),
-(2,11,2,1,1);
+insert  into `comprobante_egreso_tipo_cuenta`(`id_comprobante_egreso_tipo_cuenta`,`cuenta`,`tipocuenta`,`id_comprobante_egreso_tipo`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`,`porcentaje_base`) values 
+(1,1,1,1,0,1,0,0,0,0,0,0),
+(5,11,2,1,1,0,1,0,1,0,0,0),
+(6,1105,1,1,1,0,0,1,0,0,0,0),
+(7,11050510,2,1,0,0,0,0,1,0,0,0),
+(8,11050505,1,1,0,0,0,0,0,0,1,0.9),
+(9,11100510,2,1,0,0,0,0,0,0,1,0.9),
+(10,1115,2,1,1,0,0,0,0,1,0,0);
 
 /*Table structure for table `conceptonota` */
 
@@ -436,12 +479,17 @@ CREATE TABLE `conceptonotacuenta` (
   `rete_iva` tinyint(1) DEFAULT '0',
   `total` tinyint(1) DEFAULT '0',
   `base_rete_fuente` tinyint(1) DEFAULT '0',
+  `porcentaje_base` double DEFAULT '0',
   PRIMARY KEY (`idconceptonotacuenta`),
   KEY `idconceptonota` (`idconceptonota`),
   CONSTRAINT `conceptonotacuenta_ibfk_1` FOREIGN KEY (`idconceptonota`) REFERENCES `conceptonota` (`idconceptonota`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `conceptonotacuenta` */
+
+insert  into `conceptonotacuenta`(`idconceptonotacuenta`,`cuenta`,`tipocuenta`,`idconceptonota`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`,`porcentaje_base`) values 
+(1,1,1,1,0,1,0,0,0,0,0,10),
+(2,11,2,1,0,0,0,0,0,0,0,2.5);
 
 /*Table structure for table `consecutivo` */
 
@@ -460,9 +508,9 @@ insert  into `consecutivo`(`consecutivo_pk`,`nombre`,`consecutivo`) values
 (1,'FACTURA DE VENTA',36),
 (2,'NOTA CREDITO',1),
 (3,'RECIBO CAJA',9),
-(4,'REMISION',6),
-(5,'COMPRAS',3),
-(6,'COMPROBANTE EGRESO',4);
+(4,'REMISION',7),
+(5,'COMPRAS',10),
+(6,'COMPROBANTE EGRESO',7);
 
 /*Table structure for table `contabilidad` */
 
@@ -485,7 +533,7 @@ CREATE TABLE `contabilidad` (
   `transporte` varchar(12) COLLATE utf8_spanish_ci DEFAULT NULL,
   `plazo` int(11) DEFAULT '0',
   PRIMARY KEY (`consecutivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=1661 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `contabilidad` */
 
@@ -685,10 +733,10 @@ CREATE TABLE `cuenta_pub` (
 /*Data for the table `cuenta_pub` */
 
 insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,`exige_nit`,`exige_centro_costo`) values 
-('1','ACTIVO',0,0,0),
-('11','EFECTIVO Y EQUIVALENTES AL EFECTIVO',0,0,0),
-('1105','EFECTIVO EN CAJA',0,0,0),
-('110505','CAJAS MENORES',0,0,0),
+('1','ACTIVO1111',0,0,0),
+('11','DISPONIBLE',0,0,0),
+('1105','CAJA',0,0,0),
+('110505','CAJA GENERAL',0,0,0),
 ('11050505','CAJA MENOR OBRA',0,0,0),
 ('11050510','CAJA MENOR ADMINISTRATIVA',0,0,0),
 ('1110','EFECTIVO EN ENTIDADES FINANCIERAS',0,0,0),
@@ -699,12 +747,14 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('1115','EQUIVALENTES AL EFECTIVO',0,0,0),
 ('111505','DEPOSITOS CORTO PLAZO',0,0,0),
 ('11150505','FIDUCIARIA BANCOLOMBIA',0,0,0),
+('1120','CUENTAS DE AHORRO',0,1,0),
+('112005','ACTIVO',0,0,0),
 ('12','INVERSIONES EN INSTRUMENTOS FINANCIEROS',0,0,0),
 ('1210','INVERSIONES A ENTIDADES ASOCIADAS',0,0,0),
 ('121005','INVERSIONES EN ENTIDADES ASOCIADAS',0,0,0),
 ('12100505','INVERSIONES EN ENTIDADES ASOCIADAS',0,0,0),
-('13','CUENTAS COMERCIALES POR COBRAR Y OTRAS CUENTAS',0,0,0),
-('1305','CUENTAS COMERCIALES POR COBRAR',0,0,0),
+('13','DEUDORES',0,0,0),
+('1305','CLIENTES',0,0,0),
 ('130505','CLIENTES NACIONALES',0,0,0),
 ('13050505','CLIENTES MEDELLIN',0,0,0),
 ('130590','CONSIGNACIONES PENDIENTES',0,0,0),
@@ -715,26 +765,34 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('132005','ANTICIPO A PROVEEDORES',0,0,0),
 ('13200505','ANTICIPO A PROVEEDORES',0,0,0),
 ('132015','GASTOS PAGADOS POR ANTICIPADO',0,0,0),
-('1355','ANTICIPO DE IMPUESTOS Y CONTRIBUCIONES O SALDOS A FAVOR',0,0,0),
+('1325','C X C A SOCIOS Y ACCIONISTAS',0,1,0),
+('132510','A ACCIONISTAS',0,1,0),
+('1330','ANTIC. Y AVANCES',0,1,0),
+('133005','A PROVEEDORES',0,1,0),
+('13300505','ANTICIPO PROVEEDORES',0,1,0),
+('133010','A CONTRATISTAS',0,1,0),
+('1355','ANT. IMPTOS CONTRIB A FAVOR',0,0,0),
 ('135505','ANTICIPO DE IMPUESTOS A  LAS GANANCIAS',0,0,0),
 ('13550501','IMPUESTO DE RENTA Y COMPLEMENTARIOS',0,0,0),
 ('13550502','IMPUESTO DE CREE',0,0,0),
 ('135510','ANTICIPO DE INDUSTRIA Y COMERCIO',0,0,0),
 ('13551001','INDUSTRIA Y COMERCIO MEDELLIN',0,0,0),
 ('13551002','INDUSTRIA Y COMERCIO CARTAGENA',0,0,0),
-('135515','RETENCION EN LA FUENTE IMPUESTO A LAS GANANCIAS',0,0,0),
+('135515','RET. EN LA FUENTE',0,0,0),
 ('13551501','RETEFUENTE 2%',0,0,0),
 ('13551502','RETEFUENTE 4%',0,0,0),
 ('13551503','ANTICIPO RETEFUENTE 1%',0,0,0),
-('135517','IMPUESTO A LAS VENTAS RETENIDO',0,0,0),
+('13551525','RF * COBRAR COMPRAS 2.5%',0,1,0),
+('135517','IMPTO VTAS RETENIDO 15%',0,0,0),
 ('13551700','RETEIVA CLIENTES 15%',0,0,0),
 ('135518','RETEICA',0,0,0),
 ('13551801','RETE ICA MEDELLIN',0,0,0),
 ('135595','AUTORRETENCION DEL CREE',0,0,0),
 ('13559505','AUTORRETENCION DEL 0.8%',0,0,0),
 ('13559506','AUTORRETENCION RENTA',0,0,0),
-('1365','CUENTAS POR COBRAR A TRABAJADORES',0,0,0),
+('1365','C X C A TRABAJADORES',0,0,0),
 ('136595','OTROS',0,0,0),
+('13659501','CXC A OTROS',0,1,0),
 ('13659505','PRESTAMO A EMPLEADOS',0,0,0),
 ('13659506','POLIZAS',0,0,0),
 ('1380','OTROS DEUDORES',0,0,0),
@@ -747,27 +805,31 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('1455','DOTACION',0,0,0),
 ('145501','DOTACION CAMISETAS POLO',0,0,0),
 ('145502','DOTACION JEAN',0,0,0),
-('15','PROPIEDAD PLANTA Y EQUIPO',0,0,0),
-('1520','MAQUINARIA',0,0,0),
-('152005','MAQUINARIA',0,0,0),
+('15','PROPIEDADES, PLANTA Y EQU.',0,0,0),
+('1520','MAQUINARIA Y EQUIPO',0,0,0),
+('152005','COSTO MAQUINARIA Y EQUIPO',0,0,0),
 ('15200505','COSTO MAQUINARIA',0,0,0),
 ('15200551','MAQUINARIA REVALUACION',0,0,0),
 ('15200599','DETERIORO',0,0,0),
-('1524','EQUIPO DE OFICINA',0,0,0),
-('152405','MUEBLES',0,0,0),
+('1524','EQU. DE OFICINA',0,0,0),
+('152405','COSTO MUE.Y ENSERES',0,0,0),
 ('15240501','COSTO MUEBLES',0,0,0),
 ('15240502','ACTIVOS MENOR CUANTIA',0,0,0),
 ('15240551','REVALUACION MUEBLES',0,0,0),
 ('15240599','DEPRECIACION MUEBLES',0,0,0),
-('152410','EQUIPO',0,0,0),
+('152410','COSTO EQUIPOS OFICINA',0,0,0),
 ('15241001','COSTO EQUIPO OFICINA',0,0,0),
 ('15241051','REVALUACION EQUPO OFICINA',0,0,0),
 ('15241099','DEPRECIACION ACUM EQUIPO OFICINA',0,0,0),
-('1528','EQUIPO DE COMPUTACION Y COMUNICACION',0,0,0),
+('1528','EQU. DE COMPT Y COMUNIC',0,0,0),
 ('152805','EQUIPOS DE PROCESAMIENTO DE DATOS',0,0,0),
 ('15280501','COSTO EQUIPO  DE PROCESAMIENTO DE DATOS',0,0,0),
 ('15280551','REVALUACION PROCESAMIENTO DE DATOS',0,0,0),
 ('15280599','DEPRECIACION EQUIPO PROCESAMI DE DATOS',0,0,0),
+('152810','EQU.S DE TELECOMUNICACIONES',0,1,0),
+('1592','DEPRECIACIÓN ACUMULADA',0,1,0),
+('159210','MAQUINARIA Y EQU.',0,1,0),
+('15921005','DEP. MAQUINARIA Y EQUIPO',0,1,0),
 ('16','INTAGIBLES',0,0,0),
 ('1635','LICENCIAS',0,0,0),
 ('163505','LICENCIAS SOFTWARE',0,0,0),
@@ -781,7 +843,7 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('1710','OTROS',0,0,0),
 ('171095','OTROS',0,0,0),
 ('17109502','IMPUESTO DE RENTA DIFERIDO',0,0,0),
-('2','PASIVOS',0,0,0),
+('2','PASIVO',0,0,0),
 ('21','PASIVOS FINANCIEROS',0,0,0),
 ('2105','PRESAMOS BANCARIOS GARANTIZADOS',0,0,0),
 ('210505','MONEDA NACIONAL',0,0,0),
@@ -790,11 +852,13 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('2120','OTROS PRESTAMOS',0,0,0),
 ('212005','CON EXTERNOS',0,0,0),
 ('21200505','PRESTAMOS EMPRESAS',0,0,0),
-('22','CUENTAS COMERCIALES POR PAGAR',0,0,0),
-('2205','PROVEEDORES NACIONALES',0,0,0),
+('22','PROVEEDORES',0,0,0),
+('2205','PROV. NACIONALES',0,0,0),
+('220505','PROV. NACIONALES',0,1,0),
+('22050501','PROV. NACIONALES',0,1,0),
 ('220515','PROVEEDORES NACIONALES',0,0,0),
 ('22051505','PROVEEDORES MEDELLIN',0,0,0),
-('23','OTRAS CUENTAS POR PAGAR',0,0,0),
+('23','CUENTAS POR PAGAR',0,0,0),
 ('2305','INGRESOS DIFERIDOS',0,0,0),
 ('2335','COSTOS Y GASTOS POR PAGAR',0,0,0),
 ('233505','COSTOS Y GASTOS POR PAGAR',0,0,0),
@@ -806,7 +870,10 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('23350595','OTROS',0,0,0),
 ('233595','OTROS COSTOS Y GASTOS POR PAGAR',0,0,0),
 ('23359505','DEDUCCION PRESTAMO DEL FONDO DE EMPLEADOS',0,0,0),
-('2365','RETENCION EN LA FUENTE',0,0,0),
+('2355','DEUDAS CON ACCIONISTAS SOCIOS',0,1,0),
+('235505','ACCIONISTAS',0,1,0),
+('23550501','DEUDAS CON ACCIONISTAS',0,1,0),
+('2365','RET. EN LA FUENTE',0,0,0),
 ('236505','SALARIOS Y PAGOS LABORALES',0,0,0),
 ('23650501','RETENCIÓN POR SALARIO',0,0,0),
 ('23650505','SALARIOS EMPLEADOS',0,0,0),
@@ -814,28 +881,34 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('236515','HONORARIOS',0,0,0),
 ('23651501','HONORARIOS 10%',0,0,0),
 ('23651502','HONORARIOS 11%',0,0,0),
+('23651511','RF HONORARIOS x PAGAR 11%',0,1,0),
 ('236520','COMISIONES',0,0,0),
 ('23652001','COMISIONES 11%',0,0,0),
 ('236525','SERVICIOS',0,0,0),
-('23652501','SERVICIOS 2%',0,0,0),
+('23652501','RF SERVICIOS 1%',0,0,0),
 ('23652502','SERVICIOS 4%',0,0,0),
 ('23652503','SERVICIOS REG SIMPLI 6%',0,0,0),
 ('23652504','SERVICIOS HOSPEDAJE 3.5%',0,0,0),
 ('23652505','SERVICIOS IPS 2%',0,0,0),
-('23652506','SERVICIOS IPS2%',0,0,0),
+('23652506','RF SERVICIOS 6%',0,0,0),
 ('236530','ARRENDAMIENTOS',0,0,0),
 ('23653001','ARRENDAMIENTO INMUEBLES 3.5',0,0,0),
 ('23653002','ARRENDAMIENTO MUEBLES 4%',0,0,0),
+('23653004','RF ARRENDAMIENTOS 4%',0,1,0),
+('23653035','RF ARRENDAMIENTOS 3.5%',0,1,0),
+('236535','RENDIMIENTOS FINANC.',0,1,0),
+('23653507','RF RENDIMTOS FINANC. 7%',0,1,0),
 ('236540','COMPRAS',0,0,0),
-('23654001','COMPRAS 2.5%',0,0,0),
-('23654002','COMPRAS 3.5%',0,0,0),
+('23654001','RF COMPRAS 2.5%',0,0,0),
+('23654002','RF COMBUSTIBLE 1%',0,0,0),
 ('23654003','COMPRA DE COMBUSTIBLE',0,0,0),
 ('23654010','RETENCION 3.5% POR LICENCIA DE SOFTWARE',0,0,0),
 ('23654011','RETENCION 3.5% LICENCIAMIENTO',0,0,0),
 ('236575','AUTORRETENCIONES',0,0,0),
-('23657501','AUTORRETENCION CREE 0.8%',0,0,0),
+('23657501','AUTORRENTA',0,0,0),
 ('23657502','AUTORRETENCION CREE',0,0,0),
 ('23657503','AUTORRETENCION RENTA',0,0,0),
+('236597','PAGOS RETEFUENTE',0,1,0),
 ('2367','IMPUESTO A LAS VENTAS RETENIDO',0,0,0),
 ('236705','IMPUESTO A LAS VENTAS RETENI',0,0,0),
 ('23670501','RETEIVA REGIMEN SIMPLIFICADO',0,0,0),
@@ -863,18 +936,21 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('23709006','DEDUCCIONES DE NOMINA AUTORIZADAS POR CLIENTE',0,0,0),
 ('23709008','DEDUCCIÓN POLIZA DE VIDA',0,0,0),
 ('2380','ACREEDORES VARIOS',0,0,0),
+('238020','REINTEGROS POR PAGAR',0,1,0),
+('23802001','CAJAS MENORES',0,1,0),
+('23802002','CXP PARTICULARES',0,1,0),
 ('238030','FONDOS DE CESANTIAS Y/O PENSIONES',0,0,0),
 ('23803005','FONDO DE CESANTIAS Y PENSIONES',0,0,0),
 ('238095','OTROS',0,0,0),
 ('23809505','PRESTAMO EMPRESA EXTERNA',0,0,0),
-('24','IMPUESTOS GRAVAMENES Y TASAS',0,0,0),
+('24','IMPTS, GRAVÁMENES Y TASAS',0,0,0),
 ('2404','IMPUESTO DE RENTA Y COMPLEMENTARIOS',0,0,0),
 ('240405','VIGENCIA FISCAL CORRIENTE',0,0,0),
 ('240410','VIGENCIA FISCAL ANTERIORES',0,0,0),
 ('2405','RENTA PARA LA EQUIDAD CREE',0,0,0),
 ('240505','VIGENCIA FISCAL CORRIENTE',0,0,0),
-('2408','IMPUESTO SOBRE LAS VENTAS POR PAGAR',0,0,0),
-('240805','IVA DESCONTABLE',0,0,0),
+('2408','IMPTO SOBRE LAS VTAS POR PAGAR',0,0,0),
+('240805','IVA POR PAGAR',0,0,0),
 ('24080501','IVA DESCONTABLE COMPRAS 16%',0,0,0),
 ('24080502','IVA DESCONTABLE 16% SERVICIOS',0,0,0),
 ('24080503','IVA DESCONTABLE GASTOS 16%',0,0,0),
@@ -882,15 +958,17 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('24080506','IVA DESCONTABLE SERVICIOS 19%',0,0,0),
 ('24080555','IVA RETENIDO REGIMEN SIMPLIFICADO',0,0,0),
 ('24080590','IVA RETENIDO GRAN CONTRIBUYENTE',0,0,0),
-('240810','IVA GENERADO',0,0,0),
+('240810','IVA DESCONTADO',0,0,0),
 ('24081001','IVA GENERADO A TARIFA GENERAL',0,0,0),
 ('24081002','IVA GENERADO AIU',0,0,0),
 ('24081003','IVA GENERADO A LA TARIFA GENERAL 19 %',0,0,0),
 ('24081004','IVA GENERADO 19% AIU',0,0,0),
 ('24081005','IVA DEVOLUCION EN VENTAS',0,0,0),
-('2412','INDUSTRIA Y COMERCIO',0,0,0),
-('241205','VIGENCIA FISCAL CORRIENTE',0,0,0),
-('24120501','INDUSTRIA Y COMERCIO MEDELLIN',0,0,0),
+('24081016','IVA DESCONTADO 19%',0,1,0),
+('24081019','IVA DESCONTADO SCIOS 19%',0,1,0),
+('2412','DE INDUS Y CCIO',0,0,0),
+('241205','VIGENCIA FISC CORRIENTE',0,0,0),
+('24120501','IND Y CCIO MEDELLIN',0,0,0),
 ('24120502','INDUSTRIA Y COMERCIO CARTAGENA',0,0,0),
 ('24120503','INDUSTRIA Y COMERCIO MEDELLIN',0,0,0),
 ('25','BENEFICIOS A EMPLEADOS',0,0,0),
@@ -910,7 +988,7 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('25052501','VACAIONES- PASIVO AÑO ANTERIOR',0,0,0),
 ('25052502','VACACIONES - PASIVO AÑO ACTUAL',0,0,0),
 ('250535','INDEMNIZACIONES',0,0,0),
-('26','PASIVOS ESTIMADOS Y PROVISIONES',0,0,0),
+('26','PASIVS ESTIMADOS Y PROVISIONES',0,0,0),
 ('2610','PARA OBLIGACIONES LABORALES',0,0,0),
 ('261005','CESANTIAS',0,0,0),
 ('26100501','PROVISION CESANTIAS',0,0,0),
@@ -923,12 +1001,15 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('2615','PARA OBLIGACIONES FISCALES',0,0,0),
 ('261505','DE RENTA Y COMPLEMENTARIOS',0,0,0),
 ('26150505','DE RENTA Y COMPLEMENTARIOS',0,0,0),
-('261510','DE IMPUESTO CREE',0,0,0),
+('261510','DE INDUS Y CCIO',0,0,0),
 ('26151005','DE IMPUESTO CREE',0,0,0),
 ('261515','DE INDUSTRIA Y COMERCIO',0,0,0),
 ('26151505','DE INDUSTRIA Y COMERCIO',0,0,0),
 ('3','PATRIMONIO',0,0,0),
-('31','CAPITAL EMITIDO',0,0,0),
+('31','CAPITAL SOCIAL',0,0,0),
+('3105','CAPITAL SUSCR Y PAGADO',0,1,0),
+('310515','CAPITAL SUSCR POR COBRAR (DB)',0,1,0),
+('31051501','CAPITAL SOCIAL',0,1,0),
 ('3110','CAPITAL SUSCRITO Y PAGADO',0,0,0),
 ('311005','CAPITAL SUSCRITO Y PAGADO',0,0,0),
 ('31100505','CAPITAL SUSCRITO Y PAGADO',0,0,0),
@@ -946,13 +1027,21 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('321005','UTILIDADES DE EJERCICIOS ANTERIORES',0,0,0),
 ('32100505','UTILIDADES ACUMULADAS',0,0,0),
 ('32100510','PERDIDAS ACUMULADAS',0,0,0),
+('36','RESUL DEL EJERCICIO',0,1,0),
+('3610','PÉRDIDA DEL EJERCICIO',0,1,0),
+('361005','PÉRDIDA DEL EJERCICIO',0,1,0),
+('36100501','PÉRDIDA DEL EJERCICIO',0,1,0),
 ('4','INGRESOS',0,0,0),
-('41','INGRESOS',0,0,0),
+('41','OPERACIONALES',0,0,0),
 ('4110','PRESTACION DE SERVICIOS',0,0,0),
 ('411001','PRESTACION DE SERVICIOS',0,0,0),
 ('41100104','SERVICIOS GRAVADOS A LA TARIFA GENERAL',0,0,0),
 ('41100105','SERVICIOS NO GRAVADOS',0,0,0),
 ('41100106','PRESTACION DE SERVICIOS AIU',0,0,0),
+('4120','INDUSS MANUFACTURERAS',0,1,0),
+('412027','ELAB. DE PRENDAS DE VESTIR',0,1,0),
+('4155','ACTIVS. INMOB EMPRES. Y ALQU',0,1,0),
+('415530','CONSULT EN EQU. Y PROG INFORM',0,1,0),
 ('4170','OTRAS ACTIVIDADES DE SERVICIOS',0,0,0),
 ('417095','ACTIVIDADES CONEXAS',0,0,0),
 ('41709501','SERVICIOS GRAVADOS AIU',0,0,0),
@@ -962,7 +1051,10 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('417501','DEVOLUCIONES',0,0,0),
 ('41750101','DEVOLUCIONES NO GRAVADAS',0,0,0),
 ('41750102','DEVOLUCIONES GRAVADAS',0,0,0),
-('42','INGRESOS DE ACTIVIDADES ORDINARIAS',0,0,0),
+('42','NO OPERACIONALES',0,0,0),
+('4210','FINANC.',0,1,0),
+('421005','INTERESES',0,1,0),
+('421040','DESCTOS COMERC CONDICIONADOS',0,1,0),
 ('4215','ARRENDAMIENTOS',0,0,0),
 ('4230','INTERESES',0,0,0),
 ('4250','RECUPERACIONES',0,0,0),
@@ -971,10 +1063,11 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('42505005','REDONDEO EN IMPUESTOS',0,0,0),
 ('42505006','REINTEGRO COSTOS Y GASTOS',0,0,0),
 ('4295','DIVERSOS',0,0,0),
+('429581','AJUSTE AL PESO',0,1,0),
 ('42958101','AJUSTE AL PESO',0,0,0),
 ('43','OTROS INGRESOS',0,0,0),
 ('5','GASTOS',0,0,0),
-('51','ADMINISTRACION',0,0,0),
+('51','OPERACIONALES ADMINISTRACIÓN',0,0,0),
 ('5105','BENEFICIOS A EMPLEADOS',0,0,0),
 ('510505','CORTO PLAZO',0,0,0),
 ('51050501','SALARIO INTEGRAL',0,0,0),
@@ -1021,8 +1114,8 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('51052402','LICENCIA POR MATERNIDAD',0,0,0),
 ('51052403','INCAPACIDAD POR RIESGO LABORAL',0,0,0),
 ('51052404','LICENCIA POR LUTO O CALAMIDAD',0,0,0),
-('5110','HONORARIOS ADMINISTRATIVOS',0,0,0),
-('511005','HONORARIOS',0,0,0),
+('5110','HONORARIOS',0,0,0),
+('511005','JUNTA DIRECTIVA',0,0,0),
 ('51100505','REVISORIA FISCAL',0,0,0),
 ('51100510','POLIGRAFIA ADMINISTRATIVOS',0,0,0),
 ('51100525','ASESORIA JURIDICA',0,0,0),
@@ -1031,19 +1124,29 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('51100595','OTROS HONORARIOS',0,0,0),
 ('511006','',0,0,0),
 ('511007','CAPACITACIONES',0,0,0),
-('5115','IMPUESTOS DISTINTOS DE LOS IMPUESTOS A LAS GANANCIAS',0,0,0),
-('511505','IMPUESTOS',0,0,0),
+('511030','ASESORÍA CONTABLE',0,1,0),
+('51103001','ASESORÍA CONTABLE',0,1,0),
+('511035','ASESORÍA TÉCNICA',0,1,0),
+('51103501','ASESORÍA TÉCNICA',0,1,0),
+('5115','IMPTS',0,0,0),
+('511505','INDUS Y CCIO',0,0,0),
 ('51150505','INDUSTRIA Y COMERCIO',0,0,0),
 ('51150540','DE VEHICULOS',0,0,0),
 ('51150550','CUOTAS DE FOMENTO',0,0,0),
 ('51150595','OTROS',0,0,0),
 ('511595','OTROS',0,0,0),
 ('51159504','GRAVAMEN MOV FRO 4XMIL',0,0,0),
-('5120','ARRENDAMIENTOS OPERATIVOS',0,0,0),
+('51159510','GRAVAMEN AL MOV FINANCIERO',0,1,0),
+('5120','ARRENDAMIENTOS',0,0,0),
 ('512005','ARRENDAMIENTOS ADMON',0,0,0),
 ('51200510','ARRENDAMIENTO OFICINA',0,0,0),
 ('51200515','MAQUINARIA Y EQUIPO',0,0,0),
 ('51200520','ARRENDAMIENTO EQUIPO DE COMPUTO',0,0,0),
+('512010','CONSTRUC Y EDIFIC',0,1,0),
+('51201005','CONSTRUC Y EDIFIC',0,1,0),
+('512015','MAQUINARIA Y EQU.',0,1,0),
+('512025','EQU. DE COMPT Y COMUNIC',0,1,0),
+('51202501','ARREND EQU. DE COMPT Y COMUNIC',0,1,0),
 ('5125','CONTRIBUCIONES Y AFILIACIONES',0,0,0),
 ('512505','CONTRIBUCIONES Y AFILIACIONES',0,0,0),
 ('51250505','CONTRIBUCIONES',0,0,0),
@@ -1064,22 +1167,37 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('51350550','TRANSPORTE, FLETES Y ACARREOS',0,0,0),
 ('51350555','GAS',0,0,0),
 ('51350595','OTROS',0,0,0),
+('513525','ACUEDUCTO Y ALCANTARILLADO',0,1,0),
+('513530','ENERGÍA ELÉCTRICA',0,1,0),
+('513535','TELÉFONO',0,1,0),
+('51353501','TELEFONIA E INTERNET',0,1,0),
+('513545','INTERNET',0,1,0),
+('513550','TRANSP., FLETES Y ACARREOS',0,1,0),
+('513595','OTROS',0,1,0),
+('51359501','OTROS SERVICIOS',0,1,0),
 ('5140','GASTOS LEGALES',0,0,0),
-('514005','GASTOS LEGALES ADOMON',0,0,0),
+('514005','NOTARIALES',0,0,0),
 ('51400505','GASTOS NOTARIALES',0,0,0),
 ('51400510','REGISTRO MERCANTIL',0,0,0),
 ('51400515','TRAMITES Y LICENCIAS',0,0,0),
+('514010','REGISTRO MERCANTIL',0,1,0),
+('514015','TRÁMITES Y LICENCIAS',0,1,0),
 ('5145','MANTENIMIENTO Y REPARACIONES',0,0,0),
 ('514505','MANTENIMIENTO',0,0,0),
 ('51450510','MANT CONSTRUCCIONES Y EDIF',0,0,0),
 ('51450515','MANTE  MAQUINARIA Y EQUIPO',0,0,0),
 ('51450520','MANT EQUIPO DE OFICNA',0,0,0),
 ('51450525','MANT EQIUPO DE COMPUTACION',0,0,0),
-('5150','ADECUACIONES E INSTALACIONES',0,0,0),
+('514510','CONSTRUC Y EDIFIC',0,1,0),
+('51451005','MANTENIMIENTO ED Y CONST',0,1,0),
+('514515','MAQUINARIA Y EQU.',0,1,0),
+('5150','ADECUACIÓN E INSTALACIÓN',0,0,0),
 ('515005','ADECUACIONES E INTALA',0,0,0),
 ('51500505','INTALACIONES ELECTRICAS',0,0,0),
 ('51500510','ARREGLOS ORNAMENTALES',0,0,0),
 ('51500515','REPARACIONES LOCATIVAS',0,0,0),
+('515015','REPARACIONES LOCATIVAS',0,1,0),
+('51501501','REPARACIONES LOCATIVAS',0,1,0),
 ('5155','GASTOS DE VIAJE',0,0,0),
 ('515505','GASTOS DE VIAJE ADMON',0,0,0),
 ('51550505','ALOJAMIENTO Y MANUTENCION',0,0,0),
@@ -1116,12 +1234,19 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('51950565','PARQUEADEROS',0,0,0),
 ('51950590','OTROS HONORARIOS',0,0,0),
 ('51950595','OTROS',0,0,0),
-('519530','UTILES Y PAELERIA',0,0,0),
+('519525','ELEMTOS DE ASEO Y CAFET.',0,1,0),
+('519530','ÚTILES, PAPELERÍA Y FOTOCOPIAS',0,0,0),
+('519535','COMBUSTIBLES Y LUBRICANTES',0,1,0),
+('519545','TAXIS Y BUSES',0,1,0),
+('519560','CASINO Y RESTAURANTE',0,1,0),
+('519565','PARQUEADEROS',0,1,0),
+('519595','OTROS',0,1,0),
+('51959501','ACTIVOS MENORES',0,1,0),
 ('5199','PROVISOIN DEUDORES',0,0,0),
 ('519910','PROVISION DEUDORES',0,0,0),
 ('51991001','PROVISION DEUDORES',0,0,0),
-('52','GASTOS DE VENTA',0,0,0),
-('5205','BENEFICIOS A EMPLEADOS',0,0,0),
+('52','OPERACIONALES DE VTAS',0,0,0),
+('5205','GASTOS DE PERSONAL',0,0,0),
 ('520505','CORTO PLAZO',0,0,0),
 ('52050501','SALARIOS',0,0,0),
 ('52050518','COMISIONES',0,0,0),
@@ -1160,13 +1285,15 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('52050578','SENA',0,0,0),
 ('52050584','GASTOS MEDICOS Y DROGAS',0,0,0),
 ('5205067','APORTES A ENTIDADES DE PENSION',0,0,0),
+('520518','COMISIONES',0,1,0),
+('52051801','COMISIONES POR VENTA',0,1,0),
 ('5210','HONORARIOS',0,0,0),
 ('521005','HONORARIOS',0,0,0),
 ('52100535','CAPACITACION A  PERSONAL',0,0,0),
 ('52100540','POLIGRAFIA',0,0,0),
-('5215','IMPUESTOS DISTINTOS DE LOS IMPUESTOS A LAS GANANCIAS',0,0,0),
-('521505','IMPUESTOS',0,0,0),
-('52150505','INDUSTRIA Y COMERCIO',0,0,0),
+('5215','IMPUESTOS',0,0,0),
+('521505','INDUS Y CCIO',0,0,0),
+('52150505','PROV INDUS Y CCIO',0,0,0),
 ('52150506','AVISOS Y TABLEROS',0,0,0),
 ('5230','SEGUROS',0,0,0),
 ('523005','SEGUROS VENTAS',0,0,0),
@@ -1190,10 +1317,13 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('52950550','ESTAMPILLAS',0,0,0),
 ('52950560','CASINO Y RESTAURANTES',0,0,0),
 ('52950565','PARQUEADEROS',0,0,0),
+('529535','COMBUSTIBLES Y LUBRICANTES',0,1,0),
+('529560','CASINO Y RESTAURANTE',0,1,0),
 ('53','NO OPERACIONALES',0,0,0),
-('5305','FINANCIEROS',0,0,0),
-('530505','BANCARIOS',0,0,0),
+('5305','FINANC.',0,0,0),
+('530505','GASTOS BANCARIOS',0,0,0),
 ('53050501','GASTOS BANCARIOS',0,0,0),
+('530510','GRAVAMEN MVTO FINANCIERO',0,1,0),
 ('530515','COMISIONES',0,0,0),
 ('530520','INTERESES',0,0,0),
 ('53052001','INTERESES POR SOBREGIRO',0,0,0),
@@ -1203,8 +1333,9 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('53151505','COSTOS Y GASTOS PERIODOS ANTERIORES',0,0,0),
 ('5315150505','IMPUESTOS DE RENTA V. F ANTERIOR',0,0,0),
 ('5315150510','IMPUESTO CREE V.F ANTERIOR',0,0,0),
+('531520','IMPTS ASUMIDOS',0,1,0),
 ('5395','GASTOS DIVERSOS',0,0,0),
-('539595','GASTOS NO DEDUCIBLES',0,0,0),
+('539595','GASTOS NO DEDUCCIBLES',0,0,0),
 ('53959509','AJUSTE AL PESO',0,0,0),
 ('53959515','OTROS',0,0,0),
 ('54','IMPUESTO DE RENTA Y COMPLEMENTARIOS',0,0,0),
@@ -1213,8 +1344,14 @@ insert  into `cuenta_pub`(`codigo_cuenta`,`nombre_cuenta`,`permite_movimientos`,
 ('54050505','IMPUESTO DE RENTA Y COMPLEMENTARIOS',0,0,0),
 ('54050510','IMPUESTO CREE',0,0,0),
 ('54050515','IMPUESTO DE RENTA DIFERIDO',0,0,0),
-('6','COSTOS DE VENTAS',0,0,0),
-('61','COSTO DE PRESTACION DE SERVICIOS',0,0,0),
+('6','COSTOS DE VTAS',0,0,0),
+('61','COSTO VTAS Y PREST. SERVICIOS',0,0,0),
+('6120','INDUSS MANUFACTURERAS',0,1,0),
+('612027','ELAB. DE PRENDAS DE VESTIR',0,1,0),
+('61202705','COSTO MANO DE OBRA',0,1,0),
+('61202710','COSTO MATERIALES Y ACCESORIOS',0,1,0),
+('61202715','COSTO SCIO PERSONAL TEMPORAL',0,1,0),
+('61202720','DOTACION PERSONAL',0,1,0),
 ('6170','SERVICIOS PERSONALES',0,0,0),
 ('617035','PRODUCTOS Y SERVICIOS PARA MANTENIMIENTO',0,0,0),
 ('617095','ACTIVIDADES CONEXAS',0,0,0),
@@ -1497,7 +1634,7 @@ CREATE TABLE `facturaventa` (
   CONSTRAINT `facturaventa_ibfk_2` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
   CONSTRAINT `facturaventa_ibfk_3` FOREIGN KEY (`idresolucion`) REFERENCES `resolucion` (`idresolucion`),
   CONSTRAINT `facturaventa_ibfk_4` FOREIGN KEY (`id_factura_venta_tipo`) REFERENCES `facturaventatipo` (`id_factura_venta_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventa` */
 
@@ -1517,7 +1654,8 @@ insert  into `facturaventa`(`idfactura`,`nrofactura`,`fechainicio`,`fechavcto`,`
 (14,0,'2019-04-01','2019-04-01','2019-04-01 16:29:51','1',0,0,0,0,0,0,0,0,0,0,'-',2,NULL,'71268830',3,0,1,'HOLA',1,1),
 (16,36,'2019-04-01','2019-04-01','2019-04-01 21:34:32','1',0,19,0,15,828116,0,157342,23601,961857,961857,'-',2,NULL,'71268830',3,0,1,'DFDFDFF',1,1),
 (17,0,'2019-04-01','2019-04-16','2019-04-01 21:44:44','2',15,19,0,15,17050,0,3239.5,485.925,19803.575,19803.575,'-',1,15,'71268830',3,0,0,'',0,2),
-(19,0,'2019-06-10','2019-06-25','2019-06-10 11:57:56','2',15,0,0,0,0,0,0,0,0,0,'-',1,15,'71268830',NULL,0,0,'AAAA',0,2);
+(19,0,'2019-06-10','2019-06-25','2019-06-10 11:57:56','2',15,19,0,15,16500,0,3135,470,19165,19165,'-',1,15,'71268830',NULL,0,0,'AAAA',0,2),
+(20,0,'2019-06-25','2019-07-10','2019-06-25 11:22:06','2',15,0,0,0,0,0,0,0,0,0,'-',1,NULL,'71268830',3,0,0,'',1,1);
 
 /*Table structure for table `facturaventadetalle` */
 
@@ -1536,7 +1674,7 @@ CREATE TABLE `facturaventadetalle` (
   KEY `idproductodetalle` (`idproductodetalle`),
   CONSTRAINT `facturaventadetalle_ibfk_1` FOREIGN KEY (`idproductodetalle`) REFERENCES `productodetalle` (`idproductodetalle`),
   CONSTRAINT `facturaventadetalle_ibfk_2` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=latin1;
 
 /*Data for the table `facturaventadetalle` */
 
@@ -1597,7 +1735,8 @@ insert  into `facturaventadetalle`(`iddetallefactura`,`idfactura`,`idproductodet
 (74,13,40,'227',538,9659.9,5197026.2),
 (78,14,58,'1010',1,828116,828116),
 (99,17,55,'0002',110,155,17050),
-(111,16,58,'1010',1,828116,828116);
+(111,16,58,'1010',1,828116,828116),
+(112,19,55,'0002',110,150,16500);
 
 /*Table structure for table `facturaventatipo` */
 
@@ -1633,28 +1772,30 @@ CREATE TABLE `facturaventatipocuenta` (
   `rete_iva` tinyint(1) DEFAULT '0',
   `total` tinyint(1) DEFAULT '0',
   `base_rete_fuente` tinyint(1) DEFAULT '0',
+  `porcentaje_base` double DEFAULT '0',
   PRIMARY KEY (`id_factura_venta_tipo_cuenta`),
   KEY `id_factura_venta_tipo` (`id_factura_venta_tipo`),
   CONSTRAINT `facturaventatipocuenta_ibfk_1` FOREIGN KEY (`id_factura_venta_tipo`) REFERENCES `facturaventatipo` (`id_factura_venta_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `facturaventatipocuenta` */
 
-insert  into `facturaventatipocuenta`(`id_factura_venta_tipo_cuenta`,`cuenta`,`tipocuenta`,`id_factura_venta_tipo`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`) values 
-(7,1,2,1,0,1,0,0,0,0,0),
-(8,11,2,1,1,0,1,0,0,0,0),
-(9,1105,1,1,1,0,0,1,0,0,0),
-(10,110505,1,1,1,0,0,0,1,0,0),
-(11,11050505,1,1,0,0,0,0,0,1,0),
-(12,11050510,1,1,1,0,0,0,0,0,1),
-(13,1110,2,1,1,0,0,0,0,0,1),
-(14,1,2,2,0,1,0,0,0,0,0),
-(15,11,2,2,1,0,1,0,0,0,0),
-(16,1105,1,2,1,0,0,1,0,0,0),
-(17,110505,1,2,1,0,0,0,1,0,0),
-(18,11050505,1,2,0,0,0,0,0,1,0),
-(19,11050510,1,2,1,0,0,0,0,0,1),
-(20,1110,2,2,1,0,0,0,0,0,1);
+insert  into `facturaventatipocuenta`(`id_factura_venta_tipo_cuenta`,`cuenta`,`tipocuenta`,`id_factura_venta_tipo`,`base`,`subtotal`,`iva`,`rete_fuente`,`rete_iva`,`total`,`base_rete_fuente`,`porcentaje_base`) values 
+(7,1,2,1,0,1,0,0,0,0,0,0),
+(8,11,2,1,1,0,1,0,0,0,0,0),
+(9,1105,1,1,1,0,0,1,0,0,0,0),
+(10,110505,1,1,1,0,0,0,1,0,0,0),
+(11,11050505,1,1,0,0,0,0,0,1,0,0),
+(12,11050510,1,1,1,0,0,0,0,0,1,10),
+(13,1110,2,1,1,0,0,0,0,0,1,10),
+(14,1,2,2,0,1,0,0,0,0,0,0),
+(15,11,2,2,1,0,1,0,0,0,0,0),
+(16,1105,1,2,1,0,0,1,0,0,0,0),
+(17,110505,1,2,1,0,0,0,1,0,0,0),
+(18,11050505,1,2,0,0,0,0,0,1,0,0),
+(19,11050510,1,2,1,0,0,0,0,0,1,0),
+(20,1110,2,2,1,0,0,0,0,0,1,0),
+(21,11,1,3,0,0,0,0,0,0,0,3.4);
 
 /*Table structure for table `fichatiempo` */
 
@@ -1671,17 +1812,22 @@ CREATE TABLE `fichatiempo` (
   `referencia` varchar(30) COLLATE utf8_spanish_ci DEFAULT NULL,
   `estado` tinyint(1) DEFAULT '0',
   `total_segundos` float NOT NULL DEFAULT '0',
+  `id_horario` int(11) NOT NULL,
   PRIMARY KEY (`id_ficha_tiempo`),
   KEY `id_empleado` (`id_empleado`),
-  CONSTRAINT `fichatiempo_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `id_horario` (`id_horario`),
+  CONSTRAINT `fichatiempo_ibfk_1` FOREIGN KEY (`id_empleado`) REFERENCES `empleado` (`id_empleado`),
+  CONSTRAINT `fichatiempo_ibfk_2` FOREIGN KEY (`id_horario`) REFERENCES `horario` (`id_horario`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempo` */
 
-insert  into `fichatiempo`(`id_ficha_tiempo`,`id_empleado`,`cumplimiento`,`observacion`,`fechacreacion`,`desde`,`hasta`,`referencia`,`estado`,`total_segundos`) values 
-(1,1,85.14,'Cumple con el perfil de la empresa','2019-02-13 22:36:05','2019-02-14','2019-02-15','001',0,0),
-(2,2,1.85,'No cumple con el perfil de la empresa','2019-02-17 19:00:26','2019-02-27','2019-02-26','002',0,0),
-(4,3,77.79,'No cumple con el perfil de la empresa','2019-03-21 10:58:32','2019-05-02','2019-05-02','180',0,140);
+insert  into `fichatiempo`(`id_ficha_tiempo`,`id_empleado`,`cumplimiento`,`observacion`,`fechacreacion`,`desde`,`hasta`,`referencia`,`estado`,`total_segundos`,`id_horario`) values 
+(1,1,85.14,'Cumple con el perfil de la empresa','2019-02-13 22:36:05','2019-02-14','2019-02-15','001',0,0,1),
+(2,2,1.85,'No cumple con el perfil de la empresa','2019-02-17 19:00:26','2019-02-27','2019-02-26','002',0,0,1),
+(4,3,77.79,'No cumple con el perfil de la empresa','2019-03-21 10:58:32','2019-05-02','2019-05-02','180',0,140,1),
+(5,1,93.75,'Gana bonificacion de 15000 pesos mensual','2019-07-29 21:33:52','2019-07-29','2019-07-29','108',0,150,1),
+(6,1,250,'hola 1','2019-07-30 11:21:22','2019-07-30','2019-07-30','108',0,45,1);
 
 /*Table structure for table `fichatiempocalificacion` */
 
@@ -1693,7 +1839,7 @@ CREATE TABLE `fichatiempocalificacion` (
   `rango2` float NOT NULL,
   `observacion` text COLLATE utf8_spanish_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempocalificacion` */
 
@@ -1701,7 +1847,8 @@ insert  into `fichatiempocalificacion`(`id`,`rango1`,`rango2`,`observacion`) val
 (1,0,80,'No cumple con el perfil de la empresa'),
 (2,80,90,'Cumple con el perfil de la empresa'),
 (3,90,100,'Gana bonificacion de 15000 pesos mensual'),
-(4,100,10000,'Su Salario es 850,000 mil pesos mensuales');
+(4,100,200,'Su Salario es 850,000 mil pesos mensuales'),
+(5,200,20000,'hola 1');
 
 /*Table structure for table `fichatiempodetalle` */
 
@@ -1726,17 +1873,37 @@ CREATE TABLE `fichatiempodetalle` (
   KEY `idcliente` (`idcliente`),
   CONSTRAINT `fichatiempodetalle_ibfk_1` FOREIGN KEY (`id_ficha_tiempo`) REFERENCES `fichatiempo` (`id_ficha_tiempo`),
   CONSTRAINT `fichatiempodetalle_ibfk_2` FOREIGN KEY (`idcliente`) REFERENCES `cliente` (`idcliente`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `fichatiempodetalle` */
 
 insert  into `fichatiempodetalle`(`id_ficha_tiempo_detalle`,`id_ficha_tiempo`,`dia`,`desde`,`hasta`,`total_segundos`,`total_operacion`,`realizadas`,`cumplimiento`,`observacion`,`idcliente`,`valor_operacion`,`valor_pagar`) values 
 (1,1,'2019-02-14','23:00:00','01:00:00',30.1,119.6,100,83.61,'Cumple con el perfil de la empresa',NULL,0,0),
 (2,1,'2019-02-15','23:00:00','01:00:00',31.2,115.38,100,86.67,'Cumple con el perfil de la empresa',NULL,0,0),
-(17,2,'2019-02-27','01:00:00','02:00:00',20,180,10,5.56,'No cumple con el perfil de la empresa',1,24,240),
-(18,2,'2019-02-26','00:00:00','00:00:00',0,3600,0,0,'',1,0,0),
+(17,2,'2019-02-27','01:00:00','02:00:00',20,180,10,5.5556,'No cumple con el perfil de la empresa',1,24,240),
+(18,2,'2019-02-26','00:00:00','01:00:00',20,180,0,0,'',1,24,0),
 (28,4,'2019-05-02','12:00:00','12:00:00',140,25.71,20,77.79,'No cumple con el perfil de la empresa',1,169,3380),
-(29,2,'2019-02-26','23:00:00','12:00:00',0,3600,0,0,'',1,0,0);
+(29,2,'2019-02-26','22:00:00','23:00:00',20,180,0,0,'',1,24,0),
+(30,5,'2019-07-29','06:00:00','14:00:00',1200,192,180,93.75,'Gana bonificacion de 15000 pesos mensual',1,1450,261000),
+(31,6,'2019-07-30','06:00:00','07:00:00',180,20,50,250,'hola 1',1,218,10900);
+
+/*Table structure for table `horario` */
+
+DROP TABLE IF EXISTS `horario`;
+
+CREATE TABLE `horario` (
+  `id_horario` int(11) NOT NULL AUTO_INCREMENT,
+  `horario` varchar(60) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `desde` text COLLATE utf8_spanish_ci,
+  `hasta` text COLLATE utf8_spanish_ci,
+  PRIMARY KEY (`id_horario`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+/*Data for the table `horario` */
+
+insert  into `horario`(`id_horario`,`horario`,`desde`,`hasta`) values 
+(1,'mañana','06:00','14:00'),
+(2,'tarde','14:00','22:00');
 
 /*Table structure for table `matriculaempresa` */
 
@@ -3031,8 +3198,8 @@ insert  into `ordenproduccion`(`idordenproduccion`,`idcliente`,`codigoproducto`,
 (13,1,'220','2019-01-29 00:00:00','2019-02-05 00:00:00','2019-02-09 00:00:00',1090,8215439,NULL,'esta prenda lleva lavanderia',0,'14962',2,'ADMINISTRADOR',1,0,0,40.3669,0,34.1567,'13659',650,29.42),
 (14,1,'527','2019-01-24 00:00:00','2019-01-24 00:00:00','2019-01-29 00:00:00',1131,693125.381,NULL,'terminacion',0,'14633',2,'ADMINISTRADOR',1,0,0,0,0,0,'13695',60,2.6),
 (15,1,'0002','2019-03-16 00:00:00','2019-03-16 00:00:00','2019-03-16 00:00:00',360,57800,NULL,'ghgh',0,'123',2,'71268830',1,0,0,0,0,0,'321',0,0),
-(16,1,'108','2019-03-20 00:00:00','2019-01-19 00:00:00','2019-01-24 00:00:00',NULL,0,NULL,'hjghgh',0,'56565',2,'71268830',0,0,0,0,0,0,'56565',0,0),
-(17,1,'108','2019-03-20 00:00:00','2018-12-11 00:00:00','2019-03-20 00:00:00',NULL,0,NULL,'gfg',0,'frf',1,'71268830',0,0,0,0,0,0,'trf',0,NULL);
+(16,1,'108','2019-03-20 00:00:00','2019-01-19 00:00:00','2019-01-24 00:00:00',216,23328,NULL,'hjghgh',0,'56565',2,'71268830',1,0,0,0,0,0,'56565',0,0),
+(17,2,'527','2019-03-20 00:00:00','2018-12-11 00:00:00','2019-03-20 00:00:00',NULL,0,NULL,'gfg',0,'frf',1,'71268830',0,0,0,0,0,0,'trf',0,NULL);
 
 /*Table structure for table `ordenproducciondetalle` */
 
@@ -3058,7 +3225,7 @@ CREATE TABLE `ordenproducciondetalle` (
   PRIMARY KEY (`iddetalleorden`),
   KEY `idproductodetalle` (`idproductodetalle`),
   CONSTRAINT `ordenproducciondetalle_ibfk_1` FOREIGN KEY (`idproductodetalle`) REFERENCES `productodetalle` (`idproductodetalle`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=latin1;
 
 /*Data for the table `ordenproducciondetalle` */
 
@@ -3127,7 +3294,12 @@ insert  into `ordenproducciondetalle`(`iddetalleorden`,`idproductodetalle`,`codi
 (79,45,'527',267,612.843,163629.081,14,NULL,NULL,0,0,0,0,0,0,60),
 (80,55,'0002',110,150,16500,15,NULL,NULL,0,0,0,0,0,NULL,0),
 (81,56,'0002',120,160,19200,15,NULL,NULL,0,0,0,0,0,NULL,0),
-(82,57,'0002',130,170,22100,15,NULL,NULL,0,0,0,0,0,NULL,0);
+(82,57,'0002',130,170,22100,15,NULL,NULL,0,0,0,0,0,NULL,0),
+(83,1,'108',108,108,11664,16,NULL,NULL,0,0,0,0,0,NULL,0),
+(84,2,'108',108,108,11664,16,NULL,NULL,0,0,0,0,0,NULL,0),
+(85,3,'108',0,0,0,16,NULL,NULL,0,0,0,0,0,NULL,0),
+(86,4,'108',0,0,0,16,NULL,NULL,0,0,0,0,0,NULL,0),
+(87,5,'108',0,0,0,16,NULL,NULL,0,0,0,0,0,NULL,0);
 
 /*Table structure for table `ordenproducciondetalleproceso` */
 
@@ -3503,7 +3675,7 @@ CREATE TABLE `permisos` (
   `modulo` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `menu_operacion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   PRIMARY KEY (`id_permiso`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `permisos` */
 
@@ -3558,7 +3730,9 @@ insert  into `permisos`(`id_permiso`,`permiso`,`modulo`,`menu_operacion`) values
 (48,'FACTURA DE VENTA TIPO','FACTURACION','ADMINISTRACION'),
 (49,'CUENTAS PUB','CONTABILIDAD','ADMINISTRACION'),
 (50,'CONTABILIZAR','CONTABILIDAD','UTILIDADES'),
-(51,'CONTABILIDAD COMPROBANTE TIPO (EXPORTAR)','CONTABILIDAD','ADMINISTRACION');
+(51,'CONTABILIDAD COMPROBANTE TIPO (EXPORTAR)','CONTABILIDAD','ADMINISTRACION'),
+(52,'COLORES','PRODUCCION','ADMINISTRACION'),
+(53,'CALIFICACION FICHA TIEMPO','PRODUCCION','ADMINISTRACION');
 
 /*Table structure for table `prendatipo` */
 
@@ -3868,7 +4042,7 @@ CREATE TABLE `recibocaja` (
   CONSTRAINT `recibocaja_ibfk_4` FOREIGN KEY (`idmunicipio`) REFERENCES `municipio` (`idmunicipio`),
   CONSTRAINT `recibocaja_ibfk_5` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`),
   CONSTRAINT `recibocaja_ibfk_6` FOREIGN KEY (`idbanco`) REFERENCES `banco` (`idbanco`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocaja` */
 
@@ -3881,7 +4055,8 @@ insert  into `recibocaja`(`idrecibo`,`fecharecibo`,`fechapago`,`numero`,`idtipor
 (8,'2019-02-05 18:48:30','2019-02-06',5,11,'05001',222332,'-',1,'AAAAA','71268830',0,1,1,NULL,NULL,NULL,NULL,1),
 (9,'2019-02-11 19:30:51','2019-02-11',0,1,'05001',0,'-',1,'DSDSDSD','71268830',0,0,1,NULL,NULL,NULL,NULL,1),
 (10,'2019-02-12 09:02:47','2019-02-12',0,3,'05001',0,'-',2,'FFFF','71268830',0,0,1,NULL,NULL,NULL,NULL,1022),
-(11,'2019-02-12 09:05:27','2019-02-12',0,6,'05001',0,'-',2,'CCCC','71268830',0,0,0,NULL,NULL,NULL,NULL,1);
+(11,'2019-02-12 09:05:27','2019-02-12',0,6,'05001',0,'-',2,'CCCC','71268830',0,0,0,NULL,NULL,NULL,NULL,1),
+(12,'2019-07-08 12:15:22','2019-07-08',0,1,'05001',0,'-',1,'B','71268830',0,1,0,NULL,NULL,NULL,NULL,1021);
 
 /*Table structure for table `recibocajadetalle` */
 
@@ -3902,7 +4077,7 @@ CREATE TABLE `recibocajadetalle` (
   KEY `idfactura` (`idfactura`),
   CONSTRAINT `recibocajadetalle_ibfk_2` FOREIGN KEY (`idrecibo`) REFERENCES `recibocaja` (`idrecibo`),
   CONSTRAINT `recibocajadetalle_ibfk_3` FOREIGN KEY (`idfactura`) REFERENCES `facturaventa` (`idfactura`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 /*Data for the table `recibocajadetalle` */
 
@@ -3916,7 +4091,8 @@ insert  into `recibocajadetalle`(`iddetallerecibo`,`idfactura`,`vlrabono`,`vlrsa
 (8,8,1188160,0,42378,30194,NULL,5,NULL),
 (9,9,598749.2634997,0,0,14691.6521823,NULL,5,NULL),
 (10,NULL,222332,0,0,0,0,8,NULL),
-(11,1,18856661,-37713323,672551,479193,NULL,4,NULL);
+(11,1,18856661,-37713323,672551,479193,NULL,4,NULL),
+(12,1,18856660,-37713323,672551,479193,NULL,12,NULL);
 
 /*Table structure for table `remision` */
 
@@ -3934,20 +4110,24 @@ CREATE TABLE `remision` (
   `total_despachadas` float DEFAULT NULL,
   `fechacreacion` date DEFAULT NULL,
   `color` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `id_color` int(11) DEFAULT '0',
   PRIMARY KEY (`id_remision`),
   KEY `idordenproduccion` (`idordenproduccion`),
-  CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  KEY `id_color` (`id_color`),
+  CONSTRAINT `remision_ibfk_1` FOREIGN KEY (`idordenproduccion`) REFERENCES `ordenproduccion` (`idordenproduccion`),
+  CONSTRAINT `remision_ibfk_2` FOREIGN KEY (`id_color`) REFERENCES `color` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remision` */
 
-insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`,`color`) values 
-(2,14,2,23,568,156,563,1131,1131,'2019-02-05','Rojo'),
-(3,1,0,0,0,0,0,0,0,'2019-02-15','Rojo'),
-(4,13,3,3,0,10,1100,1100,1100,'2019-02-13','Amarillo'),
-(5,8,4,1,0,0,10,10,10,'2019-03-01','Negro'),
-(7,12,5,1,0,0,0,0,0,'2019-03-10','Azul'),
-(8,15,6,1,0,0,360,360,360,'2019-03-16','Amarillo');
+insert  into `remision`(`id_remision`,`idordenproduccion`,`numero`,`total_tulas`,`total_exportacion`,`totalsegundas`,`total_colombia`,`total_confeccion`,`total_despachadas`,`fechacreacion`,`color`,`id_color`) values 
+(2,14,2,23,568,156,563,1131,1131,'2019-02-05','Rojo',6),
+(3,1,0,0,0,0,0,0,0,'2019-02-15','Rojo',6),
+(4,13,3,3,0,10,1100,1100,1100,'2019-02-13','Amarillo',1),
+(5,8,4,1,0,0,10,10,10,'2019-03-01','Negro',5),
+(7,12,5,1,0,0,0,0,0,'2019-03-10','Azul',2),
+(8,15,6,1,0,0,360,360,360,'2019-03-16','Amarillo',1),
+(9,16,7,4,0,0,0,0,0,'2019-08-07','Naranja',4);
 
 /*Table structure for table `remisiondetalle` */
 
@@ -3956,6 +4136,7 @@ DROP TABLE IF EXISTS `remisiondetalle`;
 CREATE TABLE `remisiondetalle` (
   `id_remision_detalle` int(11) NOT NULL AUTO_INCREMENT,
   `id_remision` int(11) DEFAULT NULL,
+  `id_color` int(11) DEFAULT '0',
   `color` varchar(25) COLLATE utf8_spanish_ci DEFAULT NULL,
   `oc` tinyint(1) DEFAULT NULL,
   `tula` int(2) DEFAULT '0',
@@ -4010,37 +4191,41 @@ CREATE TABLE `remisiondetalle` (
   PRIMARY KEY (`id_remision_detalle`),
   KEY `id_remision` (`id_remision`),
   CONSTRAINT `remisiondetalle_ibfk_1` FOREIGN KEY (`id_remision`) REFERENCES `remision` (`id_remision`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `remisiondetalle` */
 
-insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`color`,`oc`,`tula`,`xs`,`s`,`m`,`l`,`xl`,`2`,`4`,`6`,`8`,`10`,`12`,`14`,`16`,`18`,`20`,`22`,`28`,`30`,`32`,`34`,`36`,`38`,`42`,`txs`,`ts`,`tm`,`tl`,`txl`,`t2`,`t4`,`t6`,`t8`,`t10`,`t12`,`t14`,`t16`,`t18`,`t20`,`t22`,`t28`,`t30`,`t32`,`t34`,`t36`,`t38`,`t42`,`estado`,`unidades`) values 
-(5,2,'Rojo',1,1,120,60,107,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,347),
-(6,2,'Rojo',1,1,120,67,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,194),
-(7,2,'Rojo',1,1,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27),
-(8,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(9,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(10,2,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33),
-(11,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(12,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(13,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(14,2,'Rojo',0,1,0,120,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,240),
-(15,2,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,94),
-(16,2,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,156),
-(19,4,'Amarillo',0,1,0,400,400,210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1010),
-(20,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(21,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(22,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(23,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(24,2,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(25,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(26,2,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(29,5,'Negro',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
-(30,4,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,10),
-(32,4,'Amarillo',0,1,0,30,23,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,80),
-(37,8,'Amarillo',0,1,0,0,0,0,0,0,110,120,130,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,360),
-(38,7,'Azul',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-(39,7,'Azul',NULL,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,0);
+insert  into `remisiondetalle`(`id_remision_detalle`,`id_remision`,`id_color`,`color`,`oc`,`tula`,`xs`,`s`,`m`,`l`,`xl`,`2`,`4`,`6`,`8`,`10`,`12`,`14`,`16`,`18`,`20`,`22`,`28`,`30`,`32`,`34`,`36`,`38`,`42`,`txs`,`ts`,`tm`,`tl`,`txl`,`t2`,`t4`,`t6`,`t8`,`t10`,`t12`,`t14`,`t16`,`t18`,`t20`,`t22`,`t28`,`t30`,`t32`,`t34`,`t36`,`t38`,`t42`,`estado`,`unidades`) values 
+(5,2,6,'Rojo',1,1,120,60,107,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,347),
+(6,2,6,'Rojo',1,1,120,67,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,194),
+(7,2,6,'Rojo',1,1,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27),
+(8,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(9,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(10,2,6,'Rojo',0,1,0,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,33),
+(11,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(12,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(13,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(14,2,6,'Rojo',0,1,0,120,120,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,240),
+(15,2,6,'Rojo',0,1,0,94,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,94),
+(16,2,6,'Rojo',0,5,0,22,38,0,96,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,156),
+(19,4,1,'Amarillo',0,1,0,400,400,210,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1010),
+(20,2,6,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(21,2,6,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(22,2,6,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(23,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(24,2,6,'Rojo',0,1,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(25,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(26,2,6,'Rojo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(29,5,5,'Negro',0,1,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10),
+(30,4,1,'Amarillo',0,1,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,10),
+(32,4,1,'Amarillo',0,1,0,30,23,27,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,80),
+(37,8,1,'Amarillo',0,1,0,0,0,0,0,0,110,120,130,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,360),
+(38,7,2,'Azul',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+(39,7,2,'Azul',NULL,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,NULL,0),
+(43,9,4,'Naranja',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+(44,9,4,'Naranja',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+(45,9,1,'Amarillo',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0),
+(46,9,2,'Azul',0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 /*Table structure for table `resolucion` */
 
@@ -4084,7 +4269,7 @@ CREATE TABLE `resumen_costos` (
 /*Data for the table `resumen_costos` */
 
 insert  into `resumen_costos`(`id_resumen_costos`,`costo_laboral`,`costo_fijo`,`total_costo`,`costo_diario`) values 
-(1,28082200,5628000,33710200,1296550);
+(1,29940700,5628000,35568700,1368030);
 
 /*Table structure for table `seguimiento_produccion` */
 
@@ -4359,13 +4544,21 @@ CREATE TABLE `tiporecibocuenta` (
   PRIMARY KEY (`idtiporecibocuenta`),
   KEY `idtiporecibo` (`idtiporecibo`),
   CONSTRAINT `tiporecibocuenta_ibfk_1` FOREIGN KEY (`idtiporecibo`) REFERENCES `tiporecibo` (`idtiporecibo`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 /*Data for the table `tiporecibocuenta` */
 
 insert  into `tiporecibocuenta`(`idtiporecibocuenta`,`cuenta`,`tipocuenta`,`idtiporecibo`) values 
 (17,1,1,3),
-(18,11,2,3);
+(18,11,2,3),
+(19,1,1,1),
+(20,11,2,1),
+(21,1,1,12),
+(22,11,2,12),
+(24,1,1,10),
+(25,11,2,10),
+(26,1105,1,10),
+(27,110505,2,10);
 
 /*Table structure for table `usuario` */
 
