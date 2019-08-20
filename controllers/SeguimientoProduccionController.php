@@ -344,6 +344,15 @@ class SeguimientoProduccionController extends Controller
         //return ;
     }
     
+    public function actionCerrar($id)
+    {        
+        $model = $this->findModel($id);        
+        $model->estado = 1;
+        $model->save(false);
+        return $this->redirect(['view', 'id' => $id]);        
+        
+    }
+    
     public function actionEliminardetalle($id,$idseguimiento)
     {
         $seguimientodetalle = SeguimientoProduccionDetalle::findOne($id);

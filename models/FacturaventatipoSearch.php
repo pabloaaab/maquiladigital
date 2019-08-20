@@ -18,6 +18,7 @@ class FacturaventatipoSearch extends Facturaventatipo
     {
         return [
             [['id_factura_venta_tipo', 'estado'], 'integer'],
+            [['porcentaje_retefuente'], 'number'],
             [['concepto'], 'safe'],
         ];
     }
@@ -60,6 +61,7 @@ class FacturaventatipoSearch extends Facturaventatipo
         $query->andFilterWhere([
             'id_factura_venta_tipo' => $this->id_factura_venta_tipo,
             'estado' => $this->estado,
+            'porcentaje_retefuente' => $this->porcentaje_retefuente,
         ]);
 
         $query->andFilterWhere(['like', 'concepto', $this->concepto]);

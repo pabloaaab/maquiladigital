@@ -27,6 +27,9 @@ use yii\helpers\Url;
         <div class="row">
             <?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
         </div>
+        <div class="row">
+            <?= $form->field($model, 'porcentaje_retefuente')->textInput(['maxlength' => true]) ?>    
+        </div>
 	<div class="row">
             <?= $form->field($model, 'estado')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
         </div>		

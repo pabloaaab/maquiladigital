@@ -45,8 +45,14 @@ use kartik\depdrop\DepDrop;
         <div class="row">                        
             <?= $form->field($model, 'id_factura_venta_tipo')->dropDownList($facturastipo, ['prompt' => 'Seleccione un tipo...']) ?>
         </div>
-        <div class="row">
-            <?= $form->field($model, 'idordenproduccion')->dropDownList($ordenesproduccion,['prompt' => 'Seleccione una orden de producción...'],['required' => true]) ?>
+        <div class="row">            
+            <?= $form->field($model, 'idordenproduccion')->widget(Select2::classname(), [
+            'data' => $ordenesproduccion,
+            'options' => ['placeholder' => 'Seleccione una orden de producción...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>

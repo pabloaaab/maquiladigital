@@ -20,6 +20,7 @@ use Yii;
  * @property string $codigoproducto
  * @property string $ordenproduccionint
  * @property string $ordenproduccionext
+ * @property int $estado
  * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
@@ -43,7 +44,7 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
         return [
             [['fecha_inicio_produccion', 'hora_inicio', 'idcliente', 'idordenproduccion'], 'required'],
             [['fecha_inicio_produccion', 'hora_inicio'], 'safe'],
-            [['idcliente', 'idordenproduccion','descanso'], 'integer'],
+            [['idcliente', 'idordenproduccion','descanso','estado'], 'integer'],
             [['minutos', 'horas_a_trabajar', 'prendas_reales'], 'number'],
             [['codigoproducto', 'ordenproduccionint', 'ordenproduccionext'], 'string'],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
@@ -66,6 +67,7 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
             'codigoproducto' => 'Cód. Producto',
             'ordenproduccionint' => 'Orden Prod',
             'ordenproduccionext' => 'Orden Prod Ext',
+            'estado' => 'Estado',
         ];
     }
 
@@ -91,5 +93,15 @@ class SeguimientoProduccion extends \yii\db\ActiveRecord
     public function getSeguimientoProduccionDetalles()
     {
         return $this->hasMany(SeguimientoProduccionDetalle::className(), ['id_seguimiento_produccion' => 'id_seguimiento_produccion']);
+    }
+    
+    public function getCerrado()
+    {
+        if($this->estado == 1){
+            $cerrado = "SI";
+        }else{
+            $cerrado = "NO";
+        }
+        return $cerrado;
     }
 }

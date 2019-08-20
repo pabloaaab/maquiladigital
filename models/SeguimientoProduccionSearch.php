@@ -17,7 +17,7 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
     public function rules()
     {
         return [
-            [['id_seguimiento_produccion', 'idcliente', 'idordenproduccion'], 'integer'],
+            [['id_seguimiento_produccion', 'idcliente', 'idordenproduccion','estado'], 'integer'],
             [['codigoproducto', 'ordenproduccionint', 'ordenproduccionext'], 'string'],
             [['fecha_inicio_produccion', 'hora_inicio'], 'safe'],
         ];
@@ -68,6 +68,7 @@ class SeguimientoProduccionSearch extends SeguimientoProduccion
             'ordenproduccionext' => $this->ordenproduccionext,
             'ordenproduccionint' => $this->ordenproduccionint,
             'codigoproducto' => $this->codigoproducto,
+            'estado' => $this->estado,
         ]);
 
         return $dataProvider;

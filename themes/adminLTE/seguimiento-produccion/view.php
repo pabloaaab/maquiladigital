@@ -22,6 +22,18 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php 
+        if ($model->estado == 0){ ?>
+            <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar', ['cerrar', 'id' => $model->id_seguimiento_produccion], [
+                'class' => 'btn btn-default',
+                'data' => [
+                'confirm' => 'Esta seguro de cerrar el registro?',
+                'method' => 'post',
+                ],
+                ]) ?>
+        <?php } ?>        
+        
+        <button type="button" class="btn btn-warning">Cerrado <span class="badge"><?= $model->cerrado ?></span></button>
     </p>
 <?php $formulario = ActiveForm::begin([
     "method" => "get",

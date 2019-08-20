@@ -39,7 +39,9 @@ $this->params['breadcrumbs'][] = $model->id_factura_venta_tipo;
                     <th><?= Html::activeLabel($model, 'concepto') ?>:</th>
                     <td><?= Html::encode($model->concepto) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->estados) ?></td>                    
+                    <td><?= Html::encode($model->estados) ?></td>
+                    <th><?= Html::activeLabel($model, 'porcentaje_retefuente') ?>:</th>
+                    <td><?= Html::encode($model->porcentaje_retefuente) ?></td>                    
                 </tr>                
             </table>
         </div>

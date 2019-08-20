@@ -978,7 +978,7 @@ class OrdenProduccionController extends Controller {
     }
     
     public function actionProductos($id){
-        $rows = Producto::find()->where(['=','idcliente', $id])->all();
+        $rows = Producto::find()->where(['=','idcliente', $id])->orderBy('idproducto desc')->all();
 
         echo "<option value='' required>Seleccione un codigo...</option>";
         if(count($rows)>0){

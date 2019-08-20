@@ -25,11 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'id_factura_venta_tipo',
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [                
                 'attribute' => 'concepto',
-                'contentOptions' => ['class' => 'col-lg-5'],                
+                'contentOptions' => ['class' => 'col-lg-3'],                
+            ],
+            [                
+                'attribute' => 'porcentaje_retefuente',
+                'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [
                 'attribute' => 'estado',

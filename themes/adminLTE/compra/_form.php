@@ -30,8 +30,14 @@ use kartik\depdrop\DepDrop;
         <h4>Información Compra</h4>
     </div>
     <div class="panel-body">        
-        <div class="row">
-            <?= $form->field($model, 'id_proveedor')->dropDownList($proveedores, ['prompt' => 'Seleccione un proveedor...']) ?>
+        <div class="row">            
+            <?= $form->field($model, 'id_proveedor')->widget(Select2::classname(), [
+            'data' => $proveedores,
+            'options' => ['placeholder' => 'Seleccione un proveedor...'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'id_compra_concepto')->dropDownList($conceptos,['prompt' => 'Seleccione un concepto...']) ?>

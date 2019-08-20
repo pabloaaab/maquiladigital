@@ -31,11 +31,23 @@ use yii\helpers\Url;
         Información Recibo Caja
     </div>
     <div class="panel-body">
-        <div class="row">            
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
-        </div>
         <div class="row">                        
-            <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+            'data' => $clientes,
+            'options' => ['placeholder' => 'Seleccione un cliente'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
+        </div>
+        <div class="row">                                    
+            <?= $form->field($model, 'idtiporecibo')->widget(Select2::classname(), [
+            'data' => $tiporecibos,
+            'options' => ['placeholder' => 'Seleccione un tipo'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>                                        
         <div class="row">            
             <?= $form->field($model, 'idbanco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>

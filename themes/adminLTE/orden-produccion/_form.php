@@ -36,8 +36,14 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('orden-produccion/productos').'", { id: $(this).val() } ) .done(function( data ) {
         $( "#'.Html::getInputId($model, 'codigoproducto',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
         </div>
-        <div class="row">
-            <?= $form->field($model, 'codigoproducto')->dropDownList($codigos,['prompt' => 'Seleccione un codigo...'],['required' => true]) ?>
+        <div class="row">            
+            <?= $form->field($model, 'codigoproducto')->widget(Select2::classname(), [
+            'data' => $codigos,
+            'options' => ['placeholder' => 'Seleccione un producto'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>

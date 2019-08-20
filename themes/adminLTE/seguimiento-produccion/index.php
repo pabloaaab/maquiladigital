@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'hora_inicio',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-1 '],                
             ],
             [
                 'attribute' => 'idcliente',
@@ -59,7 +59,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [               
                 'attribute' => 'ordenproduccionext',
                 'contentOptions' => ['class' => 'col-lg-1 '],                
-            ],            
+            ],
+            [
+                'attribute' => 'estado',
+                'value' => function($model){
+                    $ficha = \app\models\SeguimientoProduccion::findOne($model->id_seguimiento_produccion);                    
+                    return $ficha->cerrado;
+                },
+                'filter' => ArrayHelper::map(\app\models\SeguimientoProduccion::find()->all(),'estado','cerrado'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],
