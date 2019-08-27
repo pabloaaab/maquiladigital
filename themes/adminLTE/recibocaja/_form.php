@@ -30,27 +30,18 @@ use yii\helpers\Url;
     <div class="panel-heading">
         Información Recibo Caja
     </div>
-    <div class="panel-body">
-        <div class="row">                        
-            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
-            'data' => $clientes,
-            'options' => ['placeholder' => 'Seleccione un cliente'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]); ?>
-        </div>
+    <div class="panel-body">        
         <div class="row">                                    
-            <?= $form->field($model, 'idtiporecibo')->widget(Select2::classname(), [
-            'data' => $tiporecibos,
-            'options' => ['placeholder' => 'Seleccione un tipo'],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]); ?>
+            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un tipo de recibos...']) ?>
+        </div>        
+        <div class="row">                                                
+            <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo de recibos...']) ?>
         </div>                                        
         <div class="row">            
             <?= $form->field($model, 'idbanco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>
+        </div>        
+        <div class="row">            
+            <?= $form->field($model, 'idmunicipio')->dropDownList($municipios, ['prompt' => 'Seleccione un municipio...']) ?>
         </div>
         <div class="row">            
             <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',
@@ -62,17 +53,8 @@ use yii\helpers\Url;
             ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
-                'data' => $municipios,
-                'options' => ['prompt' => 'Seleccione un municipio ...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
-        </div>
-        <div class="row">
             <?= $form->field($model, 'observacion')->textarea() ?>
-        </div>
+        </div>        
         <div class="panel-footer text-right">            
             <a href="<?= Url::toRoute("recibocaja/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
