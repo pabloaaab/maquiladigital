@@ -385,13 +385,13 @@ class NotacreditoController extends Controller
                             $factura->estado = 4; //estado 0 = abieto, estado 1 = abono, estado 2 = pagada, estado 3 = anulada por notacredito (saldo 0 en la factura), estado 4 = descuento por nota credito
                             $factura->saldo = $nuevosaldo;
                         }
-                        $factura->update();
+                        $factura->save(false);
                     }
-                    $model->valor = $subtotal;
-                    $model->iva = $totaliva;
-                    $model->reteiva = $totalreteiva;
-                    $model->retefuente = $totalretefuente;
-                    $model->total = $model->valor + $model->iva - $model->reteiva - $model->retefuente;
+                    $model->valor = round($subtotal,0);
+                    $model->iva = round($totaliva,0);
+                    $model->reteiva = round($totalreteiva,0);
+                    $model->retefuente = round($totalretefuente,0);
+                    $model->total = round($model->valor + $model->iva - $model->reteiva - $model->retefuente,0);
                     $model->fechapago = date('Y-m-d');
                     //generar consecutivo numero de la nota credito
                     $consecutivo = Consecutivo::findOne(2);//2 nota credito

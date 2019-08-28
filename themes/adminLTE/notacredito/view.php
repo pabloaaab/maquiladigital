@@ -124,8 +124,7 @@ $view = 'notacredito';
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Factura</th>
+                        <th scope="col">Id</th>                        
                         <th scope="col">Nro Factura</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Valor</th>
@@ -135,8 +134,7 @@ $view = 'notacredito';
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr>
-                        <td><?= $val->iddetallenota ?></td>
-                        <td><?= $val->idfactura ?></td>
+                        <td><?= $val->iddetallenota ?></td>                        
                         <td><?= $val->nrofactura ?></td>
                         <td><?= $val->factura->cliente->nombrecorto ?></td>
                         <td><?= '$ '.number_format($val->valor,0) ?></td>
@@ -149,7 +147,7 @@ $view = 'notacredito';
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title">Editar detalle <?= $val->iddetallenota ?></h4>
+                                                <h4 class="modal-title">Editar detalle</h4>
                                             </div>
                                             <?= Html::beginForm(Url::toRoute("notacredito/editardetalle"), "POST") ?>
                                             <div class="modal-body">
@@ -158,10 +156,10 @@ $view = 'notacredito';
                                                         <h4>Información Nota Crédito Detalle</h4>
                                                     </div>
                                                     <div class="panel-body">
-                                                        <div class="col-lg-2">
-                                                            <label>Valor Nota Crédito:</label>
+                                                        <div class="col-lg-4">
+                                                            <label>Valor:</label>
                                                         </div>
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-4">
                                                             <input type="text" name="valor" value="<?=  $val->valor ?>" class="form-control" required>
                                                         </div>
                                                         <input type="hidden" name="iddetallenota" value="<?= $val->iddetallenota ?>">

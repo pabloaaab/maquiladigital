@@ -83,19 +83,19 @@ class PDF extends FPDF {
         $this->Cell(24, 5, utf8_decode(""), 0, 0, 'c');
         $this->Cell(70, 5, utf8_decode(""), 0, 0, 'c');
         //Lineas del encabezado
-        $this->Line(10, 85, 10, 170);
-        $this->Line(23, 85, 23, 170);
-        $this->Line(136, 85, 136, 170);
-        $this->Line(156, 85, 156, 170);
-        $this->Line(176, 85, 176, 170);
-        $this->Line(201, 85, 201, 170);
-        $this->Line(10, 170, 201, 170); //linea vertical inferior x1,y1,x2,y2
+        $this->Line(10, 85, 10, 220);
+        $this->Line(23, 85, 23, 220);
+        $this->Line(136, 85, 136, 220);
+        $this->Line(156, 85, 156, 220);
+        $this->Line(176, 85, 176, 220);
+        $this->Line(201, 85, 201, 220);
+        $this->Line(10, 220, 201, 220); //linea vertical inferior x1,y1,x2,y2
         //Cuadro de la nota
-        $this->Line(10, 180, 156, 180); //linea horizontal superior
+        $this->Line(10, 230, 156, 230); //linea horizontal superior
         //$this->Line(10,182,10,190);//linea vertical
-        $this->Line(10, 188, 156, 188); //linea horizontal inferior
+        $this->Line(10, 238, 156, 238); //linea horizontal inferior
         //Linea de las observacines
-        $this->Line(10, 180, 10, 204); //linea vertical
+        $this->Line(10, 230, 10, 254); //linea vertical
         //Detalle factura
         $this->EncabezadoDetalles();
     }
@@ -137,34 +137,34 @@ class PDF extends FPDF {
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
-        $this->SetFillColor(200, 200, 200);
-        $pdf->SetXY(10, 180);
-        $this->SetFont('Arial', 'B', 8);
+        $pdf->SetFillColor(200, 200, 200);
+        $pdf->SetXY(10, 230);
+        $pdf->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(146, 4, utf8_decode(valorEnLetras($model->total)), 0, 'J');
-        $pdf->SetXY(156, 180);
+        $pdf->SetXY(156, 230);
         $pdf->MultiCell(20, 8, 'SUBTOTAL:', 1, 'L');
-        $pdf->SetXY(176, 180);
+        $pdf->SetXY(176, 230);
         $pdf->MultiCell(25, 8, number_format($model->valor, 2, '.', ','), 1, 'R');
-        $pdf->SetXY(10, 188);
-        $this->SetFont('Arial', 'B', 8);
+        $pdf->SetXY(10, 238);
+        $pdf->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(146, 4, utf8_decode('Observaciones: ' . $model->observacion), 0, 'J');
-        $pdf->SetXY(156, 188);
+        $pdf->SetXY(156, 238);
         $pdf->MultiCell(20, 8, 'IVA:', 1, 'L');
-        $pdf->SetXY(176, 188);
+        $pdf->SetXY(176, 238);
         $pdf->MultiCell(25, 8, number_format($model->iva, 2, '.', ','), 1, 'R');
-        $pdf->SetXY(156, 196);
+        $pdf->SetXY(156, 246);
         $pdf->MultiCell(20, 8, 'RETE IVA:', 1, 'L');
-        $pdf->SetXY(176, 196);
+        $pdf->SetXY(176, 246);
         $pdf->MultiCell(25, 8, number_format($model->reteiva, 2, '.', ','), 1, 'R');
-        $pdf->SetXY(156, 204);
+        $pdf->SetXY(156, 254);
         $pdf->MultiCell(20, 8, 'RETE FTE:', 1, 'L');
-        $pdf->SetXY(176, 204);
+        $pdf->SetXY(176, 254);
         $pdf->MultiCell(25, 8, number_format($model->retefuente, 2, '.', ','), 1, 'R');
-        $pdf->SetXY(10, 204);
+        $pdf->SetXY(10, 254);
         $pdf->MultiCell(146, 16, 'FIRMA Y SELLO', 1, 'J');
-        $pdf->SetXY(156, 212);
+        $pdf->SetXY(156, 262);
         $pdf->MultiCell(20, 8, 'TOTAL:', 1, 'L');
-        $pdf->SetXY(176, 212);
+        $pdf->SetXY(176, 262);
         $pdf->MultiCell(25, 8, number_format($model->total, 2, '.', ','), 1, 'R');
     }
 
