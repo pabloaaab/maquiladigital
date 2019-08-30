@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
 ?>
 <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
+        <?php if ($model->estado == 0){ ?>
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_seguimiento_produccion], ['class' => 'btn btn-success']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_seguimiento_produccion], [
             'class' => 'btn btn-danger',
@@ -22,6 +23,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 'method' => 'post',
             ],
         ]) ?>
+        <?php } ?>
         <?php 
         if ($model->estado == 0){ ?>
             <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar', ['cerrar', 'id' => $model->id_seguimiento_produccion], [
@@ -97,9 +99,11 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
             <?= $formulario->field($form, "vlrprenda")->input("search",['readonly' => TRUE, 'value' => (round($model->ordenproduccion->totalorden / $model->ordenproduccion->cantidad))]) ?>
         </div>
         <div class="panel-footer text-right">
+            <?php if ($model->estado == 0){ ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Calcular prendas", ["class" => "btn btn-primary", 'name' => 'calcular']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-list-alt'></span> Generar Info", ["class" => "btn btn-primary",]) ?>
             <a align="right" href="<?= Url::toRoute(["seguimiento-produccion/view", 'id' => $model->id_seguimiento_produccion]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?php } ?>
         </div>
     </div>
 </div>
@@ -207,7 +211,7 @@ $this->params['breadcrumbs'][] = $model->id_seguimiento_produccion;
                 <td><?= $val->porcentaje_produccion ?></td>
                 <td><?= $val->total_venta ?></td>
                 <td></td>
-                <td><?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['eliminardetalle', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?></td>                
+                <td><?php if ($model->estado == 0) { ?> <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['eliminardetalle', 'id' => $val->id_seguimiento_produccion_detalle, 'idseguimiento' => $model->id_seguimiento_produccion]); ?> <?php } ?></td>                
             </tr>
             </tbody>
             <?php endforeach; ?>

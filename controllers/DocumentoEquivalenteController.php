@@ -8,6 +8,7 @@ use app\models\DocumentoEquivalenteSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * DocumentoEquivalenteController implements the CRUD actions for DocumentoEquivalente model.
@@ -35,13 +36,21 @@ class DocumentoEquivalenteController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new DocumentoEquivalenteSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',54])->all()){
+                $searchModel = new DocumentoEquivalenteSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+             }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
+        }else{
+            return $this->redirect(['site/login']);
+        }    
     }
 
     /**
