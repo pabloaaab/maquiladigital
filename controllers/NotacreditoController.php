@@ -160,7 +160,7 @@ class NotacreditoController extends Controller
         $notacreditoFactura = Facturaventa::find()
             ->where(['=', 'idcliente', $idcliente])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'nrofactura', 0])
-            ->andWhere(['<>', 'saldo', 0])
+            ->andWhere(['>', 'saldo', 0])
             ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
@@ -441,8 +441,8 @@ class NotacreditoController extends Controller
             if($factura->retencionfuente > 0){
                 $retefuente = $dato->valor * $factura->porcentajefuente / 100;
             }
-            $totalabono = $dato->valor + round($iva - $reteiva - $retefuente,0);
-            if ($totalabono > $factura->saldo){
+            $totalabono = $dato->valor + $iva - $reteiva - $retefuente;
+            if (round($totalabono,0) >= round($factura->saldo,0)){
                 $error = 1;
             }else{
                 if ($dato->valor <= 0){

@@ -448,7 +448,7 @@ class FacturaventaController extends Controller
                     }else{
                         $factura->retencioniva = 0;
                     }
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva,0);
                     $factura->saldo = $factura->totalpagar;
                     $factura->save(false);
 
@@ -503,7 +503,7 @@ class FacturaventaController extends Controller
                     }else{
                         $factura->retencioniva = 0;
                     }
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva,0);
                     $factura->saldo = $factura->totalpagar;
                     $factura->update();
                 }
@@ -555,7 +555,7 @@ class FacturaventaController extends Controller
                     }else{
                         $factura->retencioniva = 0;
                     }
-                    $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                    $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva,0);
                     $factura->saldo = $factura->totalpagar;
                     $factura->save(false);
                     $this->redirect(["facturaventa/view",'id' => $idfactura]);
@@ -617,7 +617,7 @@ class FacturaventaController extends Controller
                         }else{
                             $factura->retencioniva = 0;                           
                         }
-                        $factura->totalpagar = $factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva;
+                        $factura->totalpagar = round($factura->subtotal + $factura->impuestoiva - $factura->retencionfuente - $factura->retencioniva,0);
                         $factura->saldo = $factura->totalpagar;
                         $factura->update();
                     }
