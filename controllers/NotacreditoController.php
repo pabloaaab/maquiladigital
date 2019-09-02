@@ -441,8 +441,8 @@ class NotacreditoController extends Controller
             if($factura->retencionfuente > 0){
                 $retefuente = $dato->valor * $factura->porcentajefuente / 100;
             }
-            $totalabono = $dato->valor + $iva - $reteiva - $retefuente;
-            if ($totalabono >= $factura->saldo){
+            $totalabono = $dato->valor + round($iva - $reteiva - $retefuente,0);
+            if ($totalabono > $factura->saldo){
                 $error = 1;
             }else{
                 if ($dato->valor <= 0){
