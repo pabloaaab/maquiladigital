@@ -46,7 +46,7 @@ class Banco extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'activo'], 'required'],
+            [['idbanco','nitbanco', 'entidad', 'direccionbanco', 'telefonobanco', 'producto', 'numerocuenta', 'activo'], 'required'],
             [['telefonobanco', 'activo'], 'integer'],
             [['nitbanco', 'producto', 'nitmatricula'], 'string', 'max' => 50],
             [['entidad', 'direccionbanco'], 'string', 'max' => 40],

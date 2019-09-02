@@ -26,7 +26,10 @@ $form = ActiveForm::begin([
     <div class="panel-heading">
         Información Banco
     </div>
-    <div class="panel-body">        														   		
+    <div class="panel-body">
+        <div class="row">
+            <?= $form->field($model, 'idbanco')->textInput(['maxlength' => true]) ?>    
+        </div>
         <div class="row">
             <?= $form->field($model, 'nitbanco')->textInput(['maxlength' => true]) ?>    
         </div>
