@@ -52,7 +52,7 @@ class FormProveedor extends Model
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],            
             [['dv'], 'string', 'max' => 1],
-            ['razonsocial', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
+            ['razonsocial', 'match', 'pattern' => '/^[0-0a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['nombreproveedor', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidoproveedor', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
             ['apellidoproveedor', 'match', 'pattern' => '/^[a-záéíóúñ\s]+$/i', 'message' => 'Sólo se aceptan letras'],
