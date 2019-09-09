@@ -119,7 +119,7 @@ class SeguimientoProduccionController extends Controller
                                         $interval4 = $interval4 / 3600;
                                         $datos = explode(".",$interval4);
                                         $horas = $datos[0];
-                                        $minutos2 = round($datos[1],1);
+                                        $minutos2 = round($datos[1],0);
                                         $tm = $horas * 60;
                                         $tm = $tm + $minutos2 - $descanso;
                                         $cantidad_por_hora = round(60 / $minutos,2);                                        
@@ -177,7 +177,7 @@ class SeguimientoProduccionController extends Controller
                                     $interval4 = $interval4 / 3600;
                                     $datos = explode(".",$interval4);
                                     $horas = $datos[0];
-                                    $minutos = round($datos[1],1);
+                                    $minutos = round($datos[1],0);
                                     $tm = $horas * 60;
                                     $tm = ($tm + $minutos) - $descanso;
                                     //$minutos = $minutos + $minutos[1];
