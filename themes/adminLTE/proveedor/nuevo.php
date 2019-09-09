@@ -67,7 +67,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo', 'descr
     </div>
     <div class="row">
         <?= $form->field($model, 'telefonoproveedor')->input("text", ['id' => 'telefonoproveedor']) ?>
-        <?= $form->field($model, 'direccionproveedor')->input("text") ?>
+        <?= $form->field($model, 'direccionproveedor')->input("text", ["maxlength" => 100]) ?>
     </div>
     <div class="row">
         <?= $form->field($model, 'iddepartamento')->dropDownList($departamento, [ 'prompt' => 'Seleccione...', 'onchange' => ' $.get( "' . Url::toRoute('proveedor/municipio') . '", { id: $(this).val() } ) .done(function( data ) {
