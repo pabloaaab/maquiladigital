@@ -119,14 +119,14 @@ class SeguimientoProduccionController extends Controller
                                         $interval4 = $interval4 / 3600;
                                         $datos = explode(".",$interval4);
                                         $horas = $datos[0];
-                                        $minutos2 = $datos[1];
+                                        $minutos2 = round($datos[1],1);
                                         $tm = $horas * 60;
-                                        $tm = ($tm + $minutos2) - $descanso;
+                                        $tm = $tm + $minutos2 - $descanso;
                                         $cantidad_por_hora = round(60 / $minutos,2);                                        
                                         $cantidad_total_por_hora = round($cantidad_por_hora * $horastrabajar,2);                                        
                                         $total_unidades_por_dia = round($operarias * $cantidad_total_por_hora,2);
                                         $total_unidades_por_hora = round($total_unidades_por_dia / $horastrabajar,2);                                        
-                                        $prendas_sistema = round($total_unidades_por_hora * ($tm) / 60,1);                                        
+                                        $prendas_sistema = round($total_unidades_por_hora * ($tm) / 60,0);                                        
                                         $form->sistema = $prendas_sistema;
                                         $table = SeguimientoProduccionDetalle2::find()->where(['=','id_seguimiento_produccion_detalle',1])->all();
                                         $table2 = SeguimientoProduccionDetalle::find()->where(['=','id_seguimiento_produccion',$id])->all();                                    
@@ -177,7 +177,7 @@ class SeguimientoProduccionController extends Controller
                                     $interval4 = $interval4 / 3600;
                                     $datos = explode(".",$interval4);
                                     $horas = $datos[0];
-                                    $minutos = $datos[1];
+                                    $minutos = round($datos[1],1);
                                     $tm = $horas * 60;
                                     $tm = ($tm + $minutos) - $descanso;
                                     //$minutos = $minutos + $minutos[1];
@@ -192,7 +192,7 @@ class SeguimientoProduccionController extends Controller
                                     $seguimientodetalletemporal->total_unidades_por_dia = round($operarias * $seguimientodetalletemporal->cantidad_total_por_hora,2);
                                     $seguimientodetalletemporal->total_unidades_por_hora = round($seguimientodetalletemporal->total_unidades_por_dia / $seguimientodetalletemporal->horas_a_trabajar,2);
                                     $seguimientodetalletemporal->prendas_reales = $reales;
-                                    $seguimientodetalletemporal->prendas_sistema = round($seguimientodetalletemporal->total_unidades_por_hora * ($tm) / 60,1);
+                                    $seguimientodetalletemporal->prendas_sistema = round($seguimientodetalletemporal->total_unidades_por_hora * ($tm) / 60,0);
                                     $seguimientodetalletemporal->porcentaje_produccion = round((100 * $reales) / $seguimientodetalletemporal->prendas_sistema,2);
                                     $seguimientodetalletemporal->total_venta = $seguimientodetalletemporal->prendas_reales * $vlrprenda;
                                     $seguimientodetalletemporal->save(false);
