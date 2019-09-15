@@ -30,18 +30,30 @@ use yii\helpers\Url;
     <div class="panel-heading">
         Información Recibo Caja
     </div>
-    <div class="panel-body">        
-        <div class="row">                                    
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un tipo de recibos...']) ?>
-        </div>        
+    <div class="panel-body">                
+        <div class="row">            
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+            'data' => $clientes,
+            'options' => ['placeholder' => 'Seleccione un cliente'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
+        </div>
         <div class="row">                                                
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo de recibos...']) ?>
         </div>                                        
         <div class="row">            
             <?= $form->field($model, 'idbanco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>
-        </div>        
+        </div>                
         <div class="row">            
-            <?= $form->field($model, 'idmunicipio')->dropDownList($municipios, ['prompt' => 'Seleccione un municipio...']) ?>
+            <?= $form->field($model, 'idmunicipio')->widget(Select2::classname(), [
+            'data' => $municipios,
+            'options' => ['placeholder' => 'Seleccione un municipio'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>
         <div class="row">            
             <?=  $form->field($model, 'fechapago')->widget(DatePicker::className(), ['name' => 'check_issue_date',

@@ -35,7 +35,13 @@ $this->params['breadcrumbs'][] = $this->title;?>
     </div>
     <div class="panel-body">
         <div class="row">            
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+            'data' => $clientes,
+            'options' => ['placeholder' => 'Seleccione un cliente'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'idtiporecibo')->dropDownList($tiporecibos, ['prompt' => 'Seleccione un tipo...']) ?>

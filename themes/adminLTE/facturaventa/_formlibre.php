@@ -41,9 +41,15 @@ $this->params['breadcrumbs'][] = $this->title;?>
                 'pluginOptions' => [
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]]) ?>
-        </div>
-        <div class="row">            
-            <?= $form->field($model, 'idcliente')->dropDownList($clientes, ['prompt' => 'Seleccione un cliente...']) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'idcliente')->widget(Select2::classname(), [
+                'data' => $clientes,
+                'options' => ['prompt' => 'Seleccione un cliente ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
         <div class="row">                        
             <?= $form->field($model, 'id_factura_venta_tipo')->dropDownList($facturastipo, ['prompt' => 'Seleccione un tipo...']) ?>

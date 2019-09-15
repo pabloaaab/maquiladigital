@@ -18,7 +18,7 @@ class FormFiltroProveedor extends Model
         return [
 
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            ['nombrecorto', 'match', 'pattern' => '/^[a-z\s]+$/i', 'message' => 'Sólo se aceptan letras'],
+            ['nombrecorto', 'match', 'pattern' => '/^[0-9a-z\s]+$/i', 'message' => 'Sólo se aceptan letras'],
         ];
     }
 

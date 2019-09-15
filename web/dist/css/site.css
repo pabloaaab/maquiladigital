@@ -417,9 +417,13 @@ i.fa {
 .modal{
     z-index: 30000 !important;
 }
-.select2-container{
-    z-index: 30001;
-    width: 100%;
+
+.select2-container--krajee .select2-selection {        
+    border-color: #009999;
+    border-radius: 5px;    
+}
+.select2-container--krajee .select2-selection--single .select2-selection__placeholder {
+    color: #555555;
 }
 .modal-wide .modal-dialog{
     width: 70%;
@@ -724,12 +728,4 @@ h4{
 .form-control {
     border-radius: 5px;
     border-color: #009999;
-}
-
-
-.widget select2{
-    position: absolute;
-    border: 1px solid rgba(128, 128, 128, 0.33);
-    background-color: white;
-    padding: 0px;
 }
