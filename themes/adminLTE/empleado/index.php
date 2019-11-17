@@ -5,6 +5,7 @@ use yii\helpers\ArrayHelper;
 use app\models\Empleado;
 use app\models\Departamento;
 use app\models\Municipio;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BancoSearch */
@@ -71,9 +72,8 @@ echo ExportMenu::widget([
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        
-        'columns' => [
+        'filterModel' => $searchModel,        
+        'columns' => [            
             [                
                 'attribute' => 'id_empleado',
                 'contentOptions' => ['class' => 'col-lg-1'],
@@ -119,6 +119,19 @@ echo ExportMenu::widget([
                 'attribute' => 'celular',
                 'contentOptions' => ['class' => 'col-lg-1'],                
             ],
+            [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{nuevocontrato}',  // the default buttons + your custom button
+            'buttons' => [
+                'nuevocontrato' => function($url, $model, $key) {     // render your custom button
+                    if ($model->contrato == 0){
+                        return Html::a("<span class='glyphicon glyphicon-plus'>", ['contrato/create', 'id' => $key], ['class' => 'profile-link']);
+                    }else{
+                        return "";
+                    }
+                    
+                }
+            ]],            
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

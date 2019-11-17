@@ -14,7 +14,7 @@ use app\models\Municipio;
 class FormCliente extends Model
 {
     public $idcliente;
-    public $idtipo;
+    public $id_tipo_documento;
     public $cedulanit;
     public $dv;
     public $razonsocial;
@@ -46,7 +46,7 @@ class FormCliente extends Model
     {
         return [
 			
-            ['idtipo', 'required', 'message' => 'Campo requerido'],
+            ['id_tipo_documento', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],            
@@ -85,7 +85,7 @@ class FormCliente extends Model
     public function attributeLabels()
     {
         return [
-            'idtipo' => 'Tipo Identificacion:',
+            'id_tipo_documento' => 'Tipo Identificacion:',
             'cedulanit' => 'Cedula/Nit:',
             'razonsocial' => 'Razón Social:',
             'nombrecliente' => 'Nombres:',

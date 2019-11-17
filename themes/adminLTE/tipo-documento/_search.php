@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
             <div class="row">
                 <?= $form->field($model, 'idtipo') ?>
                 <?= $form->field($model, 'tipo') ?>
+                <?= $form->field($model, 'codigo_interfaz') ?>
             </div>
             <div class="panel-footer text-right" style="display:none">
                 <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>

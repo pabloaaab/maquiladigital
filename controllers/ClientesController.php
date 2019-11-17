@@ -96,7 +96,7 @@ class ClientesController extends Controller {
             $dv = Html::encode($_POST["dv"]);
             if ($model->validate()) {
                 $table = new Cliente();
-                $table->idtipo = $model->idtipo;
+                $table->id_tipo_documento = $model->id_tipo_documento;
                 $table->cedulanit = $model->cedulanit;
                 $table->razonsocial = $model->razonsocial;
                 $table->nombrecliente = $model->nombrecliente;
@@ -121,10 +121,10 @@ class ClientesController extends Controller {
                 $table->minuto_confeccion = $model->minuto_confeccion;
                 $table->minuto_terminacion = $model->minuto_terminacion;
                 $table->dv = $dv;
-                if ($model->idtipo == 1) {
+                if ($model->id_tipo_documento == 1) {
                     $table->nombrecorto = $model->nombrecliente . " " . $model->apellidocliente;
                     $model->razonsocial = null;
-                } elseif ($model->idtipo == 5) {
+                } elseif ($model->id_tipo_documento == 5) {
                     $table->nombrecorto = $model->razonsocial;
                     $model->nombrecliente = null;
                     $model->apellidocliente = null;
@@ -156,7 +156,7 @@ class ClientesController extends Controller {
             if ($model->validate()) {
                 $table = Cliente::find()->where(['idcliente' => $id])->one();
                 if ($table) {
-                    $table->idtipo = $model->idtipo;
+                    $table->id_tipo_documento = $model->id_tipo_documento;
                     $table->cedulanit = $model->cedulanit;
                     $table->razonsocial = $model->razonsocial;
                     $table->nombrecliente = $model->nombrecliente;
@@ -181,10 +181,10 @@ class ClientesController extends Controller {
                     $table->minuto_confeccion = $model->minuto_confeccion;
                     $table->minuto_terminacion = $model->minuto_terminacion;
                     $table->dv = $dv;
-                    if ($model->idtipo == 1) {
+                    if ($model->id_tipo_documento == 1) {
                         $table->nombrecorto = strtoupper($model->nombrecliente . " " . $model->apellidocliente);
                         $model->razonsocial = null;
-                    } elseif ($model->idtipo == 5) {
+                    } elseif ($model->id_tipo_documento == 5) {
                         $table->nombrecorto = strtoupper($model->razonsocial);
                         $model->nombrecliente = null;
                         $model->apellidocliente = null;
@@ -211,7 +211,7 @@ class ClientesController extends Controller {
             $municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
             $municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
             if ($table) {
-                $model->idtipo = $table->idtipo;
+                $model->id_tipo_documento = $table->id_tipo_documento;
                 $model->cedulanit = $table->cedulanit;
                 $model->razonsocial = $table->razonsocial;
                 $model->nombrecliente = $table->nombrecliente;

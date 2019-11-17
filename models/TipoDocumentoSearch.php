@@ -20,6 +20,7 @@ class TipoDocumentoSearch extends TipoDocumento
         return [
             [['idtipo'], 'integer'],
             [['tipo', 'descripcion'], 'safe'],
+            [['codigo_interfaz'], 'string'],
         ];
     }
 
@@ -63,7 +64,8 @@ class TipoDocumentoSearch extends TipoDocumento
         ]);
 
         $query->andFilterWhere(['like', 'tipo', $this->tipo])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion]);
+            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
+            ->andFilterWhere(['like', 'codigo_interfaz', $this->codigo_interfaz]);
 
         return $dataProvider;
     }

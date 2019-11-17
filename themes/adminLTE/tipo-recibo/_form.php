@@ -11,17 +11,19 @@ use yii\helpers\Url;
 
 
 
-    <?php $form = ActiveForm::begin([
-		'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-                'fieldConfig' => [
-                    'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-                    'labelOptions' => ['class' => 'col-sm-3 control-label'],
-                    'options' => []
-                ],
-	]); ?>
+<?php
+$form = ActiveForm::begin([
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+                'labelOptions' => ['class' => 'col-sm-3 control-label'],
+                'options' => []
+            ],
+        ]);
+?>
 
-    
- <div class="panel panel-success">
+
+<div class="panel panel-success">
     <div class="panel-heading">
         Información Tipo Recibo
     </div>
@@ -29,13 +31,13 @@ use yii\helpers\Url;
         <div class="row">
             <?= $form->field($model, 'concepto')->textInput(['maxlength' => true]) ?>    
         </div>
-	<div class="row">
+        <div class="row">
             <?= $form->field($model, 'activo')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
         </div>		
         <div class="panel-footer text-right">                
             <a href="<?= Url::toRoute("tipo-recibo/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
         </div>
-	</div>
+    </div>
 </div>
 <?php ActiveForm::end(); ?>

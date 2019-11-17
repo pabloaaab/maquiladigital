@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "cliente".
  *
  * @property int $idcliente
- * @property int $idtipo
+ * @property int $id_tipo_documento
  * @property int $cedulanit
  * @property int $dv
  * @property string $razonsocial
@@ -77,7 +77,7 @@ class Cliente extends \yii\db\ActiveRecord
      */
     public function getTipo()
     {
-        return $this->hasOne(TipoDocumento::className(), ['idtipo' => 'idtipo']);
+        return $this->hasOne(TipoDocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);
     }
 
     /**

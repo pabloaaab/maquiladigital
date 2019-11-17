@@ -28,11 +28,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [                
                 'attribute' => 'tipo',
-                'contentOptions' => ['class' => 'col-lg-4'],                
+                'contentOptions' => ['class' => 'col-lg-2'],                
+            ],
+            [                
+                'attribute' => 'codigo_interfaz',
+                'contentOptions' => ['class' => 'col-lg-3'],                
             ],
             [               
                 'attribute' => 'descripcion',
-                'contentOptions' => ['class' => 'col-lg-5 '],
+                'contentOptions' => ['class' => 'col-lg-4 '],
             ],                                   
             [
                 'class' => 'yii\grid\ActionColumn',              

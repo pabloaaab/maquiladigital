@@ -52,12 +52,12 @@ $view = 'proveedor';
                 <td><?= $table->dv ?></td>
             </tr>
             <tr>
-                <?php if ($table->idtipo == 1){ ?>
+                <?php if ($table->id_tipo_documento == 1){ ?>
                 <th>Nombres:</th>
                 <td><?= $table->nombreproveedor ?></td>
                 <th>Apellidos:</th>
                 <td><?= $table->apellidoproveedor ?></td>
-                <?php } elseif ($table->idtipo == 5) { ?>
+                <?php } elseif ($table->id_tipo_documento == 5) { ?>
                 <th>Razon Social:</th>
                 <td><?= $table->razonsocial ?></td>
                 <th></th>

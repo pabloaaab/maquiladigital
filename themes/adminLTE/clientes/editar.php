@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 $departamento= ArrayHelper::map(Departamento::find()->all(), 'iddepartamento','departamento');
 
-$tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descripcion');
+$tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documento','descripcion');
 ?>
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -53,7 +53,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'idtipo','descri
 
         <div class="panel-body">
             <div class="row" id="personal">            
-                <?= $form->field($model, 'idtipo')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onload' => 'mostrar()', 'onchange' => 'mostrar()', 'id' => 'idtipo']) ?>
+                <?= $form->field($model, 'id_tipo_documento')->dropDownList($tipodocumento, ['prompt' => 'Seleccione...', 'onload' => 'mostrar()', 'onchange' => 'mostrar()', 'id' => 'id_tipo_documento']) ?>
                 <?= $form->field($model, 'cedulanit')->input('text', ['id' => 'cedulanit', 'onchange' => 'calcularDigitoVerificacion()']) ?>			
                 <?= Html::textInput('dv', $model->dv, ['id' => 'dv', 'aria-required' => true, 'aria-invalid' => 'false', 'maxlength' => 1, 'class' => 'form-control', 'style' => 'width:35px', 'readonly' => true, 'aria-required' => true]) ?>
             </div>

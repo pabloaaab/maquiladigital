@@ -36,6 +36,8 @@ $this->params['breadcrumbs'][] = $model->idtipo;
                     <td><?= Html::encode($model->idtipo) ?></td>
                     <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'codigo_interfaz') ?>:</th>
+                    <td><?= Html::encode($model->codigo_interfaz) ?></td>
                     <th><?= Html::activeLabel($model, 'descripcion') ?>:</th>
                     <td><?= Html::encode($model->descripcion) ?></td>                    
                 </tr>                

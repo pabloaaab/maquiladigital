@@ -94,7 +94,7 @@ class ProveedorController extends Controller {
             $dv = Html::encode($_POST["dv"]);
             if ($model->validate()) {
                 $table = new proveedor();
-                $table->idtipo = $model->idtipo;
+                $table->id_tipo_documento = $model->id_tipo_documento;
                 $table->cedulanit = $model->cedulanit;
                 $table->razonsocial = $model->razonsocial;
                 $table->nombreproveedor = $model->nombreproveedor;
@@ -120,10 +120,10 @@ class ProveedorController extends Controller {
                 $table->banco = $model->banco;
                 $table->tipocuenta = $model->tipocuenta;
                 $table->cuentanumero = $model->cuentanumero;
-                if ($model->idtipo == 1) {
+                if ($model->id_tipo_documento == 1) {
                     $table->nombrecorto = $model->nombreproveedor . " " . $model->apellidoproveedor;
                     $model->razonsocial = null;
-                } elseif ($model->idtipo == 5) {
+                } elseif ($model->id_tipo_documento == 5) {
                     $table->nombrecorto = $model->razonsocial;
                     $model->nombreproveedor = null;
                     $model->apellidoproveedor = null;
@@ -154,7 +154,7 @@ class ProveedorController extends Controller {
             if ($model->validate()) {
                 $table = Proveedor::find()->where(['idproveedor' => $id])->one();
                 if ($table) {
-                    $table->idtipo = $model->idtipo;
+                    $table->id_tipo_documento = $model->id_tipo_documento;
                     $table->cedulanit = $model->cedulanit;
                     $table->razonsocial = $model->razonsocial;
                     $table->nombreproveedor = $model->nombreproveedor;
@@ -179,10 +179,10 @@ class ProveedorController extends Controller {
                     $table->banco = $model->banco;
                     $table->tipocuenta = $model->tipocuenta;
                     $table->cuentanumero = $model->cuentanumero;
-                    if ($model->idtipo == 1) {
+                    if ($model->id_tipo_documento == 1) {
                         $table->nombrecorto = strtoupper($model->nombreproveedor . " " . $model->apellidoproveedor);
                         $model->razonsocial = null;
-                    } elseif ($model->idtipo == 5) {
+                    } elseif ($model->id_tipo_documento == 5) {
                         $table->nombrecorto = strtoupper($model->razonsocial);
                         $model->nombreproveedor = null;
                         $model->apellidoproveedor = null;
@@ -209,7 +209,7 @@ class ProveedorController extends Controller {
             $municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
             $municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
             if ($table) {
-                $model->idtipo = $table->idtipo;
+                $model->id_tipo_documento = $table->id_tipo_documento;
                 $model->cedulanit = $table->cedulanit;
                 $model->razonsocial = $table->razonsocial;
                 $model->nombreproveedor = $table->nombreproveedor;

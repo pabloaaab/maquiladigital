@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "proveedor".
  *
  * @property int $idproveedor
- * @property int $idtipo
+ * @property int $id_tipo_documento
  * @property int $cedulanit
  * @property int $dv
  * @property string $razonsocial
@@ -71,7 +71,7 @@ class Proveedor extends \yii\db\ActiveRecord
      */
     public function getTipo()
     {
-        return $this->hasOne(TipoDocumento::className(), ['idtipo' => 'idtipo']);
+        return $this->hasOne(TipoDocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);
     }
 
     /**

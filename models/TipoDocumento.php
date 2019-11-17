@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "tipodocumento".
  *
- * @property int $idtipo
+ * @property int $id_tipo_documento
  * @property string $tipo
  * @property string $descripcion
  *
@@ -38,8 +38,8 @@ class TipoDocumento extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['tipo', 'descripcion'], 'required', 'message' => 'Campo requerido'],
-            [['tipo'], 'string', 'max' => 10],
+            [['tipo', 'descripcion','codigo_interfaz'], 'required', 'message' => 'Campo requerido'],
+            [['tipo','codigo_interfaz'], 'string', 'max' => 10],
             [['descripcion'], 'string', 'max' => 40],
         ];
     }
@@ -50,9 +50,10 @@ class TipoDocumento extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idtipo' => 'Idtipo',
+            'id_tipo_documento' => 'Id',
             'tipo' => 'Tipo',
             'descripcion' => 'Descripcion',
+            'codigo_interfaz' => 'Código Interfaz',
         ];
     }
 
@@ -61,6 +62,11 @@ class TipoDocumento extends \yii\db\ActiveRecord
      */
     public function getClientes()
     {
-        return $this->hasMany(Cliente::className(), ['idtipo' => 'idtipo']);
+        return $this->hasMany(Cliente::className(), ['id_tipo_documento' => 'id_tipo_documento']);
+    }
+    
+    public function getEmpleado()
+    {
+        return $this->hasMany(Empleado::className(), ['id_tipo_documento' => 'id_tipo_documento']);
     }
 }

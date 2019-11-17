@@ -17,8 +17,12 @@ class FormEmpleado extends Model
     public $identificacion;
     public $id_empleado_tipo;
     public $fechaingreso;
+    public $fecha_expedicion;
+    public $ciudad_expedicion;
     public $dv;
     public $fecharetiro;
+    public $sexo;
+    public $id_estado_civil;
     public $nombre1;
     public $nombre2;
     public $apellido1;
@@ -30,6 +34,24 @@ class FormEmpleado extends Model
     public $telefono;
     public $celular;        
     public $contrato;
+    public $id_rh;
+    public $estatura;
+    public $barrio;
+    public $peso;
+    public $libreta_militar;
+    public $distrito_militar;
+    public $fecha_nacimiento;
+    public $ciudad_nacimiento;
+    public $cabeza_hogar;
+    public $padre_familia;
+    public $id_tipo_documento;
+    public $discapacidad;
+    public $id_horario;
+    public $id_banco_empleado;
+    public $cuenta_bancaria;
+    public $tipo_cuenta;
+    public $id_centro_costo;
+    public $id_sucursal;
     public $observacion;
     
 
@@ -39,13 +61,13 @@ class FormEmpleado extends Model
     public function rules()
     {
         return [
-            [['identificacion', 'id_empleado_tipo','fechaingreso','nombre1','apellido1','iddepartamento','idmunicipio','email'], 'required', 'message' => 'Campo requerido'],
+            [['identificacion', 'id_empleado_tipo','fecha_expedicion','ciudad_expedicion','nombre1','apellido1','iddepartamento','idmunicipio','email','id_rh','fecha_nacimiento','ciudad_nacimiento','id_tipo_documento','padre_familia','cabeza_hogar','discapacidad','id_horario','id_banco_empleado','id_sucursal','id_centro_costo','tipo_cuenta','cuenta_bancaria','sexo','id_estado_civil'], 'required', 'message' => 'Campo requerido'],
             ['identificacion', 'identificacion_existe'],
             ['email', 'email_existe'],
-            [['id_empleado_tipo', 'identificacion', 'dv', 'contrato'], 'integer'],
-            [['observacion'], 'string'],            
+            [['id_empleado_tipo', 'identificacion', 'dv','id_estado_civil','estatura','peso','libreta_militar','cuenta_bancaria'], 'integer'],
+            [['observacion','sexo','id_rh','distrito_militar','barrio','tipo_cuenta'], 'string'],            
             ['email', 'email_existe'],
-            [['fechaingreso', 'fecharetiro'], 'safe'],
+            [['fecha_expedicion','fecha_nacimiento'], 'safe'],
             [['nombre1', 'nombre2', 'apellido1', 'apellido2'], 'string', 'max' => 40],
             //[['nombrecorto'], 'string', 'max' => 100],
             [['direccion', 'email'], 'string', 'max' => 120],
@@ -64,21 +86,40 @@ class FormEmpleado extends Model
             'id_empleado_tipo' => 'Tipo Empleado',
             'identificacion' => 'Identificación',
             'dv' => 'Dv',
+            'id_tipo_documento' => 'Tipo Documento',
             'nombre1' => 'Nombre1',
             'nombre2' => 'Nombre2',
             'apellido1' => 'Apellido1',
-            'apellido2' => 'Apellido2',
-            //'nombrecorto' => 'Empleado',
+            'apellido2' => 'Apellido2',            
             'direccion' => 'Direccion',
             'telefono' => 'Telefono',
             'celular' => 'Celular',
+            'sexo' => 'Sexo',
             'email' => 'Email',
-            'iddepartamento' => 'Departamento',
-            'idmunicipio' => 'Municipio',
-            'contrato' => 'Contrato',
+            'iddepartamento' => 'Departamento Res',
+            'idmunicipio' => 'Municipio Res',
+            //'contrato' => 'Contrato',
             'observacion' => 'Observacion',
-            'fechaingreso' => 'Fecha Ingreso',
-            'fecharetiro' => 'Fecha Retiro',
+            //'fechaingreso' => 'Fecha Ingreso',
+            //'fecharetiro' => 'Fecha Retiro',
+            'id_estado_civil' => 'Estado Civil',
+            'estatura' => 'Estatura',
+            'peso' => 'Peso',
+            'id_rh' => 'Rh',
+            'barrio' => 'Barrio',
+            'libreta_militar' => 'Libreta Militar',
+            'distrito_militar' => 'Distrito Militar',
+            'fecha_nacimiento' => 'Fecha Nacimiento',
+            'ciudad_nacimiento' => 'Ciudad Nacimiento',
+            'padre_familia' => 'Padre Familia',
+            'cabeza_hogar' => 'Cabeza Hogar',
+            'discapacidad' => 'Discapacidad',
+            'id_horario' => 'Horario',
+            'cuenta_bancaria' => 'Cuenta Bancaria',
+            'tipo_cuenta' => 'Tipo Cuenta',
+            'id_banco_empleado' => 'Banco Empleado',
+            'id_centro_costo' => 'Centro Costo',
+            'id_sucursal' => 'Sucursal',
         ];
     }
 

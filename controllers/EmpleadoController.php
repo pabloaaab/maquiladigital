@@ -102,11 +102,32 @@ class EmpleadoController extends Controller
                 $table->email = $model->email;
                 $table->iddepartamento = $model->iddepartamento;
                 $table->idmunicipio = $model->idmunicipio;
-                $table->fechaingreso = $model->fechaingreso;
-                $table->fecharetiro = $model->fecharetiro;
-                $table->contrato = $model->contrato;
+                //$table->fechaingreso = $model->fechaingreso;
+                //$table->fecharetiro = $model->fecharetiro;
+                //$table->contrato = $model->contrato;
                 $table->observacion = $model->observacion;
                 $table->nombrecorto = $model->nombre1.' '.$model->nombre2.' '.$model->apellido1.' '.$model->apellido2;                
+                $table->id_tipo_documento = $model->id_tipo_documento;
+                $table->fecha_expedicion = $model->fecha_expedicion;
+                $table->ciudad_expedicion = $model->ciudad_expedicion;
+                $table->barrio = $model->barrio;
+                $table->id_rh = $model->id_rh;
+                $table->sexo = $model->sexo;
+                $table->id_estado_civil = $model->id_estado_civil;
+                $table->estatura = $model->estatura;
+                $table->peso = $model->peso;
+                $table->libreta_militar = $model->libreta_militar;
+                $table->distrito_militar = $model->distrito_militar;
+                $table->fecha_nacimiento = $model->fecha_nacimiento;
+                $table->padre_familia = $model->padre_familia;
+                $table->cabeza_hogar = $model->cabeza_hogar;
+                $table->id_horario = $model->id_horario;
+                $table->discapacidad = $model->discapacidad;
+                $table->id_banco_empleado = $model->id_banco_empleado;
+                $table->tipo_cuenta = $model->tipo_cuenta;
+                $table->cuenta_bancaria = $model->cuenta_bancaria;
+                $table->id_centro_costo = $model->id_centro_costo;
+                $table->id_sucursal = $model->id_sucursal;
                 if ($table->insert()) {
                     $this->redirect(["empleado/index"]);
                 } else {
@@ -156,10 +177,32 @@ class EmpleadoController extends Controller
                     $table->email = $model->email;
                     $table->iddepartamento = $model->iddepartamento;
                     $table->idmunicipio = $model->idmunicipio;
-                    $table->contrato = $model->contrato;
+                    //$table->contrato = $model->contrato;
                     $table->observacion = $model->observacion;
-                    $table->fechaingreso = $model->fechaingreso;
-                    $table->fecharetiro = $model->fecharetiro;                                                            
+                    //$table->fechaingreso = $model->fechaingreso;
+                    //$table->fecharetiro = $model->fecharetiro;
+                    $table->id_tipo_documento = $model->id_tipo_documento;
+                    $table->fecha_expedicion = $model->fecha_expedicion;
+                    $table->ciudad_expedicion = $model->ciudad_expedicion;
+                    $table->ciudad_nacimiento = $model->ciudad_nacimiento;
+                    $table->barrio = $model->barrio;
+                    $table->id_rh = $model->id_rh;
+                    $table->sexo = $model->sexo;
+                    $table->id_estado_civil = $model->id_estado_civil;
+                    $table->estatura = $model->estatura;
+                    $table->peso = $model->peso;
+                    $table->libreta_militar = $model->libreta_militar;
+                    $table->distrito_militar = $model->distrito_militar;
+                    $table->fecha_nacimiento = $model->fecha_nacimiento;
+                    $table->padre_familia = $model->padre_familia;
+                    $table->cabeza_hogar = $model->cabeza_hogar;
+                    $table->id_horario = $model->id_horario;
+                    $table->discapacidad = $model->discapacidad;
+                    $table->id_banco_empleado = $model->id_banco_empleado;
+                    $table->tipo_cuenta = $model->tipo_cuenta;
+                    $table->cuenta_bancaria = $model->cuenta_bancaria;
+                    $table->id_centro_costo = $model->id_centro_costo;
+                    $table->id_sucursal = $model->id_sucursal;
                     if ($table->update()) {
                         $msg = "El registro ha sido actualizado correctamente";
                         $this->redirect(["empleado/index"]);
@@ -199,7 +242,29 @@ class EmpleadoController extends Controller
                 $model->contrato = $table->contrato;                                                
                 $model->observacion = $table->observacion;
                 $model->fechaingreso = $table->fechaingreso;
-                $model->fecharetiro = $table->fecharetiro;
+                $model->fecharetiro = $table->fecharetiro;                
+                $model->id_tipo_documento = $table->id_tipo_documento;
+                $model->fecha_expedicion = $table->fecha_expedicion;
+                $model->ciudad_expedicion = $table->ciudad_expedicion;
+                $model->ciudad_nacimiento = $table->ciudad_nacimiento;
+                $model->barrio = $table->barrio;
+                $model->id_rh = $table->id_rh;
+                $model->sexo = $table->sexo;
+                $model->id_estado_civil = $table->id_estado_civil;
+                $model->estatura = $table->estatura;
+                $model->peso = $table->peso;
+                $model->libreta_militar = $table->libreta_militar;
+                $model->distrito_militar = $table->distrito_militar;
+                $model->fecha_nacimiento = $table->fecha_nacimiento;
+                $model->padre_familia = $table->padre_familia;
+                $model->cabeza_hogar = $table->cabeza_hogar;
+                $model->id_horario = $table->id_horario;
+                $model->discapacidad = $table->discapacidad;
+                $model->id_banco_empleado = $table->id_banco_empleado;
+                $model->tipo_cuenta = $table->tipo_cuenta;
+                $model->cuenta_bancaria = $table->cuenta_bancaria;
+                $model->id_centro_costo = $table->id_centro_costo;
+                $model->id_sucursal = $table->id_sucursal;
             } else {
                 return $this->redirect(["empleado/index"]);
             }
@@ -256,5 +321,14 @@ class EmpleadoController extends Controller
                 echo "<option value='$row->idmunicipio' required>$row->municipio</option>";
             }
         }
+    }
+    
+    public function actionImprimir($id)
+    {
+                                
+        return $this->render('../formatos/empleado', [
+            'model' => $this->findModel($id),
+            
+        ]);
     }
 }
