@@ -38,7 +38,7 @@ class CentroTrabajoController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',66])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',68])->all()){
                 $searchModel = new CentroTrabajoSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

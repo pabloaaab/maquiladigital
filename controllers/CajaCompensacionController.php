@@ -37,7 +37,7 @@ class CajaCompensacionController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',59])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',62])->all()){
                 $searchModel = new CajaCompensacionSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

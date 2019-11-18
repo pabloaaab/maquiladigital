@@ -37,7 +37,7 @@ class TipoContratoController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',52])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',55])->all()){
                 $searchModel = new TipoContratoSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

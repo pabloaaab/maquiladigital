@@ -37,7 +37,7 @@ class EntidadSaludController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',57])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',60])->all()){
                 $searchModel = new EntidadSaludSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

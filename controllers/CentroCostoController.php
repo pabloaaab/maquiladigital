@@ -37,7 +37,7 @@ class CentroCostoController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',63])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',66])->all()){
                 $searchModel = new CentroCostoSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

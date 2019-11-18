@@ -37,7 +37,7 @@ class SucursalController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',64])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',67])->all()){
                 $searchModel = new SucursalSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

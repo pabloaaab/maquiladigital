@@ -37,7 +37,7 @@ class CargoController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',54])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',57])->all()){
             $searchModel = new CargoSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

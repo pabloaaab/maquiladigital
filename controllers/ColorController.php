@@ -8,6 +8,7 @@ use app\models\ColorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * ColorController implements the CRUD actions for Color model.
@@ -35,13 +36,21 @@ class ColorController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ColorSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',52])->all()){
+                $searchModel = new ColorSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }        
     }
 
     /**

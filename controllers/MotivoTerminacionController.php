@@ -37,7 +37,7 @@ class MotivoTerminacionController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',53])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',56])->all()){
                 $searchModel = new MotivoTerminacionSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

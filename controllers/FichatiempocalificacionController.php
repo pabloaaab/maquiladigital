@@ -35,13 +35,21 @@ class FichatiempocalificacionController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FichatiempocalificacionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (Yii::$app->user->identity){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',53])->all()){
+                $searchModel = new FichatiempocalificacionSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            }else{
+                return $this->redirect(['site/sinpermiso']);
+            }
+        }else{
+            return $this->redirect(['site/login']);
+        }            
     }
 
     /**

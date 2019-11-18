@@ -48,7 +48,7 @@ class ContratoController extends Controller
      */
     public function actionIndex() {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',65])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',64])->all()){
                 $form = new FormFiltroContrato;
                 $identificacion = null;
                 $activo = null;

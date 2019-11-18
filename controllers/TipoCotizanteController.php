@@ -37,7 +37,7 @@ class TipoCotizanteController extends Controller
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',55])->all()){
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',58])->all()){
                 $searchModel = new TipoCotizanteSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
