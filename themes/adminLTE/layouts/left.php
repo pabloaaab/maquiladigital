@@ -78,12 +78,12 @@
                                                 'items' => [
                                                     ['label' => 'Banco Empleado', 'icon' => 'plus-square-o', 'url' => ['/banco-empleado/index']],
                                                     ['label' => 'Centro Costo', 'icon' => 'plus-square-o', 'url' => ['/centro-costo/index']],
+                                                    ['label' => 'Empleado', 'icon' => 'plus-square-o', 'url' => ['/empleado/index']],
                                                     ['label' => 'Sucursal', 'icon' => 'plus-square-o', 'url' => ['/sucursal/index']],
                                                 ]],
                                                                                                 
                                                 ['label' => 'Cliente', 'icon' => 'plus-square-o', 'url' => ['/clientes/index']],
-                                                ['label' => 'Departamento', 'icon' => 'plus-square-o', 'url' => ['/departamento/index']],                                                
-                                                ['label' => 'Empleado', 'icon' => 'plus-square-o', 'url' => ['/empleado/index']],
+                                                ['label' => 'Departamento', 'icon' => 'plus-square-o', 'url' => ['/departamento/index']],                                                                                                
                                                 ['label' => 'Horario', 'icon' => 'plus-square-o', 'url' => ['/horario/index']],                                                
                                                 ['label' => 'Municipio', 'icon' => 'plus-square-o', 'url' => ['/municipio/index']],
                                                 ['label' => 'Resolución', 'icon' => 'plus-square-o', 'url' => ['/resolucion/index']],                                                                                                

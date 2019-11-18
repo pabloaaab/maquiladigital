@@ -63,11 +63,11 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
     </div>
     <div class="panel-body">
         <div class="row">
-            <?= $form->field($model, 'id_tipo_contrato')->dropDownList($tipocontrato, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_tipo_contrato')->dropDownList($tipocontrato, ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'tiempo_contrato')->dropDownList(['TIEMPO COMPLETO' => 'TIEMPO COMPLETO', 'MEDIO TIEMPO' => 'MEDIO TIEMPO', 'SABATINO' => 'SABATINO'], ['prompt' => 'Seleccione una opcion...']) ?>    
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_empleado')->dropDownList($empleado, ['prompt' => 'Seleccione...']) ?>            
+            <?= $form->field($model, 'id_empleado')->dropDownList($empleado, ['prompt' => 'Seleccione una opcion...']) ?>            
         </div>
         <div class="row">
             <?=
@@ -88,47 +88,47 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
             ?>
         </div>                        
         <div class="row">
-            <?= $form->field($model, 'id_cargo')->dropDownList($cargo, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_cargo')->dropDownList($cargo, ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
         </div>        
         <div class="row">
             <?= $form->field($model, 'funciones_especificas', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
-            <?= $form->field($model, 'id_centro_trabajo')->dropDownList($centroTrabajo, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_centro_trabajo')->dropDownList($centroTrabajo, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>        
         <div class="row">
             <?= $form->field($model, 'tipo_salario')->dropDownList(['FIJO' => 'FIJO', 'VARIABLE' => 'VAIABLE'], ['prompt' => 'Seleccione una opcion...']) ?>    
             <?= $form->field($model, 'salario')->textInput(['maxlength' => true]) ?>
         </div>                
         <div class="row">
-            <?= $form->field($model, 'ciudad_laboral')->dropDownList($ciudadLaboral, ['prompt' => 'Seleccione...']) ?>
-            <?= $form->field($model, 'ciudad_contratado')->dropDownList($ciudadContratado, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'ciudad_laboral')->dropDownList($ciudadLaboral, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'ciudad_contratado')->dropDownList($ciudadContratado, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'auxilio_transporte')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>    
             <?= $form->field($model, 'horario_trabajo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_tipo_cotizante')->dropDownList($tipocotizante, ['prompt' => 'Seleccione...']) ?>
-            <?= $form->field($model, 'id_subtipo_cotizante')->dropDownList($subtipocotizante, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_tipo_cotizante')->dropDownList($tipocotizante, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'id_subtipo_cotizante')->dropDownList($subtipocotizante, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'tipo_salud')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
-            <?= $form->field($model, 'id_entidad_salud')->dropDownList($entidadSalud, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_entidad_salud')->dropDownList($entidadSalud, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>        
         <div class="row">
             <?= $form->field($model, 'tipo_pension')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
-            <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'tipo_pension')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
-            <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_caja_compensacion')->dropDownList($caja, ['prompt' => 'Seleccione...']) ?>
-            <?= $form->field($model, 'id_cesantia')->dropDownList($cesantia, ['prompt' => 'Seleccione...']) ?>
+            <?= $form->field($model, 'id_caja_compensacion')->dropDownList($caja, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'id_cesantia')->dropDownList($cesantia, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_arl')->dropDownList($arl, ['prompt' => 'Seleccione un horario...']) ?>
+            <?= $form->field($model, 'id_arl')->dropDownList($arl, ['prompt' => 'Seleccione una opcion...']) ?>
             
         </div>        
         <div class="row" col>
