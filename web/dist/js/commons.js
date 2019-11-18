@@ -191,7 +191,7 @@ var select2Enable = function(select2, activo){
 };
 
 function mostrar() {
-    idtipo = document.getElementById('idtipo').value;
+    idtipo = document.getElementById('id_tipo_documento').value;
     if (idtipo == '1') {
         razonsocial.style.display = "none";
         nombrecliente.style.display = "block";
@@ -204,7 +204,7 @@ function mostrar() {
 };
 
 function mostrar2() {
-    idtipo = document.getElementById('idtipo').value;
+    idtipo = document.getElementById('id_tipo_documento').value;
     if (idtipo == '1') {
         razonsocial.style.display = "none";
         nombreproveedor.style.display = "block";
