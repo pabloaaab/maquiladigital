@@ -284,7 +284,7 @@ class Empleado extends \yii\db\ActiveRecord
      */
     public function getTipoDocumento()
     {
-        return $this->hasOne(Tipodocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);
+        return $this->hasOne(TipoDocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);
     }
 
     /**
