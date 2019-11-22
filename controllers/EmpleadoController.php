@@ -204,7 +204,7 @@ class EmpleadoController extends Controller
                     $table->cuenta_bancaria = $model->cuenta_bancaria;
                     $table->id_centro_costo = $model->id_centro_costo;
                     $table->id_sucursal = $model->id_sucursal;
-                    if ($table->update()) {
+                    if ($table->save(false)) {
                         $msg = "El registro ha sido actualizado correctamente";
                         $this->redirect(["empleado/index"]);
                     } else {

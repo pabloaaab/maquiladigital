@@ -98,10 +98,12 @@ class Empleado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado_tipo', 'id_tipo_documento', 'identificacion', 'dv', 'id_estado_civil', 'estatura', 'peso', 'id_rh', 'padre_familia', 'cabeza_hogar', 'id_nivel_estudio', 'discapacidad', 'id_horario', 'cuenta_bancaria', 'id_banco_empleado', 'id_centro_costo', 'id_sucursal'], 'integer'],
+            [['id_empleado_tipo', 'id_tipo_documento', 'identificacion', 'dv', 'id_estado_civil', 'estatura', 'peso', 'id_rh', 'padre_familia', 'cabeza_hogar', 'id_nivel_estudio', 'discapacidad', 'id_horario','id_banco_empleado', 'id_centro_costo', 'id_sucursal'], 'integer'],
             [['identificacion'], 'required'],
             [['fecha_expedicion', 'fecha_nacimiento', 'fechacreacion'], 'safe'],
             [['observacion','tipo_cuenta'], 'string'],
+            ['cuenta_bancaria', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            [['cuenta_bancaria'], 'string'],
             [['ciudad_expedicion', 'iddepartamento', 'idmunicipio', 'sexo', 'libreta_militar', 'distrito_militar', 'ciudad_nacimiento'], 'string', 'max' => 15],
             [['nombre1', 'nombre2', 'apellido1', 'apellido2', 'telefono', 'celular'], 'string', 'max' => 20],
             [['nombrecorto', 'direccion', 'barrio'], 'string', 'max' => 100],
