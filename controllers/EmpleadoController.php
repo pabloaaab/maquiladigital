@@ -110,6 +110,7 @@ class EmpleadoController extends Controller
                 $table->id_tipo_documento = $model->id_tipo_documento;
                 $table->fecha_expedicion = $model->fecha_expedicion;
                 $table->ciudad_expedicion = $model->ciudad_expedicion;
+                $table->ciudad_nacimiento = $model->ciudad_nacimiento;
                 $table->barrio = $model->barrio;
                 $table->id_rh = $model->id_rh;
                 $table->sexo = $model->sexo;
