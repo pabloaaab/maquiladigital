@@ -8,16 +8,16 @@ use yii\widgets\DetailView;
 
 $this->title = 'Detalle Tipo Documento';
 $this->params['breadcrumbs'][] = ['label' => 'Tipo de Documentos', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->idtipo;
+$this->params['breadcrumbs'][] = $model->id_tipo_documento;
 ?>
 <div class="resolucion-view">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idtipo], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idtipo], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idtipo], [
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->id_tipo_documento], ['class' => 'btn btn-primary']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_tipo_documento], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_tipo_documento], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $model->idtipo;
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr>
-                    <th><?= Html::activeLabel($model, 'idtipo') ?>:</th>
-                    <td><?= Html::encode($model->idtipo) ?></td>
+                    <th><?= Html::activeLabel($model, 'id_tipo_documento') ?>:</th>
+                    <td><?= Html::encode($model->id_tipo_documento) ?></td>
                     <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo) ?></td>
                     <th><?= Html::activeLabel($model, 'codigo_interfaz') ?>:</th>

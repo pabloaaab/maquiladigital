@@ -79,6 +79,11 @@ class Municipio extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Recibocaja::className(), ['idmunicipio' => 'idmunicipio']);
     }
+    
+    public function getCajaCompensacion()
+    {
+        return $this->hasMany(CajaCompensacion::className(), ['idmunicipio' => 'idmunicipio']);
+    }
 
     public function getMunicipioCompleto()
     {

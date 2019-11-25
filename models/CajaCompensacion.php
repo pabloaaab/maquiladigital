@@ -10,6 +10,11 @@ use Yii;
  * @property int $id_caja_compensacion
  * @property string $caja
  * @property int $estado
+ * @property int $telefono
+ * @property int $direccion
+ * @property int $codigo_caja
+ * @property int $codigo_interfaz
+ * @property int $idmunicipio
  *
  * @property Contrato[] $contratos
  */
@@ -37,9 +42,13 @@ class CajaCompensacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['caja'], 'required'],
+            [['caja','idmunicipio'], 'required'],
             [['estado'], 'integer'],
-            [['caja'], 'string', 'max' => 100],
+            [['telefono'], 'string', 'max' => 15],
+            [['direccion'], 'string', 'max' => 100],
+            [['codigo_caja'], 'string', 'max' => 20],
+            [['codigo_interfaz'], 'string', 'max' => 20],
+            [['idmunicipio'], 'string', 'max' => 15],
         ];
     }
 
@@ -51,6 +60,11 @@ class CajaCompensacion extends \yii\db\ActiveRecord
         return [
             'id_caja_compensacion' => 'Id',
             'caja' => 'Caja',
+            'telefono' => 'Telefono',
+            'direccion' => 'Direccion',
+            'codigo_caja' => 'Cod Caja',
+            'codigo_interfaz' => 'Cod Interfaz',
+            'idmunicipio' => 'Municipio',
             'estado' => 'Estado',
         ];
     }
@@ -63,6 +77,11 @@ class CajaCompensacion extends \yii\db\ActiveRecord
         return $this->hasMany(Contrato::className(), ['id_caja_compensacion' => 'id_caja_compensacion']);
     }
     
+    public function getCajaCompensacion()
+    {
+        return $this->hasOne(CajaCompensacion::className(), ['idmunicipio' => 'idmunicipio']);
+    }
+    
     public function getActivo()
     {
         if($this->estado == 1){
@@ -71,5 +90,11 @@ class CajaCompensacion extends \yii\db\ActiveRecord
             $estado = "NO";
         }
         return $estado;
+    }
+    
+    public function getMunicipios()
+    {        
+        $municipio = Municipio::findOne($this->idmunicipio);
+        return $municipio->municipio;
     }
 }

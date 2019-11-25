@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\CajaCompensacion;
 use yii\helpers\ArrayHelper;
+use app\models\Municipio;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CajaCompensacionSearch */
@@ -26,11 +27,37 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'id_caja_compensacion',
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'caja',
-                'contentOptions' => ['class' => 'col-lg-5'],
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
+            [
+                'attribute' => 'telefono',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'direccion',
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
+            [
+                'attribute' => 'codigo_caja',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'codigo_interfaz',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [
+                'attribute' => 'idmunicipio',
+                'value' => function($model) {
+                    $caja = CajaCompensacion::findOne($model->id_caja_compensacion);
+                    $municipio = Municipio::findOne($caja->idmunicipio);
+                    return $municipio->municipio;
+                },
+                'filter' => ArrayHelper::map(CajaCompensacion::find()->all(), 'idmunicipio', 'municipios'),
+                'contentOptions' => ['class' => 'col-lg-2'],
             ],
             [
                 'attribute' => 'estado',
@@ -39,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $orden->activo;
                 },
                 'filter' => ArrayHelper::map(CajaCompensacion::find()->all(), 'estado', 'activo'),
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

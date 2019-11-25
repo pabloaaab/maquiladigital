@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="panel-body" style="display:none">
             <div class="row">
-                <?= $form->field($model, 'idtipo') ?>
+                <?= $form->field($model, 'id_tipo_documento') ?>
                 <?= $form->field($model, 'tipo') ?>
                 <?= $form->field($model, 'codigo_interfaz') ?>
             </div>

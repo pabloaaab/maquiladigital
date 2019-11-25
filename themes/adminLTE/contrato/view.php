@@ -76,8 +76,11 @@ $view = 'contrato';
                 </tr>
                 <tr>
                     <th><?= Html::activeLabel($model, 'funciones_especificas') ?>:</th>
-                    <td colspan="6"><?= Html::encode($model->funciones_especificas) ?></td>
+                    <td colspan="3"><?= Html::encode($model->funciones_especificas) ?></td>
+                    <th><?= Html::activeLabel($model, 'id_centro_trabajo') ?>:</th>
                     <td><?= Html::encode($model->centroTrabajo->centro_trabajo) ?></td>
+                    <th><?= Html::activeLabel($model, 'id_grupo_pago') ?>:</th>
+                    <td><?= Html::encode($model->grupoPago->grupo_pago) ?></td>
                 </tr>                
                 <tr>
                     <th><?= Html::activeLabel($model, 'tipo_salario') ?>:</th>

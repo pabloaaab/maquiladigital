@@ -3,17 +3,18 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TipoCotizante;
-use app\models\TipoCotizanteSearch;
+use app\models\GrupoPago;
+use app\models\GrupoPagoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use app\models\UsuarioDetalle;
 use yii\filters\VerbFilter;
+use app\models\Matriculaempresa;
+use app\models\UsuarioDetalle;
 
 /**
- * TipoCotizanteController implements the CRUD actions for TipoCotizante model.
+ * GrupoPagoController implements the CRUD actions for GrupoPago model.
  */
-class TipoCotizanteController extends Controller
+class GrupoPagoController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,14 +32,14 @@ class TipoCotizanteController extends Controller
     }
 
     /**
-     * Lists all TipoCotizante models.
+     * Lists all GrupoPago models.
      * @return mixed
      */
     public function actionIndex()
     {
         if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',58])->all()){
-                $searchModel = new TipoCotizanteSearch();
+            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',69])->all()){
+                $searchModel = new GrupoPagoSearch();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
                 return $this->render('index', [
@@ -50,11 +51,11 @@ class TipoCotizanteController extends Controller
             }
         }else{
             return $this->redirect(['site/login']);
-        }    
+        }         
     }
 
     /**
-     * Displays a single TipoCotizante model.
+     * Displays a single GrupoPago model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -67,16 +68,16 @@ class TipoCotizanteController extends Controller
     }
 
     /**
-     * Creates a new TipoCotizante model.
+     * Creates a new GrupoPago model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new TipoCotizante();
+        $model = new GrupoPago();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id_tipo_cotizante]);
+            //return $this->redirect(['view', 'id' => $model->id_grupo_pago]);
             return $this->redirect(['index']);
         }
 
@@ -86,7 +87,7 @@ class TipoCotizanteController extends Controller
     }
 
     /**
-     * Updates an existing TipoCotizante model.
+     * Updates an existing GrupoPago model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -97,7 +98,7 @@ class TipoCotizanteController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id_tipo_cotizante]);
+            //return $this->redirect(['view', 'id' => $model->id_grupo_pago]);
             return $this->redirect(['index']);
         }
 
@@ -107,7 +108,7 @@ class TipoCotizanteController extends Controller
     }
 
     /**
-     * Deletes an existing TipoCotizante model.
+     * Deletes an existing GrupoPago model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,26 +119,26 @@ class TipoCotizanteController extends Controller
         try {
             $this->findModel($id)->delete();
             Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
-            $this->redirect(["tipo-cotizante/index"]);
+            $this->redirect(["grupo-pago/index"]);
         } catch (IntegrityException $e) {
-            $this->redirect(["tipo-cotizante/index"]);
+            $this->redirect(["grupo-pago/index"]);
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
         } catch (\Exception $e) {            
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el registro, tiene registros asociados en otros procesos');
-            $this->redirect(["tipo-cotizante/index"]);
+            $this->redirect(["grupo-pago/index"]);
         }
     }
 
     /**
-     * Finds the TipoCotizante model based on its primary key value.
+     * Finds the GrupoPago model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TipoCotizante the loaded model
+     * @return GrupoPago the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TipoCotizante::findOne($id)) !== null) {
+        if (($model = GrupoPago::findOne($id)) !== null) {
             return $model;
         }
 

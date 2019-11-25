@@ -16,6 +16,7 @@ use app\models\Cesantia;
 use app\models\CajaCompensacion;
 use app\models\Arl;
 use app\models\CentroTrabajo;
+use app\models\GrupoPago;
 use app\models\Cargo;
 use app\models\EntidadPension;
 use app\models\EntidadSalud;
@@ -55,6 +56,7 @@ $caja = ArrayHelper::map(CajaCompensacion::find()->all(), 'id_caja_compensacion'
 $cesantia = ArrayHelper::map(Cesantia::find()->all(), 'id_cesantia', 'cesantia');
 $tipocontrato = ArrayHelper::map(TipoContrato::find()->all(), 'id_tipo_contrato', 'contrato');
 $centroTrabajo = ArrayHelper::map(CentroTrabajo::find()->all(), 'id_centro_trabajo', 'centro_trabajo');
+$grupopago = ArrayHelper::map(GrupoPago::find()->all(), 'id_grupo_pago', 'grupo_pago');
 $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(), 'id_empleado', 'empleadocontrato');
 ?>
 <div class="panel panel-success">
@@ -94,6 +96,7 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
         <div class="row">
             <?= $form->field($model, 'funciones_especificas', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
             <?= $form->field($model, 'id_centro_trabajo')->dropDownList($centroTrabajo, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'id_grupo_pago')->dropDownList($grupopago, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>        
         <div class="row">
             <?= $form->field($model, 'tipo_salario')->dropDownList(['FIJO' => 'FIJO', 'VARIABLE' => 'VAIABLE'], ['prompt' => 'Seleccione una opcion...']) ?>    
@@ -107,6 +110,17 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
             <?= $form->field($model, 'auxilio_transporte')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>    
             <?= $form->field($model, 'horario_trabajo')->textInput(['maxlength' => true]) ?>
         </div>
+        <div class="row" col>
+            <?= $form->field($model, 'comentarios', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        Información Seguridad Social
+    </div>
+    <div class="panel-body">
         <div class="row">
             <?= $form->field($model, 'id_tipo_cotizante')->dropDownList($tipocotizante, ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'id_subtipo_cotizante')->dropDownList($subtipocotizante, ['prompt' => 'Seleccione una opcion...']) ?>
@@ -118,28 +132,17 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
         <div class="row">
             <?= $form->field($model, 'tipo_pension')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
             <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>
-        <div class="row">
-            <?= $form->field($model, 'tipo_pension')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
-            <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>
+        </div>        
         <div class="row">
             <?= $form->field($model, 'id_caja_compensacion')->dropDownList($caja, ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'id_cesantia')->dropDownList($cesantia, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_arl')->dropDownList($arl, ['prompt' => 'Seleccione una opcion...']) ?>
-            
-        </div>        
-        <div class="row" col>
-            <?= $form->field($model, 'comentarios', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
-        </div>
+            <?= $form->field($model, 'id_arl')->dropDownList($arl, ['prompt' => 'Seleccione una opcion...']) ?>            
+        </div>         
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("contrato/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
         </div>
     </div>
-</div>
 <?php $form->end() ?>     
-
-</div>

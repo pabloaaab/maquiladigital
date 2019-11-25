@@ -54,6 +54,7 @@ $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
     <div class="panel-heading">
         Información Empleado
     </div>
+    <br><br><br>
     <div class="panel-body">
         <div class="row">
             <?= $form->field($model, 'id_empleado_tipo')->dropDownList($tipodempleado, ['prompt' => 'Seleccione una opcion...']) ?>

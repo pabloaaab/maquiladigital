@@ -729,3 +729,10 @@ h4{
     border-radius: 5px;
     border-color: #009999;
 }
+
+.datepicker {
+    
+    border-radius: 25px;
+    column-width: 105px;
+    font-size: 12px;
+}

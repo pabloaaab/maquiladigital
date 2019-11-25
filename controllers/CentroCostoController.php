@@ -76,7 +76,8 @@ class CentroCostoController extends Controller
         $model = new CentroCosto();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_centro_costo]);
+            //return $this->redirect(['view', 'id' => $model->id_centro_costo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -96,7 +97,8 @@ class CentroCostoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_centro_costo]);
+            //return $this->redirect(['view', 'id' => $model->id_centro_costo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

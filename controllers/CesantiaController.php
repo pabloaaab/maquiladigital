@@ -76,7 +76,8 @@ class CesantiaController extends Controller
         $model = new Cesantia();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_cesantia]);
+            //return $this->redirect(['view', 'id' => $model->id_cesantia]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -96,7 +97,8 @@ class CesantiaController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_cesantia]);
+            //return $this->redirect(['view', 'id' => $model->id_cesantia]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

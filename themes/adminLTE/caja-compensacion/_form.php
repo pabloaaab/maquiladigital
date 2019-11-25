@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use app\models\Municipio;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\CajaCompensacion */
@@ -20,6 +22,7 @@ $form = ActiveForm::begin([
                 'options' => []
             ],
         ]);
+$municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipio');
 ?>
 
 
@@ -32,8 +35,23 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'caja')->textInput(['maxlength' => true]) ?>    
         </div>
         <div class="row">
+            <?= $form->field($model, 'telefono')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'codigo_caja')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'codigo_interfaz')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'idmunicipio')->dropDownList($municipio, ['prompt' => 'Seleccione una opcion...']) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'estado')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
-        </div>		
+        </div>	        
         <div class="panel-footer text-right">                
             <a href="<?= Url::toRoute("caja-compensacion/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		

@@ -171,6 +171,7 @@ class ContratoController extends Controller
                 $table->ciudad_contratado = $model->ciudad_contratado;
                 $table->contrato_activo = 1;
                 $table->id_centro_trabajo = $model->id_centro_trabajo;
+                $table->id_grupo_pago = $model->id_grupo_pago;
                 $contratado = Contrato::find()
                         ->where(['id_empleado' => $id])
                         ->andWhere(['=','contrato_activo',1])
@@ -244,6 +245,7 @@ class ContratoController extends Controller
                     $table->ciudad_laboral = $model->ciudad_laboral;
                     $table->ciudad_contratado = $model->ciudad_contratado;
                     $table->id_centro_trabajo = $model->id_centro_trabajo;
+                    $table->id_grupo_pago = $model->id_grupo_pago;
                     if ($table->save(false)) {
                         $msg = "El registro ha sido actualizado correctamente";
                         $this->redirect(["contrato/index"]);
@@ -289,6 +291,7 @@ class ContratoController extends Controller
                 $model->ciudad_laboral = $table->ciudad_laboral;
                 $model->ciudad_contratado = $table->ciudad_contratado;
                 $model->id_centro_trabajo = $table->id_centro_trabajo;
+                $model->id_grupo_pago = $table->id_grupo_pago;
             } else {
                 return $this->redirect(["contrato/index"]);
             }

@@ -43,7 +43,8 @@ class FormContratoNuevo extends Model
     public $tipo_pension;
     public $id_entidad_pension;
     public $id_caja_compensacion;        
-    public $id_centro_trabajo;        
+    public $id_centro_trabajo;
+    public $id_grupo_pago;
     public $id_cesantia;
     public $id_arl;    
     public $ciudad_laboral;
@@ -56,7 +57,7 @@ class FormContratoNuevo extends Model
     public function rules()
     {
         return [
-            [['id_empleado','id_tipo_contrato','tiempo_contrato','id_cargo','descripcion','fecha_inicio','fecha_final','tipo_salario','salario','auxilio_transporte','horario_trabajo','comentarios','funciones_especificas','id_tipo_cotizante','id_subtipo_cotizante','tipo_salud','id_entidad_salud','tipo_pension','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo'], 'required', 'message' => 'Campo requerido'],            
+            [['id_empleado','id_tipo_contrato','tiempo_contrato','id_cargo','descripcion','fecha_inicio','fecha_final','tipo_salario','salario','auxilio_transporte','horario_trabajo','id_tipo_cotizante','id_subtipo_cotizante','tipo_salud','id_entidad_salud','tipo_pension','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo','id_grupo_pago'], 'required', 'message' => 'Campo requerido'],            
             [['id_contrato','id_tipo_contrato','id_cargo','id_tipo_cotizante','id_subtipo_cotizante'], 'integer'],
             [['comentarios','funciones_especificas'], 'string'],            
             [['salario'], 'number'], 
@@ -103,6 +104,7 @@ class FormContratoNuevo extends Model
             'id_caja_compensacion' => 'Caja Compensacion',
             'id_cesantia' => 'Cesantia',
             'id_centro_trabajo' => 'Centro trabajo',
+            'id_grupo_pago' => 'Grupo Pago',
             'id_arl' => 'Arl',            
             'ciudad_laboral' => 'Ciudad Laboral',
             'ciudad_contratado' => 'Ciudad Contratado',

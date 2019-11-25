@@ -12,6 +12,7 @@ use Yii;
  * @property int $id_tipo_contrato
  * @property int $tiempo_contrato
  * @property int $id_centro_trabajo
+ * @property int $id_grupo_pago
  * @property int $id_empleado
  * @property int $id_cargo
  * @property string $descripcion
@@ -85,7 +86,7 @@ class Contrato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['identificacion', 'tiempo_contrato','id_tipo_contrato', 'id_cargo', 'auxilio_transporte', 'id_tipo_cotizante', 'id_subtipo_cotizante', 'id_entidad_salud', 'id_entidad_pension', 'id_caja_compensacion', 'id_cesantia', 'id_arl', 'id_motivo_terminacion', 'contrato_activo','id_centro_trabajo'], 'integer'],
+            [['identificacion', 'tiempo_contrato','id_tipo_contrato', 'id_cargo', 'auxilio_transporte', 'id_tipo_cotizante', 'id_subtipo_cotizante', 'id_entidad_salud', 'id_entidad_pension', 'id_caja_compensacion', 'id_cesantia', 'id_arl', 'id_motivo_terminacion', 'contrato_activo','id_centro_trabajo','id_grupo_pago'], 'integer'],
             [['fecha_inicio', 'fecha_final', 'ultimo_pago', 'ultima_prima', 'ultima_cesantia', 'ultima_vacacion'], 'safe'],
             [['salario', 'ibp_cesantia_inicial', 'ibp_prima_inicial', 'ibp_recargo_nocturno'], 'number'],
             [['comentarios', 'funciones_especificas'], 'string'],
@@ -139,6 +140,7 @@ class Contrato extends \yii\db\ActiveRecord
             'id_caja_compensacion' => 'Caja Compensacion',
             'id_cesantia' => 'Cesantia',
             'id_centro_trabajo' => 'Centro Trabajo',
+            'id_grupo_pago' => 'Grupo Pago',
             'id_empleado' => 'Empleado',
             'id_arl' => 'Arl',
             'ultimo_pago' => 'Ultimo Pago',
@@ -259,6 +261,11 @@ class Contrato extends \yii\db\ActiveRecord
     public function getCentroTrabajo()
     {
         return $this->hasOne(CentroTrabajo::className(), ['id_centro_trabajo' => 'id_centro_trabajo']);
+    }
+    
+    public function getGrupoPago()
+    {
+        return $this->hasOne(GrupoPago::className(), ['id_grupo_pago' => 'id_grupo_pago']);
     }
     
     public function getActivo()

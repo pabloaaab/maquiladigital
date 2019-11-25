@@ -48,14 +48,14 @@ class FormContratoNuevoEmpleado extends Model
     public $ciudad_laboral;
     public $ciudad_contratado;
     public $id_centro_trabajo;
-
+    public $id_grupo_pago;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id_tipo_contrato','tiempo_contrato','id_cargo','descripcion','fecha_inicio','fecha_final','tipo_salario','salario','auxilio_transporte','horario_trabajo','comentarios','funciones_especificas','id_tipo_cotizante','id_subtipo_cotizante','tipo_salud','id_entidad_salud','tipo_pension','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo'], 'required', 'message' => 'Campo requerido'],            
+            [['id_tipo_contrato','tiempo_contrato','id_cargo','descripcion','fecha_inicio','fecha_final','tipo_salario','salario','auxilio_transporte','horario_trabajo','id_tipo_cotizante','id_subtipo_cotizante','tipo_salud','id_entidad_salud','tipo_pension','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo','id_grupo_pago'], 'required', 'message' => 'Campo requerido'],            
             [['id_contrato','id_tipo_contrato','id_cargo','id_tipo_cotizante','id_subtipo_cotizante'], 'integer'],
             [['comentarios','funciones_especificas'], 'string'],            
             [['salario'], 'number'], 
@@ -99,6 +99,7 @@ class FormContratoNuevoEmpleado extends Model
             'id_entidad_salud' => 'Entidad Salud',
             'tipo_salud' => 'Tipo Salud',
             'id_centro_trabajo' => 'Centro trabajo',
+            'id_grupo_pago' => 'Grupo Pago',
             'tipo_pension' => 'Tipo Pension',
             'id_entidad_pension' => 'Entidad Pension',
             'id_caja_compensacion' => 'Caja Compensacion',

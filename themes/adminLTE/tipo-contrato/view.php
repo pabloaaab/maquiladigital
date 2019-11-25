@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $model->id_tipo_contrato;
                     <th><?= Html::activeLabel($model, 'contrato') ?>:</th>
                     <td><?= Html::encode($model->contrato) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->estado) ?></td>                    
+                    <td><?= Html::encode($model->activo) ?></td>                    
                 </tr>                
             </table>
         </div>

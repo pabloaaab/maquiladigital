@@ -76,7 +76,8 @@ class EntidadSaludController extends Controller
         $model = new EntidadSalud();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_entidad_salud]);
+            //return $this->redirect(['view', 'id' => $model->id_entidad_salud]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -96,7 +97,8 @@ class EntidadSaludController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_entidad_salud]);
+            //return $this->redirect(['view', 'id' => $model->id_entidad_salud]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

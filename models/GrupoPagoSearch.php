@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CajaCompensacion;
+use app\models\GrupoPago;
 
 /**
- * CajaCompensacionSearch represents the model behind the search form of `app\models\CajaCompensacion`.
+ * GrupoPagoSearch represents the model behind the search form of `app\models\GrupoPago`.
  */
-class CajaCompensacionSearch extends CajaCompensacion
+class GrupoPagoSearch extends GrupoPago
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class CajaCompensacionSearch extends CajaCompensacion
     public function rules()
     {
         return [
-            [['id_caja_compensacion', 'estado'], 'integer'],
-            [['caja'], 'safe'],
-            [['telefono','direccion','codigo_caja','codigo_interfaz','idmunicipio'], 'string'],
+            [['id_grupo_pago', 'estado'], 'integer'],
+            [['grupo_pago'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class CajaCompensacionSearch extends CajaCompensacion
      */
     public function search($params)
     {
-        $query = CajaCompensacion::find();
+        $query = GrupoPago::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +58,11 @@ class CajaCompensacionSearch extends CajaCompensacion
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id_caja_compensacion' => $this->id_caja_compensacion,
-            'telefono' => $this->telefono,
-            'direccion' => $this->direccion,
-            'codigo_caja' => $this->codigo_caja,
-            'codigo_interfaz' => $this->codigo_interfaz,
-            'idmunicipio' => $this->idmunicipio,            
+            'id_grupo_pago' => $this->id_grupo_pago,
             'estado' => $this->estado,
         ]);
 
-        $query->andFilterWhere(['like', 'caja', $this->caja]);
+        $query->andFilterWhere(['like', 'grupo_pago', $this->grupo_pago]);
 
         return $dataProvider;
     }

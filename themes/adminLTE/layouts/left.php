@@ -66,6 +66,7 @@
                                                     ['label' => 'Contrato', 'icon' => 'plus-square-o', 'url' => ['/contrato/index']],
                                                     ['label' => 'Entidad Pensión', 'icon' => 'plus-square-o', 'url' => ['/entidad-pension/index']],
                                                     ['label' => 'Entidad Salud', 'icon' => 'plus-square-o', 'url' => ['/entidad-salud/index']],
+                                                    ['label' => 'Grupo Pago', 'icon' => 'plus-square-o', 'url' => ['/grupo-pago/index']],
                                                     ['label' => 'Motivo Terminación', 'icon' => 'plus-square-o', 'url' => ['/motivo-terminacion/index']],
                                                     ['label' => 'Tipo Contrato', 'icon' => 'plus-square-o', 'url' => ['tipo-contrato/index']],
                                                     ['label' => 'Tipo Cotizante', 'icon' => 'plus-square-o', 'url' => ['tipo-cotizante/index']],

@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $model->id_entidad_salud;
                     <th><?= Html::activeLabel($model, 'entidad') ?>:</th>
                     <td><?= Html::encode($model->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->estado) ?></td>                    
+                    <td><?= Html::encode($model->activo) ?></td>                    
                 </tr>                
             </table>
         </div>

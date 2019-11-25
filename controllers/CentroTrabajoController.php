@@ -77,7 +77,8 @@ class CentroTrabajoController extends Controller
         $model = new CentroTrabajo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_centro_trabajo]);
+            //return $this->redirect(['view', 'id' => $model->id_centro_trabajo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -97,7 +98,8 @@ class CentroTrabajoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_centro_trabajo]);
+            //return $this->redirect(['view', 'id' => $model->id_centro_trabajo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

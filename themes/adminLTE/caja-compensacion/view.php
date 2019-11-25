@@ -38,9 +38,21 @@ $this->params['breadcrumbs'][] = $model->id_caja_compensacion;
                     <td><?= Html::encode($model->id_caja_compensacion) ?></td>
                     <th><?= Html::activeLabel($model, 'caja') ?>:</th>
                     <td><?= Html::encode($model->caja) ?></td>
+                    <th><?= Html::activeLabel($model, 'telefono') ?>:</th>
+                    <td><?= Html::encode($model->telefono) ?></td>
+                    <th><?= Html::activeLabel($model, 'direccion') ?>:</th>
+                    <td><?= Html::encode($model->direccion) ?></td>
+                </tr>
+                <tr>
+                    <th><?= Html::activeLabel($model, 'codigo_caja') ?>:</th>
+                    <td><?= Html::encode($model->codigo_caja) ?></td>
+                    <th><?= Html::activeLabel($model, 'codigo_interfaz') ?>:</th>
+                    <td><?= Html::encode($model->codigo_interfaz) ?></td>
+                    <th><?= Html::activeLabel($model, 'idmunicipio') ?>:</th>
+                    <td><?= Html::encode($model->municipios) ?></td>
                     <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->estado) ?></td>                    
-                </tr>                
+                    <td><?= Html::encode($model->activo) ?></td>
+                </tr>
             </table>
         </div>
     </div>
