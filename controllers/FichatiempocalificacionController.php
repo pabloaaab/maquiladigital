@@ -8,6 +8,7 @@ use app\models\FichatiempocalificacionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\UsuarioDetalle;
 
 /**
  * FichatiempocalificacionController implements the CRUD actions for Fichatiempocalificacion model.
