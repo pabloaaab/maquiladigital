@@ -32,7 +32,7 @@ use Yii;
  * @property int $estado
  * @property int $autorizado
  * @property int $id_factura_venta_tipo
- * @property int $nrofacturaelectronica
+ * @property string $nrofacturaelectronica
  * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
@@ -65,11 +65,11 @@ class Facturaventa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nrofactura', 'nrofacturaelectronica','plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','estado','autorizado'], 'integer'],
+            [['nrofactura', 'plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','estado','autorizado'], 'integer'],
             [['fechainicio', 'idcliente', 'idordenproduccion','id_factura_venta_tipo'], 'required', 'message' => 'Campo requerido'],
             [['fechainicio', 'fechavcto', 'fechacreacion'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
-            [['valorletras','observacion'], 'string'],
+            [['valorletras','observacion','nrofacturaelectronica'], 'string'],
             [['formapago', 'usuariosistema'], 'string', 'max' => 15],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
