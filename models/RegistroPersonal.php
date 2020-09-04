@@ -9,10 +9,10 @@ use Yii;
  *
  * @property int $id
  * @property int $documento
- * @property int $tipo_documento
+ * @property int $id_tipo_documento
  * @property string $nombrecompleto
- * @property int $telefono
- * @property int $celular
+ * @property string $telefono
+ * @property string $celular
  * @property string $idmunicipio
  * @property string $fecha_creacion
  *
@@ -28,7 +28,7 @@ class RegistroPersonal extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'registro_personal';
-    }    
+    }
 
     /**
      * {@inheritdoc}
@@ -36,12 +36,13 @@ class RegistroPersonal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['documento', 'tipo_documento', 'telefono', 'celular'], 'integer'],
+            [['documento', 'id_tipo_documento'], 'integer'],
             [['fecha_creacion'], 'safe'],
             [['nombrecompleto'], 'string', 'max' => 100],
-            [['idmunicipio'], 'string', 'max' => 15],
+            [['telefono'], 'string', 'max' => 11],
+            [['celular', 'idmunicipio'], 'string', 'max' => 15],
             [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
-            [['tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => Tipodocumento::className(), 'targetAttribute' => ['tipo_documento' => 'id_tipo_documento']],
+            [['id_tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => Tipodocumento::className(), 'targetAttribute' => ['id_tipo_documento' => 'id_tipo_documento']],
         ];
     }
 
@@ -53,22 +54,13 @@ class RegistroPersonal extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'documento' => 'Documento',
-            'tipo_documento' => 'Tipo Documento',
+            'id_tipo_documento' => 'Tipo Documento',
             'nombrecompleto' => 'Nombrecompleto',
             'telefono' => 'Telefono',
             'celular' => 'Celular',
             'idmunicipio' => 'Idmunicipio',
             'fecha_creacion' => 'Fecha Creacion',
         ];
-    }
-    
-    public function beforeSave($insert) {
-	if(!parent::beforeSave($insert)){
-            return false;
-        }
-	# ToDo: Cambiar a cliente cargada de configuración.    
-	$this->nombrecompleto = strtoupper($this->nombrecompleto);	
-        return true;
     }
 
     /**
@@ -92,6 +84,6 @@ class RegistroPersonal extends \yii\db\ActiveRecord
      */
     public function getTipoDocumento()
     {
-        return $this->hasOne(Tipodocumento::className(), ['id_tipo_documento' => 'tipo_documento']);
+        return $this->hasOne(Tipodocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);
     }
 }
