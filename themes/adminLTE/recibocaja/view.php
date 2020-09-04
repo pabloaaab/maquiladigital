@@ -108,6 +108,7 @@ $view = 'recibocaja';
                     <tr>
                         <th scope="col">Id</th>
                         <th scope="col">N° Factura</th>
+                        <th scope="col">N° Factura Electrónica</th>
                         <th scope="col">Rete Fuente</th>
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Valor Abono</th>
@@ -126,7 +127,7 @@ $view = 'recibocaja';
                         <?php }else{ ?>
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
-                        
+                        <td><?= $val->nrofacturaelectronica ?></td>
                         <td><?= '$ '.number_format($val->retefuente,0) ?></td>
                         <td><?= '$ '.number_format($val->reteiva,0) ?></td>
                         <td><?= '$ '.number_format($val->vlrabono,0) ?></td>

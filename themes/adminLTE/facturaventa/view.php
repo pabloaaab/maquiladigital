@@ -112,9 +112,11 @@ $view = 'facturaventa';
                     <?php } else { ?>
                         <th><?= Html::activeLabel($model, 'tipoFactura') ?>:</th>
                         <td><?= Html::encode($model->facturaventatipo->concepto) ?></td>
-                    <?php } ?>                        
+                    <?php } ?>
+                    <th><?= Html::activeLabel($model, 'nrofacturaelectronica') ?>:</th>
+                    <td><?= Html::encode($model->nrofacturaelectronica) ?></td>    
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
+                    <td colspan="4"><?= Html::encode($model->observacion) ?></td>
                 </tr>
             </table>
         </div>

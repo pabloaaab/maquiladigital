@@ -19,7 +19,7 @@ class PDF extends FPDF {
         $this->SetXY(53, 10);
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
-        $this->SetFont('Arial', '', 12);
+        $this->SetFont('Arial', '', 10);
         $this->SetXY(53, 9);
         $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 13.5);
@@ -47,8 +47,10 @@ class PDF extends FPDF {
         $this->SetFillColor(200, 200, 200);
         $this->SetXY(10, 54);
         $this->SetFont('Arial', 'B', 8);
-        $this->Cell(23, 5, utf8_decode("NIT:"), 0, 0, 'l', 1);
-        $this->Cell(118, 5, utf8_decode($factura->cliente->cedulanit.'-'.$factura->cliente->dv), 0, 0, 'L',1);
+        $this->Cell(23, 5, utf8_decode("NIT:"), 0, 0, 'L', 1);
+        $this->Cell(59, 5, utf8_decode($factura->cliente->cedulanit.'-'.$factura->cliente->dv), 0, 0, 'L',1);
+        $this->Cell(36, 5, utf8_decode("N° FACT ELECTRÓNICA:"), 0, 0, 'C', 1);
+        $this->Cell(23, 5, utf8_decode($factura->nrofacturaelectronica), 0, 0, 'C', 1);
         $this->Cell(25, 5, utf8_decode("FECHA EMISION"), 0, 0, 'c', 1);
         $this->Cell(25, 5, utf8_decode("FECHA VENCE"), 0, 0, 'c', 1);
         $this->SetXY(10, 59);

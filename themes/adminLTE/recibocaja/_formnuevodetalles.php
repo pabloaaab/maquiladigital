@@ -47,6 +47,7 @@ if ($mensaje != ""){
                 <tr>
                     <th scope="col">Id</th>
                     <th scope="col">Nro Factura</th>
+                    <th scope="col">Nro Factura Electrónica</th>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Vcto</th>
                     <th scope="col">Subtotal</th>
@@ -63,6 +64,7 @@ if ($mensaje != ""){
                 <tr>
                     <td><?= $val->idfactura ?></td>
                     <td><?= $val->nrofactura ?></td>
+                    <td><?= $val->nrofacturaelectronica ?></td>
                     <td><?= $val->fechainicio ?></td>
                     <td><?= $val->fechavcto ?></td>
                     <td><?= '$ ' .number_format($val->subtotal,0) ?></td>

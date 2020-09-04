@@ -16,6 +16,7 @@ use Yii;
  * @property double $reteica
  * @property int $idrecibo
  * @property string $observacion
+ * @property string $nrofacturaelectronica
  *
  * @property Recibocaja $recibo
  * @property Facturaventa $factura
@@ -37,7 +38,7 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idfactura', 'idrecibo',], 'required'],
-            [['idfactura', 'idrecibo'], 'integer'],
+            [['idfactura', 'idrecibo','nrofacturaelectronica'], 'integer'],
             [['vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica'], 'number'],
             [['observacion'], 'string'],
             [['idrecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Recibocaja::className(), 'targetAttribute' => ['idrecibo' => 'idrecibo']],
@@ -59,6 +60,7 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
             'reteiva' => 'Reteiva',
             'reteica' => 'Reteica',
             'idrecibo' => 'Idrecibo',
+            'nrofacturaelectronica' => 'Nro Factura Electrónica',
             'observacion' => 'Observacion',
         ];
     }

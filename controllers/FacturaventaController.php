@@ -161,6 +161,7 @@ class FacturaventaController extends Controller
             $facturalibre->idcliente = $model->idcliente;
             $facturalibre->observacion = $model->observacion;
             $facturalibre->nrofactura = 0;
+            $facturalibre->nrofacturaelectronica = $model->nrofacturaelectronica;
             $facturalibre->fechavcto = $nuevafecha;
             $facturalibre->formapago = $table->formapago;
             $facturalibre->plazopago = $table->plazopago;
@@ -246,7 +247,7 @@ class FacturaventaController extends Controller
                     $table->fechainicio = $model->fechainicio;                    
                     $table->observacion = $model->observacion;
                     $table->id_factura_venta_tipo = $model->id_factura_venta_tipo;
-                    
+                    $table->nrofacturaelectronica = $model->nrofacturaelectronica;
                     if ($table->update(false)) {
                         $msg = "El registro ha sido actualizado correctamente";
                         return $this->redirect(["index"]);
@@ -268,7 +269,8 @@ class FacturaventaController extends Controller
                 $model->idcliente = $table->idcliente;
                 $model->fechainicio = $table->fechainicio;
                 $model->id_factura_venta_tipo = $table->id_factura_venta_tipo;                
-                $model->observacion = $table->observacion;                
+                $model->observacion = $table->observacion;      
+                $model->nrofacturaelectronica = $table->nrofacturaelectronica;      
             } else {
                 return $this->redirect(["index"]);
             }

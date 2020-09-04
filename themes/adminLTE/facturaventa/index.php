@@ -39,6 +39,10 @@ $empresa = \app\models\Matriculaempresa::findOne(1);
                 'contentOptions' => ['class' => 'col-lg-1'],                
             ],
             [
+                'attribute' => 'nrofacturaelectronica',
+                'contentOptions' => ['class' => 'col-lg-1'],                
+            ],
+            [
                 'attribute' => 'idcliente',
                 'value' => function($model){
                     $clientes = Cliente::findOne($model->idcliente);

@@ -303,6 +303,7 @@ class RecibocajaController extends Controller
                     $reg = count($detalles);
                     if ($reg == 0) {
                         $table->idfactura = $factura->idfactura;
+                        $table->nrofacturaelectronica = $factura->nrofacturaelectronica;
                         $table->vlrabono = $factura->totalpagar;
                         $table->vlrsaldo = $factura->saldo;
                         $table->retefuente = $factura->retencionfuente;

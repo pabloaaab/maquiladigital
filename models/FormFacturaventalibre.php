@@ -14,12 +14,14 @@ class FormFacturaventalibre extends Model
     public $idcliente;    
     public $observacion;
     public $id_factura_venta_tipo;
+    public $nrofacturaelectronica;
     
     public function rules()
     {
         return [            
             [['fechainicio','idcliente','id_factura_venta_tipo'], 'required'],            
-            [['observacion'], 'string'],                                    
+            [['observacion'], 'string'],
+            ['nrofacturaelectronica' , 'integer']
         ];
     }
 
@@ -29,7 +31,8 @@ class FormFacturaventalibre extends Model
             'fechainicio' => 'Fecha Inicio',                      
             'idcliente' => 'Cliente',
             'id_factura_venta_tipo' => 'Tipo',
-            'observacion' => 'Observacion',            
+            'observacion' => 'Observacion',
+            'nrofacturaelectronica' => 'Nro Factura Electrónica',
         ];
     }
     

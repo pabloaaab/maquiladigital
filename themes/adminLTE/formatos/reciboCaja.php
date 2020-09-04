@@ -20,7 +20,7 @@ class PDF extends FPDF {
         $this->SetXY(53, 10);
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
-        $this->SetFont('Arial', '', 12);
+        $this->SetFont('Arial', '', 10);
         $this->SetXY(53, 9);
         $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 13.5);
@@ -108,21 +108,22 @@ class PDF extends FPDF {
         $this->MultiCell(162, 6, utf8_decode($recibo->observacion), 0, 'J');
         //Lineas del encabezado
         $this->Line(10, 102, 10, 275); //x1,y1,x2,y2        
-        $this->Line(26, 102, 26, 275); //x1,y1,x2,y2        
-        $this->Line(54, 102, 54, 275); //x1,y1,x2,y2
-        $this->Line(85, 102, 85, 275); //x1,y1,x2,y2
-        $this->Line(115, 102, 115, 275); //x1,y1,x2,y2
-        $this->Line(144, 102, 144, 275); //x1,y1,x2,y2
-        $this->Line(173, 102, 173, 275); //x1,y1,x2,y2
-        $this->Line(202, 102, 202, 275); //x1,y1,x2,y2
-        $this->Line(10, 275, 202, 275); //linea horizontal inferior x1,y1,x2,y2
+        $this->Line(20, 102, 20, 275); //x1,y1,x2,y2
+        $this->Line(42, 102, 42, 275); //x1,y1,x2,y2
+        $this->Line(71, 102, 71, 275); //x1,y1,x2,y2
+        $this->Line(98, 102, 98, 275); //x1,y1,x2,y2
+        $this->Line(125, 102, 125, 275); //x1,y1,x2,y2
+        $this->Line(151, 102, 151, 275); //x1,y1,x2,y2
+        $this->Line(177, 102, 177, 275); //x1,y1,x2,y2
+        $this->Line(203, 102, 203, 275); //x1,y1,x2,y2
+        $this->Line(10, 275, 203, 275); //linea horizontal inferior x1,y1,x2,y2
         //Detalle factura
         $this->EncabezadoDetalles();
     }
 
     function EncabezadoDetalles() {
         $this->Ln(3);
-        $header = array('ITEM', utf8_decode('N° FACTURA'), 'VALOR ABONO', 'VALOR SALDO', 'RETE FUENTE', 'RETE IVA', 'RETE ICA');
+        $header = array('ITEM', utf8_decode('N° FACTURA'), utf8_decode('N° FACT ELECT'),'VALOR ABONO', 'VALOR SALDO', 'RETE FUENTE', 'RETE IVA', 'RETE ICA');
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -130,7 +131,7 @@ class PDF extends FPDF {
         $this->SetFont('', 'B', 9);
 
         //creamos la cabecera de la tabla.
-        $w = array(16, 28, 31, 30, 29, 29, 29);
+        $w = array(10, 22, 29,27, 27, 26, 26, 26);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
@@ -151,17 +152,19 @@ class PDF extends FPDF {
         $i = 0;
         foreach ($detalles as $detalle) {
             $i = $i + 1;
-            $pdf->Cell(16, 5, $i, 0, 0, 'L');
+            $pdf->Cell(10, 5, $i, 0, 0, 'L');
             if ($model->libre == 0){
-                $pdf->Cell(26, 5, $detalle->factura->nrofactura, 0, 0, 'L');
+                $pdf->Cell(22, 5, $detalle->factura->nrofactura, 0, 0, 'L');
+                $pdf->Cell(29, 5, $detalle->factura->nrofacturaelectronica, 0, 0, 'L');
             }else{
-                $pdf->Cell(26, 5, 'No Aplica', 0, 0, 'L');
+                $pdf->Cell(22, 5, 'No Aplica', 0, 0, 'L');
+                $pdf->Cell(29, 5, $detalle->factura->nrofacturaelectronica, 0, 0, 'L');
             }            
-            $pdf->Cell(31, 5, number_format($detalle->vlrabono, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(30, 5, number_format($detalle->vlrsaldo, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->retefuente, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->reteiva, 0, '.', ','), 0, 0, 'R');
-            $pdf->Cell(29, 5, number_format($detalle->reteica, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(27, 5, number_format($detalle->vlrabono, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(27, 5, number_format($detalle->vlrsaldo, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(26, 5, number_format($detalle->retefuente, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(26, 5, number_format($detalle->reteiva, 0, '.', ','), 0, 0, 'R');
+            $pdf->Cell(26, 5, number_format($detalle->reteica, 0, '.', ','), 0, 0, 'R');
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }
