@@ -21,7 +21,7 @@ class FormFacturaventalibre extends Model
         return [            
             [['fechainicio','idcliente','id_factura_venta_tipo'], 'required'],            
             [['observacion'], 'string'],
-            ['nrofacturaelectronica' , 'integer']
+            ['nrofacturaelectronica' , 'string']
         ];
     }
 
