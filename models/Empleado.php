@@ -98,12 +98,12 @@ class Empleado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado_tipo', 'id_tipo_documento', 'identificacion', 'dv', 'id_estado_civil', 'estatura', 'peso', 'id_rh', 'padre_familia', 'cabeza_hogar', 'id_nivel_estudio', 'discapacidad', 'id_horario','id_banco_empleado', 'id_centro_costo', 'id_sucursal'], 'integer'],
+            [['id_empleado_tipo', 'id_tipo_documento', 'identificacion', 'dv', 'id_estado_civil', 'estatura', 'peso', 'id_rh', 'padre_familia', 'cabeza_hogar', 'id_nivel_estudio', 'discapacidad', 'id_horario','id_banco_empleado', 'id_centro_costo'], 'integer'],
             [['identificacion'], 'required'],
             [['fecha_expedicion', 'fecha_nacimiento', 'fechacreacion'], 'safe'],
             [['observacion','tipo_cuenta'], 'string'],
             ['cuenta_bancaria', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
-            [['cuenta_bancaria'], 'string'],
+            [['cuenta_bancaria', 'usuario_crear','usuario_editar'], 'string'],
             [['ciudad_expedicion', 'iddepartamento', 'idmunicipio', 'sexo', 'libreta_militar', 'distrito_militar', 'ciudad_nacimiento'], 'string', 'max' => 15],
             [['nombre1', 'nombre2', 'apellido1', 'apellido2', 'telefono', 'celular'], 'string', 'max' => 20],
             [['nombrecorto', 'direccion', 'barrio'], 'string', 'max' => 100],
@@ -116,9 +116,8 @@ class Empleado extends \yii\db\ActiveRecord
             [['id_nivel_estudio'], 'exist', 'skipOnError' => true, 'targetClass' => NivelEstudio::className(), 'targetAttribute' => ['id_nivel_estudio' => 'id_nivel_estudio']],
             [['id_banco_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => BancoEmpleado::className(), 'targetAttribute' => ['id_banco_empleado' => 'id_banco_empleado']],
             [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
-            [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
             [['id_horario'], 'exist', 'skipOnError' => true, 'targetClass' => Horario::className(), 'targetAttribute' => ['id_horario' => 'id_horario']],
-            [['id_sucursal'], 'exist', 'skipOnError' => true, 'targetClass' => Sucursal::className(), 'targetAttribute' => ['id_sucursal' => 'id_sucursal']],
+       
             [['id_centro_costo'], 'exist', 'skipOnError' => true, 'targetClass' => CentroCosto::className(), 'targetAttribute' => ['id_centro_costo' => 'id_centro_costo']],
             [['id_empleado_tipo'], 'exist', 'skipOnError' => true, 'targetClass' => EmpleadoTipo::className(), 'targetAttribute' => ['id_empleado_tipo' => 'id_empleado_tipo']],
             [['id_tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => TipoDocumento::className(), 'targetAttribute' => ['id_tipo_documento' => 'id_tipo_documento']],
@@ -142,7 +141,7 @@ class Empleado extends \yii\db\ActiveRecord
             'nombre2' => 'Segundo Nombre',
             'apellido1' => 'Primer Apellido',
             'apellido2' => 'Segundo Apellido',
-            'nombrecorto' => 'Nombre corto',
+            'nombrecorto' => 'Nombre completo',
             'direccion' => 'Dirección',
             'telefono' => 'Teléfono',
             'celular' => 'Celular',
@@ -161,8 +160,8 @@ class Empleado extends \yii\db\ActiveRecord
             'ciudad_nacimiento' => 'Ciudad Nacimiento',
             //'contrato' => 'Contrato',
             'observacion' => 'Observacion',
-            //'fechaingreso' => 'Fechaingreso',
-            //'fecharetiro' => 'Fecharetiro',
+            'fechaingreso' => 'Fecha_ingreso',
+            'fecharetiro' => 'Fecha_retiro',
             'padre_familia' => 'Padre Familia',
             'cabeza_hogar' => 'Cabeza Hogar',
             'id_nivel_estudio' => 'Nivel Estudio',
@@ -172,8 +171,9 @@ class Empleado extends \yii\db\ActiveRecord
             'tipo_cuenta' => 'Tipo Cuenta',
             'id_banco_empleado' => 'Banco Empleado',
             'id_centro_costo' => 'Centro Costo',
-            'id_sucursal' => 'Sucursal',
             'fechacreacion' => 'Fecha creacion',
+            'usuario_crear' => 'Usuario_creador',
+            'usuario_editar' => 'Usuario_editado',
         ];
     }
 
@@ -260,10 +260,6 @@ class Empleado extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getSucursal()
-    {
-        return $this->hasOne(Sucursal::className(), ['id_sucursal' => 'id_sucursal']);
-    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -314,17 +310,17 @@ class Empleado extends \yii\db\ActiveRecord
     
     public function getEmpleadocontrato()
     {
-        return "{$this->identificacion} - {$this->id_empleado} - {$this->nombrecorto}";
+        return "{$this->nombrecorto} - {$this->identificacion} ";
     }
     
     public function getContratado()
     {
         if($this->contrato == 1){
-            $contratado = "SI";
+            $contra = "SI";
         }else{
-            $contratado = "NO";
+            $contra = "NO";
         }
-        return $contratado;
+        return $contra;
     }
     
     public function getTipo()
