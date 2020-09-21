@@ -36,12 +36,12 @@ class RegistroPersonal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['documento', 'tipo_documento', 'telefono', 'celular'], 'integer'],
+            [['documento', 'id_tipo_documento', 'telefono', 'celular'], 'integer'],
             [['fecha_creacion'], 'safe'],
             [['nombrecompleto'], 'string', 'max' => 100],
             [['idmunicipio'], 'string', 'max' => 15],
             [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
-            [['tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => Tipodocumento::className(), 'targetAttribute' => ['tipo_documento' => 'id_tipo_documento']],
+            [['id_tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => Tipodocumento::className(), 'targetAttribute' => ['id_tipo_documento' => 'id_tipo_documento']],
         ];
     }
 
@@ -53,7 +53,7 @@ class RegistroPersonal extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'documento' => 'Documento',
-            'tipo_documento' => 'Tipo Documento',
+            'id_tipo_documento' => 'Tipo Documento',
             'nombrecompleto' => 'Nombrecompleto',
             'telefono' => 'Telefono',
             'celular' => 'Celular',
@@ -92,6 +92,6 @@ class RegistroPersonal extends \yii\db\ActiveRecord
      */
     public function getTipoDocumento()
     {
-        return $this->hasOne(TipoDocumento::className(), ['id_tipo_documento' => 'tipo_documento']);   
+        return $this->hasOne(TipoDocumento::className(), ['id_tipo_documento' => 'id_tipo_documento']);   
     }
 }
