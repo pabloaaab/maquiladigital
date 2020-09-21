@@ -8,7 +8,7 @@ use app\models\Users;
 class FormAccesoConDatos extends model{
 
     public $documento;
-    public $tipo_documento;
+    public $id_tipo_documento;
     public $nombrecompleto;
     public $telefono;
     public $celular;    
@@ -21,7 +21,7 @@ class FormAccesoConDatos extends model{
     public function rules()
     {
         return [
-            [['documento', 'nombrecompleto','idmunicipio','tipo_documento','temperatura_final','tiene_sintomas'], 'required', 'message' => 'Campo requerido'],
+            [['documento', 'nombrecompleto','idmunicipio','id_tipo_documento','temperatura_final','tiene_sintomas'], 'required', 'message' => 'Campo requerido'],
             ['documento', 'match', 'pattern' => "/^[0-9]+$/i", 'message' => 'Sólo se aceptan números'],
             ['telefono', 'integer'], 
             ['celular', 'integer'],

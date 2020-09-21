@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $documento
- * @property int $tipo_documento
+ * @property int $id_tipo_documento
  * @property string $nombrecompleto
  * @property int $telefono
  * @property int $celular
