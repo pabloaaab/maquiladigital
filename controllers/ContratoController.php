@@ -396,7 +396,7 @@ class ContratoController extends Controller
                                  $table->fecha_final = '2099-12-31';
                                  $table->genera_prorroga = 0;
                                  $table->dias_contrato = 0;
-                                 $table->fecha_preaviso = '0000-00-00'; 
+                                 $table->fecha_preaviso = '2099-12-31'; 
                             }
 
                             if ($table->save(false)) {
