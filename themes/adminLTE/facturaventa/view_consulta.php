@@ -12,8 +12,8 @@ use yii\db\ActiveQuery;
 /* @var $this yii\web\View */
 /* @var $model app\models\Facturaventa */
 
-$this->title = 'Detalle Consulta Factura de Venta';
-$this->params['breadcrumbs'][] = ['label' => 'Consulta Facturas de ventas', 'url' => ['indexconsulta']];
+$this->title = 'Detalle de Factura';
+$this->params['breadcrumbs'][] = ['label' => 'Consulta Facturas', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $model->idfactura;
 $view = 'facturaventa';
 ?>
@@ -22,7 +22,7 @@ $view = 'facturaventa';
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->idfactura], ['class' => 'btn btn-primary']) ?>        
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->idfactura], ['class' => 'btn btn-primary btn-sm']) ?>        
     </p>
     
     <div class="panel panel-success">
@@ -31,63 +31,63 @@ $view = 'facturaventa';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'idfactura') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idfactura') ?>:</th>
                     <td><?= Html::encode($model->idfactura) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'nrofactura') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'nrofactura') ?>:</th>
                     <td><?= Html::encode($model->nrofactura) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajeiva') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'porcentajeiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajeiva) ?></td>
-                    <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'subtotal') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->subtotal,0)) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'fechainicio') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechainicio') ?>:</th>
                     <td><?= Html::encode($model->fechainicio) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajefuente') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'porcentajefuente') ?>:</th>
                     <td><?= Html::encode($model->porcentajefuente) ?></td>
-                    <th><?= Html::activeLabel($model, 'impuestoiva') ?>: +</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'impuestoiva') ?>: +</th>
                     <td><?= Html::encode('$ '.number_format($model->impuestoiva,0)) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'fechavcto') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechavcto') ?>:</th>
                     <td><?= Html::encode($model->fechavcto) ?></td>
-                    <th><?= Html::activeLabel($model, 'porcentajereteiva') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'porcentajereteiva') ?>:</th>
                     <td><?= Html::encode($model->porcentajereteiva) ?></td>
-                    <th><?= Html::activeLabel($model, 'retencioniva') ?>: -</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'retencioniva') ?>: -</th>
                     <td><?= Html::encode('$ '.number_format($model->retencioniva,0)) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'plazopago') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'plazopago') ?>:</th>
                     <td><?= Html::encode($model->plazopago) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'retencionfuente') ?>: -</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'retencionfuente') ?>: -</th>
                     <td><?= Html::encode('$ '.number_format($model->retencionfuente,0)) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'formapago') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'formapago') ?>:</th>
                     <td><?= Html::encode($model->formadePago) ?></td>
-                    <th><?= Html::activeLabel($model, 'saldo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'saldo') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->saldo,0)) ?></td>
-                    <th><?= Html::activeLabel($model, 'totalpagar') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalpagar') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalpagar,0)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <?php if ($model->libre == 0){ ?>
-                        <th><?= Html::activeLabel($model, 'tipoServicio') ?>:</th>
+                        <th style='background-color:#F0F3EF;' ><?= Html::activeLabel($model, 'tipoServicio') ?>:</th>
                         <td><?= Html::encode($model->ordenproduccion->tipo->tipo) ?></td>
                     <?php } else { ?>
-                        <th><?= Html::activeLabel($model, 'tipoFactura') ?>:</th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'tipoFactura') ?>:</th>
                         <td><?= Html::encode($model->facturaventatipo->concepto) ?></td>
                     <?php } ?>                        
-                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
                 </tr>
             </table>
@@ -102,18 +102,18 @@ $view = 'facturaventa';
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Código</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Subtotal</th>
-                        <th></th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Precio</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                        <th style='background-color:#B9D5CE;'></th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
-                    <tr>
+                        <tr style="font-size: 85%;">
                         <td><?= $val->iddetallefactura ?></td>
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                         <td><?= $val->codigoproducto ?></td>

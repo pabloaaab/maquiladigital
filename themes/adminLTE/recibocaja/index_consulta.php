@@ -17,7 +17,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Recibos de Caja';
+$this->title ='Recibos de Caja';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombreClientes');
+$clientes = ArrayHelper::map(Cliente::find()->orderBy('nombrecorto ASC')->all(), 'idcliente', 'nombreClientes');
 $tipos = ArrayHelper::map(TipoRecibo::find()->all(), 'idtiporecibo', 'concepto');
 ?>
 
@@ -109,7 +109,7 @@ $tipos = ArrayHelper::map(TipoRecibo::find()->all(), 'idtiporecibo', 'concepto')
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->idrecibo ?></td>
                 <td><?= $val->cliente->cedulanit ?></td>
                 <td><?= $val->cliente->nombrecorto ?></td>

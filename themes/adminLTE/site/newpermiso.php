@@ -44,16 +44,16 @@ if ($mensaje != ""){
             <table class="table table-condensed">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Módulo</th>
-                    <th scope="col">Menú Operación</th>
-                    <th scope="col">Permiso</th>                    
-                    <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
+                    <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                    <th scope="col" style='background-color:#B9D5CE;'>Módulo</th>
+                    <th scope="col" style='background-color:#B9D5CE;' >Menú Operación</th>
+                    <th scope="col" style='background-color:#B9D5CE;'>Permiso</th>                    
+                    <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($permisos as $val): ?>
-                <tr>                    
+                    <tr style="font-size: 85%;">                    
                     <td><?= $val->id_permiso ?></td>
                     <td><?= $val->modulo ?></td>
                     <td><?= $val->menu_operacion ?></td>
@@ -65,8 +65,8 @@ if ($mensaje != ""){
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['site/view','id' => $id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['site/view','id' => $id], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
 
     </div>

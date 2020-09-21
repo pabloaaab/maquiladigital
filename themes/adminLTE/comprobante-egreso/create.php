@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgreso */
 
-$this->title = 'Nuevo Comprobante Egreso';
+$this->title = 'Nuevo Comprobante';
 $this->params['breadcrumbs'][] = ['label' => 'Comprobante Egresos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

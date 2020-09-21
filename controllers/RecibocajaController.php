@@ -102,7 +102,7 @@ class RecibocajaController extends Controller
     public function actionCreate()
     {
         $model = new Recibocaja();
-        $clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
         $municipios = Municipio::find()->all();
         $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
@@ -125,7 +125,7 @@ class RecibocajaController extends Controller
     public function actionCreatelibre()
     {
         $model = new FormRecibocajalibre;
-        $clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
         $municipios = Municipio::find()->all();
         $bancos = Banco::find()->all();
         $tipoRecibos = TipoRecibo::find()->all();
@@ -284,10 +284,10 @@ class RecibocajaController extends Controller
 
     public function actionNuevodetalles($idcliente,$idrecibo)
     {
-        $reciboFactura = Facturaventa::find()
+          $reciboFactura = Facturaventa::find()
             ->where(['=', 'idcliente', $idcliente])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'nrofactura', 0])
-            ->andWhere(['<>', 'saldo', 0])
+            ->andWhere(['>', 'saldo', 0])->orderBy('idfactura ASC')
             ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {

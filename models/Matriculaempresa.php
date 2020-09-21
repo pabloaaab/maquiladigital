@@ -54,12 +54,13 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion','gran_contribuyente','agente_retenedor'], 'required'],
+            [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion', 'gran_contribuyente','agente_retenedor', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion'], 'required'],
             [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion','gran_contribuyente','agente_retenedor'], 'integer'],
-            [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva'], 'number'],
-            [['declaracion','nombresistema'], 'string'],
+            [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion'], 'number'],
+            [['declaracion','nombresistema', 'representante_legal'], 'string'],
             [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
+            [['representante_legal'], 'string', 'max' => 50],
             [['nitmatricula'], 'unique'],
             [['id_banco_factura'], 'exist', 'skipOnError' => true, 'targetClass' => Banco::className(), 'targetAttribute' => ['id_banco_factura' => 'idbanco']],
             [['id_tipo_regimen'], 'exist', 'skipOnError' => true, 'targetClass' => TipoRegimen::className(), 'targetAttribute' => ['id_tipo_regimen' => 'id_tipo_regimen']],
@@ -99,6 +100,11 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             'nombresistema' => 'Nombre Sistema:',
             'agente_retenedor' => 'Agente Retenedor:',
             'gran_contribuyente' => 'Gran Contribuyente:',
+            'porcentaje_cesantias' => '% cesantias',
+            'porcentaje_intereses' => '% intereses',
+            'porcentaje_prima' => '% prima',
+            'porcentaje_vacacion' => '% vacacion',
+            'representante_legal' => 'Representante legal:',
         ];
     }
 

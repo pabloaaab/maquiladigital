@@ -16,62 +16,62 @@ use yii\bootstrap\Modal;
 
 <?php
 
-$this->title = 'Detalle Consulta Cliente';
+$this->title = 'Detalle del cliente';
 $this->params['breadcrumbs'][] = ['label' => 'Consulta Clientes', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $this->title;
 $view = 'clientes';
 ?>
 
 <p>
-    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta'], ['class' => 'btn btn-primary']) ?>    
+    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta'], ['class' => 'btn btn-primary btn-sm']) ?>    
 </p>
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Consulta Cliente
+        Consulta de cliente
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
-                <th>Código:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Código:</th>
                 <td><?= $table->idcliente ?></td>
-                <th>Tipo Identificación:</th>
+                <th style='background-color:#F0F3EF;'>Tipo Identificación:</th>
                 <td><?= $table->tipo->tipo ?></td>
-                <th>Cedula/Nit:</th>
+                <th style='background-color:#F0F3EF;'>Cedula/Nit:</th>
                 <td><?= $table->cedulanit ?></td>
-                <th >DV:</th>
+                <th style='background-color:#F0F3EF;' >DV:</th>
                 <td><?= $table->dv ?></td>
             </tr>
-            <tr>
+            <tr style="font-size: 85%;">
                 <?php if ($table->id_tipo_documento == 1){ ?>
-                <th>Nombres:</th>
+                <th style='background-color:#F0F3EF;'>Nombres:</th>
                 <td><?= $table->nombrecliente ?></td>
-                <th>Apellidos:</th>
+                <th style='background-color:#F0F3EF;'>Apellidos:</th>
                 <td><?= $table->apellidocliente ?></td>
                 <?php } elseif ($table->id_tipo_documento == 5) { ?>
-                <th>Razon Social:</th>
+                <th style='background-color:#F0F3EF;'>Razon Social:</th>
                 <td><?= $table->razonsocial ?></td>
-                <th></th>
+                <th style='background-color:#F0F3EF;'></th>
                 <td></td>
                 <?php } else { ?>
-                <th>Nombres:</th>
+                <th style='background-color:#F0F3EF;'>Nombres:</th>
                 <td><?= $table->nombrecliente ?></td>
-                <th>Apellidos:</th>
+                <th style='background-color:#F0F3EF;'>Apellidos:</th>
                 <td><?= $table->apellidocliente ?></td>    
                 <?php }?>
-                <th>Email:</th>
+                <th style='background-color:#F0F3EF;'>Email:</th>
                 <td><?= $table->emailcliente ?></td>
-                <th >Dirección:</th>
+                <th style='background-color:#F0F3EF;' >Dirección:</th>
                 <td><?= $table->direccioncliente ?></td>
             </tr>
-            <tr>
-                <th>Teléfono:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Teléfono:</th>
                 <td><?= $table->telefonocliente ?></td>
-                <th>Celular:</th>
+                <th style='background-color:#F0F3EF;'>Celular:</th>
                 <td><?= $table->celularcliente ?></td>
-                <th>Departamento:</th>
+                <th style='background-color:#F0F3EF;'>Departamento:</th>
                 <td><?= $table->departamento->departamento ?></td>
-                <th >Municipio:</th>
+                <th style='background-color:#F0F3EF;'>Municipio:</th>
                 <td><?= $table->municipio->municipio ?></td>
             </tr>
         </table>
@@ -81,15 +81,14 @@ $view = 'clientes';
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
-                <th>Contacto:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Contacto:</th>
                 <td><?= $table->contacto ?></td>
-                <th>Teléfono:</th>
+                <th style='background-color:#F0F3EF;'>Teléfono:</th>
                 <td><?= $table->telefonocontacto ?></td>
-                <th>Celular:</th>
-                <td><?= $table->celularcontacto ?></td>
-                <th></th>
-                <td></td>
+                <th style='background-color:#F0F3EF;'>Celular:</th>
+                <td colspan="4"><?= $table->celularcontacto ?></td>
+              
             </tr>
         </table>
     </div>
@@ -98,24 +97,24 @@ $view = 'clientes';
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
-                <th>Nit/Matricula:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Nit/Matricula:</th>
                 <td><?= $table->nitmatricula ?></td>
-                <th>Forma de Pago:</th>
+                <th style='background-color:#F0F3EF;'>Forma de Pago:</th>
                 <td><?php if ($table->formapago = 1){echo "Contado";} else {echo "Crédito";}  ?></td>
-                <th>Plazo:</th>
+                <th style='background-color:#F0F3EF;'>Plazo:</th>
                 <td><?= $table->plazopago ?></td>
-                <th></th>
+                <th style='background-color:#F0F3EF;'></th>
                 <td></td>
             </tr>
-            <tr>
-                <th>Tipo Regimen:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Tipo Regimen:</th>
                 <td><?= $table->regimen ?></td>
-                <th>AutoRetenedor:</th>
+                <th style='background-color:#F0F3EF;'>AutoRetenedor:</th>
                 <td><?= $table->autoretener ?></td>
-                <th>Retención Fuente:</th>
+                <th style='background-color:#F0F3EF;'>Retención Fuente:</th>
                 <td><?= $table->retenerfuente ?></td>
-                <th>Retención Iva:</th>
+                <th style='background-color:#F0F3EF;'>Retención Iva:</th>
                 <td><?= $table->reteneriva ?></td>
             </tr>
         </table>
@@ -125,15 +124,13 @@ $view = 'clientes';
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
-                <th>Minuto Confección:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Minuto Confección:</th>
                 <td><?= $table->minuto_confeccion ?></td>
-                <th>Minuto Terminación:</th>
-                <td><?= $table->minuto_terminacion ?></td>
-                <th></th>
-                <td></td>
-                <th></th>
-                <td></td>
+                <th style='background-color:#F0F3EF;'>Minuto Terminación:</th>
+                <td colspan="4"><?= $table->minuto_terminacion ?></td>
+              
+              
             </tr>
         </table>
     </div>
@@ -142,8 +139,8 @@ $view = 'clientes';
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
-                <td><?= $table->observacion ?></td>
+            <tr style="font-size: 85%;">
+                <td style='background-color:#F0F3EF;'><?= $table->observacion ?></td>
             </tr>
         </table>
     </div>    

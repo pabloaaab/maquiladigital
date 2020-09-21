@@ -38,7 +38,7 @@ use yii\db\ActiveQuery;
 
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Editar detalle Recibo Caja
+            Editar registro
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -55,13 +55,13 @@ use yii\db\ActiveQuery;
                 </thead>
                 <tbody>
                 <?php foreach ($mds as $val): ?>
-                <tr>
+                    <tr style="font-size: 85%;">
                     <td><?= $val->iddetallerecibo ?></td>
                     <td><?= $val->idfactura ?></td>
-                    <td><?= $val->retefuente ?></td>
-                    <td><?= $val->reteiva ?></td>
+                    <td><?= '$'.number_format($val->retefuente,0) ?></td>
+                    <td><?= '$'.number_format($val->reteiva,0) ?></td>
                     <td><input type="text" name="vlrabono[]" value="<?= $val->vlrabono ?>" required></td>
-                    <td><?= $val->vlrsaldo ?></td>
+                    <td><?= '$'.number_format($val->vlrsaldo,0) ?></td>
                     <td><input type="hidden" name="iddetallerecibo[]" value="<?= $val->iddetallerecibo ?>"></td>
                 </tr>
                 </tbody>
@@ -69,8 +69,8 @@ use yii\db\ActiveQuery;
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['recibocaja/view', 'id' => $idrecibo], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['recibocaja/view', 'id' => $idrecibo], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

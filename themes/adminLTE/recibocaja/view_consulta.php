@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Recibocaja */
 
-$this->title = 'Detalle Consulta Recibo de Caja';
+$this->title = 'Detalle Recibo de Caja';
 $this->params['breadcrumbs'][] = ['label' => 'Recibos de Caja', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $model->idrecibo;
 $view = 'recibocaja';
@@ -33,7 +33,7 @@ $view = 'recibocaja';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'idrecibo') ?>:</th>
                     <td><?= Html::encode($model->idrecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
@@ -46,7 +46,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
                     <td><?= Html::encode($model->tiporecibo->concepto) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'idbanco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
@@ -54,7 +54,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'numero') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>                    
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecharecibo') ?>:</th>
                     <td><?= Html::encode($model->fecharecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
@@ -62,7 +62,7 @@ $view = 'recibocaja';
                     <th></th>
                     <td></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
                     <td><?= Html::encode($model->fechapago) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
@@ -70,7 +70,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'valorpagado') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->valorpagado,0)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
 
@@ -81,14 +81,15 @@ $view = 'recibocaja';
     <div class="table-responsive">
         <div class="panel panel-success ">
             <div class="panel-heading">
-                Detalles
+                Detalles: <span class="badge"><?= count($modeldetalles)?></span>
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">Id</th>
-                        <th scope="col">Id Factura</th>
+                        <th scope="col">Factura Vta</th>
+                        <th scope="col">Factura electronica</th>
                         <th scope="col">Rete Fuente</th>
                         <th scope="col">Rete Iva</th>
                         <th scope="col">Valor Abono</th>
@@ -100,10 +101,11 @@ $view = 'recibocaja';
                         <?php $calculo = 0; ?>
                     <?php foreach ($modeldetalles as $val): ?>
                         <?php $calculo = $calculo + $val->vlrabono; ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->iddetallerecibo ?></td>
                         <?php if($val->idfactura){ ?>
-                            <td><?= $val->idfactura ?></td>
+                            <td><?= $val->factura->nrofactura ?></td>
+                             <td><?= $val->factura->nrofacturaelectronica ?></td>
                         <?php }else{ ?>
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
@@ -119,6 +121,7 @@ $view = 'recibocaja';
                         <td></td>
                         <td></td>
                         <td></td>                                                
+                         <td></td>   
                         <td align="right"><b>Total:</b></td>
                         <td><?= '$ '.number_format($calculo,0); ?></td>
                     </tr>

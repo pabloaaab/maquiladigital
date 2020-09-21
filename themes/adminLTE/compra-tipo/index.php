@@ -24,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [                
                 'attribute' => 'id_compra_tipo',
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-5'],
             ],
             [                
                 'attribute' => 'tipo',
-                'contentOptions' => ['class' => 'col-lg-4'],                
+                'contentOptions' => ['class' => 'col-lg-6'],                
             ],
             /*[               
                 'attribute' => 'porcentaje',

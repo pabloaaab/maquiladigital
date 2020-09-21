@@ -36,6 +36,7 @@ class CentroCosto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['centro_costo'],'required'],
             [['centro_costo'], 'string', 'max' => 150],
         ];
     }

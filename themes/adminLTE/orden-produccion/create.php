@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
-$this->title = 'Nuevo Orden Producción';
-$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Producción', 'url' => ['index']];
+$this->title = 'Orden Producción';
+$this->params['breadcrumbs'][] = ['label' => 'Orden de Producción', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ordenproduccion-create">

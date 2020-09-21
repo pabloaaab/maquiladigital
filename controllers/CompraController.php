@@ -93,8 +93,8 @@ class CompraController extends Controller
     public function actionCreate()
     {
         $model = new Compra();
-        $proveedores = Proveedor::find()->all();
-        $conceptos = CompraConcepto::find()->all();
+        $proveedores = Proveedor::find()->orderBy('nombrecorto ASC')->all();
+        $conceptos = CompraConcepto::find()->orderBy('concepto ASC')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();

@@ -13,7 +13,6 @@ $this->params['breadcrumbs'][] = 'Editar Cesantia';
 <div class="caja-compensacion-update">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

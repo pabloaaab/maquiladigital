@@ -39,7 +39,7 @@ if ($mensaje != ""){
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Nuevo detalle Comprobante Egreso
+            Nuevo detalle
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -62,7 +62,7 @@ if ($mensaje != ""){
                 </thead>
                 <tbody>
                 <?php foreach ($compraegreso as $val): ?>
-                <tr>
+                    <tr style="font-size: 85%;">
                     <td><?= $val->numero ?></td>
                     <td><?= $val->factura ?></td>
                     <td><?= $val->compraConcepto->concepto ?></td>
@@ -82,8 +82,8 @@ if ($mensaje != ""){
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['comprobante-egreso/view', 'id' => $id_comprobante_egreso], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['comprobante-egreso/view', 'id' => $id_comprobante_egreso], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
 
     </div>

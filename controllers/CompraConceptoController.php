@@ -176,10 +176,12 @@ class CompraConceptoController extends Controller
     
     public function actionNuevodetalles($id_compra_concepto)
     {
+       
         $model = new FormCompraConceptoCuentaNuevo();
         $cuentas = CuentaPub::find()->all();         
         if ($model->load(Yii::$app->request->post())) {
             $cuenta = CuentaPub::find()->where(['=','codigo_cuenta',$model->cuenta])->one();
+            
             if ($cuenta){
                 $table = new CompraConceptoCuenta;
                 $table->id_compra_concepto = $id_compra_concepto;

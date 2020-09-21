@@ -65,8 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("orden-produccion/proceso") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
+            <a align="right" href="<?= Url::toRoute("orden-produccion/proceso") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -76,18 +76,18 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Registros: <?= $pagination->totalCount ?>
+            Registros: <span class="badge"><?= $pagination->totalCount ?></span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th scope="col">Id Orden</th>
-                <th scope="col">Cod Prod</th>
-                <th scope="col">Orden Produccion</th>
+                <th scope="col">Id</th>
+                <th scope="col">Código</th>
+                <th scope="col">Orden produccion</th>
                 <th scope="col">Cliente</th>
-                <th scope="col">Fecha Llegada</th>
-                <th scope="col">Fecha Procesada</th>
-                <th scope="col">Fecha Entrega</th>
+                <th scope="col">Fecha llegada</th>
+                <th scope="col">Fecha procesada</th>
+                <th scope="col">Fecha entrega</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Progreso</th>
                 <th scope="col"></th>
@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>
+            <tr style="font-size: 85%;">
                 <td><?= $val->idordenproduccion ?></td>
                 <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->ordenproduccion ?></td>
@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= date("Y-m-d", strtotime("$val->fechaentrega")) ?></td>
                 <td><?= $val->tipo->tipo ?></td>
                 <td><?= 'Proceso '.'<b>'.round($val->porcentaje_proceso,1).' % - </b>Cantidad '.'<b>'.round($val->porcentaje_cantidad,1).' %' ?></td>
-                <td>
+                <td style="width: 25px;">
                     <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_detalle', 'id' => $val->idordenproduccion] ) ?>
                 </td>
             </tr>

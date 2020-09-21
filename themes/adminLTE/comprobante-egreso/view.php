@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgreso */
 
-$this->title = 'Detalle Comprobante Egreso';
+$this->title = 'Detalle Comprobante';
 $this->params['breadcrumbs'][] = ['label' => 'Comprobante Egresos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_comprobante_egreso;
 $view = 'comprobante-egreso';
@@ -17,23 +17,23 @@ $view = 'comprobante-egreso';
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-primary btn-sm']) ?>
         <?php if ($model->autorizado == 0) { ?>
-            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-success btn-sm']) ?>
             <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_comprobante_egreso], [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger btn-sm',
                 'data' => [
                     'confirm' => 'Esta seguro de eliminar el registro?',
                     'method' => 'post',
                 ],
             ]) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']); }
+            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default btn-sm']); }
         else {
-            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']);
-            echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']);
+            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default btn-sm']);
+            echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default btn-sm']);
             if ($model->numero > 0){
-                    echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default']);            
-                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 8, 'codigo' => $model->id_comprobante_egreso,'view' => $view], ['class' => 'btn btn-default']);                                                         
+                    echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-default btn-sm']);            
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 8, 'codigo' => $model->id_comprobante_egreso,'view' => $view], ['class' => 'btn btn-default btn-sm']);                                                         
             }
         }
         ?>
@@ -52,7 +52,7 @@ $view = 'comprobante-egreso';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_comprobante_egreso') ?>:</th>
                     <td><?= Html::encode($model->id_comprobante_egreso) ?></td>
                     <th><?= Html::activeLabel($model, 'Proveedor') ?>:</th>
@@ -62,7 +62,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->subtotal,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_banco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
@@ -70,7 +70,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->iva,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecha_comprobante') ?>:</th>
                     <td><?= Html::encode($model->fecha_comprobante) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
@@ -78,7 +78,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'rete_fuente') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->retefuente,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
                     <td><?= Html::encode($model->fecha) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
@@ -86,7 +86,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'rete_iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->reteiva,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
                     <td><?= Html::encode($model->comprobanteEgresoTipo->concepto) ?></td>
                     <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
@@ -94,7 +94,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'base_aiu') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->base_aiu,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="3"><?= Html::encode($model->observacion) ?></td>
                     <th><?= Html::activeLabel($model, 'Total') ?>:</th>
@@ -138,7 +138,7 @@ $view = 'comprobante-egreso';
                         <?php $reteiva = $reteiva + $val->reteiva; ?>
                         <?php $baseaiu = $baseaiu + $val->base_aiu; ?>
                         <?php $calculo = $calculo + $val->vlr_abono; ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->id_comprobante_egreso_detalle ?></td>
                         <?php if($val->id_compra){ ?>
                             <td><?= $val->compra->factura ?></td>
@@ -235,7 +235,7 @@ $view = 'comprobante-egreso';
                 <div class="panel-footer text-right">
                     <?php if ($model->libre == 1){ ?>
                         <!-- Inicio Nuevo Detalle proceso -->
-                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo Libre',
+                        <?= Html::a('<span class="glyphicon glyphicon-plus  "></span> Nuevo Libre',
                             ['/comprobante-egreso/nuevodetallelibre','id' => $model->id_comprobante_egreso],
                             [
                                 'title' => 'Nuevo Detalle Comprobante Egreso',
@@ -252,9 +252,9 @@ $view = 'comprobante-egreso';
                         </div>
                         <!-- Fin Nuevo Detalle proceso -->
                     <?php  }else{ ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['comprobante-egreso/nuevodetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso,'id_proveedor' => $model->id_proveedor], ['class' => 'btn btn-success']) ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['comprobante-egreso/editardetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso],[ 'class' => 'btn btn-success']) ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['comprobante-egreso/eliminardetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso], ['class' => 'btn btn-danger']) ?>                    
+                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['comprobante-egreso/nuevodetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso,'id_proveedor' => $model->id_proveedor], ['class' => 'btn btn-success btn-sm']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['comprobante-egreso/editardetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso],[ 'class' => 'btn btn-success btn-sm']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['comprobante-egreso/eliminardetalles', 'id_comprobante_egreso' => $model->id_comprobante_egreso], ['class' => 'btn btn-danger btn-sm']) ?>                    
                     <?php } ?>                                                            
                 </div>
             <?php } ?>

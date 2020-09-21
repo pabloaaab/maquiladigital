@@ -20,7 +20,7 @@ class PDF extends FPDF {
         $this->SetXY(53, 10);
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 40, 29);
         //Encabezado
-        $this->SetFont('Arial', '', 12);
+        $this->SetFont('Arial', '', 10);
         $this->SetXY(53, 9);
         $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
         $this->SetXY(53, 13.5);
@@ -42,89 +42,89 @@ class PDF extends FPDF {
         $this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________"), 0, 0, 'C', 0);
         //Recibo caja
         $this->SetXY(10, 47);
-        $this->SetFont('Arial', 'B', 15);
+        $this->SetFont('Arial', 'B', 12);
         $this->Cell(162, 7, utf8_decode("COMPROBANTE DE EGRESO"), 0, 0, 'l', 0);
         $this->Cell(30, 7, utf8_decode('N°. ' . str_pad($comprobanteEgreso->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
         $this->SetFillColor(200, 200, 200);
         $this->SetXY(10, 59); //FILA 1
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("NIT:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->cedulanit . '-' . $comprobanteEgreso->proveedor->dv), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("T. COMPROBANTE:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 7.8);
         $this->SetXY(160, 60);
         //$this->Cell(50, 6, utf8_decode($comprobanteEgreso->comprobanteEgresoTipo->concepto), 0, 0, 'L');
         $this->MultiCell(47, 3.5, utf8_decode($comprobanteEgreso->comprobanteEgresoTipo->concepto), 0, 'L');
         $this->SetXY(10, 64); //FILA 2
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("PROVEEDOR:"), 0, 0, 'c');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->nombrecorto), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         //$this->Cell(35, 6, utf8_decode("FECHA CREACIÓN:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 8);
         //$this->Cell(50, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');
         $this->SetXY(10, 70); //FILA 3
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("DIRECCIÓN:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->direccionproveedor), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("SUBTOTAL:"), 0, 0, 'L');
         $this->SetFont('Arial', '', 10);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->subtotal,1)), 0, 0, 'L');
         $this->SetXY(10, 76); //FILA 4
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("CIUDAD:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->municipio->municipio . " - " . $comprobanteEgreso->proveedor->departamento->departamento), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("IVA:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->iva,1)), 0, 0, 'L');
         $this->SetXY(10, 82); //FILA 5
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("TELÉFONO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->proveedor->telefonoproveedor), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("RETE FUENTE:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->retefuente,1)), 0, 0, 'L');
         $this->SetXY(10, 88); //FILA 6
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("BANCO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->banco->entidad), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("RETE IVA:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 9);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->reteiva,1)), 0, 0, 'L');
         $this->SetXY(10, 94); //FILA 7
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("PRODUCTO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->banco->producto), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("BASE AIU:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 9);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->base_aiu,1)), 0, 0, 'L');
         $this->SetXY(10, 100); //FILA 8
-        $this->SetFont('Arial', 'B', 9);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(25, 6, utf8_decode("FECHA PAGO:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 10);        
+        $this->SetFont('Arial', '', 8);        
         $this->Cell(90, 6, utf8_decode($comprobanteEgreso->fecha_comprobante), 0, 0, 'L');                
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->Cell(35, 6, utf8_decode("TOTAL:"), 0, 0, 'L');
-        $this->SetFont('Arial', '', 9);
+        $this->SetFont('Arial', '', 8);
         $this->Cell(50, 6, utf8_decode(number_format($comprobanteEgreso->valor)), 0, 0, 'L');
         $this->SetXY(10, 106); //FILA 9
-        $this->SetFont('Arial', 'B', 10);
+        $this->SetFont('Arial', 'B', 8);
         $this->MultiCell(30, 6, utf8_decode('OBSERVACIÓN:'), 0, 'J');
         $this->SetXY(40, 106); 
-        $this->SetFont('Arial', '', 10);
+        $this->SetFont('Arial', '', 8);
         $this->MultiCell(162, 6, utf8_decode($comprobanteEgreso->observacion), 0, 'J');
         //Lineas del encabezado
         $this->Line(10, 118, 10, 275); //x1,y1,x2,y2        
@@ -147,7 +147,7 @@ class PDF extends FPDF {
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
         $this->SetLineWidth(.2);
-        $this->SetFont('', 'B', 9);
+        $this->SetFont('', 'B', 8);
 
         //creamos la cabecera de la tabla.
         $w = array(74, 21, 21, 21, 21, 17, 17);
@@ -167,7 +167,7 @@ class PDF extends FPDF {
     function Body($pdf, $model) {
         $detalles = ComprobanteEgresoDetalle::find()->where(['=', 'id_comprobante_egreso', $model->id_comprobante_egreso])->all();
         $pdf->SetX(10);
-        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetFont('Arial', '', 8);
         $i = 0;
         foreach ($detalles as $detalle) {
             $i = $i + 1;
@@ -178,7 +178,7 @@ class PDF extends FPDF {
                 $pdf->Cell(74, 5, $model->comprobanteEgresoTipo->concepto, 0, 0, 'L');
             }
             
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Arial', '', 8);
             if ($model->libre == 0){
                 $pdf->Cell(21, 5, $detalle->compra->factura, 0, 0, 'R');
             }else{

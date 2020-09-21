@@ -49,8 +49,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $formulario->field($form, "nombrecorto")->input("search") ?>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
+            <a align="right" href="<?= Url::toRoute("clientes/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -65,39 +65,49 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-hover">
             <thead>
             <tr>                
-                <th scope="col">Cedula/Nit</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Municipio</th>
-                <th scope="col"></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
+                <th scope="col"style='background-color:#B9D5CE;'>Teléfono</th>
+                <th scope="col"style='background-color:#B9D5CE;'>Celular</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Dirección</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Municipio</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Email</th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'></th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->cedulanit ?></td>
                 <td><?= $val->nombrecorto ?></td>
                 <td><?= $val->telefonocliente ?></td>
+                <td><?= $val->celularcliente ?></td>
                 <td><?= $val->direccioncliente ?></td>
                 <td><?= $val->municipio->municipio ?></td>
-                <td>				
-                <a href="<?= Url::toRoute(["clientes/view", "id" => $val->idcliente]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
-                <a href="<?= Url::toRoute(["clientes/editar", "id" => $val->idcliente])?>" ><span class="glyphicon glyphicon-pencil"></span></a>
-		<?= Html::a('', ['eliminar', 'id' => $val->idcliente], [
-        'class' => 'glyphicon glyphicon-trash',
-        'data' => [
-            'confirm' => 'Esta seguro de eliminar el registro?',
-            'method' => 'post',
-        ],
-    ]) ?>
+                 <td><?= $val->emailcliente ?></td>
+                <td style="width: 25px;">				
+                  <a href="<?= Url::toRoute(["clientes/view", "id" => $val->idcliente]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                </td>
+                <td style="width: 25px;">
+                  <a href="<?= Url::toRoute(["clientes/editar", "id" => $val->idcliente])?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                </td>
+                <td style="width: 25px;">
+		     <?= Html::a('', ['eliminar', 'id' => $val->idcliente], [
+                        'class' => 'glyphicon glyphicon-trash',
+                        'data' => [
+                            'confirm' => 'Esta seguro de eliminar el registro?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
                 </td>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-success"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
+            <a align="right" href="<?= Url::toRoute("clientes/nuevo") ?>" class="btn btn-success btn-sm"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
         </div>
     </div>
 </div>

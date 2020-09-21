@@ -16,44 +16,44 @@ class FormEmpleado extends Model
     public $id_empleado;
     public $identificacion;
     public $id_empleado_tipo;
-    public $fechaingreso;
+    public $id_tipo_documento;
     public $fecha_expedicion;
     public $ciudad_expedicion;
     public $dv;
-    public $fecharetiro;
-    public $sexo;
-    public $id_estado_civil;
-    public $nombre1;
+     public $nombre1;
     public $nombre2;
     public $apellido1;
     public $apellido2;
-    public $iddepartamento;
-    public $idmunicipio;
-    public $email;
+    public $nombrecorto;
     public $direccion;
     public $telefono;
-    public $celular;        
-    public $contrato;
-    public $id_rh;
-    public $estatura;
+    public $celular;  
+    public $email;
+    public $iddepartamento;
+    public $idmunicipio;
     public $barrio;
+    public $sexo;
+    public $id_estado_civil;
+    public $estatura;
     public $peso;
+    public $id_rh;
     public $libreta_militar;
     public $distrito_militar;
-    public $fecha_nacimiento;
-    public $ciudad_nacimiento;
+    public $contrato;
+    public $observacion;
+    public $fecharetiro;
+    public $fechaingreso;
     public $cabeza_hogar;
     public $padre_familia;
-    public $id_tipo_documento;
+    public $fecha_nacimiento;
+    public $ciudad_nacimiento;
+    public $id_nivel_estudio;
     public $discapacidad;
     public $id_horario;
     public $id_banco_empleado;
     public $cuenta_bancaria;
     public $tipo_cuenta;
     public $id_centro_costo;
-    public $id_sucursal;
-    public $observacion;
-    
 
     /**
      * {@inheritdoc}
@@ -61,7 +61,8 @@ class FormEmpleado extends Model
     public function rules()
     {
         return [
-            [['identificacion', 'id_empleado_tipo','fecha_expedicion','ciudad_expedicion','nombre1','apellido1','iddepartamento','idmunicipio','email','id_rh','fecha_nacimiento','ciudad_nacimiento','id_tipo_documento','padre_familia','cabeza_hogar','discapacidad','id_horario','id_banco_empleado','id_sucursal','id_centro_costo','tipo_cuenta','cuenta_bancaria','sexo','id_estado_civil'], 'required', 'message' => 'Campo requerido'],
+            [['identificacion', 'id_empleado_tipo','fecha_expedicion','ciudad_expedicion','nombre1','apellido1','iddepartamento','idmunicipio','email','id_rh','fecha_nacimiento','ciudad_nacimiento','id_tipo_documento','padre_familia','cabeza_hogar','discapacidad','id_horario','id_banco_empleado',
+                'id_centro_costo','tipo_cuenta','cuenta_bancaria','sexo','id_estado_civil'], 'required', 'message' => 'Campo requerido'],
             ['identificacion', 'identificacion_existe'],
             ['email', 'email_existe'],
             [['id_empleado_tipo', 'identificacion', 'dv','id_estado_civil','estatura','peso','libreta_militar'], 'integer'],
@@ -100,10 +101,7 @@ class FormEmpleado extends Model
             'email' => 'Email',
             'iddepartamento' => 'Departamento Res',
             'idmunicipio' => 'Municipio Res',
-            //'contrato' => 'Contrato',
             'observacion' => 'Observacion',
-            //'fechaingreso' => 'Fecha Ingreso',
-            //'fecharetiro' => 'Fecha Retiro',
             'id_estado_civil' => 'Estado Civil',
             'estatura' => 'Estatura',
             'peso' => 'Peso',
@@ -121,7 +119,6 @@ class FormEmpleado extends Model
             'tipo_cuenta' => 'Tipo Cuenta',
             'id_banco_empleado' => 'Banco Empleado',
             'id_centro_costo' => 'Centro Costo',
-            'id_sucursal' => 'Sucursal',
         ];
     }
 

@@ -5,6 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\GrupoPago;
 use app\models\GrupoPagoSearch;
+use app\models\PeriodoPago;
+use app\models\Departamento;
+use app\models\Municipio;
+use app\models\Sucursal;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -66,7 +70,6 @@ class GrupoPagoController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
     /**
      * Creates a new GrupoPago model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -77,8 +80,7 @@ class GrupoPagoController extends Controller
         $model = new GrupoPago();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->id_grupo_pago]);
-            return $this->redirect(['index']);
+            return $this->redirect(['index', 'id' => $model->id_grupo_pago]);
         }
 
         return $this->render('create', [
@@ -143,5 +145,16 @@ class GrupoPagoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
+    public function actionMunicipio($id) {
+        $rows = Municipio::find()->where(['iddepartamento' => $id])->all();
+
+        echo "<option required>Seleccione...</option>";
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                echo "<option value='$row->idmunicipio' required>$row->municipio</option>";
+            }
+        }
     }
 }

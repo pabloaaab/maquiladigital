@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Notas Créditos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="notacredito-index">
 <!--<h1><?= Html::encode($this->title) ?></h1>-->
 <?=  $this->render('_search', ['model' => $searchModel]); ?>
 

@@ -28,7 +28,7 @@ use app\models\Ordenproducciondetalle;
             </div>
             <div class="panel-body">
                 <table class="table table-responsive">
-                    <tr>
+                    <tr style="font-size: 100%;">
                         <th><?= Html::activeLabel($model, 'orden') ?></th>
                         <td><?= Html::encode($model->idordenproduccion) ?></td>
                         <th><?= Html::activeLabel($model, 'tipo') ?></th>
@@ -36,7 +36,7 @@ use app\models\Ordenproducciondetalle;
                         <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
                         <td><?= Html::encode($model->ordenproduccion) ?></td>
                     </tr>
-                    <tr>
+                    <tr style="font-size: 100%;">
                         <th><?= Html::activeLabel($model, 'Producto') ?></th>
                         <td><?= Html::encode($modeldetalle->productodetalle->prendatipo->prenda.' / '.$modeldetalle->productodetalle->prendatipo->talla->talla) ?></td>
                         <th><?= Html::activeLabel($model, 'codigo') ?></th>
@@ -44,7 +44,7 @@ use app\models\Ordenproducciondetalle;
                         <th><?= Html::activeLabel($model, 'cantidad') ?></th>
                         <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>
-                    <tr>
+                    <tr style="font-size: 100%;">
                         <th><?= Html::activeLabel($model, 'Duración') ?></th>
                         <td><?= Html::encode($model->duracion) ?></td>
                         <th></th>
@@ -78,9 +78,9 @@ use app\models\Ordenproducciondetalle;
                         <tbody>
                         <?php $totalsegundos = 0; ?>
                         <?php foreach ($procesos as $val): ?>
-                        <tr>
-                            <td align="center"><?= $val->iddetalleproceso ?></td>
-                            <td align="center"><?= $val->proceso ?></td>
+                        <tr style="font-size: 100%;">
+                            <td align="left"><?= $val->iddetalleproceso ?></td>
+                            <td align="left"><?= $val->proceso ?></td>
                             <td align="center"><?= $val->duracion ?></td>
                             <td align="center"><?= $val->ponderacion ?></td>
                             <td align="center"><?= number_format($val->total,1) ?></td>

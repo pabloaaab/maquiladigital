@@ -12,7 +12,6 @@ use app\models\TipoDocumento;
 use app\models\EstadoCivil;
 use app\models\Horario;
 use app\models\BancoEmpleado;
-use app\models\Sucursal;
 use app\models\CentroCosto;
 use app\models\Rh;
 use kartik\date\DatePicker;
@@ -40,21 +39,20 @@ $form = ActiveForm::begin([
 
 <?php
 $departamento = ArrayHelper::map(Departamento::find()->all(), 'iddepartamento', 'departamento');
-$municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipio');
+$municipio = ArrayHelper::map(Municipio::find()->orderBy('municipio ASC')->all(), 'idmunicipio', 'municipio');
 $tipodempleado = ArrayHelper::map(EmpleadoTipo::find()->all(), 'id_empleado_tipo', 'tipo');
 $estadoCivil = ArrayHelper::map(EstadoCivil::find()->all(), 'id_estado_civil', 'estado_civil');
 $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documento', 'descripcion');
 $horario = ArrayHelper::map(Horario::find()->all(), 'id_horario', 'horario');
 $banco_empleado = ArrayHelper::map(BancoEmpleado::find()->all(), 'id_banco_empleado', 'banco');
 $centro_costo = ArrayHelper::map(CentroCosto::find()->all(), 'id_centro_costo', 'centro_costo');
-$sucursal = ArrayHelper::map(Sucursal::find()->all(), 'id_sucursal', 'sucursal');
 $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
 ?>
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Empleado
+        Empleado
     </div>
-    <br><br><br>
+    
     <div class="panel-body">
         <div class="row">
             <?= $form->field($model, 'id_empleado_tipo')->dropDownList($tipodempleado, ['prompt' => 'Seleccione una opcion...']) ?>
@@ -64,6 +62,15 @@ $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
             <?= $form->field($model, 'identificacion')->input('text', ['id' => 'cedulanit', 'onchange' => 'calcularDigitoVerificacion()']) ?>                        
             <?= $form->field($model, 'dv')->input('text', ['id' => 'dv', 'readonly' => true, ['style'=>'width:2%']]) ?>
         </div>
+        
+        <div class="row">
+            <?= $form->field($model, 'nombre1')->textInput(['maxlength' => true]) ?>    
+            <?= $form->field($model, 'nombre2')->textInput(['maxlength' => true]) ?>
+        </div>        
+        <div class="row">
+            <?= $form->field($model, 'apellido1')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'apellido2')->textInput(['maxlength' => true]) ?>
+        </div>     
         <div class="row">
             <?=
             $form->field($model, 'fecha_expedicion')->widget(DatePicker::className(), ['name' => 'check_issue_date',
@@ -73,15 +80,13 @@ $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
                     'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
             ?>    
-            <?= $form->field($model, 'ciudad_expedicion')->dropDownList($municipio, ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>        
-        <div class="row">
-            <?= $form->field($model, 'nombre1')->textInput(['maxlength' => true]) ?>    
-            <?= $form->field($model, 'nombre2')->textInput(['maxlength' => true]) ?>
-        </div>        
-        <div class="row">
-            <?= $form->field($model, 'apellido1')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'apellido2')->textInput(['maxlength' => true]) ?>
+             <?= $form->field($model, 'ciudad_expedicion')->widget(Select2::classname(), [
+            'data' => $municipio,
+            'options' => ['placeholder' => 'Seleccione la ciudad'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
+            
         </div>        
         <div class="row">
             <?= $form->field($model, 'direccion')->textInput(['maxlength' => true]) ?>  					
@@ -120,8 +125,14 @@ $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
-            ?>    
-            <?= $form->field($model, 'ciudad_nacimiento')->dropDownList($municipio, ['prompt' => 'Seleccione una opcion...']) ?>
+            ?>  
+             <?= $form->field($model, 'ciudad_nacimiento')->widget(Select2::classname(), [
+            'data' => $municipio,
+            'options' => ['placeholder' => 'Seleccione la ciudad'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
+          
         </div>
         <div class="row">
             <?= $form->field($model, 'padre_familia')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>
@@ -139,15 +150,12 @@ $rh = ArrayHelper::map(Rh::find()->all(), 'id_rh', 'rh');
             <?= $form->field($model, 'cuenta_bancaria')->textInput(['maxlength' => true]) ?>    
             <?= $form->field($model, 'id_centro_costo')->dropDownList($centro_costo, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
-        <div class="row">            
-            <?= $form->field($model, 'id_sucursal')->dropDownList($sucursal, ['prompt' => 'Seleccione una opcion...']) ?>
-        </div>
         <div class="row" col>
             <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
         </div>
         <div class="panel-footer text-right">			
-            <a href="<?= Url::toRoute("empleado/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <a href="<?= Url::toRoute("empleado/indexempleado") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

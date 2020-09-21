@@ -29,7 +29,7 @@ $form = ActiveForm::begin([
 <?php ?>
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Orden Producción
+        Nuevo
     </div>
     <div class="panel-body">
         <div class="row">
@@ -41,9 +41,8 @@ $form = ActiveForm::begin([
             'data' => $codigos,
             'options' => ['placeholder' => 'Seleccione un producto'],
             'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]); ?>
+                'allowClear' => true ]]);
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>
@@ -95,8 +94,8 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>
         <div class="panel-footer text-right">			
-            <a href="<?= Url::toRoute("orden-produccion/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+            <a href="<?= Url::toRoute("orden-produccion/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		
         </div>
     </div>
 </div>

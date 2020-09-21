@@ -19,7 +19,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Comprobantes de Egreso';
+$this->title = 'Comprobantes de Egreso';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -45,8 +45,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombreProveedores');
-$tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->all(), 'id_comprobante_egreso_tipo', 'concepto');
+$proveedores = ArrayHelper::map(Proveedor::find()->orderBy('nombrecorto ASC')->all(), 'idproveedor', 'nombreProveedores');
+$tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')->all(), 'id_comprobante_egreso_tipo', 'concepto');
 ?>
 
 <div class="panel panel-success panel-filters">
@@ -77,12 +77,19 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->all(), 'id_comprobante_
                 'pluginOptions' => [
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
-            ?>            
-            <?= $formulario->field($form, 'tipo')->dropDownList($tipos, ['prompt' => 'Seleccione un tipo...']) ?>
+            ?>   
+              <?= $formulario->field($form, 'tipo')->widget(Select2::classname(), [
+                'data' => $tipos,
+                'options' => ['prompt' => 'Seleccione ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+          
         </div>
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("comprobante-egreso/indexconsulta") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
+            <a align="right" href="<?= Url::toRoute("comprobante-egreso/indexconsulta") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -102,23 +109,27 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->all(), 'id_comprobante_
                 <th scope="col">Proveedor</th>
                 <th scope="col">Numero</th>                
                 <th scope="col">Tipo</th>
-                <th scope="col">Fecha Comprobante</th>                
+                <th scope="col">F. pago</th>                
+                <th scope="col">Banco</th> 
                 <th scope="col">Valor</th>                
-                <th scope="col">Autorizado</th>                
+                <th scope="col">Aut.</th>                
+                <th scope="col">Usuario</th>  
                 <th scope="col"></th>                               
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->id_comprobante_egreso ?></td>
                 <td><?= $val->proveedor->cedulanit ?></td>
                 <td><?= $val->proveedor->nombrecorto ?></td>
                 <td><?= $val->numero ?></td>
                 <td><?= $val->comprobanteEgresoTipo->concepto ?></td>                
                 <td><?= $val->fecha_comprobante ?></td>                
+                <td><?= $val->banco->entidad ?></td>
                 <td><?= number_format($val->valor,0) ?></td>                
-                <td><?= $val->autorizar ?></td>                
+                <td><?= $val->autorizar ?></td>   
+                 <td><?= $val->usuariosistema ?></td>
                 <td>				
                 <a href="<?= Url::toRoute(["comprobante-egreso/viewconsulta", "id" => $val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
                 </td>

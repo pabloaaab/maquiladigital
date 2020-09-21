@@ -17,7 +17,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Compras';
+$this->title = 'Compras';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombreProveedores');
+$proveedores = ArrayHelper::map(Proveedor::find()->orderBy('nombrecorto ASC')->all(), 'idproveedor', 'nombreProveedores');
 ?>
 
 <div class="panel panel-success panel-filters">
@@ -78,8 +78,8 @@ $proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombre
             <?= $formulario->field($form, 'pendiente')->dropDownList(['1' => 'SI'],['prompt' => 'Seleccione una opcion ...']) ?>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("compra/indexconsulta") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
+            <a align="right" href="<?= Url::toRoute("compra/indexconsulta") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -89,7 +89,7 @@ $proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombre
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
-        Registros: <?= $pagination->totalCount ?>
+        Registros: <span class="badge"><?= $pagination->totalCount ?></span>
     </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -99,18 +99,18 @@ $proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombre
                 <th scope="col">Proveedor</th>
                 <th scope="col">Concepto</th>
                 <th scope="col">Fecha Inicio</th>
-                <th scope="col">Fecha Vencimiento</th>
+                <th scope="col">F. Vcto</th>
                 <th scope="col">Subtotal</th>
                 <th scope="col">Saldo</th>
                 <th scope="col">Total</th>
-                <th scope="col">Autorizado</th>
+                <th scope="col">Aut.</th>
                 <th scope="col">Estado</th>
                 <th scope="col"></th>                               
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->factura ?></td>
                 <td><?= $val->proveedor->cedulanit ?></td>
                 <td><?= $val->proveedor->nombrecorto ?></td>
@@ -122,7 +122,7 @@ $proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombre
                 <td><?= number_format($val->total,0) ?></td>
                 <td><?= $val->autorizar ?></td>
                 <td><?= $val->estados ?></td>
-                <td>				
+                <td style="width: 25px;">				
                 <a href="<?= Url::toRoute(["compra/viewconsulta", "id" => $val->id_compra]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
                 </td>
             </tr>
@@ -135,7 +135,7 @@ $proveedores = ArrayHelper::map(Proveedor::find()->all(), 'idproveedor', 'nombre
                             "method" => "post",                            
                         ]);
                 ?>    
-                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary ']); ?>
+                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm']); ?>
             <?php $form->end() ?>
         </div>
     </div>

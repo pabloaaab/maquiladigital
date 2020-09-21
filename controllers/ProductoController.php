@@ -11,6 +11,9 @@ use app\models\Prendatipo;
 use app\models\Ordenproducciontipo;
 use app\models\Stockdescargas;
 use app\models\FormFiltroProductoStock;
+use app\models\UsuarioDetalle;
+use app\models\FormProductosDetallesNuevo;
+//clases
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -26,8 +29,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
-use app\models\UsuarioDetalle;
-use app\models\FormProductosDetallesNuevo;
+
 
 /**
  * ProductoController implements the CRUD actions for Producto model.
@@ -92,19 +94,17 @@ class ProductoController extends Controller
                             Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
                             $this->redirect(["producto/view", 'id' => $id]);
                         } catch (IntegrityException $e) {
-                            //$this->redirect(["producto/view", 'id' => $id]);
+                          
                             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
                         } catch (\Exception $e) {
                             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
-                            //$this->redirect(["producto/view", 'id' => $id]);
+
                         }
                     }
-                    //$this->redirect(["producto/view", 'id' => $id]);
-                }
-            } else {
+                } else {
                     Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
-                    $this->redirect(["producto/view", 'id' => $id]);
-                   }
+                }    
+             }
         }        
         return $this->render('view', [
             'model' => $this->findModel($id),
@@ -148,28 +148,17 @@ class ProductoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        /*if($model->cantidad > $model->stock and $model->stock > 0){
-            Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó la orden completa, generar el descargue de las unidades');
-        }*/
+        
         $clientes = Cliente::find()->all();
-        //$prendas = Prendatipo::find()->all();
-        //$ordentipos = Ordenproducciontipo::find()->all();
+       
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            /*if($model->cantidad > $model->stock and $model->stock > 0){
-                Yii::$app->getSession()->setFlash('warning', 'Hay stock que no fueron descontados en la facturacion, no se generó la orden completa, generar el descargue de las unidades');
-            }else{
-                //$model->stock = $model->cantidad;
-                //$model->update();
-                                
-            } */
+            
             return $this->redirect(['index']);
         }
 
         return $this->render('update', [
             'model' => $model,
             'clientes' => ArrayHelper::map($clientes,'idcliente','nombreClientes'),
-            //'prendas' => ArrayHelper::map($prendas,'idprendatipo','nombreProducto'),
-            //'ordentipos' => ArrayHelper::map($ordentipos,'idtipo','tipo')
         ]);
     }
 

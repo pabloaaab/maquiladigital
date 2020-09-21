@@ -37,8 +37,8 @@ use kartik\depdrop\DepDrop;
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>                    
-                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-primary", 'name' => 'Guardar']) ?>                    
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>                    
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-primary btn-sm", 'name' => 'Guardar']) ?>                    
                 </div>
             </div>
         </div>

@@ -67,12 +67,12 @@ class DocumentoEquivalente extends \yii\db\ActiveRecord
     {
         return [
             'consecutivo' => 'Id',
-            'identificacion' => 'Identificación:',
-            'nombre_completo' => 'Nombre Completo:',
-            'fecha' => 'Fecha:',
-            'iddepartamento' => 'Departamento:',
-            'idmunicipio' => 'Municipio:',
-            'descripcion' => 'Descripción:',
+            'identificacion' => 'Identificación',
+            'nombre_completo' => 'Tercero',
+            'fecha' => 'Fecha proceso',
+            'iddepartamento' => 'Departamento',
+            'idmunicipio' => 'Municipio',
+            'descripcion' => 'Descripción',
             'valor' => 'Valor:',
             'subtotal' => 'Subtotal:',
             'retencion_fuente' => 'Retención Fuente:',

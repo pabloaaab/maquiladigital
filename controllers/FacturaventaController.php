@@ -108,7 +108,7 @@ class FacturaventaController extends Controller
     public function actionCreate()
     {
         $model = new Facturaventa();
-        $clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
         $facturastipo = Facturaventatipo::find()->all();
         $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->andWhere(['=', 'facturado', 0])->all();
         $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
@@ -132,6 +132,7 @@ class FacturaventaController extends Controller
             $model->saldo = 0;
             $model->totalpagar = 0;
             $model->valorletras = "-" ;
+            $model->nrofacturaelectronica = $model->nrofacturaelectronica;
             $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();
             return $this->redirect(['index']);
@@ -148,7 +149,7 @@ class FacturaventaController extends Controller
     public function actionCreatelibre()
     {
         $model = new FormFacturaventalibre();
-        $clientes = Cliente::find()->all();
+        $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
         $facturastipo = Facturaventatipo::find()->all();
         $resolucion = Resolucion::find()->where(['=', 'activo', 1])->one();
         if ($model->load(Yii::$app->request->post())) {            

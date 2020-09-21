@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel app\models\TipoCotizanteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Tipos Cotizantes';
+$this->title = 'Tipos Cotizantes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tipo-cotizante-index">

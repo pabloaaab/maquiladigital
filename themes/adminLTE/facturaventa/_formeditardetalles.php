@@ -39,7 +39,7 @@ use yii\db\ActiveQuery;
 
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Editar detalle Factura Venta
+            Editar detalle
         </div>
         <div class="panel-body">
             <table class="table table-condensed">
@@ -55,7 +55,7 @@ use yii\db\ActiveQuery;
                 </thead>
                 <tbody>
                 <?php foreach ($mds as $val): ?>
-                <tr>
+                    <tr style='font-size: 85%;'>
                     <td><?= $val->iddetallefactura ?></td>
                     <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                     <td><?= $val->codigoproducto ?></td>
@@ -68,8 +68,8 @@ use yii\db\ActiveQuery;
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['facturaventa/view', 'id' => $idfactura], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['facturaventa/view', 'id' => $idfactura], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

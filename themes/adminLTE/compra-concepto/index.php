@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'concepto',
-                'contentOptions' => ['class' => 'col-lg-2'],                
+                'contentOptions' => ['class' => 'col-lg-2.5'],                
             ],
             [
                 'attribute' => 'id_compra_tipo',
@@ -60,11 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [                
                 'attribute' => 'porcentaje_reteiva',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-0.5'],
             ],
             [                
                 'attribute' => 'base_aiu',
-                'contentOptions' => ['class' => 'col-lg-1'],
+                'contentOptions' => ['class' => 'col-lg-0.5'],
             ],            
             [
                 'class' => 'yii\grid\ActionColumn',              

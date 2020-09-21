@@ -193,8 +193,7 @@ class ClientesController extends Controller {
                         $msg = "El registro ha sido actualizado correctamente";
                         $this->redirect(["clientes/index"]);
                     } else {
-                        $msg = "El registro no sufrio ningun cambio";
-                        $tipomsg = "danger";
+                         $this->redirect(["clientes/index"]);
                     }
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";

@@ -17,7 +17,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Ordenes de Producción';
+$this->title = 'Orden de Producción';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombreClientes');
+$clientes = ArrayHelper::map(Cliente::find()->orderBy('nombrecorto ASC')->all(), 'idcliente', 'nombreClientes');
 $tipos = ArrayHelper::map(Ordenproducciontipo::find()->all(), 'idtipo', 'tipo');
 ?>
 
@@ -93,7 +93,7 @@ $tipos = ArrayHelper::map(Ordenproducciontipo::find()->all(), 'idtipo', 'tipo');
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
-        Registros: <?= $pagination->totalCount ?>
+        Registros: <span class="badge"><?= $pagination->totalCount ?></span>
     </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -101,20 +101,20 @@ $tipos = ArrayHelper::map(Ordenproducciontipo::find()->all(), 'idtipo', 'tipo');
                 <th scope="col">Id</th>
                 <th scope="col">Cedula/Nit</th>
                 <th scope="col">Cliente</th>
-                <th scope="col">Cod Producto</th>                
-                <th scope="col">Orden Prod Int</th>
-                <th scope="col">Orden Prod Ext</th>
+                <th scope="col">Codigo</th>                
+                <th scope="col">Orden Int.</th>
+                <th scope="col">Orden Ext.</th>
                 <th scope="col">Fecha LLegada</th>
                 <th scope="col">Total</th>                
-                <th scope="col">Autorizado</th>
-                <th scope="col">Facturado</th>
-                <th scope="col">Tipo</th>
+                <th scope="col">Aut.</th>
+                <th scope="col">Fact.</th>
+                <th scope="col">Tipo servicio</th>
                 <th scope="col"></th>                               
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+            <tr style="font-size: 85%;">                
                 <td><?= $val->idordenproduccion ?></td>
                 <td><?= $val->cliente->cedulanit ?></td>
                 <td><?= $val->cliente->nombrecorto ?></td>
@@ -122,11 +122,11 @@ $tipos = ArrayHelper::map(Ordenproducciontipo::find()->all(), 'idtipo', 'tipo');
                 <td><?= $val->ordenproduccion ?></td>
                 <td><?= $val->ordenproduccionext ?></td>
                 <td><?= date("Y-m-d", strtotime("$val->fechallegada")) ?></td>
-                <td><?= number_format($val->totalorden,0) ?></td>                
+                <td align = "right"><?= number_format($val->totalorden,0) ?></td>                
                 <td><?= $val->autorizar ?></td>
                 <td><?= $val->facturar ?></td>
                 <td><?= $val->tipo->tipo ?></td>
-                <td>				
+                <td style="width: 25px;">				
                 <a href="<?= Url::toRoute(["orden-produccion/viewconsulta", "id" => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
                 </td>
             </tr>

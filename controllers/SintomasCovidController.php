@@ -5,10 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\SintomasCovid;
 use app\models\SintomasCovidSearch;
+use app\models\UsuarioDetalle;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\UsuarioDetalle;
 
 /**
  * SintomasCovidController implements the CRUD actions for SintomasCovid model.

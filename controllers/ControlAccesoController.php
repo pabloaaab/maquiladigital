@@ -194,7 +194,7 @@ class ControlAccesoController extends Controller
                     $table2 = ControlAcceso::findOne($id); 
                     $table = RegistroPersonal::find()->where(['=','documento',$table2->documento])->one();                  
                     
-                    $table->id_tipo_documento = $model->id_tipo_documento;
+                    $table->tipo_documento = $model->tipo_documento;
                     $table->nombrecompleto = $model->nombrecompleto;
                     $table->telefono = $model->telefono;
                     $table->celular = $model->celular;                    
@@ -236,7 +236,7 @@ class ControlAccesoController extends Controller
                 
                 $cont = ControlAcceso::findOne($id);
                 $table = RegistroPersonal::find()->where(['=','documento',$cont->documento])->one();
-                $model->id_tipo_documento = $table->id_tipo_documento;
+                $model->tipo_documento = $table->tipo_documento;
                 $model->documento = $table->documento;
                 $model->telefono = $table->telefono;
                 $model->celular = $table->celular;
@@ -267,7 +267,7 @@ class ControlAccesoController extends Controller
                 {                
                     $table = new RegistroPersonal();                    
                     $table->documento = $id;
-                    $table->id_tipo_documento = $model->id_tipo_documento;
+                    $table->tipo_documento = $model->tipo_documento;
                     $table->nombrecompleto = $model->nombrecompleto;
                     $table->telefono = $model->telefono;
                     $table->celular = $model->celular;                    
@@ -326,7 +326,7 @@ class ControlAccesoController extends Controller
                 {                                    
                     $table = RegistroPersonal::find()->where(['=','documento',$id])->one();                  
                     
-                    $table->id_tipo_documento = $model->id_tipo_documento;
+                    $table->tipo_documento = $model->tipo_documento;
                     $table->nombrecompleto = $model->nombrecompleto;
                     $table->telefono = $model->telefono;
                     $table->celular = $model->celular;                    
@@ -368,7 +368,7 @@ class ControlAccesoController extends Controller
             if (Yii::$app->request->get("id")) {
                                 
                 $table = RegistroPersonal::find()->where(['=','documento',$id])->one();
-                $model->id_tipo_documento = $table->id_tipo_documento;
+                $model->tipo_documento = $table->tipo_documento;
                 $model->documento = $table->documento;
                 $model->telefono = $table->telefono;
                 $model->celular = $table->celular;
@@ -397,7 +397,7 @@ class ControlAccesoController extends Controller
                 {                                    
                     $table = new RegistroPersonal();                    
                     $table->documento = $id;
-                    $table->id_tipo_documento = $model->id_tipo_documento;
+                    $table->tipo_documento = $model->tipo_documento;
                     $table->nombrecompleto = $model->nombrecompleto;
                     $table->telefono = $model->telefono;
                     $table->celular = $model->celular;                    
@@ -437,7 +437,7 @@ class ControlAccesoController extends Controller
             if (Yii::$app->request->get("id")) {
                                 
                 $table = Empleado::find()->where(['=','identificacion',$id])->one();
-                $model->id_tipo_documento = $table->id_tipo_documento;
+                $model->tipo_documento = $table->id_tipo_documento;
                 $model->documento = $table->identificacion;
                 $model->telefono = $table->telefono;
                 $model->celular = $table->celular;

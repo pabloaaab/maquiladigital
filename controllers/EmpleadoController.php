@@ -2,19 +2,24 @@
 
 namespace app\controllers;
 
-use Yii;
+
 use app\models\Empleado;
 use app\models\EmpleadoSearch;
+use app\models\FormEmpleado;
+use app\models\UsuarioDetalle;
+use app\models\FormFiltroEmpleado;
+//clases yii
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use app\models\FormEmpleado;
 use yii\widgets\ActiveForm;
 use yii\filters\AccessControl;
-use app\models\UsuarioDetalle;
 use yii\helpers\Url;
 use yii\web\Response;
 use yii\helpers\Html;
+use yii\data\Pagination;
+use yii\bootstrap\Modal;
 
 /**
  * EmpleadoController implements the CRUD actions for Empleado model.
@@ -40,24 +45,79 @@ class EmpleadoController extends Controller
      * Lists all Empleado models.
      * @return mixed
      */
-    public function actionIndex()
-    {
-        if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',31])->all()){
-                $searchModel = new EmpleadoSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-                return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+     public function actionIndexempleado() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 31])->all()) {
+                $form = new FormFiltroEmpleado();
+                $id_empleado = null;
+                $identificacion = null;
+                $fecha_desde = null;
+                $fecha_hasta = null;
+                $contrato = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $id_empleado = Html::encode($form->id_empleado);
+                        $identificacion = Html::encode($form->identificacion);
+                        $fecha_desde = Html::encode($form->fechaingreso);
+                        $fecha_hasta = Html::encode($form->fecharetiro);
+                        $contrato = Html::encode($form->contrato);
+                        $table = Empleado::find()
+                                ->andFilterWhere(['=', 'id_empleado', $id_empleado])
+                                ->andFilterWhere(['=', 'identificacion', $identificacion])
+                                ->andFilterWhere(['>=', 'fechaingreso', $fecha_desde])
+                                ->andFilterWhere(['<=', 'fecharetiro', $fecha_hasta])
+                               ->andFilterWhere(['=', 'contrato', $contrato]);
+                        $table = $table->orderBy('id_empleado DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 40,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_empleado DESC']);
+                            $this->actionExcelconsultaEmpleado($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = Empleado::find()
+                             ->orderBy('id_empleado DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelconsultaEmpleado($tableexcel);
+                    }
+                }
+                $to = $count->count();
+                return $this->render('indexempleado', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
                 ]);
-            }else{
+            } else {
                 return $this->redirect(['site/sinpermiso']);
             }
-        }else{
+        } else {
             return $this->redirect(['site/login']);
         }
     }
+    
 
     /**
      * Displays a single Empleado model.
@@ -86,7 +146,6 @@ class EmpleadoController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            //$dv = Html::encode($_POST["dv"]);
             if ($model->validate()) {
                 $table = new Empleado();
                 $table->id_empleado_tipo = $model->id_empleado_tipo;
@@ -102,9 +161,7 @@ class EmpleadoController extends Controller
                 $table->email = $model->email;
                 $table->iddepartamento = $model->iddepartamento;
                 $table->idmunicipio = $model->idmunicipio;
-                //$table->fechaingreso = $model->fechaingreso;
-                //$table->fecharetiro = $model->fecharetiro;
-                //$table->contrato = $model->contrato;
+                $table->contrato = 0;
                 $table->observacion = $model->observacion;
                 $table->nombrecorto = $model->nombre1.' '.$model->nombre2.' '.$model->apellido1.' '.$model->apellido2;                
                 $table->id_tipo_documento = $model->id_tipo_documento;
@@ -128,15 +185,15 @@ class EmpleadoController extends Controller
                 $table->tipo_cuenta = $model->tipo_cuenta;
                 $table->cuenta_bancaria = $model->cuenta_bancaria;
                 $table->id_centro_costo = $model->id_centro_costo;
-                $table->id_sucursal = $model->id_sucursal;
+                $table->usuario_crear =  Yii::$app->user->identity->username;
                 if ($table->insert()) {
-                    $this->redirect(["empleado/index"]);
+                    $this->redirect(["empleado/indexempleado"]);
                 } else {
                     $msg = "error";
                 }
             } else {
                 $model->getErrors();
-            }                        
+            }                       
         }
 
         return $this->render('create', [
@@ -152,7 +209,7 @@ class EmpleadoController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
-        //$matriculaempresa = Matriculaempresa::findOne(1);
+      
         $model = new FormEmpleado();
         $msg = null;
         $tipomsg = null;
@@ -178,10 +235,7 @@ class EmpleadoController extends Controller
                     $table->email = $model->email;
                     $table->iddepartamento = $model->iddepartamento;
                     $table->idmunicipio = $model->idmunicipio;
-                    //$table->contrato = $model->contrato;
                     $table->observacion = $model->observacion;
-                    //$table->fechaingreso = $model->fechaingreso;
-                    //$table->fecharetiro = $model->fecharetiro;
                     $table->id_tipo_documento = $model->id_tipo_documento;
                     $table->fecha_expedicion = $model->fecha_expedicion;
                     $table->ciudad_expedicion = $model->ciudad_expedicion;
@@ -203,13 +257,14 @@ class EmpleadoController extends Controller
                     $table->tipo_cuenta = $model->tipo_cuenta;
                     $table->cuenta_bancaria = $model->cuenta_bancaria;
                     $table->id_centro_costo = $model->id_centro_costo;
-                    $table->id_sucursal = $model->id_sucursal;
+                    $table->usuario_editar =  Yii::$app->user->identity->username;
                     if ($table->save(false)) {
                         $msg = "El registro ha sido actualizado correctamente";
-                        $this->redirect(["empleado/index"]);
+                        return $this->redirect(["empleado/indexempleado"]);
                     } else {
                         $msg = "El registro no sufrio ningun cambio";
                         $tipomsg = "danger";
+                        return $this->redirect(["empleado/indexempleado"]);
                     }
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
@@ -223,8 +278,6 @@ class EmpleadoController extends Controller
 
         if (Yii::$app->request->get("id")) {
             $table = Empleado::find()->where(['id_empleado' => $id])->one();
-            //$municipio = Municipio::find()->Where(['=', 'iddepartamento', $table->iddepartamento])->all();
-            //$municipio = ArrayHelper::map($municipio, "idmunicipio", "municipio");
             if ($table) {
                 $model->id_empleado = $table->id_empleado;
                 $model->id_empleado_tipo = $table->id_empleado_tipo;
@@ -265,45 +318,16 @@ class EmpleadoController extends Controller
                 $model->tipo_cuenta = $table->tipo_cuenta;
                 $model->cuenta_bancaria = $table->cuenta_bancaria;
                 $model->id_centro_costo = $table->id_centro_costo;
-                $model->id_sucursal = $table->id_sucursal;
             } else {
-                return $this->redirect(["empleado/index"]);
+                return $this->redirect(["empleado/indexempleado"]);
             }
         } else {
-            return $this->redirect(["empleado/index"]);
+            return $this->redirect(["empleado/indexempleado"]);
         }
         return $this->render("update", ["model" => $model, "msg" => $msg, "tipomsg" => $tipomsg]);
     }
 
-    /**
-     * Deletes an existing Empleado model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {        
-        try {
-            $this->findModel($id)->delete();
-            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
-            $this->redirect(["empleado/index"]);
-        } catch (IntegrityException $e) {
-            $this->redirect(["empleado/index"]);
-            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el empleado, tiene registros asociados en otros procesos');
-        } catch (\Exception $e) {            
-            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el empleado, tiene registros asociados en otros procesos');
-            $this->redirect(["empleado/index"]);
-        }
-    }
-
-    /**
-     * Finds the Empleado model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Empleado the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+   
     protected function findModel($id)
     {
         if (($model = Empleado::findOne($id)) !== null) {

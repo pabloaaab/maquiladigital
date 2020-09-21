@@ -15,6 +15,8 @@ class FormCerrarContrato extends Model
     public $fecha_final;
     public $id_contrato;
     public $id_motivo_terminacion;    
+    public $observacion;
+    public $generar_liquidacion;
 
     /**
      * {@inheritdoc}
@@ -37,12 +39,14 @@ class FormCerrarContrato extends Model
             'id_contrato' => 'Contrato',
             'id_motivo_terminacion' => 'Motivo Terminación',
             'fecha_final' => 'Fecha Retiro',            
+            'observacion' => 'Observacion',
+            'generar_liquidacion' => 'Generar_liquidacion:',
         ];
     }
     
     public function fecha_error($attribute, $params)
     {
-        //Buscar el email en la tabla
+        //Buscar la fecha en la tabla
         $table = Contrato::find()->where([">","fecha_inicio",$this->fecha_final])->andWhere(["=","id_contrato",$this->id_contrato]);
         //Si el email existe mostrar el error
         if ($table->count() == 1)

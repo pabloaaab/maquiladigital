@@ -66,19 +66,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-hover">
             <thead>
             <tr>                
-                <th scope="col">Código</th>
-                <th scope="col">Usuario</th>
-                <th scope="col">Nombre Completo</th>
-                <th scope="col">Identificación</th>
-                <th scope="col">Email</th>
-                <th scope="col">Perfil</th>
-                <th scope="col">Estado</th>
-                <th scope="col"></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Nombre Completo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Identificación</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Email</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Perfil</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Estado</th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'></th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->codusuario ?></td>
                 <td><?= $val->username ?></td>
                 <td><?= $val->nombrecompleto ?></td>
@@ -86,17 +88,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->emailusuario ?></td>
                 <td><?= $val->perfil ?></td>
                 <td><?= $val->estado ?></td>
-                <td>				
-                <a href="<?= Url::toRoute(["site/view", "id" => $val->codusuario]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
-                <a href="<?= Url::toRoute(["site/editar", "id" => $val->codusuario])?>" ><span class="glyphicon glyphicon-pencil"></span></a>		
-                <?= Html::a('Cambio Clave', ["site/changepassword", "id" => $val->codusuario], ['class' => 'btn btn-default']) ?>
+                <td style="width: 25px;">				
+                   <a href="<?= Url::toRoute(["site/view", "id" => $val->codusuario]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                </td>
+                <td style="width: 25px;">				
+                  <a href="<?= Url::toRoute(["site/editar", "id" => $val->codusuario])?>" ><span class="glyphicon glyphicon-pencil"></span></a>		
+                </td>
+                <td style="width: 60px;">				
+                  <?= Html::a('Cambio Clave', ["site/changepassword", "id" => $val->codusuario], ['class' => 'btn btn-default btn-sm' ]) ?>
                 </td>
             </tr>
             </tbody>
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <a align="right" href="<?= Url::toRoute("site/register") ?>" class="btn btn-success"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
+            <a align="right" href="<?= Url::toRoute("site/register") ?>" class="btn btn-success btn-sm"><span class='glyphicon glyphicon-plus'></span> Nuevo</a>
         </div>
     </div>
 </div>

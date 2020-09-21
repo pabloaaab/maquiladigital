@@ -16,7 +16,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Facturas de ventas';
+$this->title = 'Facturas de venta';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -92,33 +92,33 @@ $clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombreCliente
     </div>
         <table class="table table-bordered table-hover">
             <thead>
-            <tr>                
-                <th scope="col">Factura</th>
-                <th scope="col">Cedula/Nit</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Id Orden Produccion</th>
-                <th scope="col">Fecha Inicio</th>
-                <th scope="col">Fecha Vencimiento</th>
-                <th scope="col">Subtotal</th>
-                <th scope="col">Saldo</th>
-                <th scope="col">Total</th>
-                <th scope="col">Autorizado</th>
-                <th scope="col">Estado</th>
-                <th scope="col"></th>                               
+                <tr style="font-size: 85%;">                
+                <th scope="col" style='background-color:#B9D5CE;'>Factura</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Fact. Elect.</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Fecha Inicio</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Fecha Vcto</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Total</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Saldo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Aut.</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Estado</th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>                               
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+            <tr style="font-size: 85%;">                
                 <td><?= $val->nrofactura ?></td>
+                 <td><?= $val->nrofacturaelectronica ?></td>
                 <td><?= $val->cliente->cedulanit ?></td>
                 <td><?= $val->cliente->nombrecorto ?></td>
-                <td><?= $val->idordenproduccion ?></td>
                 <td><?= $val->fechainicio ?></td>
                 <td><?= $val->fechavcto ?></td>
                 <td><?= number_format($val->subtotal,0) ?></td>
-                <td><?= number_format($val->saldo,0) ?></td>
                 <td><?= number_format($val->totalpagar,0) ?></td>
+                <td><?= number_format($val->saldo,0) ?></td>
                 <td><?= $val->autorizar ?></td>
                 <td><?= $val->estados ?></td>
                 <td>				

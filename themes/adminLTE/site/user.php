@@ -28,8 +28,8 @@ $form = ActiveForm::begin([
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['users'], ['class' => 'btn btn-primary']) ?>
-	<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $model->codusuario], ['class' => 'btn btn-success']) ?>        
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['users'], ['class' => 'btn btn-primary btn-sm']) ?>
+	<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $model->codusuario], ['class' => 'btn btn-success btn-sm']) ?>        
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -37,26 +37,26 @@ $form = ActiveForm::begin([
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'codusuario') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'codusuario') ?>:</th>
                     <td><?= Html::encode($model->codusuario) ?></td>
-                    <th><?= Html::activeLabel($model, 'username') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'username') ?>:</th>
                     <td><?= Html::encode($model->username) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechaproceso') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaproceso') ?>:</th>
                     <td><?= Html::encode($model->fechaproceso) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'documentousuario') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'documentousuario') ?>:</th>
                     <td><?= Html::encode($model->documentousuario) ?></td>
-                    <th><?= Html::activeLabel($model, 'nombrecompleto') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'nombrecompleto') ?>:</th>
                     <td><?= Html::encode($model->nombrecompleto) ?></td>
-                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'activo') ?>:</th>
                     <td><?= Html::encode($model->estado) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'role') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'role') ?>:</th>
                     <td><?= Html::encode($model->perfil) ?></td>
-                    <th><?= Html::activeLabel($model, 'emailusuario') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'emailusuario') ?>:</th>
                     <td><?= Html::encode($model->emailusuario) ?></td>
                     <th></th>
                     <td></td>
@@ -74,17 +74,17 @@ $form = ActiveForm::begin([
             <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Módulo</th>
-                        <th scope="col">Menú Operación</th>
-                        <th scope="col">Permiso</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Módulo</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Menú Operación</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Permiso</th>
                         
-                        <th scope="col"><input type="checkbox" onclick="marcar(this);"/></th>
+                        <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($usuariodetalles as $val): ?>
-                        <tr>                                                
+                    <tr style="font-size: 85%;">                                                
                             <td><?= $val->codusuario_detalle ?></td>
                             <td><?= $val->permiso->modulo ?></td>
                             <td><?= $val->permiso->menu_operacion ?></td>
@@ -96,8 +96,8 @@ $form = ActiveForm::begin([
             </table>
         </div>
         <div class="panel-footer text-right">                        
-            <?= Html::a('Nuevo', ['site/newpermiso','id' => $model->codusuario], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger", 'name' => 'eliminar']) ?>
+            <?= Html::a('Nuevo', ['site/newpermiso','id' => $model->codusuario], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger btn-xs", 'name' => 'eliminar']) ?>
         </div>
     </div>
 </div>

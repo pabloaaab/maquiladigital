@@ -8,19 +8,19 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\TipoContrato */
 
-$this->title = 'Detalle Tipo Contrato';
-$this->params['breadcrumbs'][] = ['label' => 'Tipo de Contratos', 'url' => ['index']];
+$this->title = 'Detalle contrato';
+$this->params['breadcrumbs'][] = ['label' => 'Tipo de contrato', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_tipo_contrato;
 ?>
-<div class="tipocontrato-view">
+<div class="tipo-contrato-view">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->id_tipo_contrato], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_tipo_contrato], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'] , ['class' => 'btn btn-primary btn-sm']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_tipo_contrato], ['class' => 'btn btn-success btn-sm']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_tipo_contrato], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger btn-sm',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
@@ -36,10 +36,14 @@ $this->params['breadcrumbs'][] = $model->id_tipo_contrato;
                 <tr>
                     <th><?= Html::activeLabel($model, 'id_tipo_contrato') ?>:</th>
                     <td><?= Html::encode($model->id_tipo_contrato) ?></td>
-                    <th><?= Html::activeLabel($model, 'contrato') ?>:</th>
+                    <th><?= Html::activeLabel($model, 'contrato') ?></th>
                     <td><?= Html::encode($model->contrato) ?></td>
-                    <th><?= Html::activeLabel($model, 'activo') ?>:</th>
-                    <td><?= Html::encode($model->activo) ?></td>                    
+                    <th><?= Html::activeLabel($model, 'estado') ?></th>
+                    <td><?= Html::encode($model->activo) ?></td>   
+                     <th><?= Html::activeLabel($model, 'prorroga') ?></th>
+                    <td><?= Html::encode($model->prorrogaContrato) ?></td>       
+                    <th><?= Html::activeLabel($model, 'nro_prorrogas') ?></th>
+                    <td><?= Html::encode($model->nro_prorrogas) ?></td>       
                 </tr>                
             </table>
         </div>

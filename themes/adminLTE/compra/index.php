@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
     <?=  $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success']);?>
+    <?php $newButton = Html::a('Nuevo ' . Html::tag('i', '', ['class' => 'glyphicon glyphicon-plus']), ['create'], ['class' => 'btn btn-success btn-sm']);?>
     <?php Pjax::begin() ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -53,14 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(Proveedor::find()->all(),'idproveedor','nombreProveedores'),
                 'contentOptions' => ['class' => 'col-lg-2'],
             ],            
-            [               
-            'attribute' => 'fechainicio',
-            'value' => function($model){
-                $compra = Compra::findOne($model->id_compra);
-                return date("Y-m-d", strtotime("$compra->fechainicio"));
-            },
-            'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+            
             [               
             'attribute' => 'fechavencimiento',
             'value' => function($model){
@@ -69,15 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'contentOptions' => ['class' => 'col-lg-1'],
             ],        
-            [
-                'attribute' => 'subtotal',
-                'value' => function($model) {
-                    $compra = Compra::findOne($model->id_compra);
-                    $subtotal = "$ ".number_format($compra->subtotal);
-                    return "{$subtotal}";
-                },
-                'contentOptions' => ['class' => 'col-lg-1'],
-            ],
+           
             [
                 'label' => 'Total',
                 'attribute' => 'total',
@@ -85,6 +70,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     $compra = Compra::findOne($model->id_compra);
                     $total = "$ ".number_format($compra->total);
                     return "{$total}";
+                },
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+             [
+                'attribute' => 'saldo',
+                'value' => function($model) {
+                    $compra = Compra::findOne($model->id_compra);
+                    $saldo = "$ ".number_format($compra->saldo);
+                    return "{$saldo}";
                 },
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],

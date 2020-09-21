@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
         <div class="panel-body" style="display:none">
             <div class="row">
                 <?= $form->field($model, 'iddepartamento') ?>
-                <?= $form->field($model, 'departamento') ?>
+              
             </div>
             <div class="panel-footer text-right" style="display:none">
                 <?=  Html::submitButton('Buscar ' . Html::tag('i', '', ['class' => 'fa fa-search']), ['class' => 'btn btn-primary']) ?>

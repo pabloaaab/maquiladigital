@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
-        Registros: <?= $pagination->totalCount ?>
+        Registros: <span class="badge"> <?= $pagination->totalCount ?></span>
     </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -30,12 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col">Descripcion</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Tamaño</th>
-                <th scope="col"></th>                               
+                <th scope="col">Opción</th>                               
+                
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style="font-size: 85%;">                
                 <td><?= $val->idarchivodir ?></td>
                 <td><?= $val->fecha_creacion ?></td>
                 <td><?= $val->numero ?></td>
@@ -60,6 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                     <div class="panel-heading">
                                                         <h4>Información Archivo</h4>
                                                     </div>
+                                                    
                                                     <div class="panel-body">
                                                         <div class="row">
                                                             <label id="descripcion" for="descripcion" class="col-sm-3 control-label">Descripción</label>
@@ -82,6 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+                       
                     <a href="<?= Url::toRoute(["archivodir/borrar", "id" => $val->idarchivodir, 'numero' => $numero, 'codigo' => $codigo,'view' => $view]) ?>" ><span class="glyphicon glyphicon-remove"></span></a>
                 </td>
             </tr>
@@ -89,8 +92,8 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php endforeach; ?>
         </table>
         <div class="panel-footer text-right" >
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', [$view.'/view', 'id' => $codigo], ['class' => 'btn btn-primary']); ?>
-            <?= Html::a('<span class="glyphicon glyphicon-upload"></span> Subir Archivo', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo,'view' =>$view], ['class' => 'btn btn-success']); ?>            
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', [$view.'/view', 'id' => $codigo], ['class' => 'btn btn-primary btn-sm']); ?>
+            <?= Html::a('<span class="glyphicon glyphicon-upload"></span> Subir Archivo', ['archivodir/subir','numero' => $numero, 'codigo' => $codigo,'view' =>$view], ['class' => 'btn btn-success btn-sm']); ?>            
         </div>
     </div>
 </div>

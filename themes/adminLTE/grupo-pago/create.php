@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\GrupoPago */
 
-$this->title = 'Nuevo Grupo Pago';
-$this->params['breadcrumbs'][] = ['label' => 'Grupos de Pago', 'url' => ['index']];
+$this->title = 'Nuevo grupo pago';
+$this->params['breadcrumbs'][] = ['label' => 'Grupos de pago', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grupo-pago-create">

@@ -25,7 +25,7 @@ $form = ActiveForm::begin([
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Tipo Cotizante
+        Tipo Cotizante
     </div>
     <div class="panel-body">        														   		
         <div class="row">

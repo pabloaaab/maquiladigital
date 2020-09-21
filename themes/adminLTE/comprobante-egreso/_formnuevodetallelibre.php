@@ -9,8 +9,8 @@ use yii\bootstrap\ActiveForm;
 
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
     'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
+        'template' => '{label}<div class="col-sm-6 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-4 control-label'],
         'options' => []
     ],
 ]); ?>
@@ -23,7 +23,7 @@ use yii\bootstrap\ActiveForm;
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading" align="left">
-                    Nuevo detalle Comprobante egreso
+                    Nuevo detalle
                 </div>
                 <div class="panel-body">
                     <div class="row">            
@@ -46,8 +46,8 @@ use yii\bootstrap\ActiveForm;
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>                    
-                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-primary", 'name' => 'Guardar']) ?>                    
+                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>                    
+                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-primary btn-sm", 'name' => 'Guardar']) ?>                    
                 </div>
             </div>
         </div>

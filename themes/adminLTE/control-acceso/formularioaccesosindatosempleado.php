@@ -45,7 +45,7 @@ $sintomascovid = ArrayHelper::map(SintomasCovid::find()->all(), 'id', 'sintoma')
     </div>    
     <div class="panel-body">
         <div class="row">            
-            <?= $form->field($model, 'id_tipo_documento')->dropDownList($tipodocumento, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'tipo_documento')->dropDownList($tipodocumento, ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'documento')->input('text', ['value' => $id, 'readonly' => true]) ?> 
         </div>        
         <div class="row">  

@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\Recibocaja */
 
-$this->title = 'Detalle Recibo de Caja';
+$this->title = 'Detalle Recibo';
 $this->params['breadcrumbs'][] = ['label' => 'Recibos de Caja', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->idrecibo;
 $view = 'recibocaja';
@@ -17,23 +17,23 @@ $view = 'recibocaja';
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idrecibo], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idrecibo], ['class' => 'btn btn-primary btn-sm']) ?>
         <?php if ($model->autorizado == 0) { ?>
-            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idrecibo], ['class' => 'btn btn-success']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idrecibo], ['class' => 'btn btn-success btn-sm']) ?>
             <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idrecibo], [
-                'class' => 'btn btn-danger',
+                'class' => 'btn btn-danger btn-sm',
                 'data' => [
                     'confirm' => 'Esta seguro de eliminar el registro?',
                     'method' => 'post',
                 ],
             ]) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default']); }
+            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default btn-sm']); }
         else {
-            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
-            echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);
+            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idrecibo], ['class' => 'btn btn-default btn-sm']);
+            echo Html::a('<span class="glyphicon glyphicon-check"></span> Pagar', ['pagar', 'id' => $model->idrecibo], ['class' => 'btn btn-default btn-sm']);
             if ($model->numero > 0){
-                    echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idrecibo], ['class' => 'btn btn-default']);            
-                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->idrecibo,'view' => $view], ['class' => 'btn btn-default']);                                                         
+                    echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idrecibo], ['class' => 'btn btn-default btn-sm']);            
+                    echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 2, 'codigo' => $model->idrecibo,'view' => $view], ['class' => 'btn btn-default btn-sm']);                                                         
             }
         }
         ?>
@@ -52,7 +52,7 @@ $view = 'recibocaja';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'idrecibo') ?>:</th>
                     <td><?= Html::encode($model->idrecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
@@ -65,7 +65,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
                     <td><?= Html::encode($model->tiporecibo->concepto) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'idbanco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
@@ -73,7 +73,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'numero') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>                    
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecharecibo') ?>:</th>
                     <td><?= Html::encode($model->fecharecibo) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
@@ -81,7 +81,7 @@ $view = 'recibocaja';
                     <th></th>
                     <td></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
                     <td><?= Html::encode($model->fechapago) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
@@ -89,7 +89,7 @@ $view = 'recibocaja';
                     <th><?= Html::activeLabel($model, 'valorpagado') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->valorpagado,0)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
 
@@ -120,7 +120,7 @@ $view = 'recibocaja';
                         <?php $calculo = 0; ?>
                     <?php foreach ($modeldetalles as $val): ?>
                         <?php $calculo = $calculo + $val->vlrabono; ?>
-                    <tr>
+                        <tr style="font-size: 85%;">
                         <td><?= $val->iddetallerecibo ?></td>
                         <?php if($val->idfactura){ ?>
                             <td><?= $val->factura->nrofactura ?></td>
@@ -133,7 +133,7 @@ $view = 'recibocaja';
                         <td><?= '$ '.number_format($val->vlrabono,0) ?></td>
                         <td><?= '$ '.number_format($val->vlrsaldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
-                            <td>
+                        <td style="width: 25px;">
                                 <a href="#" data-toggle="modal" data-target="#iddetallerecibo2<?= $val->iddetallerecibo ?>"><span class="glyphicon glyphicon-pencil"></span></a>
                                 <!-- Editar modal detalle -->
                                 <div class="modal fade" role="dialog" aria-hidden="true" id="iddetallerecibo2<?= $val->iddetallerecibo ?>">
@@ -170,6 +170,8 @@ $view = 'recibocaja';
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+                            </td>
+                            <td style="width: 25px;">
                                 <!-- Eliminar modal detalle -->
                                 <a href="#" data-toggle="modal" data-target="#iddetallerecibo<?= $val->iddetallerecibo ?>"><span class="glyphicon glyphicon-trash"></span></a>
                                 <div class="modal fade" role="dialog" aria-hidden="true" id="iddetallerecibo<?= $val->iddetallerecibo ?>">
@@ -218,7 +220,7 @@ $view = 'recibocaja';
                                 'title' => 'Nuevo Detalle Recibo de Caja',
                                 'data-toggle'=>'modal',
                                 'data-target'=>'#modaldetallenuevolibre',
-                                'class' => 'btn btn-success'
+                                'class' => 'btn btn-success btn-sm'
                             ])                                    
 
                         ?>
@@ -229,9 +231,9 @@ $view = 'recibocaja';
                         </div>
                         <!-- Fin Nuevo Detalle proceso -->
                     <?php  }else{ ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['recibocaja/nuevodetalles', 'idrecibo' => $model->idrecibo,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['recibocaja/editardetalles', 'idrecibo' => $model->idrecibo],[ 'class' => 'btn btn-success']) ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['recibocaja/eliminardetalles', 'idrecibo' => $model->idrecibo], ['class' => 'btn btn-danger']) ?>                    
+                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['recibocaja/nuevodetalles', 'idrecibo' => $model->idrecibo,'idcliente' => $model->idcliente], ['class' => 'btn btn-success btn-sm']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['recibocaja/editardetalles', 'idrecibo' => $model->idrecibo],[ 'class' => 'btn btn-success btn-sm']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['recibocaja/eliminardetalles', 'idrecibo' => $model->idrecibo], ['class' => 'btn btn-danger btn-sm']) ?>                    
                     <?php } ?>                                                            
                 </div>
             <?php } ?>

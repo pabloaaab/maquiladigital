@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel app\models\CentroCostoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Centos Costos';
+$this->title = 'Listado centro costo';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="centro-costo-index">

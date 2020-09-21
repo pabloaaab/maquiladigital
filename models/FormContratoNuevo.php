@@ -14,9 +14,12 @@ use app\models\TipoCotizante;
 use app\models\SubtipoCotizante;
 use app\models\TipoContrato;
 use app\models\EntidadPension;
+use app\models\TiempoServicio;
 use app\models\EntidadSalud;
 use app\models\CajaCompensacion;
 use app\models\Cesantia;
+use app\models\ConfiguracionEps;
+use app\models\ConfiguracionPension;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -24,7 +27,8 @@ use app\models\Cesantia;
 class FormContratoNuevo extends Model
 {        
     public $id_tipo_contrato;
-    public $tiempo_contrato;
+    public $identificacion;
+    public $id_tiempo;
     public $id_contrato;
     public $id_cargo;
     public $descripcion;
@@ -38,9 +42,9 @@ class FormContratoNuevo extends Model
     public $funciones_especificas;
     public $id_tipo_cotizante;
     public $id_subtipo_cotizante;
-    public $tipo_salud;
+    public $id_eps;
     public $id_entidad_salud;
-    public $tipo_pension;
+    public $id_pension;
     public $id_entidad_pension;
     public $id_caja_compensacion;        
     public $id_centro_trabajo;
@@ -50,6 +54,11 @@ class FormContratoNuevo extends Model
     public $ciudad_laboral;
     public $ciudad_contratado;
     public $id_empleado;
+    public $ultimo_pago;
+    public $genera_prorroga;
+    public $dias_contrato;
+    public $fecha_preaviso;
+    public $generar_liquidacion;
 
     /**
      * {@inheritdoc}
@@ -57,8 +66,10 @@ class FormContratoNuevo extends Model
     public function rules()
     {
         return [
-            [['id_empleado','id_tipo_contrato','tiempo_contrato','id_cargo','descripcion','fecha_inicio','fecha_final','tipo_salario','salario','auxilio_transporte','horario_trabajo','id_tipo_cotizante','id_subtipo_cotizante','tipo_salud','id_entidad_salud','tipo_pension','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo','id_grupo_pago'], 'required', 'message' => 'Campo requerido'],            
-            [['id_contrato','id_tipo_contrato','id_cargo','id_tipo_cotizante','id_subtipo_cotizante'], 'integer'],
+            [['id_empleado','id_tipo_contrato','id_tiempo','id_cargo','descripcion','fecha_inicio','tipo_salario','salario','auxilio_transporte','horario_trabajo','id_tipo_cotizante','id_subtipo_cotizante',
+                'id_entidad_salud','id_entidad_pension','id_caja_compensacion','id_cesantia','id_arl','ciudad_laboral','ciudad_contratado','id_centro_trabajo',
+                'id_grupo_pago','id_eps','id_pension'], 'required', 'message' => 'Campo requerido'],            
+            [['id_contrato','id_tipo_contrato','id_cargo','id_tipo_cotizante','id_subtipo_cotizante', 'id_tiempo','id_eps','id_pension','generar_liquidacion'], 'integer'],
             [['comentarios','funciones_especificas'], 'string'],            
             [['salario'], 'number'], 
             [['fecha_inicio','fecha_final'], 'safe'],            
@@ -73,6 +84,9 @@ class FormContratoNuevo extends Model
             [['id_entidad_pension'], 'exist', 'skipOnError' => true, 'targetClass' => EntidadPension::className(), 'targetAttribute' => ['id_entidad_pension' => 'id_entidad_pension']],
             [['id_caja_compensacion'], 'exist', 'skipOnError' => true, 'targetClass' => CajaCompensacion::className(), 'targetAttribute' => ['id_caja_compensacion' => 'id_caja_compensacion']],
             [['id_cesantia'], 'exist', 'skipOnError' => true, 'targetClass' => Cesantia::className(), 'targetAttribute' => ['id_cesantia' => 'id_cesantia']],
+            [['id_tiempo'], 'exist', 'skipOnError' => true, 'targetClass' => TiempoServicio::className(), 'targetAttribute' => ['id_tiempo' => 'id_tiempo']],
+            [['id_eps'], 'exist', 'skipOnError' => true, 'targetClass' => ConfiguracionEps::className(), 'targetAttribute' => ['id_eps' => 'id_eps']],
+            [['id_pension'], 'exist', 'skipOnError' => true, 'targetClass' => ConfiguracionPension::className(), 'targetAttribute' => ['id_pension' => 'id_pension']],            
         ];
     }
 
@@ -84,7 +98,8 @@ class FormContratoNuevo extends Model
         return [            
             'id_contrato' => 'Id',
             'id_tipo_contrato' => 'Tipo Contrato',
-            'tiempo_contrato' => 'Tiempo',
+            'id_tiempo' => 'Tiempo',
+            'identificacion'=>'Identificacion',
             'id_cargo' => 'Cargo',
             'descripcion' => 'Descripcion',
             'fecha_inicio' => 'Fecha Inicio',
@@ -97,9 +112,9 @@ class FormContratoNuevo extends Model
             'funciones_especificas' => 'Funciones Especificas',
             'id_tipo_cotizante' => 'Tipo Cotizante',
             'id_subtipo_cotizante' => 'Subtipo Cotizante',
-            'tipo_salud' => 'Tipo Salud',
+            'id_eps' => 'Tipo Salud',
             'id_entidad_salud' => 'Entidad Salud',
-            'tipo_pension' => 'Tipo Pension',
+            'id_pension' => 'Tipo Pension',
             'id_entidad_pension' => 'Entidad Pension',
             'id_caja_compensacion' => 'Caja Compensacion',
             'id_cesantia' => 'Cesantia',
@@ -109,7 +124,9 @@ class FormContratoNuevo extends Model
             'ciudad_laboral' => 'Ciudad Laboral',
             'ciudad_contratado' => 'Ciudad Contratado',
             'id_empleado' => 'Empleado',
+            'generar_liquidacion' => 'generar_liquidacion',
+            
         ];
-    }               
-    
+    } 
+        
 }

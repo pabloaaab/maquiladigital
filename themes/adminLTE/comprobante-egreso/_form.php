@@ -29,7 +29,7 @@ $form = ActiveForm::begin([
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Comprobante Egreso
+        Comprobante Egreso
     </div>
     <div class="panel-body">        														   		        
         <div class="row">
@@ -41,8 +41,15 @@ $form = ActiveForm::begin([
                 ],
             ]); ?>
         </div>
-        <div class="row">                        
-            <?= $form->field($model, 'id_comprobante_egreso_tipo')->dropDownList($tipo, ['prompt' => 'Seleccione un tipo...']) ?>
+        <div class="row">
+            <?= $form->field($model, 'id_comprobante_egreso_tipo')->widget(Select2::classname(), [
+                'data' => $tipo,
+                'options' => ['prompt' => 'Seleccione  ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        
         </div>                                        
         <div class="row">            
             <?= $form->field($model, 'id_banco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>
@@ -69,8 +76,8 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'observacion')->textarea() ?>
         </div>                
         <div class="panel-footer text-right">			
-            <a href="<?= Url::toRoute("/comprobante-egreso/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <a href="<?= Url::toRoute("/comprobante-egreso/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

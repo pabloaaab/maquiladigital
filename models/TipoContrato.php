@@ -37,9 +37,11 @@ class TipoContrato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['contrato'], 'required'],
-            [['estado'], 'integer'],
+            [['contrato','id_configuracion_prefijo'], 'required'],
+            [['estado','prorroga', 'nro_prorrogas'], 'integer'],
             [['contrato'], 'string', 'max' => 100],
+            [['prefijo'],'string', 'max' => 4],
+            [['id_configuracion_prefijo'], 'exist', 'skipOnError' => true, 'targetClass' => ConfiguracionFormatoPrefijo::className(), 'targetAttribute' => ['id_configuracion_prefijo' => 'id_configuracion_prefijo']],
         ];
     }
 
@@ -50,8 +52,11 @@ class TipoContrato extends \yii\db\ActiveRecord
     {
         return [
             'id_tipo_contrato' => 'Id',
-            'contrato' => 'Contrato',
-            'estado' => 'Activo',
+            'contrato' => 'Tipo contrato:',
+            'estado' => 'Activo:',
+            'prorroga' => 'Prorroga:',
+            'nro_prorrogas' => 'Nro_prorrogas:',
+            'id_configuracion_prefijo' => 'Tipo formato:',
         ];
     }
 
@@ -63,6 +68,16 @@ class TipoContrato extends \yii\db\ActiveRecord
         return $this->hasMany(Contrato::className(), ['id_tipo_contrato' => 'id_tipo_contrato']);
     }
     
+    public function getConfiguracionprefijo()
+    {
+        return $this->hasOne(ConfiguracionFormatoPrefijo::className(), ['id_configuracion_prefijo' => 'id_configuracion_prefijo']);
+    }
+    
+     public function getFormatoContenidos()
+    {
+        return $this->hasone(FormatoContenido::className(), ['id_configuracion_prefijo' => 'id_configuracion_prefijo']);
+    }
+    
     public function getActivo()
     {
         if($this->estado == 1){
@@ -71,5 +86,14 @@ class TipoContrato extends \yii\db\ActiveRecord
             $estado = "NO";
         }
         return $estado;
+    }
+      public function getProrrogacontrato()
+    {
+        if($this->prorroga == 1){
+            $prorroga = "SI";
+        }else{
+            $prorroga = "NO";
+        }
+        return $prorroga;
     }
 }

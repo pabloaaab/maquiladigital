@@ -1,9 +1,5 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
 use app\models\Municipio;
 use app\models\Departamento;
 use app\models\Empleado;
@@ -16,12 +12,25 @@ use app\models\Cesantia;
 use app\models\CajaCompensacion;
 use app\models\Arl;
 use app\models\CentroTrabajo;
+use app\models\TiempoServicio;
 use app\models\GrupoPago;
 use app\models\Cargo;
 use app\models\EntidadPension;
 use app\models\EntidadSalud;
+use app\models\ConfiguracionEps;
+use app\models\ConfiguracionPension;
+//clases
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
+
+use yii\bootstrap\Modal;
+use yii\data\Pagination;
+use kartik\depdrop\DepDrop;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Contrato */
@@ -57,7 +66,10 @@ $cesantia = ArrayHelper::map(Cesantia::find()->all(), 'id_cesantia', 'cesantia')
 $tipocontrato = ArrayHelper::map(TipoContrato::find()->all(), 'id_tipo_contrato', 'contrato');
 $centroTrabajo = ArrayHelper::map(CentroTrabajo::find()->all(), 'id_centro_trabajo', 'centro_trabajo');
 $grupopago = ArrayHelper::map(GrupoPago::find()->all(), 'id_grupo_pago', 'grupo_pago');
-$empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(), 'id_empleado', 'empleadocontrato');
+$empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato', 0])->orderBy('nombrecorto ASC')->all(), 'id_empleado', 'nombrecorto');
+$tiempo = ArrayHelper::map(TiempoServicio::find()->all(), 'id_tiempo', 'tiempo_servicio');
+$eps = ArrayHelper::map(ConfiguracionEps::find()->all(), 'id_eps', 'concepto_eps');
+$pension = ArrayHelper::map(ConfiguracionPension::find()->all(), 'id_pension', 'concepto');
 ?>
 <div class="panel panel-success">
     <div class="panel-heading">
@@ -65,33 +77,44 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
     </div>
     <div class="panel-body">
         <div class="row">
-            <?= $form->field($model, 'id_tipo_contrato')->dropDownList($tipocontrato, ['prompt' => 'Seleccione una opcion...']) ?>
-            <?= $form->field($model, 'tiempo_contrato')->dropDownList(['TIEMPO COMPLETO' => 'TIEMPO COMPLETO', 'MEDIO TIEMPO' => 'MEDIO TIEMPO', 'SABATINO' => 'SABATINO'], ['prompt' => 'Seleccione una opcion...']) ?>    
+            <?= $form->field($model, 'id_tipo_contrato')->dropDownList($tipocontrato, ['prompt' => 'Seleccione', 'onchange' => 'tipocontrato()' ,'id' => 'id_tipo_contrato']) ?>
+            <?= $form->field($model, 'id_tiempo')->dropDownList($tiempo, ['prompt' => 'Seleccione el servicio...']) ?>
         </div>
-        <div class="row">
-            <?= $form->field($model, 'id_empleado')->dropDownList($empleado, ['prompt' => 'Seleccione una opcion...']) ?>            
+               
+        <div class="row">     
+             <?= $form->field($model, 'id_empleado')->widget(Select2::classname(), [
+            'data' => $empleado,
+            'options' => ['placeholder' => 'Seleccione el empleado'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
+                       
         </div>
-        <div class="row">
-            <?=
-            $form->field($model, 'fecha_inicio')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+         <div class="row">
+            <?= $form->field($model,'fecha_inicio')->widget(DatePicker::className(),['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
-                    'format' => 'yyyy-mm-dd',
-                    'todayHighlight' => true]])
-            ?>    
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]]) ?>
+       
             <?=
-            $form->field($model, 'fecha_final')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+            $form->field($model, 'fecha_final')->widget(DatePicker::className(), ['name' => 'check_issue_date',                                
                 'value' => date('d-M-Y', strtotime('+2 days')),
-                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'options' => ['id' => 'fecha_final','placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
             ?>
-        </div>                        
+        </div>                      
         <div class="row">
-            <?= $form->field($model, 'id_cargo')->dropDownList($cargo, ['prompt' => 'Seleccione una opcion...']) ?>
-            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true]) ?>
+             <?= $form->field($model, 'id_cargo')->widget(Select2::classname(), [
+            'data' => $cargo,
+            'options' => ['placeholder' => 'Seleccione una opción..'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
+            <?= $form->field($model, 'descripcion')->textInput(['maxlength' => true ,'id' => 'descripcion',]) ?>
         </div>        
         <div class="row">
             <?= $form->field($model, 'funciones_especificas', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
@@ -99,19 +122,30 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
             <?= $form->field($model, 'id_grupo_pago')->dropDownList($grupopago, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>        
         <div class="row">
-            <?= $form->field($model, 'tipo_salario')->dropDownList(['FIJO' => 'FIJO', 'VARIABLE' => 'VAIABLE'], ['prompt' => 'Seleccione una opcion...']) ?>    
+            <?= $form->field($model, 'tipo_salario')->dropDownList(['FIJO' => 'FIJO', 'VARIABLE' => 'VARIABLE','INTEGRAL' => 'INTEGRAL'], ['prompt' => 'Seleccione una opcion...']) ?>    
             <?= $form->field($model, 'salario')->textInput(['maxlength' => true]) ?>
         </div>                
         <div class="row">
-            <?= $form->field($model, 'ciudad_laboral')->dropDownList($ciudadLaboral, ['prompt' => 'Seleccione una opcion...']) ?>
-            <?= $form->field($model, 'ciudad_contratado')->dropDownList($ciudadContratado, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'ciudad_laboral')->widget(Select2::classname(), [
+            'data' => $ciudadLaboral,
+            'options' => ['placeholder' => 'Seleccione una opción..'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
+            <?= $form->field($model, 'ciudad_contratado')->widget(Select2::classname(), [
+            'data' => $ciudadContratado,
+            'options' => ['placeholder' => 'Seleccione una opción..'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'auxilio_transporte')->dropDownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione una opcion...']) ?>    
             <?= $form->field($model, 'horario_trabajo')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row" col>
-            <?= $form->field($model, 'comentarios', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
+            <?= $form->field($model, 'comentarios', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3, 'id' => 'comentarios']) ?>
+          
         </div>
     </div>
 </div>
@@ -126,23 +160,44 @@ $empleado = ArrayHelper::map(Empleado::find()->where(['=','contrato',0])->all(),
             <?= $form->field($model, 'id_subtipo_cotizante')->dropDownList($subtipocotizante, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'tipo_salud')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
-            <?= $form->field($model, 'id_entidad_salud')->dropDownList($entidadSalud, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'id_eps')->dropDownList($eps, ['prompt' => 'Seleccione tipo salud']) ?>
+            <?= $form->field($model, 'id_entidad_salud')->widget(Select2::classname(), [
+            'data' => $entidadSalud,
+            'options' => ['placeholder' => 'Seleccione una opción..'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
         </div>        
         <div class="row">
-            <?= $form->field($model, 'tipo_pension')->dropDownList(['EMPLEADO' => 'EMPLEADO', 'EMPLEADOR' => 'EMPLEADOR'], ['prompt' => 'Seleccione una opcion...']) ?>  
+             <?= $form->field($model, 'id_pension')->dropDownList($pension, ['prompt' => 'Seleccione tipo pension...']) ?>
             <?= $form->field($model, 'id_entidad_pension')->dropDownList($entidadPension, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>        
         <div class="row">
-            <?= $form->field($model, 'id_caja_compensacion')->dropDownList($caja, ['prompt' => 'Seleccione una opcion...']) ?>
+            <?= $form->field($model, 'id_caja_compensacion')->widget(Select2::classname(), [
+            'data' => $caja,
+            'options' => ['placeholder' => 'Seleccione una opción..'],
+            'pluginOptions' => [
+                'allowClear' => true ]]);
+            ?>
             <?= $form->field($model, 'id_cesantia')->dropDownList($cesantia, ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'id_arl')->dropDownList($arl, ['prompt' => 'Seleccione una opcion...']) ?>            
         </div>         
         <div class="panel-footer text-right">			
-            <a href="<?= Url::toRoute("contrato/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <a href="<?= Url::toRoute("contrato/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
-<?php $form->end() ?>     
+<?php $form->end() ?>  
+
+ <!--<script type="text/javascript">
+    function tipocontrato(){
+       var tipo = document.getElementById("id_tipo_contrato").value;
+       if(tipo == 1){
+          document.getElementById("fecha_final").value = '2099-12-30';
+       
+       }
+
+    }
+</script> -->      

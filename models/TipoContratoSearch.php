@@ -17,8 +17,8 @@ class TipoContratoSearch extends TipoContrato
     public function rules()
     {
         return [
-            [['id_tipo_contrato', 'estado'], 'integer'],
-            [['contrato'], 'safe'],
+            [['id_tipo_contrato', 'estado', 'prorroga', 'nro_prorrogas', 'id_configuracion_prefijo'], 'integer'],
+            [['contrato', 'prefijo'], 'string'],
         ];
     }
 
@@ -59,10 +59,21 @@ class TipoContratoSearch extends TipoContrato
         // grid filtering conditions
         $query->andFilterWhere([
             'id_tipo_contrato' => $this->id_tipo_contrato,
+            'contrato' => $this->contrato,
             'estado' => $this->estado,
+            'prorroga' => $this->prorroga,
+            'nro_prorrogas' => $this->nro_prorrogas,
+            'prefijo' => $this->prefijo,
+            'id_configuracion_prefijo' => $this->id_configuracion_prefijo, 
         ]);
 
+        $query->andFilterWhere(['like', 'id_tipo_contrato', $this->id_tipo_contrato]);
         $query->andFilterWhere(['like', 'contrato', $this->contrato]);
+        $query->andFilterWhere(['like', 'estado', $this->estado]);
+        $query->andFilterWhere(['like', 'prorroga', $this->prorroga]);
+        $query->andFilterWhere(['like', 'nro_prorrogas', $this->nro_prorrogas]);
+        $query->andFilterWhere(['like', 'prefijo', $this->prefijo]);
+        $query->andFilterWhere(['like', 'id_configuracion_prefijo', $this->id_configuracion_prefijo]);
 
         return $dataProvider;
     }

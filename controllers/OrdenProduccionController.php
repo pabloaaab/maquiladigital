@@ -485,7 +485,7 @@ class OrdenProduccionController extends Controller {
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 15,
+                        'pageSize' => 40,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -500,7 +500,7 @@ class OrdenProduccionController extends Controller {
                         ->orderBy('idordenproduccion desc');
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 15,
+                    'pageSize' => 40,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table
@@ -541,7 +541,7 @@ class OrdenProduccionController extends Controller {
                     $count = clone $procesos;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 30,
+                        'pageSize' => 60,
                         'totalCount' => $count->count()
                     ]);
                     $procesos = $procesos
@@ -557,7 +557,7 @@ class OrdenProduccionController extends Controller {
             //$cont = count($procesos);
             $count = clone $procesos;
             $pages = new Pagination([
-                'pageSize' => 30,
+                'pageSize' => 60,
                 'totalCount' => $count->count(),
             ]);
             $procesos = $procesos
@@ -990,7 +990,7 @@ class OrdenProduccionController extends Controller {
     
     public function actionIndexconsulta() {
         if (Yii::$app->user->identity){
-        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',44])->all()){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',95])->all()){
             $form = new FormFiltroConsultaOrdenproduccion();
             $idcliente = null;
             $desde = null;
@@ -1024,7 +1024,7 @@ class OrdenProduccionController extends Controller {
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 20,
+                        'pageSize' => 60,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -1044,7 +1044,7 @@ class OrdenProduccionController extends Controller {
                 $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 20,
+                    'pageSize' => 60,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table
@@ -1078,7 +1078,7 @@ class OrdenProduccionController extends Controller {
             $ordenproduccion = null;
             $idtipo = null;
             $codigoproducto = null;
-            $clientes = Cliente::find()->all();
+            $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
             $ordenproducciontipos = Ordenproducciontipo::find()->all();
             if ($form->load(Yii::$app->request->get())) {
                 if ($form->validate()) {
@@ -1096,7 +1096,7 @@ class OrdenProduccionController extends Controller {
                     $count = clone $table;
                     $to = $count->count();
                     $pages = new Pagination([
-                        'pageSize' => 20,
+                        'pageSize' => 40,
                         'totalCount' => $count->count()
                     ]);
                     $model = $table
@@ -1116,7 +1116,7 @@ class OrdenProduccionController extends Controller {
                 $tableexcel = $table->all();
                 $count = clone $table;
                 $pages = new Pagination([
-                    'pageSize' => 20,
+                    'pageSize' => 40,
                     'totalCount' => $count->count(),
                 ]);
                 $model = $table

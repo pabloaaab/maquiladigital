@@ -5,6 +5,8 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\GrupoPago;
+use app\models\PeriodoPago;
+
 
 /**
  * GrupoPagoSearch represents the model behind the search form of `app\models\GrupoPago`.
@@ -17,8 +19,10 @@ class GrupoPagoSearch extends GrupoPago
     public function rules()
     {
         return [
-            [['id_grupo_pago', 'estado'], 'integer'],
-            [['grupo_pago'], 'safe'],
+             [['estado', 'id_grupo_pago', 'id_periodo_pago','id_sucursal', 'limite_devengado'], 'integer'],
+             [['ultimo_pago_prima', 'ultimo_pago_cesantia', 'fecha_creacion', 'ultimo_pago_nomina'], 'safe'],
+            [['grupo_pago', 'iddepartamento', 'idmunicipio', 'dias_pago', 'observacion'], 'string'],
+            ['limite_devengado', 'match', 'pattern' => '/^[0-9]+$/i', 'message' => 'Sólo se aceptan números'],
         ];
     }
 
@@ -46,6 +50,7 @@ class GrupoPagoSearch extends GrupoPago
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['id_grupo_pago' => SORT_ASC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);
@@ -59,11 +64,18 @@ class GrupoPagoSearch extends GrupoPago
         // grid filtering conditions
         $query->andFilterWhere([
             'id_grupo_pago' => $this->id_grupo_pago,
+            'id_periodo_pago' => $this->id_periodo_pago,
+            'ultimo_pago_nomina' => $this->ultimo_pago_nomina,
+             'ultimo_pago_prima' => $this->ultimo_pago_prima,
+             'ultimo_pago_cesantia' => $this->ultimo_pago_cesantia,
             'estado' => $this->estado,
         ]);
-
-        $query->andFilterWhere(['like', 'grupo_pago', $this->grupo_pago]);
-
+         $query->andFilterWhere(['like', 'id_grupo_pago', $this->id_grupo_pago]);
+         $query->andFilterWhere(['like', 'grupo_pago', $this->grupo_pago]);
+         $query->andFilterWhere(['like', 'id_periodo_pago', $this->id_periodo_pago]);
+          $query->andFilterWhere(['like', 'ultimo_pago_nomina', $this->ultimo_pago_nomina]);
+        $query->andFilterWhere(['like', 'ultimo_pago_prima', $this->ultimo_pago_prima]);
+        $query->andFilterWhere(['like', 'ultimo_pago_cesantia', $this->ultimo_pago_cesantia]);
         return $dataProvider;
     }
 }

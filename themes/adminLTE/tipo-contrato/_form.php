@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use app\models\ConfiguracionFormatoPrefijo;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\TipoRecibo */
@@ -20,6 +22,7 @@ $form = ActiveForm::begin([
                 'options' => []
             ],
         ]);
+$configuracionformato = ArrayHelper::map(ConfiguracionFormatoPrefijo::find()->all(), 'id_configuracion_prefijo', 'formato');
 ?>
 
 
@@ -32,11 +35,23 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'contrato')->textInput(['maxlength' => true]) ?>    
         </div>
         <div class="row">
+            <?= $form->field($model, 'prorroga')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'nro_prorrogas')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'estado')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
-        </div>		
+        </div>	
+        <div class="row">
+            <?= $form->field($model, 'prefijo')->dropdownList(['CAI' => 'CAI', 'CFIA' => 'CFIA','COL' => 'COL','CAS' => 'CAS','CPE' => 'CPE', 'CPD' => 'CPD']) ?>
+        </div>
+        <div class="row">
+          <?= $form->field($model, 'id_configuracion_prefijo')->dropDownList($configuracionformato, ['prompt' => 'Seleccione...']) ?>                      
+        </div>    
         <div class="panel-footer text-right">                
-            <a href="<?= Url::toRoute("tipo-contrato/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+            <a href="<?= Url::toRoute("tipo-contrato/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		
         </div>
     </div>
 </div>

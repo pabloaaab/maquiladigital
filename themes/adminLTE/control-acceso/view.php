@@ -1,4 +1,4 @@
-<?php
+    <?php
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
@@ -16,7 +16,7 @@ use yii\bootstrap\Modal;
 
 <?php
 
-$this->title = 'Detalle Control Acceso Covid';
+$this->title = 'Control Acceso Covid';
 $this->params['breadcrumbs'][] = ['label' => 'Control Acceso Covid', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $view = 'Control Acceso Covid';
@@ -28,11 +28,11 @@ $view = 'Control Acceso Covid';
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Detalle Control Acceso
+        Detalle de ingreso
     </div>
     <div class="panel-body">
         <table class="table table-bordered">
-            <tr>
+            <tr style='font-size:85%;'>
                 <th>Código:</th>
                 <td><?= $table->id ?></td>
                 <th>Tipo Identificación:</th>
@@ -42,7 +42,7 @@ $view = 'Control Acceso Covid';
                 <th>Nombre:</th>
                 <td><?= $table->registroPersonal->nombrecompleto ?></td>
             </tr>
-            <tr>
+            <tr style='font-size:85%;'>
                 
                 <th>Fecha Ingreso:</th>
                 <td><?= $table->fecha_ingreso ?></td>
@@ -53,7 +53,7 @@ $view = 'Control Acceso Covid';
                 <th>Temperatura Final:</th>
                 <td><?= $table->temperatura_final ?></td>
             </tr>
-            <tr>
+            <tr style='font-size:85%;'>
                 <th>Tipo Personal:</th>
                 <td><?= $table->tipo_personal ?></td>
                 <th>Tiene Sintomas:</th>

@@ -30,11 +30,21 @@ use kartik\depdrop\DepDrop;
         <h4>Información Compra</h4>
     </div>
     <div class="panel-body">        
-        <div class="row">                        
-            <?= $form->field($model, 'id_proveedor')->dropDownList($proveedores,['prompt' => 'Seleccione un proveedor...']) ?>
+        <div class="row">        
+             <?= $form->field($model, 'id_proveedor')->widget(Select2::classname(), [
+            'data' => $proveedores,
+            'options' => ['placeholder' => 'Seleccione ...'],
+            'pluginOptions' => [
+                'allowClear' => true ],
+             ]); ?>
         </div>
         <div class="row">
-            <?= $form->field($model, 'id_compra_concepto')->dropDownList($conceptos,['prompt' => 'Seleccione un concepto...']) ?>
+             <?= $form->field($model, 'id_compra_concepto')->widget(Select2::classname(), [
+            'data' => $conceptos,
+            'options' => ['placeholder' => 'Seleccione ....'],
+            'pluginOptions' => [
+                'allowClear' => true ],
+             ]); ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'factura')->textInput(['maxlength' => true]) ?>  					
@@ -62,8 +72,8 @@ use kartik\depdrop\DepDrop;
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>
         <div class="panel-footer text-right">            
-            <a href="<?= Url::toRoute("compra/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>		
+            <a href="<?= Url::toRoute("compra/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		
         </div>
 	</div>
 </div>

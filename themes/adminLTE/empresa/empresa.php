@@ -82,13 +82,21 @@ $municipio = ArrayHelper::map(Municipio::find()->all(), 'idmunicipio', 'municipi
             <?= $form->field($model, 'id_banco_factura')->dropDownList($bancos, ['prompt' => 'Seleccione un cliente...']) ?>
             <?= $form->field($model, 'idresolucion')->dropDownList($resoluciones, ['prompt' => 'Seleccione una resolucion...']) ?>
         </div>
-        <div class="row">                        
-            
-        </div>
-        <div class="row">
+          <div class="row">
             <?= $form->field($model, 'nombresistema')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'paginaweb')->textInput(['maxlength' => true]) ?>    
-        </div>        
+        </div>      
+         <div class="row">
+            <?= $form->field($model, 'porcentaje_cesantias')->textInput(['maxlength' => true]) ?>    
+            <?= $form->field($model, 'porcentaje_intereses')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+           <?= $form->field($model, 'porcentaje_prima')->textInput(['maxlength' => true]) ?>    
+           <?= $form->field($model, 'porcentaje_vacacion')->textInput(['maxlength' => true]) ?>    
+        </div>
+        <div class="row">
+           <?= $form->field($model, 'representante_legal')->textInput(['maxlength' => true]) ?>    
+        </div>
         <div class="row">
             <?= $form->field($model, 'declaracion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
         </div>

@@ -14,7 +14,7 @@ use yii\helpers\Url;
 /* @var $model app\models\Recibocaja */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = 'Nuevo Comprobante de Egreso';
+$this->title = 'Nuevo Comprobante';
 $this->params['breadcrumbs'][] = ['label' => 'Comprobante Egresos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;?>
 
@@ -30,14 +30,26 @@ $this->params['breadcrumbs'][] = $this->title;?>
 
 <div class="panel panel-success">
     <div class="panel-heading">
-        Información Comprobante Egreso
+        Comprobante Egreso
     </div>
     <div class="panel-body">
         <div class="row">            
-            <?= $form->field($model, 'id_proveedor')->dropDownList($proveedores, ['prompt' => 'Seleccione un proveedor...']) ?>
+             <?= $form->field($model, 'id_proveedor')->widget(Select2::classname(), [
+                'data' => $proveedores,
+                'options' => ['prompt' => 'Seleccione un proveedor ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
         <div class="row">                        
-            <?= $form->field($model, 'id_comprobante_egreso_tipo')->dropDownList($tipo, ['prompt' => 'Seleccione un tipo...']) ?>
+           <?= $form->field($model, 'id_comprobante_egreso_tipo')->widget(Select2::classname(), [
+                'data' => $tipo,
+                'options' => ['prompt' => 'Seleccione  ...'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>                                        
         <div class="row">            
             <?= $form->field($model, 'id_banco')->dropDownList($bancos, ['prompt' => 'Seleccione un banco...']) ?>
@@ -64,8 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;?>
             <?= $form->field($model, 'observacion')->textarea() ?>
         </div>  
         <div class="panel-footer text-right">            
-            <a href="<?= Url::toRoute("comprobante-egreso/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <a href="<?= Url::toRoute("comprobante-egreso/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

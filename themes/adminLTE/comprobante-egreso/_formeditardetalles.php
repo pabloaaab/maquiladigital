@@ -35,10 +35,10 @@ use yii\db\ActiveQuery;
 
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Editar detalle Comprobante Egreso
+            Editar detalle.
         </div>
         <div class="panel-body">
-            <table class="table table-condensed">
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
                     <th scope="col">Id Compra</th>
@@ -48,12 +48,12 @@ use yii\db\ActiveQuery;
                     <th scope="col">Rete Iva</th>
                     <th scope="col">Valor Abono</th>
                     <th scope="col">Valor Saldo</th>
-                    <th></th>
+                   
                 </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($mds as $val): ?>
-                <tr>
+                    <tr style="font-size: 85%;">
                     <td><?= $val->id_compra ?></td>
                     <td><?= $val->compra->factura ?></td>
                     <td><?= $val->base_aiu ?></td>
@@ -61,15 +61,15 @@ use yii\db\ActiveQuery;
                     <td><?= $val->reteiva ?></td>
                     <td><input type="text" name="vlr_abono[]" value="<?= $val->vlr_abono ?>" required></td>
                     <td><?= $val->vlr_saldo ?></td>
-                    <td><input type="hidden" name="id_comprobante_egreso_detalle[]" value="<?= $val->id_comprobante_egreso_detalle ?>"></td>
+                    <input type="hidden" name="id_comprobante_egreso_detalle[]" value="<?= $val->id_comprobante_egreso_detalle ?>">
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['comprobante-egreso/view', 'id' => $id_comprobante_egreso], ['class' => 'btn btn-primary']) ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['comprobante-egreso/view', 'id' => $id_comprobante_egreso], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>
 </div>

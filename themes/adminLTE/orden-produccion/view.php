@@ -44,33 +44,33 @@ $view = 'orden-produccion';
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']) ?>
         <?php if ($model->autorizado == 0) { ?>
-            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idordenproduccion], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idordenproduccion], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Esta seguro de eliminar el registro?',
-                    'method' => 'post' ,
-                ],
-            ]) ?>
-            <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->idordenproduccion], [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data' => [
+                            'confirm' => 'Esta seguro de eliminar el registro?',
+                            'method' => 'post' ,
+                        ],
+                    ]) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-ok"></span> Autorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm']);
         }
             else {
-                echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);
-                echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);            
-                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default']);                
+                echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm']);
+                echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm']);            
+                echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 4, 'codigo' => $model->idordenproduccion,'view' => $view], ['class' => 'btn btn-default btn-sm']);                
                 if ($remision){
                    if ($model->tipo->remision == 1)
                    {    
-                        echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default']);                             
+                        echo Html::a('<span class="glyphicon glyphicon-file"></span> Remision', ['remision/remision', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm']);                             
                    }
                 }else{
                     if ($model->tipo->remision == 1)
                     {
                     ?>
                     <!-- Editar modal detalle -->
-                    <a href="#" data-toggle="modal" data-target="#remision<?= $model->idordenproduccion ?>" class="btn btn-default"><span class="glyphicon glyphicon-file"></span> Remision</a>
+                    <a href="#" data-toggle="modal" data-target="#remision<?= $model->idordenproduccion ?>" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-file"></span> Remision</a>
                     <div class="modal fade" role="dialog" aria-hidden="true" id="remision<?= $model->idordenproduccion ?>">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -98,8 +98,8 @@ $view = 'orden-produccion';
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Crear</button>
+                                    <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                    <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Crear</button>
                                 </div>
                                 <?= Html::endForm() ?>
                             </div><!-- /.modal-content -->
@@ -116,48 +116,48 @@ $view = 'orden-produccion';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, "idordenproduccion") ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, "idordenproduccion") ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechaprocesada') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaprocesada') ?>:</th>
                     <td><?= Html::encode($model->fechaprocesada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechaentrega') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaentrega') ?>:</th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
                     <td><?= Html::encode($model->ponderacion) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenproduccionext') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccionext') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccionext) ?></td>                    
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'cantidad') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad') ?>:</th>
                     <td><?= Html::encode($model->cantidad) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th></th>
                     <td></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
                     <td><?= Html::encode($model->codigoproducto) ?></td>
-                    <th><?= Html::activeLabel($model, 'duracion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'duracion') ?>:</th>
                     <td><?= Html::encode($model->duracion) ?></td>
-                    <th><?= Html::activeLabel($model, 'totalorden') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
                 <tr>
-                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>                                        
                 </tr>
             </table>
@@ -170,22 +170,23 @@ $view = 'orden-produccion';
                 Detalles
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Código</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Subtotal</th>
-                        <th></th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Precio</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                        <th scope="col" style='background-color:#B9D5CE;'></th>
+                        <th scope="col" style='background-color:#B9D5CE;'></th>
                            
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->iddetalleorden ?></td>
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                         <td><?= $val->codigoproducto ?></td>
@@ -193,7 +194,7 @@ $view = 'orden-produccion';
                         <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
                         <td><?= '$ '.number_format($val->subtotal,2) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
-                            <td>
+                        <td style="width: 25px;">
                                 <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
                                 <!-- Editar modal detalle -->
                                 <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden2<?= $val->iddetalleorden ?>">
@@ -229,13 +230,15 @@ $view = 'orden-produccion';
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
+                                                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                                <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
                                             </div>
                                             <?= Html::endForm() ?>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->
+                        </td>
+                        <td style="width: 25px;">
                                 <!-- Eliminar modal detalle -->
                                 <a href="#" data-toggle="modal" data-target="#iddetalleorden<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-trash"></span></a>
                                 <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden<?= $val->iddetalleorden ?>">
@@ -261,7 +264,10 @@ $view = 'orden-produccion';
                                 </div><!-- /.modal -->
                             </td>                            
                                                        
-                        <?php } ?>
+                        <?php } else {?>
+                            <th scope="col" style='background-color:#B9D5CE;'></th>
+                            <th scope="col" style='background-color:#B9D5CE;'></th>
+                        <?php }?>
                     </tr>
                     </tbody>
                     <?php endforeach; ?>
@@ -270,9 +276,9 @@ $view = 'orden-produccion';
             
             <?php if ($model->autorizado == 0) { ?>
                 <div class="panel-footer text-right">
-                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success']) ?>                                            
-                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success btn-sm']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                            
+                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger btn-sm']) ?>
                 </div>
             
             <?php } ?>

@@ -10,7 +10,6 @@ use Yii;
  * @property int $id_contrato
  * @property int $identificacion
  * @property int $id_tipo_contrato
- * @property int $tiempo_contrato
  * @property int $id_centro_trabajo
  * @property int $id_grupo_pago
  * @property int $id_empleado
@@ -75,6 +74,7 @@ class Contrato extends \yii\db\ActiveRecord
         }
 	   
 	$this->descripcion = strtoupper($this->descripcion);
+        $this->horario_trabajo = strtoupper($this->horario_trabajo);
 	$this->comentarios = strtoupper($this->comentarios);
 	$this->funciones_especificas = strtoupper($this->funciones_especificas);		
         return true;
@@ -86,14 +86,14 @@ class Contrato extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['identificacion', 'tiempo_contrato','id_tipo_contrato', 'id_cargo', 'auxilio_transporte', 'id_tipo_cotizante', 'id_subtipo_cotizante', 'id_entidad_salud', 'id_entidad_pension', 'id_caja_compensacion', 'id_cesantia', 'id_arl', 'id_motivo_terminacion', 'contrato_activo','id_centro_trabajo','id_grupo_pago'], 'integer'],
-            [['fecha_inicio', 'fecha_final', 'ultimo_pago', 'ultima_prima', 'ultima_cesantia', 'ultima_vacacion'], 'safe'],
-            [['salario', 'ibp_cesantia_inicial', 'ibp_prima_inicial', 'ibp_recargo_nocturno'], 'number'],
-            [['comentarios', 'funciones_especificas'], 'string'],
-            [['descripcion'], 'string', 'max' => 100],
-            [['tipo_salario', 'tipo_salud'], 'string', 'max' => 20],
+            [['identificacion','id_tipo_contrato', 'id_cargo', 'auxilio_transporte', 'id_tipo_cotizante', 'id_subtipo_cotizante', 'id_entidad_salud', 'id_entidad_pension', 'id_caja_compensacion', 'id_cesantia', 'id_arl', 'id_motivo_terminacion', 'contrato_activo',
+                'id_centro_trabajo','id_grupo_pago', 'id_tiempo','genera_prorroga','dias_contrato','generar_liquidacion','ibp_cesantia_inicial', 'ibp_prima_inicial', 'ibp_recargo_nocturno'], 'integer'],
+            [['fecha_inicio', 'fecha_final', 'ultimo_pago', 'ultima_prima', 'ultima_cesantia', 'ultima_vacacion', 'fecha_preaviso','fecha_creacion','fecha_editado'], 'safe'],
+            [['salario'], 'number'],
+            [['comentarios', 'funciones_especificas','observacion'], 'string'],
+            [['descripcion','usuario_creador','usuario_editor'], 'string', 'max' => 100],
+            [['tipo_salario'], 'string', 'max' => 20],
             [['horario_trabajo'], 'string', 'max' => 10],
-            [['tipo_pension'], 'string', 'max' => 50],
             [['ciudad_laboral', 'ciudad_contratado'], 'string', 'max' => 15],
             [['id_tipo_contrato'], 'exist', 'skipOnError' => true, 'targetClass' => TipoContrato::className(), 'targetAttribute' => ['id_tipo_contrato' => 'id_tipo_contrato']],
             [['id_motivo_terminacion'], 'exist', 'skipOnError' => true, 'targetClass' => MotivoTerminacion::className(), 'targetAttribute' => ['id_motivo_terminacion' => 'id_motivo_terminacion']],
@@ -108,6 +108,7 @@ class Contrato extends \yii\db\ActiveRecord
             [['id_caja_compensacion'], 'exist', 'skipOnError' => true, 'targetClass' => CajaCompensacion::className(), 'targetAttribute' => ['id_caja_compensacion' => 'id_caja_compensacion']],
             [['id_cesantia'], 'exist', 'skipOnError' => true, 'targetClass' => Cesantia::className(), 'targetAttribute' => ['id_cesantia' => 'id_cesantia']],
             [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],
+            [['id_tiempo'], 'exist', 'skipOnError' => true, 'targetClass' => TiempoServicio::className(), 'targetAttribute' => ['id_tiempo' => 'id_tiempo']],
         ];
     }
 
@@ -117,10 +118,10 @@ class Contrato extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_contrato' => 'Id',
+            'id_contrato' => 'Nro contrato',
             'identificacion' => 'Identificacion',
             'id_tipo_contrato' => 'Tipo Contrato',
-            'tiempo_contrato' => 'Tiempo',
+            'id_tiempo' => 'Tiempo',
             'id_cargo' => 'Cargo',
             'descripcion' => 'Descripcion',
             'fecha_inicio' => 'Fecha Inicio',
@@ -130,12 +131,12 @@ class Contrato extends \yii\db\ActiveRecord
             'auxilio_transporte' => 'Auxilio Transporte',
             'horario_trabajo' => 'Horario Trabajo',
             'comentarios' => 'Comentarios',
-            'funciones_especificas' => 'Funciones Especificas',
+            'funciones_especificas' => 'Funciones',
             'id_tipo_cotizante' => 'Tipo Cotizante',
             'id_subtipo_cotizante' => 'Subtipo Cotizante',
-            'tipo_salud' => 'Tipo Salud',
+            'id_eps' => 'Tipo Salud',
             'id_entidad_salud' => 'Entidad Salud',
-            'tipo_pension' => 'Tipo Pension',
+            'id_pension' => 'Tipo Pension',
             'id_entidad_pension' => 'Entidad Pension',
             'id_caja_compensacion' => 'Caja Compensacion',
             'id_cesantia' => 'Cesantia',
@@ -149,12 +150,16 @@ class Contrato extends \yii\db\ActiveRecord
             'ultima_vacacion' => 'Ultima Vacacion',
             'ibp_cesantia_inicial' => 'Ibp Cesantia Inicial',
             'ibp_prima_inicial' => 'Ibp Prima Inicial',
-            'ibp_recargo_nocturno' => 'Ibp Recargo Nocturno',
+            'ibp_recargo_nocturno' => 'Recargo Nocturno',
             'id_motivo_terminacion' => 'Motivo Terminacion',
             'contrato_activo' => 'Contrato Activo',
             'ciudad_laboral' => 'Ciudad Laboral',
             'ciudad_contratado' => 'Ciudad Contratado',
-        ];
+            'genera_prorroga' => 'Genera_prorroga',
+            'observacion' => 'Observacion',
+            'fecha_preaviso' => 'Fecha preaviso',
+            'dias_contrato' =>'Dias contratado',
+            ];
     }
 
     /**
@@ -267,6 +272,18 @@ class Contrato extends \yii\db\ActiveRecord
     {
         return $this->hasOne(GrupoPago::className(), ['id_grupo_pago' => 'id_grupo_pago']);
     }
+    public function getTiempoServicio()
+    {
+        return $this->hasOne(TiempoServicio::className(), ['id_tiempo' => 'id_tiempo']);
+    }
+    public function getPagoEps()
+    {
+        return $this->hasOne(ConfiguracionEps::className(), ['id_eps' => 'id_eps']);
+    }
+    public function getPagoPension()
+    {
+        return $this->hasOne(ConfiguracionPension::className(), ['id_pension' => 'id_pension']);
+    }
     
     public function getActivo()
     {
@@ -276,5 +293,23 @@ class Contrato extends \yii\db\ActiveRecord
             $activo = "NO";
         }
         return $activo;
+    }
+    public function getAuxilio()
+    {
+        if($this->auxilio_transporte == 1){
+            $auxilio = "SI";
+        }else{
+            $auxilio = "NO";
+        }
+        return $auxilio;
+    }
+     public function getGeneraprorroga()
+    {
+        if($this->genera_prorroga == 1){
+            $generaprorroga = "SI";
+        }else{
+            $generaprorroga = "NO";
+        }
+        return $generaprorroga;
     }
 }

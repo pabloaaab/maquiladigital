@@ -103,10 +103,10 @@ class ComprobanteEgresoController extends Controller
     public function actionCreate()
     {
         $model = new ComprobanteEgreso();
-        $proveedores = Proveedor::find()->all();
+        $proveedores = Proveedor::find()->orderBy('nombrecorto ASC')->all();
         $municipios = Municipio::find()->all();
         $bancos = Banco::find()->all();
-        $tipos = ComprobanteEgresoTipo::find()->all();
+        $tipos = ComprobanteEgresoTipo::find()->orderBy('concepto ASC')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {            
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
@@ -125,10 +125,10 @@ class ComprobanteEgresoController extends Controller
     public function actionCreatelibre()
     {
         $model = new FormComprobanteegresolibre();
-        $proveedores = Proveedor::find()->all();
+         $proveedores = Proveedor::find()->orderBy('nombrecorto ASC')->all();
         $municipios = Municipio::find()->all();
         $bancos = Banco::find()->all();
-        $tipos = ComprobanteEgresoTipo::find()->all();
+       $tipos = ComprobanteEgresoTipo::find()->orderBy('concepto ASC')->all();
         if ($model->load(Yii::$app->request->post())) {
             $table = new ComprobanteEgreso;
             $table->id_proveedor = $model->id_proveedor;

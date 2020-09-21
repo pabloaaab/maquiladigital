@@ -76,7 +76,8 @@ class CargoController extends Controller
         $model = new Cargo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_cargo]);
+            //return $this->redirect(['view', 'id' => $model->id_cargo]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -96,7 +97,7 @@ class CargoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_cargo]);
+            return $this->redirect(['index', 'id' => $model->id_cargo]);
         }
 
         return $this->render('update', [

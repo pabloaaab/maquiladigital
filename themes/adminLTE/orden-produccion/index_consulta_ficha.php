@@ -12,7 +12,7 @@ use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 
-$this->title = 'Consulta Ficha de Operaciones';
+$this->title = 'Ficha de Operaciones';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -79,8 +79,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         
         <div class="panel-footer text-right">
-            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute("orden-produccion/indexconsultaficha") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
+            <a align="right" href="<?= Url::toRoute("orden-produccion/indexconsultaficha") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Registros: <?= $pagination->totalCount ?>
+            Registros: <span class="badge"><?= $pagination->totalCount ?></span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -109,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>
+                <tr style="font-size: 85%;">
                 <td><?= $val->idordenproduccion ?></td>
                 <td><?= $val->codigoproducto ?></td>
                 <td><?= $val->ordenproduccion ?></td>
@@ -132,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             "method" => "post",                            
                         ]);
                 ?>    
-                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary ']); ?>
+                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm']); ?>
             <?php $form->end() ?>
         </div>
     </div>

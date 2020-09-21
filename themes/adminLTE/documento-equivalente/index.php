@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\DocumentoEquivalenteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Documentos Equivalentes';
+$this->title = 'Documentos Equivalentes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="documentos-equivalentes-index">
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'nombre_completo',
-                'contentOptions' => ['class' => 'col-lg-2 '],                
+                'contentOptions' => ['class' => 'col-lg-3 '],                
             ],
             [               
                 'attribute' => 'fecha',
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'descripcion',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
+                'contentOptions' => ['class' => 'col-lg-3.5 '],                
             ],				
             [
                 'class' => 'yii\grid\ActionColumn',              

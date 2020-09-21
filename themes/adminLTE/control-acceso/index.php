@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
-        Registros: <?= $pagination->totalCount ?>
+        Registros: <span class="badge"><?= $pagination->totalCount ?></span>
     </div>
         <table class="table table-bordered table-hover">
             <thead>
@@ -82,17 +82,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 <th scope="col">Nombre</th>
                 <th scope="col">Fecha Ingreso</th>
                 <th scope="col">Fecha Salida</th>
-                <th scope="col">Temperatura Inicial</th>
-                <th scope="col">Temperatura Final</th>
-                <th scope="col">Tipo Personal</th>
-                <th scope="col">Tiene Sintomas</th>
+                <th scope="col">T. Inicial</th>
+                <th scope="col">T. Final</th>
+                <th scope="col">Tipo ingreso</th>
+                <th scope="col">Sintomas</th>
                 <th scope="col">Observaciones</th>
                 <th scope="col"></th>                               
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
-            <tr>                
+                <tr style= 'font-size:85%;'>                
                 <td><?= $val->documento ?></td>
                 <td><?= $val->registroPersonal->nombrecompleto ?></td>
                 <td><?= $val->fecha_ingreso ?></td>

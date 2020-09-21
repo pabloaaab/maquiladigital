@@ -30,7 +30,7 @@ use yii\filters\AccessControl;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
-$this->title = 'Detalle Consulta Orden de Producción';
+$this->title = 'Consulta Orden de Producción';
 $this->params['breadcrumbs'][] = ['label' => 'Ordenes de Producción', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
 $view = 'orden-produccion';
@@ -44,7 +44,7 @@ $view = 'orden-produccion';
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary']) ?>              
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']) ?>              
 
     <br>
     <br>    
@@ -54,7 +54,7 @@ $view = 'orden-produccion';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, "idordenproduccion") ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
@@ -62,7 +62,7 @@ $view = 'orden-produccion';
                     <th><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
                     <th><?= Html::activeLabel($model, 'fechaprocesada') ?>:</th>
@@ -70,7 +70,7 @@ $view = 'orden-produccion';
                     <th><?= Html::activeLabel($model, 'fechaentrega') ?>:</th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
                     <td><?= Html::encode($model->ponderacion) ?></td>
                     <th><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
@@ -78,7 +78,7 @@ $view = 'orden-produccion';
                     <th><?= Html::activeLabel($model, 'ordenproduccionext') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccionext) ?></td>                    
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'cantidad') ?>:</th>
                     <td><?= Html::encode($model->cantidad) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
@@ -86,7 +86,7 @@ $view = 'orden-produccion';
                     <th></th>
                     <td></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
                     <td><?= Html::encode($model->codigoproducto) ?></td>
                     <th><?= Html::activeLabel($model, 'duracion') ?>:</th>
@@ -94,7 +94,7 @@ $view = 'orden-produccion';
                     <th><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>                                        
                 </tr>
@@ -123,7 +123,7 @@ $view = 'orden-produccion';
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->iddetalleorden ?></td>
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                         <td><?= $val->codigoproducto ?></td>

@@ -27,13 +27,13 @@ use yii\bootstrap\Progress;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
-$this->title = 'Consulta Ficha de operaciones detalle';
+$this->title = 'Ficha de operaciones';
 $this->params['breadcrumbs'][] = ['label' => 'Ficha Operaciones', 'url' => ['indexconsultaficha']];
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
 ?>
 <div class="ordenproduccionproceso-view">
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsultaficha'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsultaficha'], ['class' => 'btn btn-primary btn-sm']) ?>
     </p>
 
     <div class="panel panel-success">
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                     <th><?= Html::activeLabel($model, 'Cliente') ?></th>
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
                     <td><?= Html::encode($model->ordenproduccion) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
                     <th><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th><?= Html::activeLabel($model, 'fechaentrega') ?></th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'cantidad') ?></th>
                     <td><?= Html::encode($model->cantidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Progreso') ?></th>
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->iddetalleorden ?></td>
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                         <td><?= $val->codigoproducto ?></td>
@@ -115,7 +115,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             </div>
                         </td>
                         <td><?= $val->cantidad_operada ?></td>
-                            <td>                                
+                        <td style="width:25px;">                                
                                 <!-- Inicio Vista,Eliminar,Editar -->
                                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                     ['/orden-produccion/detalle_proceso_consulta','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],

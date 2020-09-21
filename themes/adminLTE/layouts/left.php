@@ -83,6 +83,7 @@
                                             'url' => '#',
                                             'items' => [
                                             ['label' => 'Configuracion salario', 'icon' => 'plus-square-o', 'url' => ['/configuracion-salario/index']],                                            
+                                            ['label' => 'Parametro contrato', 'icon' => 'plus-square-o', 'url' => ['/contrato/parametrocontrato']],    
                                             ],
                                         ],
                                         [
@@ -278,7 +279,6 @@
                                             'items' => [
                                               ['label' => 'Incapacidades', 'icon' => 'plus-square-o', 'url' => ['/incapacidad/index']],
                                               ['label' => 'Licencias', 'icon' => 'plus-square-o', 'url' => ['/licencia/index']],
-                                              ['label' => 'Control Acceso Covid', 'icon' => 'plus-square-o', 'url' => ['control-acceso/index']],
                                             ],
                                         ],
                                         [
@@ -286,7 +286,7 @@
                                             'icon' => 'question',
                                             'url' => '#',
                                             'items' => [
-                                               // ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsulta']],
+                                                ['label' => 'Control Acceso Covid', 'icon' => 'plus-square-o', 'url' => ['control-acceso/index']],
 
                                             ],
                                         ],

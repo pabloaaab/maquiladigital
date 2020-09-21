@@ -1,0 +1,41 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+use yii\base\Model;
+
+/**
+ * ContactForm is the model behind the contact form.
+ */
+class FormContenidoNuevo extends Model
+{        
+   
+   public $id_configuracion_prefijo;
+    public $contenido;
+    public $nombre_formato;
+
+    
+    public function rules()
+    {
+        return [
+            [['nombre_formato', 'contenido', 'id_configuracion_prefijo'], 'required'],
+            [['contenido'], 'string'],
+            [['id_configuracion_prefijo'], 'integer'],
+            [['nombre_formato'], 'string', 'max' =>70],
+            [['usuariosistema'], 'string', 'max' => 30],
+        ];
+    }
+
+  
+    public function attributeLabels()
+    {
+        return [
+            'nombre_formato' => 'Nombre formato',
+            'contenido' => 'Contenido',
+            'id_configuracion_prefijo' => 'Tipo formato',
+       
+        ];
+    }
+    
+}

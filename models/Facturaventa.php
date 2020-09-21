@@ -32,7 +32,7 @@ use Yii;
  * @property int $estado
  * @property int $autorizado
  * @property int $id_factura_venta_tipo
- * @property string $nrofacturaelectronica
+ * @property int $nrofacturaelectronica
  * 
  * @property Cliente $cliente
  * @property Ordenproduccion $ordenproduccion
@@ -108,7 +108,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             'autorizado' => 'Autorizado',
             'observacion' => 'Observaciones',
             'id_factura_venta_tipo' => 'Factura Tipo',
-            'nrofacturaelectronica' => 'Nro Factura Electrónica',
+            'nrofacturaelectronica' => 'Factura Electrónica',
         ];
     }
 

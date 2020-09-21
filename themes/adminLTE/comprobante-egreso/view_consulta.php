@@ -7,7 +7,7 @@ use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgreso */
 
-$this->title = 'Detalle Consulta Comprobante Egreso';
+$this->title = 'Detalle Comprobante';
 $this->params['breadcrumbs'][] = ['label' => 'Comprobante Egresos', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $model->id_comprobante_egreso;
 $view = 'comprobante-egreso';
@@ -17,7 +17,7 @@ $view = 'comprobante-egreso';
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-primary']) ?>        
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta', 'id' => $model->id_comprobante_egreso], ['class' => 'btn btn-primary btn-sm']) ?>        
     </p>
     <?php
     if ($mensaje != ""){
@@ -33,7 +33,7 @@ $view = 'comprobante-egreso';
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_comprobante_egreso') ?>:</th>
                     <td><?= Html::encode($model->id_comprobante_egreso) ?></td>
                     <th><?= Html::activeLabel($model, 'Proveedor') ?>:</th>
@@ -43,7 +43,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->subtotal,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_banco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
                     <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
@@ -51,7 +51,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->iva,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecha_comprobante') ?>:</th>
                     <td><?= Html::encode($model->fecha_comprobante) ?></td>
                     <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
@@ -59,7 +59,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'rete_fuente') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->retefuente,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
                     <td><?= Html::encode($model->fecha) ?></td>
                     <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
@@ -67,7 +67,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'rete_iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->reteiva,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
                     <td><?= Html::encode($model->comprobanteEgresoTipo->concepto) ?></td>
                     <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
@@ -75,7 +75,7 @@ $view = 'comprobante-egreso';
                     <th><?= Html::activeLabel($model, 'base_aiu') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->base_aiu,1)) ?></td>
                 </tr>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="3"><?= Html::encode($model->observacion) ?></td>
                     <th><?= Html::activeLabel($model, 'Total') ?>:</th>
@@ -119,7 +119,7 @@ $view = 'comprobante-egreso';
                         <?php $reteiva = $reteiva + $val->reteiva; ?>
                         <?php $baseaiu = $baseaiu + $val->base_aiu; ?>
                         <?php $calculo = $calculo + $val->vlr_abono; ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->id_comprobante_egreso_detalle ?></td>
                         <?php if($val->id_compra){ ?>
                             <td><?= $val->compra->factura ?></td>
@@ -133,7 +133,7 @@ $view = 'comprobante-egreso';
                             <td><?= '$ '.  number_format($val->reteiva,1) ?></td>
                             <td><?= '$ '.  number_format($val->base_aiu,1) ?></td>
                             <td><?= '$ '.  number_format($val->vlr_abono,1) ?></td>
-                            <td><?= '$ '.  number_format($val->vlr_saldo,0) ?></td>
+                            <td><?= '$ '.  number_format($val->vlr_saldo,1) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             
                         <?php } ?>
@@ -148,7 +148,7 @@ $view = 'comprobante-egreso';
                         <td align="left"><b><?= '$ '. number_format($retefuente,1); ?></td></b>
                         <td align="left"><b><?= '$ '. number_format($reteiva,1); ?></td></b>
                         <td align="left"><b><?= '$ '. number_format($baseaiu,1); ?></td></b>
-                        <td align="left"><b><?= '$ '. number_format($calculo,0); ?></td></b>
+                        <td align="left"><b><?= '$ '. number_format($calculo,1); ?></td></b>
                     </tr>
                 </table>
             </div>
