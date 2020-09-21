@@ -237,5 +237,21 @@ function fpago() {
     if (formapago == 1) {
         document.getElementById('plazopago').value = 0;
     }
+        
+}
+;
+
+
+function tipocontrato(){
+   id_tipo_contrato = document.getElementById('id_tipo_contrato').value;
+   
+   if (id_tipo_contrato == 1) {       
+        document.getElementById('fecha_final').value = '2099-12-30';
+        document.getElementById('fecha_final').disabled = true;       
+   }else{
+       document.getElementById('fecha_final').disabled = false;
+       document.getElementById('fecha_final').value = '';
+        
+   }
 }
 ;
