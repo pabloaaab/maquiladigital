@@ -38,7 +38,8 @@ class Recibocajadetalle extends \yii\db\ActiveRecord
     {
         return [
             [['idfactura', 'idrecibo',], 'required'],
-            [['idfactura', 'idrecibo','nrofacturaelectronica'], 'integer'],
+            [['idfactura', 'idrecibo'], 'integer'],
+            [['nrofacturaelectronica'], 'string'],
             [['vlrabono', 'vlrsaldo', 'retefuente', 'reteiva', 'reteica'], 'number'],
             [['observacion'], 'string'],
             [['idrecibo'], 'exist', 'skipOnError' => true, 'targetClass' => Recibocaja::className(), 'targetAttribute' => ['idrecibo' => 'idrecibo']],
