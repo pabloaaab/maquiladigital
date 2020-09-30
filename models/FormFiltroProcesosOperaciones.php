@@ -11,14 +11,17 @@ use yii\base\Model;
 class FormFiltroProcesosOperaciones extends Model
 {
     public $id;
-    public $proceso;    
-    
+    public $proceso;   
+    public $id_tipo;
+
+
     public function rules()
     {
         return [
 
             ['id', 'default' ],
-            ['proceso', 'default'],            
+            ['proceso', 'default'], 
+            ['id_tipo', 'default'],
         ];
     }
 
@@ -27,7 +30,8 @@ class FormFiltroProcesosOperaciones extends Model
         return [
 
             'id' => 'Id:',
-            'proceso' => 'Proceso:',            
+            'proceso' => 'Proceso:',    
+            'id_tipo' => 'Tipo Maquina:',
         ];
     }
 }

@@ -2255,15 +2255,17 @@ class ProgramacionNominaController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
                                    
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID_PROGRAMACION')
                     ->setCellValue('B1', 'PERIODO PAGO')
-                    ->setCellValue('C1', 'DESDE')
-                    ->setCellValue('D1', 'HASTA')
-                    ->setCellValue('E1', 'CONCEPTO')   
-                    ->setCellValue('F1', 'DEVENGADO')
-                    ->setCellValue('G1', 'DEDUCCION');
+                    ->setCellValue('C1', 'EMPLEADO')
+                    ->setCellValue('D1', 'DESDE')
+                    ->setCellValue('E1', 'HASTA')
+                    ->setCellValue('F1', 'CONCEPTO')   
+                    ->setCellValue('G1', 'DEVENGADO')
+                    ->setCellValue('H1', 'DEDUCCION');
                                     
         $i = 2;
        
@@ -2271,11 +2273,12 @@ class ProgramacionNominaController extends Controller {
             $objPHPExcel->setActiveSheetIndex(0)
                  ->setCellValue('A' . $i, $val->id_programacion)
                  ->setCellValue('B' . $i, $id)
-                 ->setCellValue('C' . $i, $val->fecha_desde)
-                 ->setCellValue('D' . $i, $val->fecha_hasta)
-                 ->setCellValue('E' . $i, $val->codigoSalario->nombre_concepto)   
-                 ->setCellValue('F' . $i, round($val->vlr_devengado,0))
-                 ->setCellValue('G' . $i, round($val->vlr_deduccion,0));
+                 ->setCellValue('C' . $i, $val->programacionNomina->empleado->nombrecorto)
+                 ->setCellValue('D' . $i, $val->fecha_desde)
+                 ->setCellValue('E' . $i, $val->fecha_hasta)
+                 ->setCellValue('F' . $i, $val->codigoSalario->nombre_concepto)   
+                 ->setCellValue('G' . $i, round($val->vlr_devengado,0))
+                 ->setCellValue('H' . $i, round($val->vlr_deduccion,0));
             $i++;
         }
         $k = $i + 1;

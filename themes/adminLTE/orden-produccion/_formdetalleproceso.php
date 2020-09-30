@@ -64,19 +64,21 @@ use app\models\Ordenproducciondetalle;
                     <table class="table table-responsive">
                         <thead>
                         <tr>
-                            <td align="center"><b>Id</td>
-                            <td align="center"><b>Proceso</td>
-                            <td align="center"><b>Duración (Seg)</td>
-                            <td align="center"><b>Total Opera</td>
-                            <td align="center"><b>Ponderación (Seg)</td>
-                            <td align="center"><b>Total (Seg)</td>
-                            <td align="center"><b>Total Proceso (Seg)</td>
-                            <td align="center"><b>% proceso </b></td>
-                            <td align="center"><b>Cant Operada </td>
-                            <td align="center"><b>Estado</td>
-                            <td align="center"><input type="checkbox" onclick="marcar(this);"/></td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Id</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Proceso</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Duración (Seg)</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Total Opera</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Ponderación (Seg)</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Total (Seg)</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Total Proceso (Seg)</td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>% proceso </b></td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Maquina </b></td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Cant Operada </td>
+                            <td align="center" style='background-color:#B9D5CE;'><b>Estado</td>
+                            <td align="center" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></td>
                         </tr>
                         <tr>
+                            <td align="center" ></td>
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
@@ -102,6 +104,7 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><?= number_format($val->total,1) ?></td>
                             <td align="center"><?= number_format($val->totalproceso,1) ?></td>
                             <td align="center"><?= number_format($val->porcentajeproceso,1) ?></td>
+                            <td align="center"><?= $val->tipomaquina->descripcion ?></td>
                             <td align="center"><input type="text" name="cantidad_operada[]" value="<?= $val->cantidad_operada ?>" size="2" required></td>
                             <td align="center"><select name="estado[]">
                                     <?php if ($val->estado == 0){echo $estado = "Abierto";}else{echo $estado ="Cerrado";}?>
@@ -128,7 +131,7 @@ use app\models\Ordenproducciondetalle;
                 </div>                
                 <div class="panel-footer text-right">
                     <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                    <div class="btn-group">
+                    <div class="btn-group btn-small">
                         <button type="button" class="btn btn-success dropdown-toggle"
                                 data-toggle="dropdown">
                             <span class="glyphicon glyphicon-export"></span> Exportar
@@ -140,7 +143,7 @@ use app\models\Ordenproducciondetalle;
                     </div>
                     <!-- <?= Html::a('<span class="glyphicon glyphicon-export"></span> Pdf', ['imprimirficha', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden], ['class' => 'btn btn-primary']) ?> -->
                     <!-- <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['exceloperaciones', 'id' => $model->idordenproduccion, 'iddetalleorden' => $iddetalleorden], ['class' => 'btn btn-success']) ?> -->
-                    <div class="btn-group">
+                    <div class="btn-group btn-small">
                         <button type="button" class="btn btn-success dropdown-toggle"
                                 data-toggle="dropdown">
                             <span class="glyphicon glyphicon-transfer"></span> Abrir/Cerrar Todo 

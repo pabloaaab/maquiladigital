@@ -586,6 +586,7 @@ class OrdenProduccionController extends Controller {
                         $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
                         $table->totalproceso = $detalleorden->cantidad * $table->total;
                         $table->iddetalleorden = $iddetalleorden;
+                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
                         $table->insert();
                     }
                 }
@@ -649,6 +650,7 @@ class OrdenProduccionController extends Controller {
                         $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
                         $table->totalproceso = $detalleorden->cantidad * $table->total;
                         $table->iddetalleorden = $iddetalleorden;
+                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
                         $table->insert();
                     }
                 }
@@ -1377,6 +1379,7 @@ class OrdenProduccionController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
                                
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'FICHA OPERACIONES')
@@ -1401,7 +1404,8 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('C6', 'DURACION(SEG)')
                     ->setCellValue('D6', 'TOTAL OPERACION')
                     ->setCellValue('E6', 'PONDERACION (SEG)')
-                    ->setCellValue('F6', 'TOTAL (SEG)');                    
+                    ->setCellValue('F6', 'TOTAL (SEG)'); 
+                   
         $i = 7;
         
         foreach ($ordendetalleproceso as $val) {
@@ -1412,7 +1416,8 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('C' . $i, $val->duracion)
                     ->setCellValue('D' . $i, round(60 / $val->duracion * 60))
                     ->setCellValue('E' . $i, $val->ponderacion)                    
-                    ->setCellValue('F' . $i, $val->total);
+                    ->setCellValue('F' . $i, $val->total)
+                    ->setCellValue('G' . $i, $val->tipomaquina->descripcion);
             $i++;
         }
         $j = $i + 1;

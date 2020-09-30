@@ -56,6 +56,7 @@ class Facturaventa extends \yii\db\ActiveRecord
             return false;
         }
         $this->observacion = strtoupper($this->observacion);
+         $this->nrofacturaelectronica = strtoupper($this->nrofacturaelectronica);
         return true;
     }
 

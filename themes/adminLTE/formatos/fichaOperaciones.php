@@ -100,7 +100,7 @@ class PDF extends FPDF {
 
     function EncabezadoDetalles() {
         $this->Ln(7);
-        $header = array('ID','PROCESO', utf8_decode('DUR(SEG)'),utf8_decode('TOTAL OPER'), utf8_decode('PONDERACIÓN(SEG)'), utf8_decode('TOTAL(SEG)'));
+        $header = array('ID','PROCESO', utf8_decode('DUR(SEG)'),utf8_decode('TOTAL OPER'), utf8_decode('PONDERACIÓN(SEG)'), utf8_decode('TOTAL(SEG)'),  utf8_decode('MAQUINA'));
         $this->SetFillColor(200, 200, 200);
         $this->SetTextColor(0);
         $this->SetDrawColor(0, 0, 0);
@@ -108,7 +108,7 @@ class PDF extends FPDF {
         $this->SetFont('', 'B', 8);
 
         //creamos la cabecera de la tabla.
-        $w = array(10,  93, 20,20, 30, 18);
+        $w = array(10,  70, 20,20, 30, 18, 30);
         for ($i = 0; $i < count($header); $i++)
             if ($i == 0 || $i == 1)
                 $this->Cell($w[$i], 5, $header[$i], 1, 0, 'C', 1);
@@ -131,11 +131,12 @@ class PDF extends FPDF {
         foreach ($procesos as $detalle) {
             $totalsegundos = $totalsegundos + $detalle->total;
             $pdf->Cell(10, 5, $detalle->iddetalleproceso, 0, 0, 'J');          
-            $pdf->Cell(93, 5, utf8_decode($detalle->proceso), 0, 0, 'L');
+            $pdf->Cell(70, 5, utf8_decode($detalle->proceso), 0, 0, 'L');
             $pdf->Cell(20, 4, $detalle->duracion,0,0, 'R');
             $pdf->Cell(20, 4, round(60 / $detalle->duracion * 60) ,0,0, 'R');
             $pdf->Cell(30, 4, $detalle->ponderacion,0,0, 'R');
             $pdf->Cell(18, 4, number_format($detalle->total,1),0,0, 'R');
+            $pdf->Cell(25, 4, $detalle->tipomaquina->descripcion, 0, 0, 'R'); 
             $pdf->Ln();
             $pdf->SetAutoPageBreak(true, 20);
         }

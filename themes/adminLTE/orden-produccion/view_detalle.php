@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 ?>
 <div class="ordenproduccionproceso-view">
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['proceso'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['proceso'], ['class' => 'btn btn-primary btn-sm']) ?>
     </p>
 
     <div class="panel panel-success">
@@ -42,26 +42,26 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?></th>
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
                     <td><?= Html::encode($model->ordenproduccion) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'fechallegada') ?></th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechallegada') ?></th>
                     <td><?= Html::encode($model->fechallegada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaprocesada') ?></th>
                     <td><?= Html::encode($model->fechaprocesada) ?></td>
-                    <th><?= Html::activeLabel($model, 'fechaentrega') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaentrega') ?></th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'cantidad') ?></th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad') ?></th>
                     <td><?= Html::encode($model->cantidad) ?></td>
-                    <th><?= Html::activeLabel($model, 'Progreso') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Progreso') ?></th>
                     <td><div class="progress"><b>Operación:&nbsp;</b>
                             <progress id="html5" max="100" value="<?= $model->porcentaje_proceso ?>"></progress>
                             <span><b><?= Html::encode(round($model->porcentaje_proceso,1)).' %' ?></b></span>
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             <span><b><?= Html::encode(round(100 - $model->porcentaje_cantidad,1)).' %' ?></b></span>
                         </div>
                     </td>
-                    <th><?= Html::activeLabel($model, 'tipo') ?></th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'tipo') ?></th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
             </table>
@@ -88,21 +88,22 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                 Detalles
             </div>
             <div class="panel-body">
-                <table class="table table-hover">
+                <table class="table table-bordered table-striped table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Producto</th>
-                        <th scope="col">Código</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Progreso</th>
-                        <th scope="col">Cantidad Operada</th>
-                        <th></th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Progreso</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad Operada</th>
+                        <th style='background-color:#B9D5CE;'></th>
+                        <th style='background-color:#B9D5CE;'></th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($modeldetalles as $val): ?>
-                    <tr>
+                    <tr style="font-size: 85%;">
                         <td><?= $val->iddetalleorden ?></td>
                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                         <td><?= $val->codigoproducto ?></td>
@@ -115,10 +116,12 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             </div>
                         </td>
                         <td><?= $val->cantidad_operada ?></td>
-                            <td>
+                        <td style="width: 25px;">
                                 
                                 <?= Html::a('<span class="glyphicon glyphicon-log-in"></span>', ['/orden-produccion/nuevo_detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden]) ?>
                                 <!-- Inicio Vista,Eliminar,Editar -->
+                        </td>
+                        <td style="width: 25px;">
                                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                     ['/orden-produccion/detalle_proceso','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],
                                     [

@@ -3,14 +3,16 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
+use app\models\TiposMaquinas;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 
-$this->title = 'Nuevo Detalle Proceso';
+$this->title = 'Detalle Proceso';
 $this->params['breadcrumbs'][] = ['label' => 'Ficha de operaciones detalle', 'url' => ['view_detalle', 'id' => $id ]];
 $this->params['breadcrumbs'][] = $iddetalleorden;
-
+$maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->all(), 'id_tipo', 'descripcion');
 ?>
     <?php $model = Ordenproduccion::findOne($id); ?>
     <?php $modeldetalle = Ordenproducciondetalle::findOne($iddetalleorden); ?>
@@ -26,19 +28,19 @@ $this->params['breadcrumbs'][] = $iddetalleorden;
             <div class="panel-body">
                 <table class="table table-responsive">
                     <tr style="font-size: 85%;">
-                        <th><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idordenproduccion') ?></th>
                         <td><?= Html::encode($model->idordenproduccion) ?></td>
-                        <th><?= Html::activeLabel($model, 'tipo') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'tipo') ?></th>
                         <td><?= Html::encode($model->tipo->tipo) ?></td>
-                        <th><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccion') ?></th>
                         <td><?= Html::encode($model->ordenproduccion) ?></td>
                     </tr>
                     <tr style="font-size: 85%;">
-                        <th><?= Html::activeLabel($model, 'Producto') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Producto') ?></th>
                         <td><?= Html::encode($modeldetalle->productodetalle->prendatipo->prenda.' / '.$modeldetalle->productodetalle->prendatipo->talla->talla) ?></td>
-                        <th><?= Html::activeLabel($model, 'codigo') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'codigo') ?></th>
                         <td><?= Html::encode($modeldetalle->codigoproducto) ?></td>
-                        <th><?= Html::activeLabel($model, 'cantidad') ?></th>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad') ?></th>
                         <td><?= Html::encode($modeldetalle->cantidad) ?></td>
                     </tr>
                 </table>
@@ -100,6 +102,7 @@ $this->params['breadcrumbs'][] = $iddetalleorden;
                             <th scope="col">Proceso</th>
                             <th scope="col">Duración</th>
                             <th scope="col">Ponderación</th>
+                             <th scope="col">Maquina</th>
                             <th scope="col"></th>
                         </tr>
                         </thead>
@@ -110,6 +113,7 @@ $this->params['breadcrumbs'][] = $iddetalleorden;
                             <td><?= $val->proceso ?></td>
                             <td><input type="text" name="duracion[]" value="0" required></td>
                             <td><input type="text" name="ponderacion[]" value="<?= $model->ponderacion ?>" required></td>
+                            <td><?= Html::dropDownList('id_tipo[]', $val->id_tipo, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>
                             <td><input type="hidden" name="proceso[]" value="<?= $val->proceso ?>"></td>
                             <td><input type="hidden" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
                         </tr>

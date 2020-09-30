@@ -18,9 +18,10 @@ class FacturaventaSearch extends Facturaventa
     public function rules()
     {
         return [
-            [['idfactura', 'nrofactura', 'nrofacturaelectronica','plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','autorizado','estado'], 'integer'],
+            [['idfactura', 'nrofactura','plazopago', 'idcliente', 'idordenproduccion', 'idresolucion','autorizado','estado'], 'integer'],
             [['fechainicio', 'fechavcto', 'fechacreacion', 'formapago', 'valorletras', 'usuariosistema'], 'safe'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'totalpagar'], 'number'],
+            [['nrofacturaelectronica'], 'string', 'max' => 15],
         ];
     }
 

@@ -148,6 +148,7 @@
                                                 ['label' => 'Productos', 'icon' => 'plus-square-o', 'url' => ['/producto/index']],
                                                 ['label' => 'Calificación Ficha', 'icon' => 'plus-square-o', 'url' => ['/fichatiempocalificacion/index']],
                                                 ['label' => 'Colores', 'icon' => 'plus-square-o', 'url' => ['/color/index']],
+                                                ['label' => 'Operarios', 'icon' => 'plus-square-o', 'url' => ['/operarios/index']],
                                             ],
                                         ],
                                         [
@@ -180,7 +181,7 @@
                                             'icon' => 'exchange',
                                             'url' => '#',
                                             'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/index']],                                            
                                             ],
                                         ],
                                         [

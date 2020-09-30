@@ -38,7 +38,7 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['duracion', 'ponderacion', 'idproceso', 'estado', 'iddetalleorden','cantidad_operada'], 'integer'],
+            [['duracion', 'ponderacion', 'idproceso', 'estado', 'iddetalleorden','cantidad_operada','id_tipo'], 'integer'],
             [['total','totalproceso','porcentajeproceso'], 'number'],
             [['idproceso', 'iddetalleorden'], 'required'],
             [['proceso'], 'string', 'max' => 50],
@@ -64,6 +64,7 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
             'totalproceso' => 'total Proceso',
             'porcentajeproceso' => '% Proceso',
             'cantidad_operada' => 'Cantidad Operada',
+            'id_tipo' => 'Tipo Maquina:'
         ];
     }
 
@@ -81,5 +82,10 @@ class Ordenproducciondetalleproceso extends \yii\db\ActiveRecord
     public function getDetalleorden()
     {
         return $this->hasOne(Ordenproducciondetalle::className(), ['iddetalleorden' => 'iddetalleorden']);
+    }
+    
+    public function getTipomaquina()
+    {
+        return $this->hasOne(TiposMaquinas::className(), ['id_tipo' => 'id_tipo']);
     }
 }
