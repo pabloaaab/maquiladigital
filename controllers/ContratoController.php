@@ -250,7 +250,7 @@ class ContratoController extends Controller
                             Yii::$app->getSession()->setFlash('error', 'Campo vacio: La fecha final no puede ser vacia!');
                         }else{
                             if($tipo == 'CAI'){
-                                echo  $table->fecha_final = '2099-12-31';
+                                 $table->fecha_final = '2099-12-31';
                             }else{
                                 $table->fecha_final = $model->fecha_final;
                             } 
