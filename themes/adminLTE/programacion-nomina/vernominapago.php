@@ -151,7 +151,6 @@ use app\models\PeriodoPagoNomina;
                                           </tr>
                                         <?php
                                         }else{
-                                             echo $concepto->nombre_concepto;
                                              ?>
                                          
                                            <tr style ='font-size:80%;'>

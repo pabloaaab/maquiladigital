@@ -1333,7 +1333,7 @@ class ProgramacionNominaController extends Controller {
             $fecha_desde = strtotime($val->fecha_desde);
             $fecha_hasta = strtotime($val->fecha_hasta);
             if ($fecha_inicio_contrato < $fecha_desde) {
-                if ($val->fecha_final_contrato != '0000-00-00') {
+                if ($val->fecha_final_contrato != '') {
                     $total_dias = round((strtotime($val->fecha_final_contrato) - strtotime($val->fecha_desde)) / 86400) + 1;
                     $table->dias = $total_dias;
                     $table->dias_reales = $total_dias;
@@ -1361,7 +1361,7 @@ class ProgramacionNominaController extends Controller {
                     }
                 }
             } else {
-                if ($val->fecha_final_contrato != '0000-00-00') {
+                if ($val->fecha_final_contrato != '') {
                     $total_dias = strtotime($val->fecha_final_contrato) - strtotime($val->fecha_inicio_contrato);
                     $total_dias = round($total_dias / 86400) + 1;
                     $table->dias = $total_dias;
@@ -1430,7 +1430,7 @@ class ProgramacionNominaController extends Controller {
             // CODIGO QUE VALIDA ACTUALIZA DEDUCCION DE PENSION Y EPS
             $detalle_nomina_prestaciones = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->all();
            foreach ($detalle_nomina_prestaciones as $acumular_prestacion):
-                $this->ModuloActualizarIbpEpsPension($acumular_prestacion);
+                $this->ModuloActualizarIbpEpsPension($acumular_prestacion, $fecha_desde, $fecha_hasta);
             endforeach;
             //codigo que actualiza saldos
             $detalle_nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->all();
@@ -1597,7 +1597,7 @@ class ProgramacionNominaController extends Controller {
     }
 
     // codigo para actualizar saldos de prestaciones
-    protected function ModuloActualizarIbpEpsPension($acumular_prestacion) {
+    protected function ModuloActualizarIbpEpsPension($acumular_prestacion, $fecha_desde, $fecha_hasta) {
         $contar = 0;
         $contar_medio = 0;
         $vlr_no_prestacional = 0;
@@ -1625,6 +1625,8 @@ class ProgramacionNominaController extends Controller {
                         $detalle_pension->id_programacion = $acumular_prestacion->id_programacion;
                         $detalle_pension->codigo_salario = $pension->codigo_salario;
                         $detalle_pension->porcentaje = $pension->porcentaje_empleado;
+                        $detalle_pension->fecha_desde = $fecha_desde;
+                        $detalle_pension->fecha_hasta = $fecha_hasta;
                         $detalle_pension->id_periodo_pago_nomina = $acumular_prestacion->id_periodo_pago_nomina;
                         if ($acumular_prestacion->salario_contrato <= $acumular_prestacion->salario_medio_tiempo) {
                              $detalle_pension->vlr_deduccion = round(($contar_medio * $pension->porcentaje_empleado) / 100);
@@ -1650,6 +1652,8 @@ class ProgramacionNominaController extends Controller {
                         $fondo_solidaridad->vlr_deduccion = round(($contar * $valor->porcentaje) / 100);
                         $fondo_solidaridad->descuento_pension = round(($contar * $valor->porcentaje) / 100);
                         $fondo_solidaridad->porcentaje = $valor->porcentaje;
+                        $fondo_solidaridad->fecha_desde = $fecha_desde;
+                        $fondo_solidaridad->fecha_hasta = $fecha_hasta;
                         $fondo_solidaridad->save(false);
                     }
                 endforeach;
@@ -1667,6 +1671,8 @@ class ProgramacionNominaController extends Controller {
                         $detalle_eps->id_programacion = $acumular_prestacion->id_programacion;
                         $detalle_eps->codigo_salario = $eps->codigo_salario;
                         $detalle_eps->porcentaje = $eps->porcentaje_empleado_eps;
+                        $detalle_eps->fecha_desde = $fecha_desde;
+                        $detalle_eps->fecha_hasta = $fecha_hasta;
                         $detalle_eps->id_periodo_pago_nomina = $acumular_prestacion->id_periodo_pago_nomina;
                         if ($acumular_prestacion->salario_contrato <= $acumular_prestacion->salario_medio_tiempo) {
                             $detalle_eps->vlr_deduccion = round(($contar_medio * $eps->porcentaje_empleado_eps) / 100);
