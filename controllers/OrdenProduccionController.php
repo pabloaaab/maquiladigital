@@ -1404,7 +1404,8 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('C6', 'DURACION(SEG)')
                     ->setCellValue('D6', 'TOTAL OPERACION')
                     ->setCellValue('E6', 'PONDERACION (SEG)')
-                    ->setCellValue('F6', 'TOTAL (SEG)'); 
+                    ->setCellValue('F6', 'TOTAL (SEG)') 
+                    ->setCellValue('G6', 'MAQUINA');
                    
         $i = 7;
         
