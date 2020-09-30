@@ -30,55 +30,55 @@ class PDF extends FPDF {
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 30, 19);
         //Encabezado
         $this->SetFillColor(220, 220, 220);
-        $this->SetXY(53, 9);
+        $this->SetXY(70, 9);
         $this->SetFont('Arial', '', 10);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("EMPRESA:"), 0, 0, 'l', 1);
         $this->SetFont('Arial', '', 7);
-        $this->Cell(40, 5, utf8_decode($config->razonsocialmatricula), 0, 0, 'L', 0);
+        $this->Cell(40, 5, utf8_decode($config->razonsocialmatricula), 0, 0, 'L', 1);
         $this->SetXY(30, 5);
         //FIN
-        $this->SetXY(53, 13);
+        $this->SetXY(70, 13);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("NIT:"), 0, 0, 'l', 1);
          $this->SetFont('Arial', '', 7);
-        $this->Cell(40, 5, utf8_decode($config->nitmatricula." - ".$config->dv), 0, 0, 'L', 0);
+        $this->Cell(40, 5, utf8_decode($config->nitmatricula." - ".$config->dv), 0, 0, 'L', 1);
         $this->SetXY(40, 5);
         //FIN
-        $this->SetXY(53, 17);
+        $this->SetXY(70, 17);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("DIRECCION:"), 0, 0, 'l', 1);
          $this->SetFont('Arial', '', 7);
-        $this->Cell(40, 5, utf8_decode($config->direccionmatricula), 0, 0, 'L', 0);
+        $this->Cell(40, 5, utf8_decode($config->direccionmatricula), 0, 0, 'L', 1);
         $this->SetXY(40, 5);
         //FIN
-        $this->SetXY(53, 21);
+        $this->SetXY(70, 21);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("TELEFONO:"), 0, 0, 'l', 1);
          $this->SetFont('Arial', '', 7);
-        $this->Cell(40, 5, utf8_decode($config->telefonomatricula), 0, 0, 'L', 0);
+        $this->Cell(40, 5, utf8_decode($config->telefonomatricula), 0, 0, 'L', 1);
         $this->SetXY(40, 5);
         //FIN
-        $this->SetXY(53, 25);
+        $this->SetXY(70, 25);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("MUNICIPIO:"), 0, 0, 'l', 1);
          $this->SetFont('Arial', '', 7);
-        $this->Cell(40, 5, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'L', 0);
+        $this->Cell(40, 5, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'L', 1);
         $this->SetXY(40, 5);
         //FIN
 
-        $this->SetXY(10, 32);
+        $this->SetXY(10, 29);
         $this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________________________________________________"), 0, 0, 'C', 0);
-         $this->SetXY(10, 32.5);
+         $this->SetXY(10, 30);
         $this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________________________________________________"), 0, 0, 'C', 0);
         //Programación Nomina
         $this->SetFillColor(220, 220, 220);
-        $this->SetXY(10, 39);
+        $this->SetXY(10, 36);
         $this->SetFont('Arial', 'B', 12);
         $this->Cell(162, 7, utf8_decode("COMPROBANTE DE PAGO"), 0, 0, 'l', 0);
         $this->Cell(30, 7, utf8_decode('N°. '.str_pad($programacionNomina->nro_pago, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
        // $this->SetFillColor(300, 300, 300);
-        $this->SetXY(10, 48);
+        $this->SetXY(10, 44);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("DOCUMENTO:"), 0, 0, 'l', 1);
         $this->SetFont('Arial', '', 7);
@@ -92,7 +92,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 7);
         $this->Cell(30, 5, utf8_decode($programacionNomina->fecha_hasta), 0, 0, 'R', 1);
       //BLOQUE
-        $this->SetXY(10, 52);
+        $this->SetXY(10, 48);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("EMPLEADO:"), 0, 0, 'l', 1);
          $this->SetFont('Arial', '', 7);
@@ -108,7 +108,7 @@ class PDF extends FPDF {
         
        //FIN BLOQUE
         //INICIO
-         $this->SetXY(10, 56);
+         $this->SetXY(10, 52);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("NRO CUENTA:"), 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 7);
@@ -123,7 +123,7 @@ class PDF extends FPDF {
         $this->Cell(30, 5, '$'. number_format($programacionNomina->salario_promedio, 0), 0, 0, 'R', 1);
         //FIN  
         $this->SetFont('Arial', '', 7);
-        $this->SetXY(10, 60);
+        $this->SetXY(10, 56);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("GRUPO PAGO:"), 0, 0, 'l', 1);
         $this->SetFont('Arial', '', 7);
@@ -137,7 +137,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 7);        
         $this->Cell(30, 5, '$ '. number_format($programacionNomina->salario_contrato, 0), 0, 0, 'R', 1);        
         
-        $this->SetXY(10, 64);
+        $this->SetXY(10, 60);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("NRO PERIODO:"), 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 7);
@@ -151,7 +151,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 7);
         $this->Cell(30, 5, '$ '. number_format($programacionNomina->total_devengado, 0), 0, 0, 'R', 1);                        
        
-        $this->SetXY(10, 68);
+        $this->SetXY(10, 64);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("DÍAS REALES:"), 0, 0, 'l', 1);
         $this->SetFont('Arial', '', 7);
@@ -165,7 +165,7 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 7);
         $this->Cell(30, 5, '$ '. number_format($programacionNomina->total_deduccion, 0), 0, 0, 'R', 1);
         
-        $this->SetXY(10, 72);
+        $this->SetXY(10, 68);
         $this->SetFont('Arial', 'B', 7);
         $this->Cell(30, 5, utf8_decode("INICIO CONTRATO:"), 0, 0, 'L', 1);
         $this->SetFont('Arial', '', 7);
@@ -180,16 +180,16 @@ class PDF extends FPDF {
         $this->Cell(30, 5, '$ '. number_format($programacionNomina->total_pagar, 0), 0, 0, 'R', 1);
         
         //Lineas del encabezado
-        $this->Line(10,87,10,140);
-        $this->Line(23,87,23,140);
-        $this->Line(91,87,91,140);
-        $this->Line(100,87,100,140);
-        $this->Line(116,87,116,140);
-        $this->Line(132,87,132,140);
-        $this->Line(145,87,145,140);
-        $this->Line(160,87,160,140);
-        $this->Line(180,87,180,140);
-        $this->Line(200,87,200,140);        
+        $this->Line(10,78,10,140);
+        $this->Line(23,78,23,140);
+        $this->Line(91,78,91,140);
+        $this->Line(100,78,100,140);
+        $this->Line(116,78,116,140);
+        $this->Line(132,78,132,140);
+        $this->Line(145,78,145,140);
+        $this->Line(160,78,160,140);
+        $this->Line(180,78,180,140);
+        $this->Line(200,78,200,140);        
         $this->Line(10,140,200,140);//linea horizontal inferior        
         $this->EncabezadoDetalles();                
     }
