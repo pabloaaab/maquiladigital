@@ -376,7 +376,7 @@ class ContratoController extends Controller
                             $table->id_centro_trabajo = $model->id_centro_trabajo;
                             $table->id_grupo_pago = $model->id_grupo_pago;
                             $table->usuario_editor = Yii::$app->user->identity->username;
-                            $fechaActual = $fechaActual = date('Y-m-d H:i:s');
+                            $fechaActual = date('Y-m-d H:i:s');
                             $table->fecha_editado = $fechaActual;
                             $tipo_contrato = TipoContrato::find()->where(['=','id_tipo_contrato', $model->id_tipo_contrato])->one();
                             if( $tipo_contrato->prorroga == 1){

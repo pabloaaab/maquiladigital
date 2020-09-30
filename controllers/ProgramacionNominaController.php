@@ -341,7 +341,7 @@ class ProgramacionNominaController extends Controller {
                     if ($val->contrato_activo == 0) {
                         $table->fecha_final_contrato = $val->fecha_final;
                     } else {
-                        $table->fecha_final_contrato = '2099-12-31';
+                        $table->fecha_final_contrato = date('0000-00-00');
                     }
                     $table->fecha_desde = $model->fecha_desde;
                     $table->fecha_hasta = $model->fecha_hasta;
