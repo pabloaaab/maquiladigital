@@ -29,7 +29,7 @@ $form = ActiveForm::begin([
 <?php ?>
 <div class="panel panel-success">
     <div class="panel-heading">
-        Nuevo
+        Nuevo modulo
     </div>
     <div class="panel-body">
         <div class="row">
@@ -90,9 +90,6 @@ $form = ActiveForm::begin([
         <div class="row">
             <?= $form->field($model, 'duracion')->textInput(['maxlength' => true]) ?>
         </div>
-        <div class="row"
-           <?= $form->field($model, 'aplicar_balanceo')->dropDownList(['1'=> 'SI', '0'=> 'NO'], ['prompt' => 'Seleccione']) ?>
-         </div> 
         <div class="row">
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>

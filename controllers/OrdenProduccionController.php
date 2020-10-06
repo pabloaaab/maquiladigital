@@ -4,21 +4,25 @@ namespace app\controllers;
 
 use app\models\Ordenproducciondetalleproceso;
 use app\models\ProcesoProduccion;
-use Yii;
 use app\models\Ordenproduccion;
 use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
 use app\models\Ordenproducciontipo;
 use app\models\Cliente;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\models\FormFiltroOrdenProduccionProceso;
 use app\models\FormFiltroConsultaFichaoperacion;
 use app\models\FormFiltroConsultaOrdenproduccion;
 use app\models\FormFiltroProcesosOperaciones;
+use app\models\FlujoOperaciones;
 use app\models\Producto;
 use app\models\Productodetalle;
+use app\models\Balanceo;
+use app\models\UsuarioDetalle;
+//clases
+use Yii;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
@@ -32,7 +36,7 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
-use app\models\UsuarioDetalle;
+
 
 /**
  * OrdenProduccionController implements the CRUD actions for Ordenproduccion model.
@@ -130,6 +134,7 @@ class OrdenProduccionController extends Controller {
             $model->totalorden = 0;
             $model->estado = 0;
             $model->autorizado = 0;
+            $model->autorizado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
             return $this->redirect(['index']);
@@ -142,7 +147,9 @@ class OrdenProduccionController extends Controller {
                     'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
         ]);
     }
-
+    
+    //CODIGO QUE CREA EL NUEVO MODULO
+     
     /**
      * Updates an existing Ordenproduccion model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -294,7 +301,7 @@ class OrdenProduccionController extends Controller {
                 }
             }
         }
-        //return $this->render("_formeditardetalle", ["model" => $model,]);
+        
     }
 
     public function actionEditardetalles($idordenproduccion) {
@@ -319,6 +326,52 @@ class OrdenProduccionController extends Controller {
             $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);            
         }
         return $this->render('_formeditardetalles', [
+                    'mds' => $mds,
+                    'idordenproduccion' => $idordenproduccion,
+        ]);
+    }
+    
+    //editar flujo de operaciones
+    
+    public function actionEditarflujooperaciones($idordenproduccion) {
+        $mds = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('id_tipo DESC')->all();
+        $error = 0;
+        if (isset($_POST["id"])) {
+            $intIndice = 0;
+            foreach ($_POST["id"] as $intCodigo) {
+                if ($_POST["orden_aleatorio"][$intIndice] > 0) {
+                    $table = FlujoOperaciones::findOne($intCodigo);
+                    $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
+                    $table->update();                        
+                }
+                $intIndice++;
+            }
+            $this->redirect(["orden-produccion/view_balanceo", 'id' => $idordenproduccion]);            
+        }
+        return $this->render('_formeditarflujooperaciones', [
+                    'mds' => $mds,
+                    'idordenproduccion' => $idordenproduccion,
+        ]);
+    }
+    
+    //balanceo de prendas
+    
+    public function actionBalanceoprenda($idordenproduccion) {
+        $mds = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('id_tipo DESC')->all();
+        $error = 0;
+        if (isset($_POST["id"])) {
+            $intIndice = 0;
+            foreach ($_POST["id"] as $intCodigo) {
+                if ($_POST["orden_aleatorio"][$intIndice] > 0) {
+                    $table = FlujoOperaciones::findOne($intCodigo);
+                    $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
+                    $table->update();                        
+                }
+                $intIndice++;
+            }
+            $this->redirect(["orden-produccion/view_balanceo", 'id' => $idordenproduccion]);            
+        }
+        return $this->render('_formbalanceoprenda', [
                     'mds' => $mds,
                     'idordenproduccion' => $idordenproduccion,
         ]);
@@ -385,18 +438,8 @@ class OrdenProduccionController extends Controller {
                     } catch (\Exception $e) {
                         Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
                         $error = 1;
-                        //$this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
                     }
                     
-                    /*if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $intCodigo])) {
-                        $ordenProduccion = OrdenProduccion::findOne($idordenproduccion);
-                        $ordenProduccion->totalorden = $ordenProduccion->totalorden - $subtotal;
-                        $ordenProduccion->cantidad = $ordenProduccion->cantidad - $cantidad;
-                        if ($ordenProduccion->totalorden < 0){
-                            $ordenProduccion->totalorden = 0;
-                        }
-                        $ordenProduccion->update();
-                    }*/
                 }
                 if($error == 1){
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
@@ -510,6 +553,76 @@ class OrdenProduccionController extends Controller {
             }
 
             return $this->render('ordenproduccionproceso', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                        'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
+    
+    //CODIGO QUE PERMITE COMENZAR EL PROCESO DE BALANCEO
+    public function actionProduccionbalanceo() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',98])->all()){
+            $form = new FormFiltroOrdenProduccionProceso();
+            $idcliente = null;
+            $ordenproduccion = null;
+            $idtipo = null;
+            $codigoproducto = null;
+            $clientes = Cliente::find()->all();
+            $ordenproducciontipos = Ordenproducciontipo::find()->where(['=','ver_registro', 1])->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $ordenproduccion = Html::encode($form->ordenproduccion);
+                    $idtipo = Html::encode($form->idtipo);
+                    $codigoproducto = Html::encode($form->codigoproducto);
+                    $table = Ordenproduccion::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['like', 'idordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
+                            ->andFilterWhere(['=', 'idtipo', $idtipo])
+                            ->andFilterWhere(['=','aplicar_balanceo', 1])
+                           
+                            ->orderBy('idordenproduccion desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = Ordenproduccion::find()
+                        ->where(['=', 'idtipo', 1])
+                        ->orWhere(['=', 'idtipo', 4])
+                        ->andWhere(['=','aplicar_balanceo', 1])
+                        ->orderBy('idordenproduccion desc');
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 40,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+            }
+
+            return $this->render('produccionbalanceo', [
                         'model' => $model,
                         'form' => $form,
                         'pagination' => $pages,
@@ -858,8 +971,48 @@ class OrdenProduccionController extends Controller {
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
         ]);
-    }        
+    }  
+    //VISTA PARA EL DETALLE DE BALANCEO
+    public function actionView_balanceo($id) {
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $ordendetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->one();
+        $operaciones = Ordenproducciondetalleproceso::find()->Where(['=','iddetalleorden', $ordendetalle->iddetalleorden])
+                                                                    ->orderBy('id_tipo DESC')
+                                                                   ->all();
+        $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
+        $modeldetalle = new Ordenproducciondetalle();
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminarflujo"])) {
+                if (isset($_POST["id"])) {
+                    foreach ($_POST["id"] as $intCodigo) {
+                        try {
+                            $eliminar = FlujoOperaciones::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["orden-produccion/view_balanceo", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                          
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
 
+                        }
+                    }
+                } else {
+                    Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');
+                }    
+             }
+        }        
+       
+        return $this->render('view_balanceo', [
+                    'model' => $this->findModel($id),
+                    'modeldetalle' => $modeldetalle,                    
+                    'modeldetalles' => $modeldetalles,
+                    'operaciones' => $operaciones,
+                    'modulos' => $modulos,
+        ]);
+    }        
+  
     protected function progresoproceso($iddetalleorden, $idordenproduccion) {
         $tabla = Ordenproducciondetalle::findOne(['=', 'iddetalleorden', $iddetalleorden]);
         $procesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();

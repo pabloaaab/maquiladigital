@@ -40,7 +40,7 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
         return [
             [['tipo'], 'required'],
             [['activo'], 'integer'],
-            [['remision'], 'integer'],
+            [['remision','ver_registro'], 'integer'],
             [['tipo'], 'string', 'max' => 50],
         ];
     }
@@ -54,6 +54,7 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
             'idtipo' => 'Id',
             'tipo' => 'Tipo',
             'activo' => 'Activo',
+            'ver_registro' => 'Ver registro',
             'remision' => 'Requiere Remisión',
         ];
     }
@@ -84,5 +85,14 @@ class Ordenproducciontipo extends \yii\db\ActiveRecord
             $remision = "NO";
         }
         return $remision;
+    }
+     public function getVerregistro()
+    {
+        if($this->ver_registro == 1){
+            $verregistro = "SI";
+        }else{
+            $verregistro = "NO";
+        }
+        return $verregistro;
     }
 }

@@ -2,15 +2,14 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Ordenproducciontipo;
+use app\models\Balanceo;
 
 /**
- * OrdenproducciontipoSearch represents the model behind the search form of `app\models\Ordenproducciontipo`.
+ * BalanceoSearch represents the model behind the search form of `app\models\Balanceo`.
  */
-class OrdenproducciontipoSearch extends Ordenproducciontipo
+class BalanceoSearch extends Balanceo
 {
     /**
      * {@inheritdoc}
@@ -18,8 +17,8 @@ class OrdenproducciontipoSearch extends Ordenproducciontipo
     public function rules()
     {
         return [
-            [['idtipo', 'activo','remision','ver_registro'], 'integer'],
-            [['tipo'], 'safe'],
+            [['id_balanceo', 'idordenproduccion', 'cantidad_empleados'], 'integer'],
+            [['fecha_creacion', 'fecha_inicio', 'usuariosistema'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class OrdenproducciontipoSearch extends Ordenproducciontipo
      */
     public function search($params)
     {
-        $query = Ordenproducciontipo::find();
+        $query = Balanceo::find();
 
         // add conditions that should always apply here
 
@@ -59,13 +58,14 @@ class OrdenproducciontipoSearch extends Ordenproducciontipo
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idtipo' => $this->idtipo,
-            'activo' => $this->activo,
-            'remision' => $this->remision,
-            'ver_registro' => $this->ver_registro,
+            'id_balanceo' => $this->id_balanceo,
+            'idordenproduccion' => $this->idordenproduccion,
+            'cantidad_empleados' => $this->cantidad_empleados,
+            'fecha_creacion' => $this->fecha_creacion,
+            'fecha_inicio' => $this->fecha_inicio,
         ]);
 
-        $query->andFilterWhere(['like', 'tipo', $this->tipo]);
+        $query->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);
 
         return $dataProvider;
     }

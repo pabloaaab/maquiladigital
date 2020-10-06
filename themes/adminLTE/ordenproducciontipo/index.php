@@ -43,7 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $orden->rremision;
                 },
                 'filter' => ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(),'remision','rremision'),
-                'contentOptions' => ['class' => 'col-lg-3'],
+                'contentOptions' => ['class' => 'col-lg-2.5'],
+            ],    
+                        [
+                'attribute' => 'ver_registro',
+                'value' => function($model){
+                    $orden = app\models\Ordenproducciontipo::findOne($model->idtipo);                    
+                    return $orden->verregistro;
+                },
+                'filter' => ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(),'ver_registro','verregistro'),
+                'contentOptions' => ['class' => 'col-lg-2.5'],
             ],            
             [
                 'class' => 'yii\grid\ActionColumn',              

@@ -10,7 +10,7 @@ use app\models\Ordenproducciontipo;
 /* @var $searchModel app\models\OrdenProduccionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Ordenes de Producción';
+$this->title = 'Ordenes de Producción';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="ordenproduccion-index">

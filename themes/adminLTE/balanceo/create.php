@@ -2,20 +2,20 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model app\models\Ordenproducciontipo */
+/* @var $model app\models\Balanceo */
 
-$this->title = 'Nuevo';
-$this->params['breadcrumbs'][] = ['label' => 'Ordenes de producción tipo', 'url' => ['index']];
+$this->title = 'Nuevo modulo';
+$this->params['breadcrumbs'][] = ['label' => 'Balanceos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="ordenproducciontipo-create">
+<div class="balanceo-create">
 
     <!--<h1><?= Html::encode($this->title) ?></h1>-->
 
     <?= $this->render('_form', [
         'model' => $model,
+        'orden' => $orden,
     ]) ?>
 
 </div>

@@ -181,6 +181,7 @@
                                             'icon' => 'exchange',
                                             'url' => '#',
                                             'items' => [
+                                            ['label' => 'Flujo de operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/produccionbalanceo']], 
                                             ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/index']],                                            
                                             ],
                                         ],

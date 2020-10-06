@@ -1,9 +1,16 @@
  <?php
 
-
+//modelos
+use app\models\Ordenproducciondetalle;
+use app\models\Ordenproduccion;
+use app\models\Cliente;
+use app\models\Color;
+use app\models\Remision;
+use app\models\Producto;
+use app\models\Productodetalle;
+//clase
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-use app\models\Ordenproducciondetalle;
 use yii\helpers\Url;
 use yii\web\Session;
 use yii\data\Pagination;
@@ -14,12 +21,6 @@ use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\Ordenproduccion;
-use app\models\Cliente;
-use app\models\Color;
-use app\models\Remision;
-use app\models\Producto;
-use app\models\Productodetalle;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

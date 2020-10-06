@@ -14,6 +14,7 @@ class FormFiltroOrdenProduccionProceso extends Model
     public $ordenproduccion;
     public $idtipo;
     public $codigoproducto;
+    public $ver_registro;
     
     public function rules()
     {

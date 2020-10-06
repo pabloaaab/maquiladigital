@@ -23,7 +23,7 @@ $view = 'Control Acceso Covid';
 ?>
 
 <p>
-    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>    
+    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary btn-sm']) ?>    
 </p>
 
 <div class="panel panel-success">
