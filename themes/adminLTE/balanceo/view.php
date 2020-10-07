@@ -58,12 +58,21 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     <td><?= Html::encode($model->estadomodulo) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total_segundos') ?>:</th>
+                    <td><?= Html::encode($model->total_segundos) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total_minutos') ?>:</th>
+                    <td><?= Html::encode($model->total_minutos) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_operario') ?>:</th>
+                    <td><?= Html::encode($model->tiempo_operario) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
+                    
+                </tr>
+                  <tr style="font-size: 85%;">
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_creación') ?>:</th>
                     <td><?= Html::encode($model->fecha_creacion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Observaciones') ?>:</th>
-                    <td colspan="3"><?= Html::encode($model->observacion) ?></td>
+                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
                 </tr>
                 
             </table>
@@ -81,6 +90,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones: <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
+            <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo: <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="flujo">
@@ -138,7 +148,53 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     </div>
                 </div>    
             </div>
-          <!--- TERMINA EL TABS-->
+                <!--- TERMINA EL TABS-->
+            <div role="tabpanel" class="tab-pane" id="balanceo">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Minutos x operacion">Min.</span></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Segundos x operacion">Seg.</span></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo asignado">T. Asig.</span></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo faltante/Sobrante">F/S/</span></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Unid x Hora</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($balanceo_detalle as $val):?>
+                                         <tr style="font-size: 85%;">
+                                            <td><?= $val->id_detalle?></td>
+                                            <td><?= $val->operario->nombrecompleto ?></td>
+                                            <td><?= $val->proceso->proceso ?></td>
+                                            <td><?= $val->minutos ?></td>
+                                            <td><?= $val->segundos ?></td>
+                                             <td><?= $val->total_minutos ?></td>
+                                             <?php if($val->sobrante_faltante >= 0){?>
+                                                 <td style="background: #088A85;"><?= $val->sobrante_faltante ?></td>
+                                             <?php }else{ ?>
+                                                 <td style="background: #F5BCA9;"><?= $val->sobrante_faltante ?></td>
+                                             <?php }?>     
+                                             <td><?= $val->tipo->descripcion ?></td>
+                                            <td></td>
+                                        </tr>
+                                   <?php endforeach; ?>
+                                </tbody>  
+                            </table>
+                        </div>   
+                        <div class="panel-footer text-right">
+                            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm", 'name' => 'guardar']) ?>
+                        </div>
+                    </div>
+                </div>    
+            </div>
        </div>  
     </div>   
     <?php ActiveForm::end(); ?>

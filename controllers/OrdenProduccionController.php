@@ -134,7 +134,6 @@ class OrdenProduccionController extends Controller {
             $model->totalorden = 0;
             $model->estado = 0;
             $model->autorizado = 0;
-            $model->autorizado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
             return $this->redirect(['index']);

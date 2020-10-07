@@ -92,11 +92,14 @@ $form = ActiveForm::begin([
                 <tr >         
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Nro modulo</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Ord. producción</th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Total segundos">OP</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Operarios</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. Inicio</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. Terminación</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Total segundos">T. Seg.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Total minutos">T. Min.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'> <span title="Minutos por operarios">M/O</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Cerrado o abierto el modulo">C/A</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
@@ -114,7 +117,10 @@ $form = ActiveForm::begin([
                 <td><?= $val->fecha_inicio ?></td>
                 <td><?= $val->fecha_terminacion ?></td>
                 <td><?= $val->cliente->nombrecorto ?></td>
-                <td><?= $val->estado_modulo ?></td>
+                <td><?= $val->total_segundos ?></td>
+                <td><?= $val->total_minutos ?></td>
+                <td><?= $val->tiempo_operario ?></td>
+                <td><?= $val->estadomodulo ?></td>
                 <td><?= $val->observacion ?></td>
                  <?php 
                     if($val->estado_modulo == 0){?>
@@ -122,7 +128,7 @@ $form = ActiveForm::begin([
                           <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                         </td>
                         <td style= 'width: 25px;'>
-                            <a href="<?= Url::toRoute(["balanceo/update", "id" => $val->id_balanceo]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
+                            <a href="<?= Url::toRoute(["balanceo/update", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
                        </td>
                         <td style= 'width: 25px;'>
                             <?= Html::a('', ['eliminar', 'id' => $val->id_balanceo], [

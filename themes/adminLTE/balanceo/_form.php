@@ -57,7 +57,7 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>
         <div class="panel-footer text-right">			
-
+             <a href="<?= Url::toRoute("balanceo/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		
         </div>
     </div>

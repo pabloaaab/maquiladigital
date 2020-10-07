@@ -40,7 +40,7 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
         return [
             [['id_proceso', 'id_balanceo', 'id_tipo','id_operario'], 'integer'],
             [['id_tipo'], 'required'],
-            [['segundos', 'minutos', 'total_segundos', 'total_minutos'], 'number'],
+            [['segundos', 'minutos', 'total_segundos', 'total_minutos','sobrante_faltante'], 'number'],
             [['fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],
             [['id_proceso'], 'exist', 'skipOnError' => true, 'targetClass' => ProcesoProduccion::className(), 'targetAttribute' => ['id_proceso' => 'idproceso']],

@@ -129,6 +129,7 @@ class BalanceoController extends Controller
     public function actionView($id, $idordenproduccion)
     {
         $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('orden_aleatorio asc')->all();
+        $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
         if (isset($_POST["guardar"])) {
             if (isset($_POST["idproceso"])) {
                 $intIndice = 0;
@@ -149,20 +150,25 @@ class BalanceoController extends Controller
                     $intIndice++;
                 }
                 $this->ActualizarSegundos($id);
-                return $this->redirect(["balanceo/view", 'id'=> $id, 'idordenproduccion' => $idordenproduccion]); 
+                return $this->redirect(["balanceo/view",
+                      'id'=> $id,
+                      'idordenproduccion' => $idordenproduccion,
+                      'balanceo_detalle' => $balanceo_detalle,
+                    ]); 
             }
        }    
         
        return $this->render('view', [
             'model' => $this->findModel($id),
             'flujo_operaciones' => $flujo_operaciones,
+           'balanceo_detalle' => $balanceo_detalle,
         ]);
     }
  // codigo que actualiza los minutos y segundos de los operarios
     
  protected function ActualizarSegundos($id)
     { 
-     //$balanceo = BalanceoDetalle::find()->where(['']);
+     $vector_balanceo = Balanceo::findOne($id);
      $total_s = 0;
      $balanceo = BalanceoDetalle::find()
                             ->select([new Expression('SUM(segundos) as total_segundos'), 'id_operario'])                            
@@ -186,6 +192,7 @@ class BalanceoController extends Controller
         $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $dato->id_operario])->all();
         foreach ($balanceo2 as $act):
             $act->total_minutos = $total_m;
+            $act->sobrante_faltante = ''.number_format($vector_balanceo->tiempo_operario - $total_m, 2);
             $act->save();
         endforeach;
     endforeach;
@@ -201,6 +208,8 @@ class BalanceoController extends Controller
     {
         $model = new Balanceo();
         $orden = Ordenproduccion::findOne($idordenproduccion);
+        $total_minutos = 0;
+        $total_minutos = ''.number_format($orden->segundosficha/60 ,2);
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -219,6 +228,9 @@ class BalanceoController extends Controller
                     $table->fecha_inicio = $model->fecha_inicio;
                     $table->cantidad_empleados = $model->cantidad_empleados;
                     $table->modulo = $model->modulo;
+                    $table->total_minutos = $total_minutos;
+                    $table->total_segundos = $orden->segundosficha;
+                    $table->tiempo_operario = ''.number_format($table->total_minutos /$table->cantidad_empleados,2); 
                     $table->observacion = $model->observacion;
                     $table->usuariosistema = Yii::$app->user->identity->username;
                     $table->save(false);
@@ -234,7 +246,6 @@ class BalanceoController extends Controller
             'orden' => $orden,
         ]);
     }
-    
     /**
      * Updates an existing Balanceo model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -242,16 +253,52 @@ class BalanceoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+   public function actionUpdate($id, $idordenproduccion)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_balanceo]);
+       $model = new Balanceo();
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+       if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
         }
+      
+        if ($model->load(Yii::$app->request->post())) {            
+                $balanceo_detalle = BalanceoDetalle::find()->where(['=','id_balanceo', $id])->one();
+                if($balanceo_detalle){
+                    Yii::$app->getSession()->setFlash('error', 'Error al modificar: este modulo no se puede modificar la informacion porque presenta proceso de operaciones de prendas, favor consulte con el administrador.!'); 
+                }else{
+                     $table = balanceo::find()->where(['id_balanceo'=>$id])->one();
+                    if ($table){
+                        $table->fecha_inicio = $model->fecha_inicio;
+                        $table->cantidad_empleados = $model->cantidad_empleados;
+                        $table->modulo = $model->modulo;
+                        $table->observacion = $model->observacion;
+                        $table->total_segundos = $orden->segundosficha;
+                        $table->total_minutos = ''.number_format($table->total_segundos /60,2);
+                        $table->tiempo_operario = ''.number_format($table->total_minutos / $table->cantidad_empleados ,2);
+                        $table->save(false);
+                         return $this->redirect(["balanceo/index"]);  
+                    }
+                }
+        }
+        if (Yii::$app->request->get("id")) {
+            $table = balanceo::find()->where(['id_balanceo' => $id])->one();
+            if ($table) {     
 
+               $model->fecha_inicio = $table->fecha_inicio;
+               $model->cantidad_empleados = $table->cantidad_empleados;
+               $model->modulo = $table->modulo;
+               $model->observacion = $table->observacion;
+           }else{
+                return $this->redirect(['index']);
+           }
+        } else {
+                return $this->redirect(['index']);    
+        }
         return $this->render('update', [
             'model' => $model,
+            'id'=>$id, 
+            'orden' => $orden,
         ]);
     }
 
@@ -272,11 +319,11 @@ class BalanceoController extends Controller
                     $this->redirect(["balanceo/index"]);
                 } catch (IntegrityException $e) {
                     $this->redirect(["balanceo/index"]);
-                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el modulo Nro: ' . $balanceo->id_balanceo . ', tiene registros asociados en otros procesos');
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el modulo Nro: ' . $balanceo->modulo . ', tiene registros asociados en otros procesos');
                 } catch (\Exception $e) {
 
                     $this->redirect(["balanceo/index"]);
-                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el modulo Nro:  ' . $balanceo->id_balanceo . ', tiene registros asociados en otros procesos');
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el modulo Nro:  ' . $balanceo->modulo . ', tiene registros asociados en otros procesos');
                 }
             } else {
                 // echo "Ha ocurrido un error al eliminar el registros, redireccionando ...";
