@@ -155,6 +155,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                         <div class="panel-body">
                             <table class="table table-bordered table-hover">
                                 <thead>
+                                    
                                     <tr>
                                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                          <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
@@ -164,12 +165,15 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo asignado">T. Asig.</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo faltante/Sobrante">F/S/</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
-                                         <th scope="col" style='background-color:#B9D5CE;'>Unid x Hora</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Unidades por hora">U. x Hora</span></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje inicial">%</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($balanceo_detalle as $val):?>
+                                    <?php
+                                       $total_prendas = 0;
+                                         foreach ($balanceo_detalle as $val):?>
                                          <tr style="font-size: 85%;">
                                             <td><?= $val->id_detalle?></td>
                                             <td><?= $val->operario->nombrecompleto ?></td>
@@ -183,10 +187,16 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                                  <td style="background: #F5BCA9;"><?= $val->sobrante_faltante ?></td>
                                              <?php }?>     
                                              <td><?= $val->tipo->descripcion ?></td>
+                                             <td><?= ''.number_format( 60 /$val->minutos,2) ?></td>
+                                              <td><?= $model->porcentaje ?>%</td>
                                             <td></td>
+                                            <?php
+                                              $total_prendas = ''. number_format(60 / $val->total_minutos, 3) ;
+                                            ?>
                                         </tr>
                                    <?php endforeach; ?>
                                 </tbody>  
+                                <td colspan="8"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $total_prendas?></td><td colspan="2"></td>
                             </table>
                         </div>   
                         <div class="panel-footer text-right">

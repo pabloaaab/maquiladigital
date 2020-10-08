@@ -232,6 +232,7 @@ class BalanceoController extends Controller
                     $table->total_segundos = $orden->segundosficha;
                     $table->tiempo_operario = ''.number_format($table->total_minutos /$table->cantidad_empleados,2); 
                     $table->observacion = $model->observacion;
+                    $table->porcentaje = 100;
                     $table->usuariosistema = Yii::$app->user->identity->username;
                     $table->save(false);
                      return $this->redirect(["balanceo/index"]); 
