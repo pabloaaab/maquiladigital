@@ -3,7 +3,9 @@
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
-use app\models\cliente;
+use app\models\Cliente;
+
+//clases
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
@@ -44,7 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $cliente = ArrayHelper::map(Cliente::find()->orderBy('nombrecorto ASC')->all(), 'idcliente', 'nombrecorto');
 ?>
-
 <div class="panel panel-success panel-filters">
     <div class="panel-heading" onclick="mostrarfiltro()">
         Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
