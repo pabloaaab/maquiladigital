@@ -45,7 +45,8 @@ use yii\db\ActiveQuery;
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Id Factura</th>
+                    <th scope="col">Nro Factura</th>
+                    <th scope="col">Factura electronica</th>
                     <th scope="col">Rete Fuente</th>
                     <th scope="col">Rete Iva</th>
                     <th scope="col">Valor Abono</th>
@@ -57,10 +58,11 @@ use yii\db\ActiveQuery;
                 <?php foreach ($mds as $val): ?>
                     <tr style="font-size: 85%;">
                     <td><?= $val->iddetallerecibo ?></td>
-                    <td><?= $val->idfactura ?></td>
+                    <td><?= $val->factura->nrofactura ?></td>
+                    <td><?= $val->nrofacturaelectronica ?></td>
                     <td><?= '$'.number_format($val->retefuente,0) ?></td>
                     <td><?= '$'.number_format($val->reteiva,0) ?></td>
-                    <td><input type="text" name="vlrabono[]" value="<?= $val->vlrabono ?>" required></td>
+                    <td><input type="text" name="vlrabono[]" value="<?= $val->vlrsaldo ?>" required></td>
                     <td><?= '$'.number_format($val->vlrsaldo,0) ?></td>
                     <td><input type="hidden" name="iddetallerecibo[]" value="<?= $val->iddetallerecibo ?>"></td>
                 </tr>
