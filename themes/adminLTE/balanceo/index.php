@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\ContactForm */
-
+use app\models\cliente;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
@@ -15,7 +15,7 @@ use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 //Modelos...
-use app\models\cliente;
+
 
 $this->title = 'Listado modulos';
 $this->params['breadcrumbs'][] = $this->title;
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$cliente = ArrayHelper::map(Cliente::find()->orderBy ('nombrecorto ASC')->all(), 'idcliente', 'nombrecorto');
+$cliente = ArrayHelper::map(Cliente::find()->orderBy('nombrecorto ASC')->all(), 'idcliente', 'nombrecorto');
 ?>
 
 <div class="panel panel-success panel-filters">
