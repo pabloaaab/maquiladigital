@@ -104,7 +104,13 @@ use app\models\Ordenproducciondetalle;
                             <td align="center"><?= number_format($val->total,1) ?></td>
                             <td align="center"><?= number_format($val->totalproceso,1) ?></td>
                             <td align="center"><?= number_format($val->porcentajeproceso,1) ?></td>
-                            <td align="center"><?= $val->tipomaquina->descripcion ?></td>
+                           
+                            <?php 
+                               if($val->tipomaquina == ''){?>
+                                    <td align="center"><?= 'No found' ?></td>
+                               <?php }else{ ?>
+                                     <td align="center"><?= $val->tipomaquina->descripcion ?></td>
+                               <?php }?>
                             <td align="center"><input type="text" name="cantidad_operada[]" value="<?= $val->cantidad_operada ?>" size="2" required></td>
                             <td align="center"><select name="estado[]">
                                     <?php if ($val->estado == 0){echo $estado = "Abierto";}else{echo $estado ="Cerrado";}?>

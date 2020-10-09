@@ -1569,8 +1569,11 @@ class OrdenProduccionController extends Controller {
                     ->setCellValue('C' . $i, $val->duracion)
                     ->setCellValue('D' . $i, round(60 / $val->duracion * 60))
                     ->setCellValue('E' . $i, $val->ponderacion)                    
-                    ->setCellValue('F' . $i, $val->total)
-                    ->setCellValue('G' . $i, $val->tipomaquina->descripcion);
+                    ->setCellValue('F' . $i, $val->total)                    
+                     ->setCellValue('G' . $i, $val->tipomaquina->descripcion);
+                    
+                   
+                        
             $i++;
         }
         $j = $i + 1;
