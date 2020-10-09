@@ -699,6 +699,7 @@ class OrdenProduccionController extends Controller {
                         $table->totalproceso = $detalleorden->cantidad * $table->total;
                         $table->iddetalleorden = $iddetalleorden;
                         $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
                         $table->insert();
                     }
                 }
@@ -731,6 +732,7 @@ class OrdenProduccionController extends Controller {
                             $tableprocesos->cantidad_operada = 0;
                             $tableprocesos->totalproceso = $dato->cantidad * $tableprocesos->total;
                             $tableprocesos->iddetalleorden = $dato->iddetalleorden;
+                            $tableprocesos->id_tipo = $val->id_tipo;
                             $tableprocesos->insert();
                         }
                     }
@@ -795,6 +797,7 @@ class OrdenProduccionController extends Controller {
                             $tableprocesos->cantidad_operada = 0;
                             $tableprocesos->totalproceso = $dato->cantidad * $tableprocesos->total;
                             $tableprocesos->iddetalleorden = $dato->iddetalleorden;
+                            $tableprocesos->id_tipo = $val->id_tipo;
                             $tableprocesos->insert();
                         }
                     }
