@@ -142,7 +142,7 @@ $form = ActiveForm::begin([
                         </td>
                     <?php }else {?>
                          <td style= 'width: 25px;'>
-                            <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                          </td>   
                          <td></td>
                          <td></td>

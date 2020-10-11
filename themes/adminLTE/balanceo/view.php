@@ -62,13 +62,15 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     <td><?= Html::encode($model->total_segundos) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total_minutos') ?>:</th>
                     <td><?= Html::encode($model->total_minutos) ?></td>
-                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_operario') ?>:</th>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_minutos') ?>:</th>
                     <td><?= Html::encode($model->tiempo_operario) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario') ?>:</th>
-                    <td><?= Html::encode($model->usuariosistema) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_Segundos') ?>:</th>
+                    <td><?= Html::encode($model->tiempo_operario * 60) ?></td>
                     
                 </tr>
                   <tr style="font-size: 85%;">
+                       <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario') ?>:</th>
+                    <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_creación') ?>:</th>
                     <td><?= Html::encode($model->fecha_creacion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Observaciones') ?>:</th>
@@ -89,8 +91,8 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
     <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones: <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
-            <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo: <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
+            <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
+            <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="flujo">
@@ -108,7 +110,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operarios</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -135,16 +137,19 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <input type="hidden" name="minutos[]" value="<?= $val->minutos ?>">
                                             <input type="hidden" name="totalminutos[]" value="<?= $totalminutos ?>">
                                             <input type="hidden" name="totalsegundos[]" value="<?= $totalsegundos ?>">
-                                            <td></td>
+                                             
                                         </tr>
                                    <?php endforeach; ?>
                                 </tbody>  
-                                <td colspan="3"></td><td style="font-size: 85%;"><b>Total:</b> <?= $totalsegundos ?> <td style="font-size: 85%;"><b>Total:</b> <?= $totalminutos ?></td><td colspan="4"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 90px;" ><b>Total:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $totalminutos ?></td><td colspan="4"></td>
                             </table>
                         </div>   
-                        <div class="panel-footer text-right">
-                            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm", 'name' => 'guardar']) ?>
-                        </div>
+                        <?php
+                        if($model->estado_modulo == 0){?>
+                            <div class="panel-footer text-right">
+                                <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm", 'name' => 'guardar']) ?>
+                            </div>
+                        <?php }?>
                     </div>
                 </div>    
             </div>
@@ -168,11 +173,12 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Unidades por hora">U. x Hora</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje inicial">%</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                       $total_prendas = 0;
+                                        $total_mi = 0;
                                          foreach ($balanceo_detalle as $val):?>
                                          <tr style="font-size: 85%;">
                                             <td><?= $val->id_detalle?></td>
@@ -189,19 +195,44 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                              <td><?= $val->tipo->descripcion ?></td>
                                              <td><?= ''.number_format( 60 /$val->minutos,2) ?></td>
                                               <td><?= $model->porcentaje ?>%</td>
-                                            <td></td>
                                             <?php
-                                              $total_prendas = ''. number_format(60 / $val->total_minutos, 3) ;
-                                            ?>
+                                            if($model->estado_modulo == 0){?>
+                                                <td style=' width: 25px;'>
+                                                  <a href="<?= Url::toRoute(["balanceo/editaroperacionasignada",'id_detalle'=>$val->id_detalle,'id' => $model->id_balanceo, 'idordenproduccion' => $model->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                                </td> 
+                                                <td style= 'width: 25px;'>
+                                                  <?= Html::a('', ['eliminardetalle', 'id_detalle' => $val->id_detalle,'id'=>$model->id_balanceo,'idordenproduccion'=>$model->idordenproduccion], [
+                                                      'class' => 'glyphicon glyphicon-trash',
+                                                      'data' => [
+                                                          'confirm' => 'Esta seguro de eliminar el registro?',
+                                                          'method' => 'post',
+                                                      ],
+                                                  ]) ?>
+                                                </td>
+                                            <?php }else{ ?>
+                                                <td></td>
+                                                <td></td>
+
+                                            <?php } ?>    
+
                                         </tr>
-                                   <?php endforeach; ?>
+                                   <?php
+                                        $total_mi += $val->minutos;
+                                   endforeach; ?>
                                 </tbody>  
-                                <td colspan="8"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $total_prendas?></td><td colspan="2"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $model->total_minutos?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
+                                <?php
+                                   if($total_mi > $model->total_minutos){
+                                       Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');
+                                    } ?> 
                             </table>
-                        </div>   
-                        <div class="panel-footer text-right">
-                            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm", 'name' => 'guardar']) ?>
                         </div>
+                                            
+                            <div class="panel-footer text-right">
+                                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm']); ?>                
+           
+                            </div>
+                         
                     </div>
                 </div>    
             </div>

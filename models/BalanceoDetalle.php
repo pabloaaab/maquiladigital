@@ -39,7 +39,6 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
     {
         return [
             [['id_proceso', 'id_balanceo', 'id_tipo','id_operario'], 'integer'],
-            [['id_tipo'], 'required'],
             [['segundos', 'minutos', 'total_segundos', 'total_minutos','sobrante_faltante'], 'number'],
             [['fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -59,9 +58,10 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
             'id_detalle' => 'Id Detalle',
             'id_proceso' => 'Id Proceso',
             'id_balanceo' => 'Id Balanceo',
-            'id_tipo' => 'Id Tipo',
-            'segundos' => 'Segundos',
-            'minutos' => 'Minutos',
+            'id_operario' => 'Operario:',
+            'id_tipo' => 'Maquina:',
+            'segundos' => 'Segundos:',
+            'minutos' => 'Minutos:',
             'total_segundos' => 'Total Segundos',
             'total_minutos' => 'Total Minutos',
             'fecha_creacion' => 'Fecha Creacion',

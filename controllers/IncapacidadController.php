@@ -508,9 +508,7 @@ class IncapacidadController extends Controller
         return $this->render('_formeditarseguimiento', [
             'model' => $model,
             'seguimiento' => $seguimiento,
-          
-            //'cuentas' => ArrayHelper::map($cuentas, "codigo_cuenta", "cuentanombre"),
-        ]);         
+           ]);         
     } 
     
     

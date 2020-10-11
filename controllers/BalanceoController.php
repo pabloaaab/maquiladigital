@@ -334,7 +334,76 @@ class BalanceoController extends Controller
             return $this->redirect(["balanceo/index"]);
         }
     }
+   
+   public function actionEliminardetalle($id_detalle, $id, $idordenproduccion) {
+        if (Yii::$app->request->post()) {
+            $balanceo_detalle = BalanceoDetalle::findOne($id_detalle);
+            if ((int) $id_detalle) {
+                try {
+                    BalanceoDetalle::deleteAll("id_detalle=:id_detalle", [":id_detalle" => $id_detalle]);
+                    Yii::$app->getSession()->setFlash('success', 'Registro Eliminado con exito.');
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
+                } catch (\Exception $e) {
 
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
+                }
+            } else {
+                // echo "Ha ocurrido un error al eliminar el registros, redireccionando ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["balanceo/view", 'id'=>$id, 'idordenproduccion'=>$idordenproduccion]) . "'>";
+            }
+        } else {
+            return $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+        }
+    }
+    
+    public function actionEditaroperacionasignada($id_detalle, $id, $idordenproduccion) {
+       
+        $model = new BalanceoDetalle;
+        $balanceo = Balanceo::findOne($id);   
+        
+        $tabla_detalle = BalanceoDetalle::findOne($id_detalle);
+       if ($model->load(Yii::$app->request->post())) {                        
+            $tabla_detalle->id_tipo = $model->id_tipo;
+            $tabla_detalle->id_operario = $model->id_operario;
+            $tabla_detalle->segundos = $model->segundos;
+            $tabla_detalle->minutos = $model->minutos;    
+            $tabla_detalle->save(false);     
+            $this->ActualizarSegundos($id);
+            $this->actionActualizarSobranteRestante($id);
+            
+            return $this->redirect(['balanceo/view','id' => $id, 'idordenproduccion' => $idordenproduccion]);
+        }
+        if (Yii::$app->request->get("id_detalle")) {
+            $table = BalanceoDetalle::find()->where(['id_detalle' => $id_detalle])->one();
+            if ($table) {
+                $model->id_tipo = $table->id_tipo;
+                $model->id_operario= $table->id_operario;
+                $model->segundos = $table->segundos;
+                $model->minutos = $table->minutos;
+                      
+            }    
+        }
+        return $this->render('_formeditardetallebalanceo', [
+            'model' => $model,
+            'balanceo' => $balanceo,
+            'idordenproduccion' => $idordenproduccion,
+           ]);         
+    } 
+
+    protected function actionActualizarSobranteRestante($id) 
+    {
+        $total = 0;
+        $balanceo = Balanceo::findOne($id);
+        $tabla_detalle = BalanceoDetalle::findAll($id);
+        foreach ($tabla_detalle as $dato):
+            $total =  $balanceo->tiempo_operario - $dato->total_minutos;
+            $dato->save();
+        endforeach;
+    }
     /**
      * Finds the Balanceo model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
