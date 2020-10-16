@@ -35,6 +35,9 @@ $form = ActiveForm::begin([
         <div class="row">            
             <?= $form->field($model, 'hasta')->input('time') ?>         
         </div>
+         <div class="row">            
+           <?= $form->field($model, 'total_horas')->textInput(['maxlength' => true]) ?>         
+        </div>
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("horario/index") ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success",]) ?>

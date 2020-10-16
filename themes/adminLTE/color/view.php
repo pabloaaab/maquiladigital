@@ -15,10 +15,10 @@ $this->params['breadcrumbs'][] = $model->id;
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary btn-sm']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger btn-sm',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
@@ -31,10 +31,10 @@ $this->params['breadcrumbs'][] = $model->id;
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'id') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id') ?>:</th>
                     <td><?= Html::encode($model->id) ?></td>
-                    <th><?= Html::activeLabel($model, 'color') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'color') ?>:</th>
                     <td><?= Html::encode($model->color) ?></td>                    
                 </tr>                                                                
             </table>

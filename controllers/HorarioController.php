@@ -67,7 +67,7 @@ class HorarioController extends Controller
         $model = new Horario();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_horario]);
+            return $this->redirect(['index', 'id' => $model->id_horario]);
         }
 
         return $this->render('create', [
@@ -87,7 +87,7 @@ class HorarioController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_horario]);
+            return $this->redirect(['index', 'id' => $model->id_horario]);
         }
 
         return $this->render('update', [

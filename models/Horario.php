@@ -30,8 +30,9 @@ class Horario extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['horario', 'desde', 'hasta'], 'required'],
+            [['horario', 'desde', 'hasta', 'total_horas'], 'required'],
             [['desde', 'hasta'], 'string'],
+            [['total_horas'],'number'],
             [['horario'], 'string', 'max' => 20],
         ];
     }
@@ -46,6 +47,7 @@ class Horario extends \yii\db\ActiveRecord
             'horario' => 'Horario',
             'desde' => 'Desde',
             'hasta' => 'Hasta',
+            'total_horas' =>'Total horas',
         ];
     }
 

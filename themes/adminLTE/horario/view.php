@@ -15,10 +15,10 @@ $this->params['breadcrumbs'][] = $model->id_horario;
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_horario], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary btn-sm']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_horario], ['class' => 'btn btn-success btn-sm']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_horario], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger btn-sm',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
@@ -31,15 +31,17 @@ $this->params['breadcrumbs'][] = $model->id_horario;
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'id_horario') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_horario') ?>:</th>
                     <td><?= Html::encode($model->id_horario) ?></td>
-                    <th><?= Html::activeLabel($model, 'horario') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'horario') ?>:</th>
                     <td><?= Html::encode($model->horario) ?></td>
-                    <th><?= Html::activeLabel($model, 'desde') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'desde') ?>:</th>
                     <td><?= Html::encode($model->desde) ?></td>
-                    <th><?= Html::activeLabel($model, 'hasta') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'hasta') ?>:</th>
                     <td><?= Html::encode($model->hasta) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_horas') ?>:</th>
+                    <td><?= Html::encode($model->total_horas) ?></td>
                 </tr>                                                              
             </table>
         </div>

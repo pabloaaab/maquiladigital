@@ -78,8 +78,10 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <td><?= Html::encode($model->codigoproducto) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_standar') ?>:</th>
                     <td><?= Html::encode($model->duracion.'  minutos') ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_operativo') ?>:</th>
+                     <td><?= Html::encode($model->segundosficha/60, 2) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Servicio') ?>:</th>
-                    <td colspan="4"><?= Html::encode($model->tipo->tipo) ?></td>
+                    <td colspan="2"><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
                 <tr>
                     <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -237,17 +239,25 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($modeldetalles as $val): ?>
+                                    <?php
+                                      $t_segundos = 0; $t_minutos = 0; $t_minutos_conf = 0;
+                                    foreach ($modeldetalles as $val): ?>
                                     <tr style="font-size: 85%;">
                                         <td><?= $val->iddetalleorden ?></td>
                                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                                         <td align="center"><?= $val->cantidad ?></td>
-                                         <td align="right"><?= ''.number_format($val->totalsegundos,0) ?></td>
-                                        <td align="right"><?= ''.number_format($val->totalsegundos / 60,0) ?></td>
-                                         <td align="right"><?= ''.number_format($val->totalsegundos / 60/$val->cantidad,2) ?></td>
+                                         <td align="right"><?= ''.number_format(($model->duracion * 60)* ($val->cantidad),0) ?></td>
+                                         <td align="right"><?= ''.number_format($model->duracion  * $val->cantidad,0) ?></td>
+                                        <td align="right" style="background: #F5BCA9;"><?= ''.number_format($model->segundosficha / 60 * $val->cantidad,0) ?></td>
+                                         
                                     </tr>
-                                </tbody>
-                                <?php endforeach; ?>
+                                    <?php
+                                       $t_minutos += ($model->duracion * $val->cantidad);
+                                        $t_segundos = $t_minutos * 60;
+                                       $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
+                                    endforeach; ?>
+                                </tbody>  
+                                <td colspan="3"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td>
                             </table>
                         </div>    
                     </div>

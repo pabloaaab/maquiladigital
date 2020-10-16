@@ -397,13 +397,7 @@ class OrdenProduccionController extends Controller {
                     $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
                 }
                 
-                /*if (OrdenProduccionDetalle::deleteAll("iddetalleorden=:iddetalleorden", [":iddetalleorden" => $iddetalleorden])) {
-                    $this->Actualizartotal($idordenproduccion);
-                    $this->Actualizarcantidad($idordenproduccion);
-                    $this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);                    
-                } else {
-                    echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
-                }*/
+                
             } else {
                 echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
             }

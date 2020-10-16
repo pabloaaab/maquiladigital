@@ -19,6 +19,7 @@ class HorarioSearch extends Horario
         return [
             [['id_horario'], 'integer'],
             [['horario', 'desde', 'hasta'], 'safe'],
+            [['total_horas'],'number'],
         ];
     }
 
@@ -63,7 +64,8 @@ class HorarioSearch extends Horario
 
         $query->andFilterWhere(['like', 'horario', $this->horario])
             ->andFilterWhere(['like', 'desde', $this->desde])
-            ->andFilterWhere(['like', 'hasta', $this->hasta]);
+            ->andFilterWhere(['like', 'hasta', $this->hasta])
+            ->andFilterWhere(['like', 'total_horas', $this->total_horas]);
 
         return $dataProvider;
     }

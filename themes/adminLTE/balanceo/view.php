@@ -74,7 +74,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_creación') ?>:</th>
                     <td><?= Html::encode($model->fecha_creacion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Observaciones') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
+                    <td colspan="4"><?= Html::encode($model->observacion) ?></td>
                 </tr>
                 
             </table>
@@ -92,7 +92,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
-            <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
+            <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($balanceo_detalle) ?></span></a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="flujo">
@@ -229,7 +229,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                         </div>
                                             
                             <div class="panel-footer text-right">
-                                <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm']); ?>                
+                                <?= Html::a('<span class="glyphicon glyphicon-exportar"></span> Excel', ['excelbalanceo', 'id_balanceo' => $model->id_balanceo, 'idordenproduccion'=>$model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']);?>
            
                             </div>
                          

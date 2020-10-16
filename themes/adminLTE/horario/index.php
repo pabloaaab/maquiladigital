@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [                
                 'attribute' => 'horario',
-                'contentOptions' => ['class' => 'col-lg-3'],                
+                'contentOptions' => ['class' => 'col-lg-2'],                
             ],
             [               
                 'attribute' => 'desde',
@@ -36,8 +36,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [               
                 'attribute' => 'hasta',
-                'contentOptions' => ['class' => 'col-lg-3 '],                
-            ],            			
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ], 
+ [               
+                'attribute' => 'total_horas',
+                'contentOptions' => ['class' => 'col-lg-2 '],                
+            ],                
             [
                 'class' => 'yii\grid\ActionColumn',              
             ],

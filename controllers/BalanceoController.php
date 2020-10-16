@@ -198,12 +198,7 @@ class BalanceoController extends Controller
     endforeach;
 
     }
-    
-    /**
-     * Creates a new Balanceo model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
+
     public function actionCreate($idordenproduccion)
     {
         $model = new Balanceo();
@@ -235,25 +230,42 @@ class BalanceoController extends Controller
                     $table->porcentaje = 100;
                     $table->usuariosistema = Yii::$app->user->identity->username;
                     $table->save(false);
-                     return $this->redirect(["balanceo/index"]); 
+                    $this->actionActualizarfechaterminacion($idordenproduccion);
+                    return $this->redirect(["balanceo/index"]); 
                 }     
             }else{
                 $model->getErrors();
             }
         }    
-
         return $this->render('create', [
             'model' => $model,
             'orden' => $orden,
         ]);
     }
-    /**
-     * Updates an existing Balanceo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    //suproceso para validar la fecha de terminacion
+    protected function actionActualizarfechaterminacion($idordenproduccion)
+    {
+        $minutos = 0; $cantidad = 0; $totales = 0; $total_dias = 0;
+        $unidades = 0;
+        $horario = \app\models\Horario::findOne(1);
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+        $balaceo = Balanceo::find()->where(['=','idordenproduccion', $idordenproduccion])->all();
+        $minutos = $orden->segundosficha / 60;
+        $unidades = (60/$minutos);
+        foreach ($balaceo as $val):
+            $cantidad += $val->cantidad_empleados;
+        endforeach;
+        $totales = round(($unidades * $cantidad) * $horario->total_horas);
+        $total_dias = round($orden->cantidad / $totales);
+        $fecha = date($val->fecha_inicio);
+        $date_dato = strtotime('+'.($total_dias).' day', strtotime($fecha)-1);
+        $date_dato = date('Y-m-d', $date_dato);
+        $val->fecha_terminacion = $date_dato;
+        $val->save(false);
+        $orden->fechaentrega = $date_dato;
+        $orden->save(false);
+    }
+    
    public function actionUpdate($id, $idordenproduccion)
     {
        $model = new Balanceo();
@@ -278,7 +290,8 @@ class BalanceoController extends Controller
                         $table->total_minutos = ''.number_format($table->total_segundos /60,2);
                         $table->tiempo_operario = ''.number_format($table->total_minutos / $table->cantidad_empleados ,2);
                         $table->save(false);
-                         return $this->redirect(["balanceo/index"]);  
+                        $this->actionActualizarfechaterminacion($idordenproduccion);
+                        return $this->redirect(["balanceo/index"]);  
                     }
                 }
         }
@@ -303,13 +316,6 @@ class BalanceoController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Balanceo model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
    public function actionEliminar($id) {
         if (Yii::$app->request->post()) {
             $balanceo = Balanceo::findOne($id);
@@ -404,13 +410,7 @@ class BalanceoController extends Controller
             $dato->save();
         endforeach;
     }
-    /**
-     * Finds the Balanceo model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Balanceo the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    
     protected function findModel($id)
     {
         if (($model = Balanceo::findOne($id)) !== null) {
@@ -483,6 +483,113 @@ class BalanceoController extends Controller
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Modulos.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+     public function actionExcelbalanceo($id_balanceo, $idordenproduccion) {
+        $orden = Ordenproduccion::findOne($idordenproduccion);         
+        $balanceo = balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one(); 
+        $detalle = BalanceoDetalle::find()->where(['=','id_balanceo', $balanceo->id_balanceo])->orderBy('id_operario ASC')->all();
+        
+       // $ordendetalleproceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden',$iddetalleorden])->all();
+        $items = count($detalle);
+        $totalprenda = 0;
+        $totalminutos = 0;  
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('2')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('3')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('4')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('5')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('6')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+                               
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('D1', 'DETALE DEL MODULO')
+                    ->setCellValue('B2', 'NIT:')
+                    ->setCellValue('C2', $orden->cliente->cedulanit . '-' . $orden->cliente->dv)
+                    ->setCellValue('D2', 'FECHA LLEGADA:')
+                    ->setCellValue('E2', $orden->fechallegada)
+                    ->setCellValue('B3', 'CLIENTE:')
+                    ->setCellValue('C3', $orden->cliente->nombrecorto)
+                    ->setCellValue('D3', 'FECHA ENTREGA:')
+                    ->setCellValue('E3', $orden->fechaentrega)
+                    ->setCellValue('B4', 'COD PRODUCTO:')
+                    ->setCellValue('C4', $orden->codigoproducto)
+                    ->setCellValue('D4', 'ORDEN PRODUCCION:')
+                    ->setCellValue('E4', $orden->idordenproduccion)
+                    ->setCellValue('F4', 'TIPO ORDEN:')
+                    ->setCellValue('G4', $orden->tipo->tipo)
+                    ->setCellValue('A7', 'Id')
+                    ->setCellValue('B7', 'Proceso')
+                    ->setCellValue('C7', 'Maquina')
+                    ->setCellValue('D7', 'Operario)')
+                    ->setCellValue('E7', 'S.Operacion')
+                    ->setCellValue('F7', 'M_Operacion')
+                    ->setCellValue('G7', 'T. Seg.')
+                    ->setCellValue('H7', 'T. Mit.')
+                    ->setCellValue('I7', 'S/F')
+                    ->setCellValue('J7', 'U. X HORA');
+        $i = 10;
+        
+        foreach ($detalle as $val) {
+            $totalprenda += ((60/$val->minutos)/60)*$balanceo->cantidad_empleados;                      
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_detalle)
+                    ->setCellValue('B' . $i, $val->proceso->proceso)
+                    ->setCellValue('C' . $i, $val->tipo->descripcion)
+                    ->setCellValue('D' . $i, $val->operario->nombrecompleto)                    
+                    ->setCellValue('E' . $i, $val->segundos)                    
+                    ->setCellValue('F' . $i, $val->minutos)
+                    ->setCellValue('G' . $i, $val->total_segundos)
+                    ->setCellValue('H' . $i, $val->total_minutos)
+                    ->setCellValue('I' . $i, $val->sobrante_faltante)
+                    ->setCellValue('J' . $i, ''. number_format(60 / $val->minutos,2));
+            $i++;
+        }
+        $j = $i + 1;
+        $objPHPExcel->getActiveSheet()->getStyle($j)->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('C' . $j, 'Items: '.$items)
+                ->setCellValue('D' . $j, 'Total Minutos: '. $balanceo->total_minutos)
+                ->setCellValue('E' . $j, 'Un. x Hora: '. ''. number_format($totalprenda),2);
+        
+        $objPHPExcel->getActiveSheet()->setTitle('Balanceo modular');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Balanceo_modular.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
