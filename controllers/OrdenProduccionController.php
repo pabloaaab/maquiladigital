@@ -1046,11 +1046,7 @@ class OrdenProduccionController extends Controller {
                 $ts = $ts + $v->totalproceso;
             }
         }                
-        /*if ($ts == 0) {
-            $ts = 1;
-        }
-        $orden->porcentaje_proceso = 100 * $tdetallesseg / $ts;
-        $orden->update();*/
+      
         $orden = Ordenproduccion::findOne($idordenproduccion);
         $ordendetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion',$idordenproduccion])->all();
         $reg = count($ordendetalle);
@@ -1139,6 +1135,35 @@ class OrdenProduccionController extends Controller {
         }
     }
     
+    //codigo que permite subir las prendas terminas
+    public function actionSubirprendaterminada($id_balanceo, $idordenprdouccion)
+    {
+        $model = new FormComprobanteegresonuevodetallelibre();
+        $ordendetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenprdouccion])->one();
+        $model_tallas = Ordenproducciondetalleproceso::find()->Where(['=','iddetalleorden', $ordendetalle->iddetalleorden])
+                                                                    ->orderBy('id_tipo DESC')
+                                                                   ->all();
+       if ($model->load(Yii::$app->request->post())) {
+            $table = new ComprobanteEgresoDetalle();
+            $table->vlr_abono = $model->vlr_abono;
+            $table->id_comprobante_egreso = $id;
+            $table->vlr_saldo = 0;
+            $table->subtotal = $model->subtotal;
+            $table->retefuente = $model->retefuente;
+            $table->iva = $model->iva;
+            $table->reteiva = $model->reteiva;
+            $table->reteica = 0;
+            $table->base_aiu = $model->base_aiu;
+            $table->save(false);
+            return $this->redirect(['view_balanceo','id' => $idordenprdouccion]);
+        }
+        return $this->renderAjax('_subirprendadeterminada', [
+            'model' => $model,       
+            '$model_tallas'
+        ]);        
+    }
+        
+   
     public function actionIndexconsulta() {
         if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',95])->all()){

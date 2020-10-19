@@ -1,6 +1,5 @@
 <?php
 
-
 use app\models\Ordenproducciondetalle;
 use app\models\Ordenproducciondetalleproceso;
 use app\models\Ordenproduccion;
@@ -198,12 +197,13 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
-
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
+                                            
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($modulos as $val): ?>
-                                    <tr style="font-size: 85%;">
+                                    <tr style="font-size: 85%; ">
                                         <td><?= $val->id_balanceo ?></td>
                                         <td><?= $val->idordenproduccion ?></td>
                                          <td><?= $val->cliente->nombrecorto ?></td>
@@ -212,6 +212,26 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <td><?= $val->fecha_inicio ?></td>
                                         <td><?= $val->fecha_terminacion ?></td>
                                         <td><?= $val->observacion ?></td>
+                                        <td style="width: 80px; height: 30px;">
+                                            <div class="panel-footer text-center">
+                                              <!-- Inicio Nuevo Detalle proceso -->
+                                                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
+                                                    ['/orden-produccion/subirprendaterminada','id_balanceo' => $val->id_balanceo, 'idordenproduccion' => $model->idordenproduccion],
+                                                    [
+                                                        'title' => 'Prendas terminadas',
+                                                        'data-toggle'=>'modal',
+                                                        'data-target'=>'#modalsubirprendaterminada'.$val->id_balanceo,
+                                                        'class' => 'btn btn-success btn-xs'
+                                                    ])    
+                                               ?>
+                                            </div> 
+                                            <div class="modal remote fade" id="modalsubirprendaterminada<?= $val->id_balanceo ?>">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content"></div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                       
                                     </tr>
                                 </tbody>
                                 <?php endforeach; ?>
@@ -249,7 +269,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                          <td align="right"><?= ''.number_format(($model->duracion * 60)* ($val->cantidad),0) ?></td>
                                          <td align="right"><?= ''.number_format($model->duracion  * $val->cantidad,0) ?></td>
                                         <td align="right" style="background: #F5BCA9;"><?= ''.number_format($model->segundosficha / 60 * $val->cantidad,0) ?></td>
-                                         
+                                       
                                     </tr>
                                     <?php
                                        $t_minutos += ($model->duracion * $val->cantidad);

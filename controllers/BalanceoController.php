@@ -348,7 +348,7 @@ class BalanceoController extends Controller
             if ((int) $id_detalle) {
                 try {
                     BalanceoDetalle::deleteAll("id_detalle=:id_detalle", [":id_detalle" => $id_detalle]);
-                    Yii::$app->getSession()->setFlash('success', 'Registro Eliminado con exito.');
+                    $this->ActualizarSegundos($id);
                     $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
                 } catch (IntegrityException $e) {
                     $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
