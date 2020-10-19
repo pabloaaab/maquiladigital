@@ -137,7 +137,7 @@ class BalanceoController extends Controller
                     if ($_POST["id_operario"][$intIndice] > 0) {
                         $table = new BalanceoDetalle();
                         $table->id_proceso = $intCodigo;
-                        $table->id_balanceo = $_POST["id_balanceo"][$intIndice];
+                        echo $table->id_balanceo = $id;
                         $table->id_tipo = $_POST["id_tipo"][$intIndice];
                         $table->id_operario = $_POST["id_operario"][$intIndice];
                         $table->segundos = $_POST["segundos"][$intIndice];
@@ -149,20 +149,21 @@ class BalanceoController extends Controller
                     }
                     $intIndice++;
                 }
-                $this->ActualizarSegundos($id);
+               $this->ActualizarSegundos($id);
                 return $this->redirect(["balanceo/view",
                       'id'=> $id,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                     ]); 
             }
-       }    
-        
-       return $this->render('view', [
-            'model' => $this->findModel($id),
-            'flujo_operaciones' => $flujo_operaciones,
-           'balanceo_detalle' => $balanceo_detalle,
-        ]);
+       }else{    
+                
+        return $this->render('view', [
+             'model' => $this->findModel($id),
+             'flujo_operaciones' => $flujo_operaciones,
+            'balanceo_detalle' => $balanceo_detalle,
+         ]);
+       } 
     }
  // codigo que actualiza los minutos y segundos de los operarios
     

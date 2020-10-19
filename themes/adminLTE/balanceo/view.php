@@ -220,11 +220,13 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         $total_mi += $val->minutos;
                                    endforeach; ?>
                                 </tbody>  
-                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $model->total_minutos?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
-                                <?php
-                                   if($total_mi > $model->total_minutos){
-                                       Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');
-                                    } ?> 
+                                <?php if(count($balanceo_detalle)> 0){?>
+                                    <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= $model->total_minutos?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
+                                    <?php 
+                                     if($total_mi > $model->total_minutos){
+                                        Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');
+                                     } ?> 
+                                <?php }?>    
                             </table>
                         </div>
                                             
