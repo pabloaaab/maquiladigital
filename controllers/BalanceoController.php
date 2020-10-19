@@ -421,6 +421,15 @@ class BalanceoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
+    public function actionCerrarmodulo($id)
+    {
+        $balanceo = Balanceo::findOne($id);
+        $balanceo->estado_modulo = 1;
+        $balanceo->save(false);
+        return $this->redirect(["balanceo/index"]);
+        
+    }
+    
      public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
