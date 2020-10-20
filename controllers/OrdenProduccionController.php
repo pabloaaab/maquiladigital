@@ -9,10 +9,12 @@ use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
 use app\models\Ordenproducciontipo;
 use app\models\Cliente;
+use app\models\CantidadPrendaTerminadas;
 use app\models\FormFiltroOrdenProduccionProceso;
 use app\models\FormFiltroConsultaFichaoperacion;
 use app\models\FormFiltroConsultaOrdenproduccion;
 use app\models\FormFiltroProcesosOperaciones;
+use app\models\FormPrendasTerminadas;
 use app\models\FlujoOperaciones;
 use app\models\Producto;
 use app\models\Productodetalle;
@@ -968,6 +970,7 @@ class OrdenProduccionController extends Controller {
                     'modeldetalles' => $modeldetalles,
         ]);
     }  
+    
     //VISTA PARA EL DETALLE DE BALANCEO
     public function actionView_balanceo($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
@@ -1136,30 +1139,36 @@ class OrdenProduccionController extends Controller {
     }
     
     //codigo que permite subir las prendas terminas
-    public function actionSubirprendaterminada($id_balanceo, $idordenprdouccion)
+    public function actionSubirprendaterminada($id_balanceo, $idordenproduccion)
     {
-        $model = new FormComprobanteegresonuevodetallelibre();
-        $ordendetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenprdouccion])->one();
-        $model_tallas = Ordenproducciondetalleproceso::find()->Where(['=','iddetalleorden', $ordendetalle->iddetalleorden])
-                                                                    ->orderBy('id_tipo DESC')
-                                                                   ->all();
-       if ($model->load(Yii::$app->request->post())) {
-            $table = new ComprobanteEgresoDetalle();
-            $table->vlr_abono = $model->vlr_abono;
-            $table->id_comprobante_egreso = $id;
-            $table->vlr_saldo = 0;
-            $table->subtotal = $model->subtotal;
-            $table->retefuente = $model->retefuente;
-            $table->iva = $model->iva;
-            $table->reteiva = $model->reteiva;
-            $table->reteica = 0;
-            $table->base_aiu = $model->base_aiu;
-            $table->save(false);
-            return $this->redirect(['view_balanceo','id' => $idordenprdouccion]);
+        $model = new FormPrendasTerminadas();
+        $fechaActual = date('Y-m-d');
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) {
+                if (isset($_POST["enviarcantidad"])) { 
+                    if (isset($_POST["id_detalle_orden"])) {
+                        $intIndice = 0;
+                        foreach ($_POST["id_detalle_orden"] as $intCodigo):
+                            $table = new CantidadPrendaTerminadas();
+                            $table->id_balanceo = $id_balanceo;
+                            $table->idordenproduccion = $idordenproduccion;
+                            $table->cantidad_terminada = $model->cantidad_terminada;
+                            $table->fecha_entrada = $fechaActual;
+                            $table->usuariosistema = Yii::$app->user->identity->username;
+                            $table->observacion = $model->observacion;
+                            $table->iddetalleorden = $intCodigo;
+                            $table->insert();
+                            $intIndice ++;
+                        endforeach;
+                        return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
+                    }
+                }
+            }                
         }
-        return $this->renderAjax('_subirprendadeterminada', [
+        return $this->renderAjax('_subirprendaterminada', [
             'model' => $model,       
-            '$model_tallas'
+            'idordenproduccion' => $idordenproduccion,
+            
         ]);        
     }
         

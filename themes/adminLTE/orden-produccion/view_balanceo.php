@@ -212,7 +212,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <td><?= $val->fecha_inicio ?></td>
                                         <td><?= $val->fecha_terminacion ?></td>
                                         <td><?= $val->observacion ?></td>
-                                        <td style="width: 80px; height: 30px;">
+                                        <td style="width: 50px; height: 30px;">
                                             <div class="panel-footer text-center">
                                               <!-- Inicio Nuevo Detalle proceso -->
                                                 <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
@@ -276,8 +276,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         $t_segundos = $t_minutos * 60;
                                        $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
                                     endforeach; ?>
-                                </tbody>  
-                                <td colspan="3"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td>
+                                     <td colspan="3"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td>
+                                </tbody>     
                             </table>
                         </div>    
                     </div>

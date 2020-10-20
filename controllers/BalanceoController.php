@@ -137,7 +137,7 @@ class BalanceoController extends Controller
                     if ($_POST["id_operario"][$intIndice] > 0) {
                         $table = new BalanceoDetalle();
                         $table->id_proceso = $intCodigo;
-                        echo $table->id_balanceo = $id;
+                        $table->id_balanceo = $id;
                         $table->id_tipo = $_POST["id_tipo"][$intIndice];
                         $table->id_operario = $_POST["id_operario"][$intIndice];
                         $table->segundos = $_POST["segundos"][$intIndice];
