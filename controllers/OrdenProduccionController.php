@@ -1012,6 +1012,20 @@ class OrdenProduccionController extends Controller {
         ]);
     }        
   
+    //VISTA DE CANTIDADES CONFECCINADAS POR TALLAS
+    
+    public function actionVistatallas($iddetalleorden)
+    {
+      $detalletallas = Ordenproducciondetalle::findOne($iddetalleorden);  
+      $cantidad = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $iddetalleorden])->all();
+       return $this->render('vistatallas', [
+                    'detalletallas' => $detalletallas, 
+                    'cantidad' => $cantidad,
+                    
+        ]);
+      
+    }
+    
     protected function progresoproceso($iddetalleorden, $idordenproduccion) {
         $tabla = Ordenproducciondetalle::findOne(['=', 'iddetalleorden', $iddetalleorden]);
         $procesos = Ordenproducciondetalleproceso::find()->where(['=', 'iddetalleorden', $iddetalleorden])->all();

@@ -23,6 +23,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
+use yii\db\Expression;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -252,31 +253,48 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Producto / Talla</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Unidades x Talla</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Unid. confeccionada</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Total segundos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Total minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos confección</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                       $t_segundos = 0; $t_minutos = 0; $t_minutos_conf = 0;
-                                    foreach ($modeldetalles as $val): ?>
+                                      $total_c = 0;
+                                    foreach ($modeldetalles as $val):
+                                        $total_c = 0;
+                                        ?>
                                     <tr style="font-size: 85%;">
                                         <td><?= $val->iddetalleorden ?></td>
                                         <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                                         <td align="center"><?= $val->cantidad ?></td>
+                                        <?php
+                                        $cantidad = app\models\CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $val->iddetalleorden])->all();
+                                        if(count($cantidad) > 0){
+                                            foreach ($cantidad as $variable):
+                                                $total_c += $variable->cantidad_terminada;
+                                            endforeach;?>   
+                                             <td align="right" style="background: #F6CECE;"><?= $total_c ?></td>    
+                                        <?php }else {?>
+                                              <td align="right"><?= 0 ?></td>
+                                         <?php } ?>
                                          <td align="right"><?= ''.number_format(($model->duracion * 60)* ($val->cantidad),0) ?></td>
                                          <td align="right"><?= ''.number_format($model->duracion  * $val->cantidad,0) ?></td>
                                         <td align="right" style="background: #F5BCA9;"><?= ''.number_format($model->segundosficha / 60 * $val->cantidad,0) ?></td>
-                                       
+                                        <td style= 'width: 25px; height: 25px;'>
+                                                <a href="<?= Url::toRoute(["orden-produccion/vistatallas", "iddetalleorden" => $val->iddetalleorden]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                                        </td>
                                     </tr>
                                     <?php
                                        $t_minutos += ($model->duracion * $val->cantidad);
                                         $t_segundos = $t_minutos * 60;
                                        $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
                                     endforeach; ?>
-                                     <td colspan="3"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td>
+                                     <td colspan="4"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="1">
                                 </tbody>     
                             </table>
                         </div>    
