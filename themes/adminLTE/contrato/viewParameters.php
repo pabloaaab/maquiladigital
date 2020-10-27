@@ -105,7 +105,7 @@ $view = 'contrato';
                     <td><?= Html::encode($model->cajaCompensacion->caja) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_cesantia') ?>:</th>
                     <td><?= Html::encode($model->cesantia->cesantia) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_arl') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_arl') ?> %:</th>
                     <td><?= Html::encode($model->arl->arl) ?></td>
                       <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'contrato_activo') ?>:</th>
                     <td><?= Html::encode($model->activo) ?></td>
@@ -147,7 +147,7 @@ $view = 'contrato';
                     <td><?= Html::encode($model->ciudadLaboral->municipio) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'identificacion') ?>:</th>
                     <td><?= Html::encode($model->identificacion) ?></td>
-                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'identificacion') ?>:</th>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Empleado') ?>:</th>
                      <td><?= Html::encode($model->empleado->nombrecorto) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ciudad_contratado') ?>:</th>
                     <td><?= Html::encode($model->ciudadContratado->municipio) ?></td>
