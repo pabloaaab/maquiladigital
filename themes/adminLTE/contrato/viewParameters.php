@@ -134,11 +134,11 @@ $view = 'contrato';
                 </tr>
                 <tr style ='font-size:85%;'>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Ibp_prima') ?>:</th>
-                    <td><?= Html::encode($model->ibp_prima_inicial) ?></td>
+                     <td><?= Html::encode('$ '.number_format($model->ibp_prima_inicial,0)) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Ibp_cesantia') ?>:</th>
-                    <td><?= Html::encode($model->ibp_cesantia_inicial) ?></td>
+                    <td><?= Html::encode('$ '.number_format($model->ibp_cesantia_inicial,0)) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Recargo_nocturno') ?>:</th>
-                     <td><?= Html::encode($model->ibp_recargo_nocturno) ?></td>
+                     <td><?= Html::encode('$ '.number_format($model->ibp_recargo_nocturno,0)) ?></td>
                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario_creador') ?>:</th>
                     <td><?= Html::encode($model->usuario_creador) ?></td>
                 </tr>
