@@ -541,12 +541,18 @@ class PrestacionesSocialesController extends Controller
             }
         }
         //PROCESO PARA CESANTIAS
-        $valor_cesantia = 0;
         $sw = 0;
         if($configuracion_c->codigo_salario ==  $concepto_c->codigo_salario){
-                $valor_cesantia = 1;
-                $sw = 0;
-                $this->CrearCesantia($ano, $model, $sw, $valor_cesantia);
+            if(strtotime($model->fecha_inicio_contrato) == strtotime($model->ultimo_pago_cesantias)){   
+                $sw = 1;
+            }else{
+                if(strtotime($model->fecha_termino_contrato) == strtotime($model->ultimo_pago_cesantias)){
+                   $sw = 2;
+                }else{
+                    $sw = 3;
+                }    
+            }    
+                $this->CrearCesantia($ano, $model, $sw);
    
         }
         //PROCESO PARA VACACIONES
@@ -557,13 +563,13 @@ class PrestacionesSocialesController extends Controller
                 $this->CrearVacion($model, $sw, $ano);
             }else{
                  $sw = 2;
-                 $this->CrearVacion($model, $sw, $ano);
+                $this->CrearVacion($model, $sw, $ano);
             }    
         }
         $model->estado_generado = 1;
         $model->save(false);
          
-     $this->redirect(["prestaciones-sociales/view", 'id' => $id,
+    $this->redirect(["prestaciones-sociales/view", 'id' => $id,
           'model' => $model,
            'pagina' => $pagina,
           ]);
@@ -721,7 +727,7 @@ class PrestacionesSocialesController extends Controller
        
     }
     
-    protected function CrearCesantia($ano, $model, $sw, $valor_cesantia)
+    protected function CrearCesantia($ano, $model, $sw)
     {
         $concepto = ConceptoSalarios::find()->where(['=','concepto_cesantias', 1])->one();
         $concepto_i = ConceptoSalarios::find()->where(['=','intereses', 1])->one();
@@ -729,14 +735,34 @@ class PrestacionesSocialesController extends Controller
         $configuracion_i = ConfiguracionPrestaciones::findOne(3);
         $total_dias = 0;
         //codigo que captura los dias, meses y años. 
-        $fecha_inicio = $model->fecha_inicio_contrato;      
-        $fecha_termino = $model->fecha_termino_contrato;
-        $diaTerminacion = substr($fecha_termino, 8, 8);
-        $mesTerminacion = substr($fecha_termino, 5, 2);
-        $anioTerminacion = substr($fecha_termino, 0, 4);
-        $diaInicio = substr($fecha_inicio, 8, 8);
-        $mesInicio = substr($fecha_inicio, 5, 2);
-        $anioInicio = substr($fecha_inicio, 0, 4);
+        if($sw == 1){
+            $fecha_inicio = $model->fecha_inicio_contrato;      
+            $fecha_termino = $model->fecha_termino_contrato;
+            $diaTerminacion = substr($fecha_termino, 8, 8);
+            $mesTerminacion = substr($fecha_termino, 5, 2);
+            $anioTerminacion = substr($fecha_termino, 0, 4);
+            $diaInicio = substr($fecha_inicio, 8, 8);
+            $mesInicio = substr($fecha_inicio, 5, 2);
+            $anioInicio = substr($fecha_inicio, 0, 4);
+        }else{
+            if ($sw==2){
+                $total_dias = 0;
+            }else{
+                $fecha = date($model->ultimo_pago_cesantias);
+                $fecha_inicio_dias = strtotime('1 day', strtotime($fecha));
+                $fecha_inicio_dias = date('Y-m-d', $fecha_inicio_dias);
+                $fecha_inicio = $model->$fecha_inicio_dias;      
+                $fecha_termino = $model->fecha_termino_contrato;
+                $diaTerminacion = substr($fecha_termino, 8, 8);
+                $mesTerminacion = substr($fecha_termino, 5, 2);
+                $anioTerminacion = substr($fecha_termino, 0, 4);
+                $diaInicio = substr($fecha_inicio, 8, 8);
+                $mesInicio = substr($fecha_inicio, 5, 2);
+                $anioInicio = substr($fecha_inicio, 0, 4);
+            }
+                
+        }
+       
         //codigo que valide los dias
         
         $febrero = 0;
@@ -797,7 +823,7 @@ class PrestacionesSocialesController extends Controller
          
          $contrato = Contrato::find()->where(['=','id_contrato', $model->id_contrato])->one();
          $ibp_cesantia_anterior = $contrato->ibp_cesantia_inicial;
-         if($valor_cesantia == 1){
+         if($sw == 1){
              $nomina = ProgramacionNomina::find()->where(['=','id_contrato',$model->id_contrato])->andWhere(['=','fecha_inicio_contrato',$model->fecha_inicio_contrato])->all();
              foreach ($nomina as $valor_nomina):
                  $detalle_nomina = ProgramacionNominaDetalle::find()->where(['=','id_programacion', $valor_nomina->id_programacion])->all();
@@ -809,7 +835,20 @@ class PrestacionesSocialesController extends Controller
                            }
                      endforeach;
              endforeach;
-         }
+        }
+        if($sw==3){
+            $nomina = ProgramacionNomina::find()->where(['=','id_contrato',$model->id_contrato])->andWhere(['>','ultimo_pago_cesantias',$model->ultimo_pago_cesantias])->all();
+             foreach ($nomina as $valor_nomina):
+                 $detalle_nomina = ProgramacionNominaDetalle::find()->where(['=','id_programacion', $valor_nomina->id_programacion])->all();
+                     foreach ($detalle_nomina as $valor_detalle ):
+                           $concepto_salario = ConceptoSalarios::find()->where(['=','ingreso_base_prestacional', 1])->andWhere(['=','codigo_salario', $valor_detalle->codigo_salario])->one();
+                           if($concepto_salario){
+                               $suma_cesantia += $valor_detalle->vlr_devengado + $valor_detalle->vlr_ajuste_incapacidad;   
+                               $suma_licencia += $valor_detalle->vlr_licencia_no_pagada;
+                           }
+                     endforeach;
+             endforeach;
+        }
          
         $auxiliar = 0;
         $porcentaje_interes = 0;
@@ -830,7 +869,15 @@ class PrestacionesSocialesController extends Controller
             endforeach;
         }
         $total_ibp = 0;
-        $total_ibp = $suma_cesantia + $suma_licencia + $ibp_cesantia_anterior;
+        if($sw==1){
+           $total_ibp = round($suma_cesantia + $suma_licencia + $ibp_cesantia_anterior);
+        }else{
+            if($sw==2){
+                $total_ibp =0;
+            }else{
+                $total_ibp = round($suma_cesantia + $suma_licencia);
+            }
+        }  
         $dias_reales = 0;
         $dias_reales = $total_dias - $auxiliar;
       
@@ -840,12 +887,14 @@ class PrestacionesSocialesController extends Controller
         if($contrato->auxilio_transporte == 1){
             $auxilio_transporte = $transporte->auxilio_transporte_actual;
         }
-        if($sw == 1){
-             $cesantias = 0;
-        }else{
-            $cesantias = round((($salario_promedio + $auxilio_transporte) * $dias_reales)/360);
+        if($sw==1 or $sw == 3){    
+           $cesantias = round((($salario_promedio + $auxilio_transporte) * $dias_reales)/360);
             $intereses = round($cesantias * $porcentaje_interes);
-        }
+        }else{
+            $cesantias = 0;
+            $intereses = 0;
+        }    
+       
        $detalle_prestacion = PrestacionesSocialesDetalle::find()->where(['=','id_prestacion', $model->id_prestacion])->andWhere(['=','codigo_salario', $concepto->codigo_salario])->one();
        if(!$detalle_prestacion){
            $detalle = new PrestacionesSocialesDetalle();

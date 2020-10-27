@@ -28,7 +28,10 @@ class CostoProduccionDiariaController extends Controller {
     public function actionCostodiario() {
         if (Yii::$app->user->identity){
             if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',20])->all()){
-                $ordenesproduccion = Ordenproduccion::find()->Where(['=', 'autorizado', 1])->orderBy('idordenproduccion desc')->all();
+                $ordenesproduccion = Ordenproduccion::find()
+                                                      ->Where(['=', 'autorizado', 1])
+                                                      ->andWhere(['=','facturado', 0])
+                                                      ->orderBy('idordenproduccion desc')->all();
                 $form = new FormGenerarCostoProduccionDiaria;
                 $operarias = null;
                 $horaslaboradas = null;
@@ -64,7 +67,7 @@ class CostoProduccionDiariaController extends Controller {
                                         $table = CostoProduccionDiaria::find()->where(['=','id_costo_produccion_diaria',1])->all();                        
                                         $model = $table;
                                     }else{
-                                        Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene procesos generados en la ficha de operaciones');                        
+                                        Yii::$app->getSession()->setFlash('error', 'La orden de produccion no tiene operaciones asignadas en la ficha de operaciones.');                        
                                         $model = CostoProduccionDiaria::find()->where(['=','id_costo_produccion_diaria',0])->all();
                                     }                            
                                 } else{

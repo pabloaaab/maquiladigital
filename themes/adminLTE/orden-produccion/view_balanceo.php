@@ -213,25 +213,29 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <td><?= $val->fecha_inicio ?></td>
                                         <td><?= $val->fecha_terminacion ?></td>
                                         <td><?= $val->observacion ?></td>
-                                        <td style="width: 50px; height: 30px;">
-                                            <div class="panel-footer text-center">
-                                              <!-- Inicio Nuevo Detalle proceso -->
-                                                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
-                                                    ['/orden-produccion/subirprendaterminada','id_balanceo' => $val->id_balanceo, 'idordenproduccion' => $model->idordenproduccion],
-                                                    [
-                                                        'title' => 'Prendas terminadas',
-                                                        'data-toggle'=>'modal',
-                                                        'data-target'=>'#modalsubirprendaterminada'.$val->id_balanceo,
-                                                        'class' => 'btn btn-success btn-xs'
-                                                    ])    
-                                               ?>
-                                            </div> 
-                                            <div class="modal remote fade" id="modalsubirprendaterminada<?= $val->id_balanceo ?>">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content"></div>
+                                        <?php if($val->estado_modulo == 0){?>
+                                            <td style="width: 50px; height: 30px;">
+                                                <div class="panel-footer text-center">
+                                                  <!-- Inicio Nuevo Detalle proceso -->
+                                                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
+                                                        ['/orden-produccion/subirprendaterminada','id_balanceo' => $val->id_balanceo, 'idordenproduccion' => $model->idordenproduccion],
+                                                        [
+                                                            'title' => 'Prendas terminadas',
+                                                            'data-toggle'=>'modal',
+                                                            'data-target'=>'#modalsubirprendaterminada'.$val->id_balanceo,
+                                                            'class' => 'btn btn-success btn-xs'
+                                                        ])    
+                                                   ?>
+                                                </div> 
+                                                <div class="modal remote fade" id="modalsubirprendaterminada<?= $val->id_balanceo ?>">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        <?php }else{ ?>
+                                            <td style="width: 50px; height: 30px;"></td>
+                                        <?php } ?>    
                                        
                                     </tr>
                                 </tbody>

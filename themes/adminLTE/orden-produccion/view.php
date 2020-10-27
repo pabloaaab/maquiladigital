@@ -234,7 +234,7 @@ $view = 'orden-produccion';
                                                 <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
                                                 <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
                                             </div>
-                                            <?= Html::endForm() ?>
+                                             <?= Html::endForm() ?>
                                         </div><!-- /.modal-content -->
                                     </div><!-- /.modal-dialog -->
                                 </div><!-- /.modal -->

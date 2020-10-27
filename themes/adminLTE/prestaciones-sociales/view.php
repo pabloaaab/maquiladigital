@@ -78,14 +78,15 @@ $view = 'prestaciones sociales';
                     <td align="right"><?= Html::encode('$'.number_format($model->salario,0)) ?></td> 
                 </tr>   
                  <tr style='font-size:85%;'>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha_inicio_contrato') ?>:</th>
+                    <td><?= Html::encode($model->fecha_inicio_contrato) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha_termino_contrato') ?>:</th>
+                    <td><?= Html::encode($model->fecha_termino_contrato) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_grupo_pago') ?>:</th>
                     <td><?= Html::encode($model->grupoPago->grupo_pago) ?></td> 
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cargo') ?>:</th>
                     <td><?= Html::encode($model->contrato->cargo->cargo) ?></td>  
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha_inicio_contrato') ?>:</th>
-                    <td><?= Html::encode($model->fecha_inicio_contrato) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha_termino_contrato') ?>:</th>
-                    <td><?= Html::encode($model->fecha_termino_contrato) ?></td>
+                    
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_devengado') ?>:</th>
                     <td align="right"><?= Html::encode('$'.number_format($model->total_devengado,0)) ?></td>
                    
