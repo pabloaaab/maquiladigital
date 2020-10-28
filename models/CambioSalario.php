@@ -43,12 +43,12 @@ class CambioSalario extends \yii\db\ActiveRecord
     {
         return [
             [['nuevo_salario', 'fecha_aplicacion'], 'required'],
-            [['nuevo_salario', 'id_contrato','id_formato_contenido'], 'integer'],
+            [['nuevo_salario', 'id_contrato','id_formato_contenido','salario_anterior'], 'integer'],
             [['fecha_aplicacion', 'fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 30],
             [['observacion'], 'string', 'max' => 40],
             [['id_contrato'], 'exist', 'skipOnError' => true, 'targetClass' => Contrato::className(), 'targetAttribute' => ['id_contrato' => 'id_contrato']],
-            //[['id_formato_contenido'], 'exist', 'skipOnError' => true, 'targetClass' => FormatoContenido::className(), 'targetAttribute' => ['id_formato_contenido' => 'id_formato_contenido']],
+            [['id_formato_contenido'], 'exist', 'skipOnError' => true, 'targetClass' => FormatoContenido::className(), 'targetAttribute' => ['id_formato_contenido' => 'id_formato_contenido']],
         ];
     }
 
@@ -66,6 +66,7 @@ class CambioSalario extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'fecha_creacion' => 'Fecha Creacion',
             'id_formato_contenido'=> 'Tipo formato',
+            'salario_anterior' => 'salario_anterior',
         ];
     }
 

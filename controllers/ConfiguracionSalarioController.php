@@ -1,15 +1,18 @@
 <?php
 
 namespace app\controllers;
-
+// clases
 use Yii;
-use app\models\ConfiguracionSalario;
-use app\models\ConfiguracionSalarioSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+//modelos
+use app\models\ConfiguracionSalario;
+use app\models\ConfiguracionSalarioSearch;
 use app\models\UsuarioDetalle;
 use app\models\FormConfiguracionSalario;
+use app\models\Contrato;
+use app\models\CambioSalario;
 
 /**
  * ConfiguracionSalarioController implements the CRUD actions for ConfiguracionSalario model.
@@ -76,44 +79,68 @@ class ConfiguracionSalarioController extends Controller
     {
         $model = new FormConfiguracionSalario();
         $confi = ConfiguracionSalario::find()->where(['=','estado', 1])->one();
-      
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
         }
         if ($model->load(Yii::$app->request->post())) {           
-             if ($model->validate()) {
-                 $table = new ConfiguracionSalario();
-                 $table->salario_minimo_actual = $model->salario_minimo_actual;
-                 $table->auxilio_transporte_actual = $model->auxilio_transporte_actual;
-                 $table->anio = $model->anio;
-                 $table->estado = $model->estado;
-                 $table->salario_minimo_anterior = $confi->salario_minimo_actual;
-                 $table->auxilio_transporte_anterior = $confi->auxilio_transporte_actual;
-                 $table->salario_incapacidad = round($model->salario_minimo_actual * $confi->porcentaje_incremento);
-                 $table->porcentaje_incremento = $confi->porcentaje_incremento;
-                 $table->usuario = Yii::$app->user->identity->username; 
-                 $table->insert(false);
-                 $confi->estado = 0;
-                 $confi->save(false);
-                 $this->redirect(["configuracion-salario/index"]);
-             } else {
-              $model->getErrors();    
-             }
+            if ($model->validate()) {
+                $sw = 0;
+                $contrato = Contrato::find()->where(['=','contrato_activo', 1])->all();
+                foreach ($contrato as $validar){
+                    if($validar->ultimo_pago == $confi->fecha_cierre)
+                    {
+                        if($validar->ultima_prima == $confi->fecha_cierre)
+                        {
+                            if($validar->ultima_cesantia == $confi->fecha_cierre){
+                                $table = new ConfiguracionSalario();
+                                $table->salario_minimo_actual = $model->salario_minimo_actual;
+                                $table->auxilio_transporte_actual = $model->auxilio_transporte_actual;
+                                $table->anio = $model->anio;
+                                $table->estado = $model->estado;
+                                $table->fecha_cierre = $model->fecha_cierre;
+                                $table->fecha_aplicacion = $model->fecha_aplicacion;
+                                $table->salario_minimo_anterior = $confi->salario_minimo_actual;
+                                $table->auxilio_transporte_anterior = $confi->auxilio_transporte_actual;
+                                $table->salario_incapacidad = round($model->salario_minimo_actual * $confi->porcentaje_incremento);
+                                $table->porcentaje_incremento = $confi->porcentaje_incremento;
+                                $table->usuario = Yii::$app->user->identity->username; 
+                                $table->insert(false);
+                                $confi->estado = 0;
+                                $confi->save(false);
+                                if($validar->salario < $model->salario_minimo_actual){
+                                    $cambio_salario = new CambioSalario();
+                                    $cambio_salario->salario_anterior = $validar->salario;
+                                    $cambio_salario->nuevo_salario = $model->salario_minimo_actual;
+                                    $cambio_salario->fecha_aplicacion = $model->fecha_aplicacion;
+                                    $cambio_salario->usuariosistema = Yii::$app->user->identity->username;
+                                    $cambio_salario->id_contrato = $validar->id_contrato;
+                                    $cambio_salario->observacion = 'Actualizacion salario minimo';
+                                    $cambio_salario->id_formato_contenido = 4;
+                                    $cambio_salario->insert(false);
+                                    $validar->salario = $model->salario_minimo_actual;
+                                    $validar->save(false);
+                                }
+                               $this->redirect(["configuracion-salario/index"]);
+                            }else{
+                                 Yii::$app->getSession()->setFlash('error', 'Error en el proceso de cesantias, debe de cerrar el pago de cesantias de todos los empleados a corte: ' . $confi->fecha_cierre.'');
+                            }
+                        }else{
+                           Yii::$app->getSession()->setFlash('error', 'Error en el proceso de prima, debe de cerrar el pago de prima de todos los empleados a corte: ' . $confi->fecha_cierre.'');
+                        }
+                    }else{
+                        Yii::$app->getSession()->setFlash('error', 'Error en el proceso de nomina, debe de cerrar todas las nominas al' . $confi->fecha_cierre.'');
+                    }
+                }
+            } else {
+                $model->getErrors();    
+            }
         }
         return $this->render('create', [
             'model' => $model,
-           
         ]);
     }
 
-    /**
-     * Updates an existing ConfiguracionSalario model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);

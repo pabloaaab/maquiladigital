@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use kartik\select2\Select2;
+use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\ConfiguracionSalario */
@@ -32,8 +33,26 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'salario_minimo_actual')->textInput(['maxlength' => true])?> 
             <?= $form->field($model, 'auxilio_transporte_actual')->textInput(['maxlength' => true]) ?> 
         </div>
-        <div class="row">
-            <?= $form->field($model, 'anio')->textInput(['maxlength' => true]) ?> 
+       
+       <div class="row">      
+            <?=  $form->field($model, 'fecha_cierre')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+               'value' => date('Y-m-d', strtotime('+2 days')),
+               'options' => ['placeholder' => 'Seleccione una fecha ...'],
+               'pluginOptions' => [
+                   'format' => 'yyyy-m-d',
+                   'todayHighlight' => true]])
+           ?>
+             <?=  $form->field($model, 'fecha_aplicacion')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+               'value' => date('Y-m-d', strtotime('+2 days')),
+               'options' => ['placeholder' => 'Seleccione una fecha ...'],
+               'pluginOptions' => [
+                   'format' => 'yyyy-m-d',
+                   'todayHighlight' => true]])
+           ?>
+            
+        </div>  
+         <div class="row">
+           <?= $form->field($model, 'anio')->textInput(['maxlength' => true]) ?> 
              <?= $form->field($model, 'estado')->dropdownList(['1' => 'SI', '0' => 'NO']) ?>
         </div>
         <div class="panel-footer text-right">                

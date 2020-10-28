@@ -16,6 +16,8 @@ class FormConfiguracionSalario extends Model
     public $auxilio_transporte_actual;
     public $anio;
     public $estado;
+    public $fecha_cierre;
+    public $fecha_aplicacion;
 
     /**
      * {@inheritdoc}
@@ -24,7 +26,7 @@ class FormConfiguracionSalario extends Model
     {
          return [
             [['salario_minimo_actual', 'auxilio_transporte_actual', 'anio', 'estado'], 'integer'],
-            [['salario_minimo_actual','auxilio_transporte_actual','anio'], 'required', 'message' => 'Este campo no puede ser vacio'],
+            [['salario_minimo_actual','auxilio_transporte_actual','anio','fecha_cierre','fecha_aplicacion'], 'required', 'message' => 'Este campo no puede ser vacio'],
         ];
     }
 
@@ -39,6 +41,8 @@ class FormConfiguracionSalario extends Model
             'auxilio_transporte_actual' => 'Auxilio transporte actual',
             'anio' => 'Año',
             'estado' => 'Activo:',
+            'fecha_cierre' =>'Fecha cierre:',
+            'fecha_aplicacion' => 'Fecha aplicacion:',
             
         ];
     }

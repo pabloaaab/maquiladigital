@@ -35,7 +35,7 @@ class ConfiguracionSalario extends \yii\db\ActiveRecord
         return [
             [['salario_minimo_actual', 'salario_minimo_anterior', 'auxilio_transporte_actual', 'auxilio_transporte_anterior', 'anio', 'estado','salario_incapacidad'], 'integer'],
             [['porcentaje_incremento'], 'number'],
-            [['salario_minimo_actual','auxilio_transporte_actual','anio'], 'required', 'message' => 'Este campo no puede ser vacio'],
+            [['salario_minimo_actual','auxilio_transporte_actual','anio','fecha_cierre','fecha_aplicacion'], 'required', 'message' => 'Este campo no puede ser vacio'],
             [['fecha_creacion'], 'safe'],
             [['usuario'], 'string', 'max' => 30],
         ];
@@ -58,6 +58,8 @@ class ConfiguracionSalario extends \yii\db\ActiveRecord
             'estado' => 'Activo:',
             'usuario' => 'Usuario',
             'fecha_creacion' => 'Fecha Creacion',
+            'fecha_cierre' => 'Fecha cierre:',
+            'fecha_aplicacion' => 'Fecha aplicacion:',
         ];
     }
     public function getActivo()

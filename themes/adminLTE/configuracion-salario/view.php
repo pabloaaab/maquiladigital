@@ -57,12 +57,18 @@ $view = 'Configuracion salario';
                 </tr>   
                  <tr style="font-size: 85%;">
                     <th><?= Html::activeLabel($model, 'estado') ?>:</th>
-                    <td align="right"><?= Html::encode($model->activo) ?></td>
+                    <td><?= Html::encode($model->activo) ?></td>
                     <th><?= Html::activeLabel($model, 'usuario') ?>:</th>
-                    <td align="right"><?= Html::encode($model->usuario) ?></td>
+                    <td><?= Html::encode($model->usuario) ?></td>
                     <th><?= Html::activeLabel($model, 'fecha_creacion') ?>:</th>
-                    <td colspan="4"><?= Html::encode($model->fecha_creacion) ?>%</td>
+                    <td><?= Html::encode($model->fecha_creacion) ?></td>
+                     <th><?= Html::activeLabel($model, 'fecha_cierre') ?>:</th>
+                    <td><?= Html::encode($model->fecha_cierre) ?></td>
 
+                </tr>   
+                <tr style="font-size: 85%;">
+                    <th><?= Html::activeLabel($model, 'fecha_aplicacion') ?>:</th>
+                    <td  colspan="8"><?= Html::encode($model->fecha_aplicacion) ?></td>
                 </tr>   
                 
             </table>
