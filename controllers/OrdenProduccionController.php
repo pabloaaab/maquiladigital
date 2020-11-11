@@ -367,7 +367,7 @@ class OrdenProduccionController extends Controller {
                 if ($_POST["orden_aleatorio"][$intIndice] > 0) {
                     $table = FlujoOperaciones::findOne($intCodigo);
                     $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
-                    $table->update();                        
+                    $table->save(false);                        
                 }
                 $intIndice++;
             }
@@ -1181,23 +1181,43 @@ class OrdenProduccionController extends Controller {
     {
         $model = new FormPrendasTerminadas();
         $fechaActual = date('Y-m-d');
+        $suma = 0;
+        $total = 0;
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
                 if (isset($_POST["enviarcantidad"])) { 
                     if (isset($_POST["id_detalle_orden"])) {
                         $intIndice = 0;
                         foreach ($_POST["id_detalle_orden"] as $intCodigo):
-                            $table = new CantidadPrendaTerminadas();
-                            $table->id_balanceo = $id_balanceo;
-                            $table->idordenproduccion = $idordenproduccion;
-                            $table->cantidad_terminada = $model->cantidad_terminada;
-                            $table->fecha_entrada = $fechaActual;
-                            $table->usuariosistema = Yii::$app->user->identity->username;
-                            $table->observacion = $model->observacion;
-                            $table->iddetalleorden = $intCodigo;
-                            $table->insert();
-                            $intIndice ++;
+                            $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
+                            $cantidad = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $intCodigo])->all();
+                            foreach ($cantidad as $detalle):
+                                $suma +=$detalle->cantidad_terminada; 
+                            endforeach;
+                            $total = $orden_detalle->faltante + $model->cantidad_terminada;
+                            if($total <= $orden_detalle->cantidad){
+                                $table = new CantidadPrendaTerminadas();
+                                $table->id_balanceo = $id_balanceo;
+                                $table->idordenproduccion = $idordenproduccion;
+                                $table->cantidad_terminada = $model->cantidad_terminada;
+                                $table->fecha_entrada = $fechaActual;
+                                $table->usuariosistema = Yii::$app->user->identity->username;
+                                $table->observacion = $model->observacion;
+                                $table->iddetalleorden = $intCodigo;
+                                $table->insert();
+                                $intIndice ++;
+                            }else{
+                                Yii::$app->getSession()->setFlash('error', 'Favor validar la cantidad de prendas confeccionadas.!');
+                            }    
                         endforeach;
+                        $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
+                        $cantidad = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $intCodigo])->all();
+                        $suma = 0;
+                        foreach ($cantidad as $detalle):
+                            $suma +=$detalle->cantidad_terminada; 
+                        endforeach;
+                        $orden_detalle->faltante = $suma;
+                        $orden_detalle->save(false);
                         return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
                     }
                 }

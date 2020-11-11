@@ -223,6 +223,7 @@
                                             'items' => [
                                               ['label' => 'Programacion nómina', 'icon' => 'plus-square-o', 'url' => ['/programacion-nomina/index']],
                                               ['label' => 'Prestaciones sociales', 'icon' => 'plus-square-o', 'url' => ['/prestaciones-sociales/index']],  
+                                              ['label' => 'Vacaciones', 'icon' => 'plus-square-o', 'url' => ['/vacaciones/index']],  
                                             ],
                                         ],
                                         [
@@ -232,6 +233,7 @@
                                             'items' => [
                                                 ['label' => 'Comprobante de pago', 'icon' => 'plus-square-o', 'url' => ['/programacion-nomina/comprobantepagonomina']],
                                                 ['label' => 'Liquidaciones', 'icon' => 'plus-square-o', 'url' => ['/prestaciones-sociales/comprobantepagoprestaciones']],
+                                                ['label' => 'Vacaciones', 'icon' => 'plus-square-o', 'url' => ['/vacaciones/searchindex']],
 
                                             ],
                                         ],

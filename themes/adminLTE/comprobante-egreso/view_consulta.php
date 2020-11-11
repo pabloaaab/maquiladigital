@@ -34,51 +34,51 @@ $view = 'comprobante-egreso';
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'id_comprobante_egreso') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_comprobante_egreso') ?>:</th>
                     <td><?= Html::encode($model->id_comprobante_egreso) ?></td>
-                    <th><?= Html::activeLabel($model, 'Proveedor') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Proveedor') ?>:</th>
                     <?php if ($model->id_proveedor){ ?>
                         <td><?= Html::encode($model->proveedor->nombrecorto) ?></td>
                     <?php } ?>                    
-                    <th><?= Html::activeLabel($model, 'subtotal') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'subtotal') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->subtotal,1)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'id_banco') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_banco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
                     <td><?= Html::encode($model->banco->producto) ?></td>
-                    <th><?= Html::activeLabel($model, 'iva') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->iva,1)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'fecha_comprobante') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha_comprobante') ?>:</th>
                     <td><?= Html::encode($model->fecha_comprobante) ?></td>
-                    <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Municipio') ?>:</th>
                     <td><?= Html::encode($model->municipio->municipioCompleto) ?></td>
-                    <th><?= Html::activeLabel($model, 'rete_fuente') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'rete_fuente') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->retefuente,1)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'fecha') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecha') ?>:</th>
                     <td><?= Html::encode($model->fecha) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'rete_iva') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'rete_iva') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->reteiva,1)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_comprobante_egreso_tipo') ?>:</th>
                     <td><?= Html::encode($model->comprobanteEgresoTipo->concepto) ?></td>
-                    <th><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'numeroComprobante') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>
-                    <th><?= Html::activeLabel($model, 'base_aiu') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'base_aiu') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->base_aiu,1)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="3"><?= Html::encode($model->observacion) ?></td>
-                    <th><?= Html::activeLabel($model, 'Total') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->valor,0)) ?></td>
                 </tr>
             </table>
@@ -93,15 +93,15 @@ $view = 'comprobante-egreso';
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Factura</th>
-                        <th scope="col">Subtotal</th>
-                        <th scope="col">Iva</th>
-                        <th scope="col">Rete Fuente</th>
-                        <th scope="col">Rete Iva</th>
-                        <th scope="col">Base Aiu</th>
-                        <th scope="col">Valor Abono</th>
-                        <th scope="col">Valor Saldo</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Factura</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Iva</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Rete Fuente</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Rete Iva</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Base Aiu</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Valor Abono</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Valor Saldo</th>
                         <th></th>
                     </tr>
                     </thead>

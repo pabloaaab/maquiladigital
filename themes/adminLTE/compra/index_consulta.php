@@ -93,19 +93,19 @@ $proveedores = ArrayHelper::map(Proveedor::find()->orderBy('nombrecorto ASC')->a
     </div>
         <table class="table table-bordered table-hover">
             <thead>
-            <tr>                
-                <th scope="col">Factura</th>
-                <th scope="col">Cedula/Nit</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Concepto</th>
-                <th scope="col">Fecha Inicio</th>
-                <th scope="col">F. Vcto</th>
-                <th scope="col">Subtotal</th>
-                <th scope="col">Saldo</th>
-                <th scope="col">Total</th>
-                <th scope="col">Aut.</th>
-                <th scope="col">Estado</th>
-                <th scope="col"></th>                               
+            <tr style='font-size:85%;'>                
+                <th scope="col" style='background-color:#B9D5CE;'>Factura</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Proveedor</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Concepto</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F_Inicio</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. Vcto</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Saldo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Total</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Aut.</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Estado</th>
+                <th scope="col" style='background-color:#B9D5CE;'> </th>                               
             </tr>
             </thead>
             <tbody>

@@ -268,7 +268,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                 <tbody>
                                     <?php
                                       $t_segundos = 0; $t_minutos = 0; $t_minutos_conf = 0;
-                                      $total_c = 0;
+                                      $total_c = 0; $total_confeccion = 0;
                                     foreach ($modeldetalles as $val):
                                         $total_c = 0;
                                         ?>
@@ -294,11 +294,12 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         </td>
                                     </tr>
                                     <?php
-                                       $t_minutos += ($model->duracion * $val->cantidad);
+                                        $total_confeccion +=$val->faltante;
+                                        $t_minutos += ($model->duracion * $val->cantidad);
                                         $t_segundos = $t_minutos * 60;
-                                       $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
+                                        $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
                                     endforeach; ?>
-                                     <td colspan="4"></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="1">
+                                     <td colspan="3"><td style="font-size: 85%; width: 220px; text-align: right;"><b>T. Confeccion:</b> <?= ''.number_format($total_confeccion),' <b>Falta:</b> ',($model->cantidad - $total_confeccion) ?> </td></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="1">
                                 </tbody>     
                             </table>
                         </div>    

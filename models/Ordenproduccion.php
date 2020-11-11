@@ -52,7 +52,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     {
         return [
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto'], 'required', 'message' => 'Campo requerido'],            
-            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo'], 'integer'],
+            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo','faltante'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],            
             [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion'], 'number'],
             [['valorletras', 'observacion','codigoproducto'], 'string'],
@@ -92,6 +92,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'codigoproducto' => 'Código',
             'duracion' => 'Duración',
             'aplicar_balanceo' => 'Aplicar balanceo',
+            'faltante' => 'Faltante',
         ];
     }
 

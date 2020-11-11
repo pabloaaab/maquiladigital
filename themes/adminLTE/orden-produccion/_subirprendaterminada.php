@@ -53,6 +53,7 @@ $form = ActiveForm::begin([
                            <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                            <th scope="col" style='background-color:#B9D5CE;'>Producto / Talla</th>
                            <th scope="col" style='background-color:#B9D5CE;'>Unidades x Talla</th>
+                           <th scope="col" style='background-color:#B9D5CE;'>Unidades confeccionadas</th>
                           <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                         </tr>
                         
@@ -64,7 +65,12 @@ $form = ActiveForm::begin([
                             <td><?= $val->iddetalleorden ?></td>
                             <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
                             <td align="center"><?= $val->cantidad ?></td>
-                            <td style="width: 30px;"><input type="checkbox" name="id_detalle_orden[]" value="<?= $val->iddetalleorden ?>"></td>
+                            <td style="font-size: 100%; width: 170px; text-align: center; background: #C7F1DB; color: #005F80;"><?= $val->faltante ?></td>
+                            <?php if($val->faltante < $val->cantidad){?>
+                               <td style="width: 30px;"><input type="checkbox" name="id_detalle_orden[]" value="<?= $val->iddetalleorden ?>"></td>
+                            <?php }else{?>
+                               <td style="width: 30px;"><input type="checkbox" disabled="true" name="id_detalle_orden[]" value="<?= $val->iddetalleorden ?>"></td>
+                            <?php } ?>   
                         </tr>
                         <?php
                         endforeach; ?>

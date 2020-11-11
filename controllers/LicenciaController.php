@@ -276,7 +276,7 @@ class LicenciaController extends Controller
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar la licencia, tiene registros asociados en otros procesos');
                 } catch (\Exception $e) {
 
-                    $this->redirect(["incapacidad/index"]);
+                    $this->redirect(["licencia/index"]);
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar la licencia, tiene registros asociados en otros procesos');
                 }
             } else {
@@ -395,7 +395,7 @@ class LicenciaController extends Controller
         if (Yii::$app->request->get("id")) {
               
                  $table = Licencia::find()->where(['id_licencia_pk' => $id])->one();            
-                if ($table) {     
+                 if ($table) {     
                     $model->codigo_licencia = $table->codigo_licencia;
                     $model->id_empleado = $table->id_empleado;
                     $model->fecha_desde = $table->fecha_desde;

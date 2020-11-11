@@ -104,17 +104,17 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
         <table class="table table-bordered table-hover">
             <thead>
             <tr>                
-                <th scope="col">Id</th>
-                <th scope="col">Cedula/Nit</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Numero</th>                
-                <th scope="col">Tipo</th>
-                <th scope="col">F. pago</th>                
-                <th scope="col">Banco</th> 
-                <th scope="col">Valor</th>                
-                <th scope="col">Aut.</th>                
-                <th scope="col">Usuario</th>  
-                <th scope="col"></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Proveedor</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Numero</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Tipo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. pago</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Banco</th> 
+                <th scope="col" style='background-color:#B9D5CE;'>Valor</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Aut.</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>  
+                <th scope="col" style='background-color:#B9D5CE;'></th>                               
             </tr>
             </thead>
             <tbody>

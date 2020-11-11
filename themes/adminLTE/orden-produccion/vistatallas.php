@@ -96,7 +96,7 @@ $view = 'orden-produccion/vistatallas';
                             <td><?= $val->fecha_procesada ?></td>
                             <td align = "right"><?= $val->cantidad_terminada ?></td>
                             <td><?= $val->observacion ?></td>
-                            <?php if($total_c < $detalletallas->cantidad){?>
+                            <?php if($detalletallas->faltante < $detalletallas->cantidad){?>
                                 <td style=' width: 25px;'>
                                     <a href="#" data-toggle="modal" data-target="#entrada<?= $val->id_entrada ?>"><span class="glyphicon glyphicon-pencil"></span></a>
                                     <!-- Editar modal detalle -->
