@@ -203,7 +203,8 @@ class IncapacidadController extends Controller
                                                                 ->andwhere(['=','fecha_final', $model->fecha_final])->one();
                                 if($incapacidad){
                                     Yii::$app->getSession()->setFlash('error', 'Error de fechas: Existe una incapacidad creada con el mismo rango de fecha para este empleado.');          
-                                }else{    
+                                }else{ 
+                                    
                                         $table = new Incapacidad();
                                         $table->codigo_incapacidad = $model->codigo_incapacidad;
                                         $table->id_empleado = $model->id_empleado;
@@ -319,7 +320,7 @@ class IncapacidadController extends Controller
                                                      }else{
                                                         $vlr_dia = ($contrato->salario/30);
                                                         $table->vlr_liquidado = round($dias * $vlr_dia); 
-                                                        $table->vlr_hora = $vlr_dia / 4;
+                                                        $table->vlr_hora = $vlr_dia / 8;
                                                         $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                         $table->dias_cobro_eps = 0;  
                                                         $table->vlr_cobro_administradora = 0;
@@ -375,7 +376,7 @@ class IncapacidadController extends Controller
 
                                                 }else{
                                                     $table->vlr_liquidado = round(($dias * $vlr_dia) * ($incapacidad))/100; 
-                                                    $table->vlr_hora =  (($vlr_dia * $incapacidad)/100) / 4;
+                                                    $table->vlr_hora =  $vlr_dia / 8;
                                                     $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                     $table->dias_cobro_eps = 0;  
                                                     $table->vlr_cobro_administradora = 0;
@@ -402,7 +403,7 @@ class IncapacidadController extends Controller
                                                     $table->ibc_total_incapacidad = round(($contrato->salario / 30) * $dias);
                                                  }else{
                                                     $table->vlr_liquidado = round($dias * $vlr_dia); 
-                                                    $table->vlr_hora = $vlr_dia / 4;
+                                                    $table->vlr_hora = $vlr_dia / 8;
                                                     $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                     $table->dias_cobro_eps = 0;  
                                                     $table->vlr_cobro_administradora = 0;
@@ -432,7 +433,7 @@ class IncapacidadController extends Controller
                  'model' => $model,
                   ]);
     }
-
+  
     /**
      * Displays a single Incapacidad model.
      * @param integer $id
@@ -609,11 +610,12 @@ class IncapacidadController extends Controller
                                         endforeach;
                                         if($contador == 1){                                       
                                             $vlr_dia = ($configuracionsalario->salario_minimo_actual/30); 
+                                            //incapacidad general
                                             if($codigo == 1 ){
                                                 if($incapacidad != 100){
                                                     if($dias > 2){
                                                         $table->vlr_liquidado = $dias * $vlr_dia;    
-                                                        $table->vlr_hora = $vlr_dia / 8;
+                                                       $table->vlr_hora = $vlr_dia / 8;
                                                         $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                         $table->dias_cobro_eps = round($dias - 2);  
                                                         $table->vlr_cobro_administradora = round($table->dias_cobro_eps * $vlr_dia);
@@ -624,7 +626,7 @@ class IncapacidadController extends Controller
 
                                                     }else{
                                                         $table->vlr_liquidado = round(($dias * $vlr_dia) * $incapacidad)/100; 
-                                                        $table->vlr_hora =  (($vlr_dia *$incapacidad)/100) / 4;
+                                                        $table->vlr_hora =  (($vlr_dia * $incapacidad)/100) / 4;
                                                         $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                         $table->dias_cobro_eps = 0;  
                                                         $table->vlr_cobro_administradora = 0;
@@ -731,7 +733,7 @@ class IncapacidadController extends Controller
 
                                                 }else{
                                                     $table->vlr_liquidado = round(($dias * $vlr_dia) * $incapacidad)/100; 
-                                                    $table->vlr_hora =  (($vlr_dia * $incapacidad)/100) / 4;
+                                                    $table->vlr_hora =  $vlr_dia / 8;
                                                     $table->porcentaje_pago =  $configuracionincapacidad->porcentaje;
                                                     $table->dias_cobro_eps = 0;  
                                                     $table->vlr_cobro_administradora = 0;
@@ -771,8 +773,8 @@ class IncapacidadController extends Controller
                                                 }
                                             }  
                                         } 
-                                        $table->save(false); 
-                                        return $this->redirect(['index']);                    
+                                       $table->save(false); 
+                                       return $this->redirect(['index']);                    
                                     }//termina el ciclo de la entrada de la table
                             }//valida si este empleado tiene licencias    
                         }//valida que la fecha de inicio se mayor que la fecha final de la incapacidad    

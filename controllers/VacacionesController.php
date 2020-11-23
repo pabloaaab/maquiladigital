@@ -332,12 +332,15 @@ class VacacionesController extends Controller
             if ($model->validate()) {
                 $suma = 0; $totaldias = 0; $diasRealesDisfrutados =0;
                 $suma = $model->dias_disfrutados + $model->dias_pagados;
+                $fecha_inicio = $model->fecha_desde_disfrute;
+                $fecha_final = $model->fecha_hasta_disfrute;
                 if($suma <> 15){
                     Yii::$app->getSession()->setFlash('error', 'La suma de los dias disfrutados y pagados en dinero no puede ser mayor a Quince(15) dias. Ver Codigo Sustantivo de Trabajo.');    
                 }else{
                     if(strtotime($model->fecha_ingreso) <= strtotime($model->fecha_hasta_disfrute)){
                          Yii::$app->getSession()->setFlash('error', 'Error en la fecha de inicio de labores: La fecha de inicio de labores del empleado con documento Nro  '. $contrato->identificacion. ' no puede ser menor o igual a la fecha final de vacaciones.');     
                     }else{
+                        $this->ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final);
                         $table= new Vacaciones();
                         $table->id_empleado = $model->id_empleado;
                         $table->dias_disfrutados = $model->dias_disfrutados;
@@ -380,6 +383,18 @@ class VacacionesController extends Controller
             'model' => $model,
         ]);
     }
+    //PROCESO QUE VALIDE SI HAY INCAPACIDADES
+    protected function ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final) {
+        $incapacidad = \app\models\Incapacidad::find()->where(['=','id_empleado', $contrato->id_empleado])->orderBy('id_incapacidad DESC')->one();
+        $licencia = \app\models\Licencia::find()->where(['=','id_empleado', $contrato->id_empleado])->orderBy('id_licencia_pk DESC')->one();
+        if (strtotime($incapacidad->fecha_final) >= strtotime($fecha_inicio)){
+            Yii::$app->getSession()->setFlash('warning', 'No es posible generar las vacaciones en este rango de fechas, la incapacidad Nro  '. $incapacidad->id_incapacidad. ' termina el dia '.$incapacidad->fecha_final.', favor corregir la fecha de inicio de vacaciones.');     
+        }
+        if (strtotime($licencia->fecha_hasta) >= strtotime($fecha_inicio)){
+            Yii::$app->getSession()->setFlash('warning', 'No es posible generar las vacaciones en este rango de fechas, la licencia Nro  '. $licencia->id_licencia_pk. ' termina el dia '.$licencia->fecha_hasta.', favor corregir la fecha de inicio de vacaciones.');     
+        }
+    }
+    
     
     public function actionEditarvacaciones($id) {
         $model = new FormVacacion();
@@ -540,11 +555,13 @@ class VacacionesController extends Controller
   //PROCESO QUE AUTORIZA O GENERA LAS VACACIONES
     
     public function actionAutorizado($id) {
+        //se inicializan las variables.
         $ibp_vacacion = 0; $total_ibp = 0; $vlr_vacacion =0;
         $salario_promedio = 0; $dias_ausentismo = 0; $dias_reales = 0;
         $Vlr_vacacion_disfrute = 0; $vlr_vacacion_bruto = 0;
+        
         $conf_eps = \app\models\ConfiguracionEps::find()->all();
-         $conf_pension= \app\models\ConfiguracionPension::find()->all();
+        $conf_pension= \app\models\ConfiguracionPension::find()->all();
         $modelo = Vacaciones::findOne($id);
         $contrato = Contrato::findOne($modelo->id_contrato);
         $confi_vacacion = \app\models\ConfiguracionPrestaciones::findOne(4);

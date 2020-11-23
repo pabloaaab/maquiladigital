@@ -323,7 +323,6 @@ class ProgramacionNominaController extends Controller {
         }    
         $registroscargados = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->all();
         $cont = 0;
-        
         if($registros == 0){
             Yii::$app->getSession()->setFlash('warning', 'Este grupo de pago a la fecha no tiene empleados con contratos activos!');
         }else{
@@ -341,6 +340,24 @@ class ProgramacionNominaController extends Controller {
                     if ($val->contrato_activo == 0) {
                         $table->fecha_final_contrato = $val->fecha_final;
                     } 
+                    if($tipo_nomina == 1 ){
+                        $vacacion = \app\models\Vacaciones::find()->where(['=','documento', $val->identificacion])
+                                                                  ->andWhere(['>=','fecha_desde_disfrute', $fecha_desde])
+                                                                  ->orderBy('id_vacacion ASC')->one();
+                        if ($vacacion){
+                             $table->fecha_inicio_vacacion = $vacacion->fecha_desde_disfrute;
+                             $table->fecha_final_vacacion = $vacacion->fecha_hasta_disfrute;
+                        }
+                        $vacacion = \app\models\Vacaciones::find()->where(['=','documento', $val->identificacion])
+                                                                  ->andWhere(['<=','fecha_hasta_disfrute', $fecha_hasta])
+                                                                  ->andWhere(['>','fecha_hasta_disfrute', $fecha_desde])
+                                                                  ->orderBy('id_vacacion ASC')->one();
+                        if ($vacacion){
+                             $table->fecha_inicio_vacacion = $vacacion->fecha_desde_disfrute;
+                             $table->fecha_final_vacacion = $vacacion->fecha_hasta_disfrute;
+                        }
+                        
+                    }
                     $table->fecha_desde = $model->fecha_desde;
                     $table->fecha_hasta = $model->fecha_hasta;
                     $table->fecha_ultima_prima= $val->ultima_prima;
@@ -362,7 +379,7 @@ class ProgramacionNominaController extends Controller {
                 }
             }        $model->save(false);
         }    
-        if ($registros == 0) {
+       if ($registros == 0) {
             $this->redirect(["programacion-nomina/view", 'id' => $id,
                 'id_grupo_pago' => $id_grupo_pago,
                 'fecha_desde' => $fecha_desde,
@@ -505,8 +522,8 @@ class ProgramacionNominaController extends Controller {
             $_transporte = $salario_transporte->codigo_salario;
             //controladores de salario y auxilio de transporte
             foreach ($registros as $val) {
-                $dias_r = $this->salario($val, $codigo_salario, $id_grupo_pago);
-                $this->Auxiliotransporte($val, $_transporte, $dias_r, $auxilio, $fecha_desde, $fecha_hasta, $id_grupo_pago);
+                $total_dias = $this->salario($val, $codigo_salario, $id_grupo_pago);
+                $this->Auxiliotransporte($val, $_transporte, $total_dias, $auxilio, $fecha_desde, $fecha_hasta, $id_grupo_pago);
             }
             //codigo que envia parametros de novedades_ horas extras
             $novedad_tiempo_extra = NovedadTiempoExtra::find()->where(['=', 'id_periodo_pago_nomina', $id])->andWhere(['>', 'nro_horas', 0])->orderBy('id_empleado DESC')->all();
@@ -554,7 +571,7 @@ class ProgramacionNominaController extends Controller {
             $contAdicionP = count($adicion_permanente);
             if ($contAdicionP > 0) {
                 foreach ($adicion_permanente as $adicionpermanente) {
-                    $this->Moduloadicionpermanente($fecha_desde, $fecha_hasta, $adicionpermanente, $id, $grupo_pago);
+                   $this->Moduloadicionpermanente($fecha_desde, $fecha_hasta, $adicionpermanente, $id, $grupo_pago);
                 }
             }
             //codigo que valida las licencias
@@ -565,7 +582,7 @@ class ProgramacionNominaController extends Controller {
             $contLicencia = count($licencias);
             if ($contLicencia > 0) {
                 foreach ($licencias as $valor_licencia) {
-                    $this->ModuloLicencias($fecha_desde, $fecha_hasta, $valor_licencia, $id);
+                   $this->ModuloLicencias($fecha_desde, $fecha_hasta, $valor_licencia, $id);
                 }
             }
             // codigo que valida las incapacidades
@@ -576,7 +593,7 @@ class ProgramacionNominaController extends Controller {
             $contIncapacidad = count($incapacidad);
             if ($contIncapacidad > 0) {
                 foreach ($incapacidad as $valor_incapacidad) {
-                   $this->ModuloIncapacidad($fecha_desde, $fecha_hasta, $valor_incapacidad, $id);
+                  $this->ModuloIncapacidad($fecha_desde, $fecha_hasta, $valor_incapacidad, $id);
                 }
             }
             //codigo que actualiza el estado_generado de la tabla programacion_nomina
@@ -817,7 +834,7 @@ class ProgramacionNominaController extends Controller {
                 endforeach;
             }
         }    
-      $this->redirect(["programacion-nomina/view", 'id' => $id,
+        $this->redirect(["programacion-nomina/view", 'id' => $id,
             'id_grupo_pago' => $id_grupo_pago,
             'fecha_desde' => $fecha_desde,
             'fecha_hasta' => $fecha_hasta,
@@ -1278,7 +1295,8 @@ class ProgramacionNominaController extends Controller {
         }
     }
 
-    protected function Auxiliotransporte($val, $_transporte, $dias_r, $auxilio, $fecha_hasta, $fecha_desde, $id_grupo_pago) {
+    protected function Auxiliotransporte($val, $_transporte, $total_dias, $auxilio, $fecha_hasta, $fecha_desde, $id_grupo_pago) {
+        
         $prognomdetalle = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $val->id_programacion])->andWhere(['=', 'codigo_salario', $_transporte])->all();
         if (!$prognomdetalle) {
             $detalle = new ProgramacionNominaDetalle();
@@ -1288,20 +1306,21 @@ class ProgramacionNominaController extends Controller {
                 $detalle->id_periodo_pago_nomina = $val->id_periodo_pago_nomina;
                 $detalle->codigo_salario = $_transporte;
                 $vlr_dia_auxilio = $auxilio / 30;
-                $detalle->dias_transporte = $dias_r;
-                $detalle->auxilio_transporte = round($dias_r * $vlr_dia_auxilio);
+               $detalle->dias_transporte = $total_dias;
+                $detalle->auxilio_transporte = round($total_dias * $vlr_dia_auxilio);
                 $detalle->fecha_desde = $fecha_hasta;
                 $detalle->fecha_hasta = $fecha_desde;
-                $detalle->dias_reales = $dias_r;
+                $detalle->dias_reales = $total_dias;
                 $detalle->vlr_dia = $vlr_dia_auxilio;
                 $detalle->id_grupo_pago = $id_grupo_pago;
             }
-            $detalle->save(false);
+           $detalle->save(false);
             
         }
     }
 
     protected function salario($val, $codigo_salario, $id_grupo_pago) {
+        $total_dias_vacacion = $this->Sumardiasvacaciones($val);
         $prognomdetalle = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $val->id_programacion])->andWhere(['=', 'codigo_salario', $codigo_salario])->all();
         $sw = 0;
         if (!$prognomdetalle) { 
@@ -1334,7 +1353,7 @@ class ProgramacionNominaController extends Controller {
             $fecha_hasta = strtotime($val->fecha_hasta);
             if ($fecha_inicio_contrato < $fecha_desde) {
                 if ($val->fecha_final_contrato != '') {
-                    $total_dias = round((strtotime($val->fecha_final_contrato) - strtotime($val->fecha_desde)) / 86400) + 1;
+                    $total_dias = round((strtotime($val->fecha_final_contrato) - strtotime($val->fecha_desde)) / 86400) + 1 - $total_dias_vacacion;
                     $table->dias = $total_dias;
                     $table->dias_reales = $total_dias;
                     $table->dias_salario = $total_dias;
@@ -1347,7 +1366,7 @@ class ProgramacionNominaController extends Controller {
                         $table->vlr_ibc_medio_tiempo = round($Vlr_dia_medio_tiempo * $total_dias);
                     }
                 } else {
-                    $total_dias = round((strtotime($val->fecha_hasta) - strtotime($val->fecha_desde)) / 86400) + 1;
+                    $total_dias = round((strtotime($val->fecha_hasta) - strtotime($val->fecha_desde)) / 86400) + 1 - $total_dias_vacacion;
                     $table->dias = $total_dias;
                     $table->dias_reales = $total_dias;
                     $table->dias_salario = $total_dias;
@@ -1363,7 +1382,7 @@ class ProgramacionNominaController extends Controller {
             } else {
                 if ($val->fecha_final_contrato != '') {
                     $total_dias = strtotime($val->fecha_final_contrato) - strtotime($val->fecha_inicio_contrato);
-                    $total_dias = round($total_dias / 86400) + 1;
+                    $total_dias = round($total_dias / 86400) + 1 - $total_dias_vacacion;
                     $table->dias = $total_dias;
                     $table->dias_reales = $total_dias;
                     $table->dias_salario = $total_dias;
@@ -1378,7 +1397,7 @@ class ProgramacionNominaController extends Controller {
                 } else {
 
                     $total_dias = strtotime($val->fecha_hasta) - strtotime($val->fecha_inicio_contrato);
-                    $total_dias = round($total_dias / 86400) + 1;
+                    $total_dias = round($total_dias / 86400) + 1 - $total_dias_vacacion;
                     $table->dias = $total_dias;
                     $table->dias_reales = $total_dias;
                     $table->dias_salario = $total_dias;
@@ -1395,7 +1414,7 @@ class ProgramacionNominaController extends Controller {
             $table->insert(false);
             $val->dia_real_pagado = $table->dias_reales;
             $val->save(false);
-            return ($table->dias_reales);
+            return ($total_dias);
         }
     }
 
@@ -1404,13 +1423,13 @@ class ProgramacionNominaController extends Controller {
 
     public function actionValidarregistros($id, $id_grupo_pago, $fecha_desde, $fecha_hasta, $tipo_nomina) {
         if($tipo_nomina == 1){
-            $detalle_nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
-            foreach ($detalle_nomina as $validar):
-                $this->ModuloActualizarDiasIncapacidades($validar);
+            $nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
+            foreach ($nomina as $validar):
+               $this->ModuloActualizarDiasIncapacidades($validar);
             endforeach;
             //codigo para actualizar dias de licencia
-            $detalle_nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
-            foreach ($detalle_nomina as $licencia):
+            $nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
+            foreach ($nomina as $licencia):
                 $this->ModuloActualizarDiasLicencia($licencia);
             endforeach;
 
@@ -1440,13 +1459,13 @@ class ProgramacionNominaController extends Controller {
             //codigo que actualiza los dias a pagar reales
             $detalle_nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
             foreach ($detalle_nomina as $actualizar_dias):
-                $this->ModuloActualizarDias($actualizar_dias);
+               $this->ModuloActualizarDias($actualizar_dias);
             endforeach;
             // codigo que actualiza el estado_liquidado de la programacion de la nomina
             $detalle_nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
             foreach ($detalle_nomina as $validar):
                 $validar->estado_liquidado = 1;
-                $validar->total_devengado = $validar->ibc_prestacional + $validar->ibc_no_prestacional + $validar->total_auxilio_transporte;
+                $validar->total_devengado = $validar->ibc_prestacional + $validar->ibc_no_prestacional + $validar->total_auxilio_transporte - $validar->ajuste_incapacidad;;
                 $validar->total_pagar = $validar->total_devengado - $validar->total_deduccion;
                 $validar->save(false);
             endforeach;
@@ -1579,6 +1598,7 @@ class ProgramacionNominaController extends Controller {
         $total_deduccion = 0;
         $total_licencia = 0;
         $total_incapacidad = 0;
+        $total_ajuste_incapacidad = 0;
         $total_auxilio = 0;
         $detalle_no = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $actualizar_campos->id_programacion])->orderBy('id_programacion DESC')->all();
         foreach ($detalle_no as $campos):
@@ -1587,12 +1607,14 @@ class ProgramacionNominaController extends Controller {
             $total_licencia = $total_licencia + $campos->vlr_licencia;
             $total_incapacidad = $total_incapacidad + $campos->vlr_incapacidad;
             $total_auxilio = $total_auxilio + $campos->auxilio_transporte;
+            $total_ajuste_incapacidad += $campos->vlr_ajuste_incapacidad;
         endforeach;
         $actualizar_campos->ibc_no_prestacional = $total_no_prestacional;
         $actualizar_campos->total_deduccion = $total_deduccion;
         $actualizar_campos->total_licencia = $total_licencia;
         $actualizar_campos->total_incapacidad = $total_incapacidad;
         $actualizar_campos->total_auxilio_transporte= $total_auxilio;
+        $actualizar_campos->ajuste_incapacidad =  $total_ajuste_incapacidad;
         $actualizar_campos->save(false);
     }
 
@@ -1757,7 +1779,7 @@ class ProgramacionNominaController extends Controller {
     //controlador que actualiza el valor real a pagar de pago adicional.
  protected function ModuloActualizaSaldosPago($adicionpermanente, $id, $id_grupo_pago)
     {
-      $dias = 0;
+       $dias = 0;
        $grupo_pago = PeriodoPagoNomina::find()->where(['=','id_grupo_pago', $id_grupo_pago])->one();
        $concepto_salario = ConceptoSalarios::find()->where(['=', 'inicio_nomina', 1])->one(); 
        $concepto_sal = ConceptoSalarios::find()->where(['=', 'codigo_salario', $adicionpermanente->codigo_salario])->one();
@@ -1803,7 +1825,7 @@ class ProgramacionNominaController extends Controller {
                     $actuSalario = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $validar->id_programacion])->andWhere(['=', 'codigo_salario', $salario->codigo_salario])->one();
                     if ($actuSalario) {
                         if ($con == 1) {
-                            $actuSalario->dias_reales = $dias = $actuSalario->dias_reales - $suma;
+                            $actuSalario->dias_reales = $dias = $actuSalario->dias_reales;
                             $actuSalario->horas_periodo_reales = $actuSalario->dias_reales * $validar->factor_dia;
                             $actuSalario->vlr_devengado = round($actuSalario->vlr_dia * $actuSalario->dias_reales);
                             $actuSalario->save(false);
@@ -1815,7 +1837,7 @@ class ProgramacionNominaController extends Controller {
                     if ($actu_trans) {
                         if ($con == 1) {
                             $dias_transporte = $actu_trans->dias_transporte;
-                            $actu_trans->dias_transporte = $dias_transporte - $suma;
+                            $actu_trans->dias_transporte = $dias_transporte - $suma ;
                             $actu_trans->auxilio_transporte = round($actu_trans->vlr_dia * $actu_trans->dias_transporte);
                             $actu_trans->save(false);
                             $con = 2;
@@ -1834,7 +1856,7 @@ class ProgramacionNominaController extends Controller {
                 if ($actu) {
                     if ($con == 1) {
                         $dias = $actu->dias_reales;
-                        $actu->dias_reales = $dias - $suma;
+                        $actu->dias_reales = $dias - $suma ;
                         $actu->horas_periodo_reales = $actu->dias_reales * $validar->factor_dia;
                         $actu->vlr_devengado = round($actu->vlr_dia * $actu->dias_reales);
                         $actu->save(false);
@@ -1845,7 +1867,7 @@ class ProgramacionNominaController extends Controller {
                 if ($actu_trans) {
                     if ($con == 1) {
                         $dias_transporte = $actu_trans->dias_transporte;
-                        $actu_trans->dias_transporte = $dias_transporte - $suma;
+                        $actu_trans->dias_transporte = $dias_transporte - $suma ;
                         $actu_trans->auxilio_transporte = round($actu_trans->vlr_dia * $actu_trans->dias_transporte);
                         $actu_trans->save(false);
                     }
@@ -1853,6 +1875,38 @@ class ProgramacionNominaController extends Controller {
             endforeach;
 
         endforeach;
+    }
+    //codigo que suma los dias de vacaciones
+    protected function Sumardiasvacaciones($val) {
+        $total_dias_vacacion = 0;
+        if ($val->fecha_inicio_vacacion == ''){
+            return ($total_dias_vacacion);
+        }else{
+            $total_dia = 0;
+             if ($val->fecha_final_vacacion >= $val->fecha_hasta ){
+                 $total_dias_vacacion = strtotime($val->fecha_hasta) - strtotime($val->fecha_inicio_vacacion);
+                 $total_dias_vacacion =  round($total_dias_vacacion / 86400) + 1;
+                 $val->dias_vacacion = $total_dias_vacacion;
+                 $val->horas_vacacion = $val->dias_vacacion * 8;
+                 $total_dia = $val->salario_contrato / 30;
+                 $val->ibc_vacacion = $total_dia * $total_dias_vacacion;
+                 $val->fecha_final_vacacion = $val->fecha_hasta;
+                 $val->save(false);
+                 return ($total_dias_vacacion);
+             }else{
+                 $total_dias_vacacion = strtotime($val->fecha_final_vacacion) - strtotime($val->fecha_desde);
+                 $total_dias_vacacion =  round($total_dias_vacacion / 86400) + 1;
+                 $val->dias_vacacion = $total_dias_vacacion;
+                 $val->horas_vacacion = $val->dias_vacacion * 8;
+                 $total_dia = $val->salario_contrato / 30;
+                 $val->ibc_vacacion = $total_dia * $total_dias_vacacion;
+                 $val->fecha_final_vacacion = $val->fecha_final_vacacion;
+                 $val->fecha_inicio_vacacion = $val->fecha_desde;
+                 $val->save(false);
+                 return ($total_dias_vacacion);
+             }
+            
+        }
     }
 
     public function actionDeshacer($id, $id_grupo_pago, $fecha_desde, $fecha_hasta) {
@@ -1900,12 +1954,37 @@ class ProgramacionNominaController extends Controller {
                     $consecutivo->save(false);
                     $generar_consecutivo->nro_pago = $consecutivo->consecutivo;
                     $generar_consecutivo->estado_cerrado = 1;
-                    $generar_consecutivo->save(false);
+                   $generar_consecutivo->save(false);
             }
              //actualizar el estado del periodo a 1
                 $periodo_pago = PeriodoPagoNomina::findone($id);
                 $periodo_pago->estado_periodo = 1;
                 $periodo_pago->save(false);
+             //inserta concepto de vacacion si tiene vacaciones
+              $concepto_salario = ConceptoSalarios::find()->where(['=','concepto_vacacion', 1])->one();  
+              $nomina = ProgramacionNomina::find()->where(['=','id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all(); 
+              foreach ($nomina as $vacacion):
+                  $saldo = 0;
+                  if($vacacion->fecha_inicio_vacacion <> ''){
+                      $detalle = new ProgramacionNominaDetalle();
+                      $detalle->codigo_salario = $concepto_salario->codigo_salario;
+                      $detalle->id_programacion = $vacacion->id_programacion;
+                      $detalle->horas_periodo = $vacacion->horas_vacacion;
+                      $detalle->horas_periodo_reales = $vacacion->horas_vacacion; 
+                      $detalle->dias = $vacacion->dias_vacacion;
+                      $detalle->dias_reales = $vacacion->dias_vacacion;
+                      $detalle->vlr_devengado = $vacacion->ibc_vacacion;
+                      $detalle->vlr_vacacion = $detalle->vlr_devengado;
+                      $detalle->id_periodo_pago_nomina = $id;
+                      $detalle->fecha_desde = $vacacion->fecha_inicio_vacacion;
+                      $detalle->fecha_hasta = $vacacion->fecha_final_vacacion;
+                      $detalle->insert(false);
+                      $saldo = $vacacion->ibc_prestacional;
+                      $vacacion->ibc_prestacional =  $saldo + $detalle->vlr_devengado;
+                      $vacacion->save(false);
+                  }
+              endforeach;
+                
         }else{ 
             //codigo para prima
             if($tipo_nomina == 2){ 
@@ -2187,36 +2266,39 @@ class ProgramacionNominaController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
                             
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'NRO PAGO')
                     ->setCellValue('B1', 'GRUPO PAGO')
-                    ->setCellValue('C1', 'PERIODO PAGO')
-                    ->setCellValue('D1', 'NRO CONTRATO')
-                    ->setCellValue('E1', 'DOCUMENTO')
-                    ->setCellValue('F1', 'EMPLEADO')   
-                    ->setCellValue('G1', 'FECHA INICIO')
-                    ->setCellValue('H1', 'FECHA CORTE')
-                    ->setCellValue('I1', 'TOTAL DEVENGADO')
-                    ->setCellValue('J1', 'TOTAL DEDUCCION')
-                    ->setCellValue('K1', 'NETO PAGAR')
-                    ->setCellValue('L1', 'IBP');
+                    ->setCellValue('C1', 'TIPO PAGO')
+                    ->setCellValue('D1', 'PERIODO PAGO')
+                    ->setCellValue('E1', 'NRO CONTRATO')
+                    ->setCellValue('F1', 'DOCUMENTO')
+                    ->setCellValue('G1', 'EMPLEADO')   
+                    ->setCellValue('H1', 'FECHA INICIO')
+                    ->setCellValue('I1', 'FECHA CORTE')
+                    ->setCellValue('J1', 'TOTAL DEVENGADO')
+                    ->setCellValue('K1', 'TOTAL DEDUCCION')
+                    ->setCellValue('L1', 'NETO PAGAR')
+                    ->setCellValue('M1', 'IBP');
         $i = 2;
         
         foreach ($nomina as $val) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->nro_pago)
                     ->setCellValue('B' . $i, $val->grupoPago->grupo_pago)
-                    ->setCellValue('C' . $i, $id)
-                    ->setCellValue('D' . $i, $val->id_contrato)
-                    ->setCellValue('E' . $i, $val->cedula_empleado)                    
-                    ->setCellValue('F' . $i, $val->empleado->nombrecorto)
-                    ->setCellValue('G' . $i, $val->fecha_desde)
-                    ->setCellValue('H' . $i, $val->fecha_hasta)
-                    ->setCellValue('I' . $i, round($val->total_devengado,0))
-                    ->setCellValue('J' . $i, round($val->total_deduccion,0))
-                    ->setCellValue('K' . $i, round($val->total_pagar,0))
-                     ->setCellValue('L' . $i, round($val->ibc_prestacional,0));
+                    ->setCellValue('C' . $i, $val->tipoNomina->tipo_pago)
+                    ->setCellValue('D' . $i, $id)
+                    ->setCellValue('E' . $i, $val->id_contrato)
+                    ->setCellValue('F' . $i, $val->cedula_empleado)                    
+                    ->setCellValue('G' . $i, $val->empleado->nombrecorto)
+                    ->setCellValue('H' . $i, $val->fecha_desde)
+                    ->setCellValue('I' . $i, $val->fecha_hasta)
+                    ->setCellValue('J' . $i, round($val->total_devengado,0))
+                    ->setCellValue('K' . $i, round($val->total_deduccion,0))
+                    ->setCellValue('L' . $i, round($val->total_pagar,0))
+                     ->setCellValue('M' . $i, round($val->ibc_prestacional,0));
             $i++;
         }
         $j = $i + 1;
@@ -2260,30 +2342,53 @@ class ProgramacionNominaController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
                                    
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID_PROGRAMACION')
                     ->setCellValue('B1', 'PERIODO PAGO')
-                    ->setCellValue('C1', 'EMPLEADO')
-                    ->setCellValue('D1', 'DESDE')
-                    ->setCellValue('E1', 'HASTA')
-                    ->setCellValue('F1', 'CONCEPTO')   
-                    ->setCellValue('G1', 'DEVENGADO')
-                    ->setCellValue('H1', 'DEDUCCION');
+                    ->setCellValue('C1', 'TIPO PAGO')
+                    ->setCellValue('D1', 'GRUPO PAGO')
+                    ->setCellValue('E1', 'EMPLEADO')
+                    ->setCellValue('F1', 'DESDE')
+                    ->setCellValue('G1', 'HASTA')
+                    ->setCellValue('H1', 'CONCEPTO')   
+                    ->setCellValue('I1', 'DEVENGADO')
+                    ->setCellValue('J1', 'DEDUCCION');
                                     
         $i = 2;
        
         foreach ($detalle as $val) {
-            $objPHPExcel->setActiveSheetIndex(0)
-                 ->setCellValue('A' . $i, $val->id_programacion)
-                 ->setCellValue('B' . $i, $id)
-                 ->setCellValue('C' . $i, $val->programacionNomina->empleado->nombrecorto)
-                 ->setCellValue('D' . $i, $val->fecha_desde)
-                 ->setCellValue('E' . $i, $val->fecha_hasta)
-                 ->setCellValue('F' . $i, $val->codigoSalario->nombre_concepto)   
-                 ->setCellValue('G' . $i, round($val->vlr_devengado,0))
-                 ->setCellValue('H' . $i, round($val->vlr_deduccion,0));
-            $i++;
+            $codigo_salario = $val->codigo_salario;
+            $concepto = ConceptoSalarios::find()->where(['=','codigo_salario', $codigo_salario])->one();   
+            if($concepto->auxilio_transporte == 1){
+                $objPHPExcel->setActiveSheetIndex(0)
+                     ->setCellValue('A' . $i, $val->id_programacion)
+                     ->setCellValue('B' . $i, $id)
+                     ->setCellValue('C' . $i, $val->programacionNomina->tipoNomina->tipo_pago)
+                     ->setCellValue('D' . $i, $val->programacionNomina->grupoPago->grupo_pago)    
+                     ->setCellValue('E' . $i, $val->programacionNomina->empleado->nombrecorto)
+                     ->setCellValue('F' . $i, $val->fecha_desde)
+                     ->setCellValue('G' . $i, $val->fecha_hasta)
+                     ->setCellValue('H' . $i, $val->codigoSalario->nombre_concepto)   
+                     ->setCellValue('I' . $i, round($val->auxilio_transporte,0))
+                     ->setCellValue('J' . $i, round($val->vlr_deduccion,0));
+                $i++;
+            }else{
+               $objPHPExcel->setActiveSheetIndex(0)
+                     ->setCellValue('A' . $i, $val->id_programacion)
+                     ->setCellValue('B' . $i, $id)
+                     ->setCellValue('C' . $i, $val->programacionNomina->tipoNomina->tipo_pago)  
+                     ->setCellValue('D' . $i, $val->programacionNomina->grupoPago->grupo_pago)  
+                     ->setCellValue('E' . $i, $val->programacionNomina->empleado->nombrecorto)
+                     ->setCellValue('F' . $i, $val->fecha_desde)
+                     ->setCellValue('G' . $i, $val->fecha_hasta)
+                     ->setCellValue('H' . $i, $val->codigoSalario->nombre_concepto)   
+                     ->setCellValue('I' . $i, round($val->vlr_devengado,0))
+                     ->setCellValue('J' . $i, round($val->vlr_deduccion,0));
+                $i++; 
+            }    
         }
         $k = $i + 1;
                
@@ -2331,40 +2436,43 @@ class ProgramacionNominaController extends Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+         $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
                             
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID')
                     ->setCellValue('B1', 'NRO PAGO')
                     ->setCellValue('C1', 'PERIODO PAGO')
-                    ->setCellValue('D1', 'GRUPO PAGO')
-                    ->setCellValue('E1', 'NRO CONTRATO')
-                    ->setCellValue('F1', 'DOCUMENTO')
-                    ->setCellValue('G1', 'EMPLEADO')   
-                    ->setCellValue('H1', 'FECHA INICIO')
-                    ->setCellValue('I1', 'FECHA CORTE')
-                    ->setCellValue('J1', 'SALARIO')
-                    ->setCellValue('K1', 'TOTAL DEVENGADO')
-                    ->setCellValue('L1', 'TOTAL DEDUCCION')
-                    ->setCellValue('M1', 'NETO PAGAR')
-                    ->setCellValue('N1', 'IBP');
+                    ->setCellValue('D1', 'TIPO PAGO')
+                    ->setCellValue('E1', 'GRUPO PAGO')
+                    ->setCellValue('F1', 'NRO CONTRATO')
+                    ->setCellValue('G1', 'DOCUMENTO')
+                    ->setCellValue('H1', 'EMPLEADO')   
+                    ->setCellValue('I1', 'FECHA INICIO')
+                    ->setCellValue('J1', 'FECHA CORTE')
+                    ->setCellValue('K1', 'SALARIO')
+                    ->setCellValue('L1', 'TOTAL DEVENGADO')
+                    ->setCellValue('M1', 'TOTAL DEDUCCION')
+                    ->setCellValue('N1', 'NETO PAGAR')
+                    ->setCellValue('O1', 'IBP');
         $i = 2;
         
         foreach ($tableexcel as $val) {
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->id_programacion)
                     ->setCellValue('B' . $i, $val->nro_pago)
-                    ->setCellValue('C' . $i, $val->id_periodo_pago_nomina)
-                    ->setCellValue('D' . $i, $val->grupoPago->grupo_pago)
-                    ->setCellValue('E' . $i, $val->id_contrato)                    
-                    ->setCellValue('F' . $i, $val->cedula_empleado)
-                    ->setCellValue('G' . $i, $val->empleado->nombrecorto)
-                    ->setCellValue('H' . $i, $val->fecha_desde)
-                    ->setCellValue('I' . $i, $val->fecha_hasta)
-                    ->setCellValue('J' . $i, round($val->salario_contrato,0))
-                    ->setCellValue('K' . $i, round($val->total_devengado,0))
-                    ->setCellValue('L' . $i, round($val->total_deduccion,0))
-                    ->setCellValue('M' . $i, round($val->total_pagar,0))
-                    ->setCellValue('N' . $i, round($val->ibc_prestacional,0));
+                    ->setCellValue('C' . $i, $val->tipoNomina->tipo_pago)
+                    ->setCellValue('D' . $i, $val->id_periodo_pago_nomina)
+                    ->setCellValue('E' . $i, $val->grupoPago->grupo_pago)
+                    ->setCellValue('F' . $i, $val->id_contrato)                    
+                    ->setCellValue('G' . $i, $val->cedula_empleado)
+                    ->setCellValue('H' . $i, $val->empleado->nombrecorto)
+                    ->setCellValue('I' . $i, $val->fecha_desde)
+                    ->setCellValue('J' . $i, $val->fecha_hasta)
+                    ->setCellValue('K' . $i, round($val->salario_contrato,0))
+                    ->setCellValue('L' . $i, round($val->total_devengado,0))
+                    ->setCellValue('M' . $i, round($val->total_deduccion,0))
+                    ->setCellValue('N' . $i, round($val->total_pagar,0))
+                    ->setCellValue('O' . $i, round($val->ibc_prestacional,0));
                    
             $i++;
         }

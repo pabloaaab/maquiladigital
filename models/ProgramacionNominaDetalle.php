@@ -53,7 +53,8 @@ class ProgramacionNominaDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_programacion', 'codigo_salario', 'horas_periodo', 'horas_periodo_reales', 'dias', 'dias_reales', 'dias_transporte', 'factor_dia', 'id_credito', 'dias_salario', 'id_grupo_pago', 'id_periodo_pago_nomina', 'vlr_ibc_medio_tiempo','vlr_ajuste_incapacidad'], 'integer'],
+            [['id_programacion', 'codigo_salario', 'horas_periodo', 'horas_periodo_reales', 'dias', 'dias_reales', 'dias_transporte', 'factor_dia', 'id_credito', 'dias_salario', 'id_grupo_pago', 'id_periodo_pago_nomina',
+                'vlr_ibc_medio_tiempo','vlr_ajuste_incapacidad','vlr_vacacion'], 'integer'],
             [['fecha_desde', 'fecha_hasta'], 'safe'],
             [['salario_basico', 'vlr_devengado', 'vlr_deduccion', 'vlr_credito', 'vlr_hora', 'vlr_dia', 'vlr_neto_pagar', 'descuento_salud', 'descuento_pension', 'auxilio_transporte', 'vlr_licencia', 'nro_horas', 'vlr_incapacidad', 'vlr_pagar', 'deduccion','vlr_licencia_no_pagada'], 'number'],
             [['codigo_salario'], 'exist', 'skipOnError' => true, 'targetClass' => ConceptoSalarios::className(), 'targetAttribute' => ['codigo_salario' => 'codigo_salario']],
