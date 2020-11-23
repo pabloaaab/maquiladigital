@@ -277,7 +277,7 @@ class ComprobanteEgresoController extends Controller
         $compraegreso = Compra::find()
             ->where(['=', 'id_proveedor', $id_proveedor])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'numero', 0])
-            ->andWhere(['<>', 'saldo', 0])
+            ->andWhere(['<>', 'saldo', 0])->orderBy('id_compra DESC')
             ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
@@ -302,7 +302,6 @@ class ComprobanteEgresoController extends Controller
                         $table->base_aiu = $compra->base_aiu;
                         $table->id_comprobante_egreso = $id_comprobante_egreso;
                         $table->insert();
-                        //$recibo = ComprobanteEgreso::findOne($id_comprobante_egreso);                        
                     }
                 }
                 $this->redirect(["comprobante-egreso/view", 'id' => $id_comprobante_egreso]);

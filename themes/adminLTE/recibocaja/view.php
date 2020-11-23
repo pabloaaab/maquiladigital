@@ -53,44 +53,44 @@ $view = 'recibocaja';
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'idrecibo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idrecibo') ?>:</th>
                     <td><?= Html::encode($model->idrecibo) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <?php if ($model->idcliente){ ?>
                         <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
                     <?php } else { ?>
                         <td><?= Html::encode($model->clienterazonsocial) ?></td>
                     <?php } ?>
                     
-                    <th><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idtiporecibo') ?>:</th>
                     <td><?= Html::encode($model->tiporecibo->concepto) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'idbanco') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idbanco') ?>:</th>
                     <td><?= Html::encode($model->banco->entidad) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cuenta') ?>:</th>
                     <td><?= Html::encode($model->banco->producto) ?></td>
-                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'numero') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>                    
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'fecharecibo') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fecharecibo') ?>:</th>
                     <td><?= Html::encode($model->fecharecibo) ?></td>
-                    <th><?= Html::activeLabel($model, 'Municipio') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Municipio') ?>:</th>
                     <td><?= Html::encode($model->municipio->municipioCompleto) ?></td>
-                    <th></th>
-                    <td></td>
+                    <th style='background-color:#F0F3EF;'></th>
+                    <td style='background-color:#F0F3EF;'></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'fechapago') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechapago') ?>:</th>
                     <td><?= Html::encode($model->fechapago) ?></td>
-                    <th><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th><?= Html::activeLabel($model, 'valorpagado') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'valorpagado') ?>:</th>
                     <td align="right"><?= Html::encode('$ '.number_format($model->valorpagado,0)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'   ><?= Html::activeLabel($model, 'observacion') ?>:</th>
                     <td colspan="5"><?= Html::encode($model->observacion) ?></td>
 
                 </tr>
@@ -106,14 +106,15 @@ $view = 'recibocaja';
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">N° Factura</th>
-                        <th scope="col">N° Factura Electrónica</th>
-                        <th scope="col">Rete Fuente</th>
-                        <th scope="col">Rete Iva</th>
-                        <th scope="col">Valor Abono</th>
-                        <th scope="col">Valor Saldo</th>
-                        <th></th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>N° Factura</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>N° Factura Electrónica</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Rete Fuente</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Rete Iva</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Valor Abono</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Valor Saldo</th>
+                        <th style='background-color:#B9D5CE;'></th>
+                        <th style='background-color:#B9D5CE;'></th>
                     </tr>
                     </thead>
                     <tbody>

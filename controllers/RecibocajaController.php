@@ -1,20 +1,26 @@
 <?php
 
 namespace app\controllers;
-
-use Yii;
+//Models
 use app\models\Recibocaja;
 use app\models\RecibocajaSearch;
 use app\models\Recibocajadetalle;
 use app\models\Facturaventa;
 use app\models\Consecutivo;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\models\Cliente;
 use app\models\Municipio;
 use app\models\TipoRecibo;
-use yii\helpers\ArrayHelper;
+use app\models\UsuarioDetalle;
+use app\models\Banco;
+use app\models\FormRecibocajalibre;
+use app\models\FormRecibocajanuevodetallelibre;
+use app\models\FormFiltroConsultaRecibocaja;
+
+//clases
+use Yii;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
 use yii\db\ActiveQuery;
 use yii\base\Model;
 use yii\web\Response;
@@ -26,11 +32,9 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
-use app\models\UsuarioDetalle;
-use app\models\Banco;
-use app\models\FormRecibocajalibre;
-use app\models\FormRecibocajanuevodetallelibre;
-use app\models\FormFiltroConsultaRecibocaja;
+use yii\helpers\ArrayHelper;
+use Codeception\Lib\HelperModule;
+
 
 /**
  * RecibocajaController implements the CRUD actions for Recibocaja model.
@@ -284,15 +288,16 @@ class RecibocajaController extends Controller
 
     public function actionNuevodetalles($idcliente,$idrecibo)
     {
-          $reciboFactura = Facturaventa::find()
+            $reciboFactura = Facturaventa::find()
             ->where(['=', 'idcliente', $idcliente])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'nrofactura', 0])
-            ->andWhere(['>', 'saldo', 0])->orderBy('idfactura ASC')
+            ->andWhere(['>', 'saldo', 0])->orderBy('idfactura DESC')
             ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {
             if (isset($_POST["idfactura"])) {
                 $intIndice = 0;
+               
                 foreach ($_POST["idfactura"] as $intCodigo) {
                     $table = new Recibocajadetalle();
                     $factura = Facturaventa::find()->where(['idfactura' => $intCodigo])->one();
@@ -311,18 +316,18 @@ class RecibocajaController extends Controller
                         $table->idrecibo = $idrecibo;
                         $table->insert();
                         $recibo = Recibocaja::findOne($idrecibo);
-                        //$recibo->valorpagado = $recibo->valorpagado + $table->vlrabono;
-                        //$recibo->update();
                     }
                 }
                 $this->redirect(["recibocaja/view", 'id' => $idrecibo]);
             } else {
                 $mensaje = "Debe seleccionar al menos un registro";
             }
+           
         }
         return $this->render('_formnuevodetalles', [
             'reciboFactura' => $reciboFactura,
             'idrecibo' => $idrecibo,
+           
             'mensaje' => $mensaje,
 
         ]);
