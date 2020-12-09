@@ -315,9 +315,11 @@
                                 ],
                                  
                                 //termina el menu de salud ocupacional
+                                
+                                //ACA COMIENZA EN MODULO DE COSTOS E INVENTARIO
                                 [
-                                    'label' => 'Contabilidad',
-                                    'icon' => 'bank',
+                                    'label' => 'Inventarios',
+                                    'icon' => 'medkit',
                                     'url' => '#',
                                     'items' => [
                                         [
@@ -325,22 +327,17 @@
                                             'icon' => 'database',
                                             'url' => '#',
                                             'items' => [
-                                                ['label' => 'Cuentas', 'icon' => 'plus-square-o', 'url' => ['/cuenta-pub/index']],
-                                                ['label' => 'Tipo Recibo', 'icon' => 'plus-square-o', 'url' => ['/tipo-recibo/index']],
-                                                ['label' => 'Tipo Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-tipo/index']],
-                                                ['label' => 'Concepto Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-concepto/index']],
-                                                ['label' => 'Tipo Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso-tipo/index']],
-                                                ['label' => 'Tipo Comprobante (Exportar)', 'icon' => 'plus-square-o', 'url' => ['/contabilidad-comprobante-tipo/index']],
-                                                ['label' => 'Proveedor', 'icon' => 'plus-square-o', 'url' => ['/proveedor/index']],
-                                                ['label' => 'Doc Equivalente', 'icon' => 'plus-square-o', 'url' => ['/documento-equivalente/index']],
+                                                ['label' => 'Insumos', 'icon' => 'plus-square-o', 'url' => ['/insumos/index']],
+                                                
                                             ],
                                         ],
                                         [
-                                            'label' => 'Utilidades',
-                                            'icon' => 'cube',
+                                            'label' => 'Movimiento',
+                                            'icon' => 'book',
                                             'url' => '#',
                                             'items' => [
-                                                ['label' => 'Contabiizar', 'icon' => 'plus-square-o', 'url' => ['/contabilizar/contabilizar']],
+                                              ['label' => 'Costo producto', 'icon' => 'plus-square-o', 'url' => ['/costo-producto/index']],
+                                              
                                             ],
                                         ],
                                         [
@@ -348,9 +345,8 @@
                                             'icon' => 'question',
                                             'url' => '#',
                                             'items' => [
-                                                ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/indexconsulta']],
-                                                ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/indexconsulta']],
-                                                ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso/indexconsulta']],
+                                               // ['label' => 'Control Acceso Covid', 'icon' => 'plus-square-o', 'url' => ['control-acceso/index']],
+
                                             ],
                                         ],
                                         [
@@ -362,17 +358,17 @@
                                             ],
                                         ],
                                         [
-                                            'label' => 'Movimientos',
-                                            'icon' => 'book',
+                                            'label' => 'Utilidades',
+                                            'icon' => 'cube',
                                             'url' => '#',
-                                            'items' => [
-                                                ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
-                                                ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/index']],
-                                                ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso/index']],
+                                            'items' => [                                              
+                                               // ['label' => 'Periodo de nomina', 'icon' => 'plus-square-o', 'url' => ['/periodo-nomina/indexconsulta']],
+                                               
                                             ],
-                                        ]
+                                        ],
                                     ],
                                 ],
+                              // mdulo de facturacion
                                 [
                                     'label' => 'Facturacion',
                                     'icon' => 'dollar',

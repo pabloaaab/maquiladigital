@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-
 use app\models\Incapacidad;
 use app\models\IncapacidadSearch;
 use app\models\GrupoPago;
