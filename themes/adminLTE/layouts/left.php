@@ -319,7 +319,7 @@
                                 //ACA COMIENZA EN MODULO DE COSTOS E INVENTARIO
                                 [
                                     'label' => 'Inventarios',
-                                    'icon' => 'medkit',
+                                    'icon' => 'film',
                                     'url' => '#',
                                     'items' => [
                                         [
@@ -368,6 +368,66 @@
                                         ],
                                     ],
                                 ],
+                                //INICIO DEL MENU CONTABILIDAD
+                                 [
+                                    'label' => 'Contabilidad',
+                                    'icon' => 'bank',
+                                    'url' => '#',
+                                    'items' => [
+                                        [
+                                            'label' => 'Administración',
+                                            'icon' => 'database',
+                                            'url' => '#',
+                                            'items' => [
+                                                ['label' => 'Cuentas', 'icon' => 'plus-square-o', 'url' => ['/cuenta-pub/index']],
+                                                ['label' => 'Tipo Recibo', 'icon' => 'plus-square-o', 'url' => ['/tipo-recibo/index']],
+                                                ['label' => 'Tipo Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-tipo/index']],
+                                                ['label' => 'Concepto Compra', 'icon' => 'plus-square-o', 'url' => ['/compra-concepto/index']],
+                                                ['label' => 'Tipo Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso-tipo/index']],
+                                                ['label' => 'Tipo Comprobante (Exportar)', 'icon' => 'plus-square-o', 'url' => ['/contabilidad-comprobante-tipo/index']],
+                                                ['label' => 'Proveedor', 'icon' => 'plus-square-o', 'url' => ['/proveedor/index']],
+                                                ['label' => 'Doc Equivalente', 'icon' => 'plus-square-o', 'url' => ['/documento-equivalente/index']],
+                                            ],
+                                        ],
+                                        [
+                                            'label' => 'Utilidades',
+                                            'icon' => 'cube',
+                                            'url' => '#',
+                                            'items' => [
+                                                ['label' => 'Contabiizar', 'icon' => 'plus-square-o', 'url' => ['/contabilizar/contabilizar']],
+                                            ],
+                                        ],
+                                        [
+                                            'label' => 'Consultas',
+                                            'icon' => 'question',
+                                            'url' => '#',
+                                            'items' => [
+                                                ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/indexconsulta']],
+                                                ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/indexconsulta']],
+                                                ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso/indexconsulta']],
+                                            ],
+                                        ],
+                                        [
+                                            'label' => 'Procesos',
+                                            'icon' => 'exchange',
+                                            'url' => '#',
+                                            'items' => [
+                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ],
+                                        ],
+                                        [
+                                            'label' => 'Movimientos',
+                                            'icon' => 'book',
+                                            'url' => '#',
+                                            'items' => [
+                                                ['label' => 'Recibo Caja', 'icon' => 'plus-square-o', 'url' => ['/recibocaja/index']],
+                                                ['label' => 'Compras', 'icon' => 'plus-square-o', 'url' => ['/compra/index']],
+                                                ['label' => 'Comprobante Egreso', 'icon' => 'plus-square-o', 'url' => ['/comprobante-egreso/index']],
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                                //TERMINA CONTABILIDAD
                               // mdulo de facturacion
                                 [
                                     'label' => 'Facturacion',
