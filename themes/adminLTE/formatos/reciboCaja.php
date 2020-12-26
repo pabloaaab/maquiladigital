@@ -158,7 +158,7 @@ class PDF extends FPDF {
                 $pdf->Cell(29, 5, $detalle->factura->nrofacturaelectronica, 0, 0, 'L');
             }else{
                 $pdf->Cell(22, 5, 'No Aplica', 0, 0, 'L');
-                $pdf->Cell(29, 5, $detalle->factura->nrofacturaelectronica, 0, 0, 'L');
+                $pdf->Cell(29, 5, 'No Aplica', 0, 0, 'L');
             }            
             $pdf->Cell(27, 5, number_format($detalle->vlrabono, 0, '.', ','), 0, 0, 'R');
             $pdf->Cell(27, 5, number_format($detalle->vlrsaldo, 0, '.', ','), 0, 0, 'R');
