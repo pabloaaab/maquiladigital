@@ -808,7 +808,7 @@ class ProgramacionNominaController extends Controller {
                             }
                             if($contrato->auxilio_transporte == 1){
                                 $configuracion_transporte = ConfiguracionSalario::find()->where(['=','estado', 1])->one();
-                                echo $pago_cesantia = round((($salario_promedio + $configuracion_transporte->auxilio_transporte_actual)* $dias_reales)/360);
+                                $pago_cesantia = round((($salario_promedio + $configuracion_transporte->auxilio_transporte_actual)* $dias_reales)/360);
                             }else{
                                 $pago_cesantia = round((($salario_promedio)* $dias_reales)/360);
                             }
@@ -829,7 +829,7 @@ class ProgramacionNominaController extends Controller {
                                 $cesantias->total_devengado = $pago_cesantia;
                                 $cesantias->dias_ausentes = $total_dias_ausentes;
                                 $cesantias->salario_promedio = round($salario_promedio);
-                               $cesantias->save(false);
+                                $cesantias->save(false);
                             }
                         endforeach; //termina el FOREACH DE CESANTIAS    
                         //codigo que actualiza el estado_generado de la tabla programacion_nomina
