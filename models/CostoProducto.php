@@ -119,4 +119,9 @@ class CostoProducto extends \yii\db\ActiveRecord
             $this->addError($attribute, "Este Código ya esta creado en sistema, consulte al administrador");
         }
     }
+    
+    public function getProductos()
+    {
+        return "{$this->codigo_producto} - {$this->descripcion}";
+    }
 }

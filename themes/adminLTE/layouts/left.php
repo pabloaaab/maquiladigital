@@ -337,6 +337,8 @@
                                             'url' => '#',
                                             'items' => [
                                               ['label' => 'Costo producto', 'icon' => 'plus-square-o', 'url' => ['/costo-producto/index']],
+                                              ['label' => 'Remision x producto', 'icon' => 'plus-square-o', 'url' => ['/remision-entrega-prendas/index']],
+                                              ['label' => 'Referencias', 'icon' => 'plus-square-o', 'url' => ['/referencias/index']],
                                               
                                             ],
                                         ],

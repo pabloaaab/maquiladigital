@@ -6,8 +6,8 @@ use yii\helpers\Url;
 use yii\bootstrap\Modal;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use app\models\MaquinaOperario;
-use app\models\Tipo;
+use app\models\CostoProducto;
+use app\models\TipoProducto;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,14 +22,14 @@ use yii\db\ActiveQuery;
 /* @var $model app\models\Facturaventadetalle */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title = 'Listado de insumos';
+$this->title = 'Listado de referencias';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
-    "action" => Url::toRoute(["costo-producto/nuevodetalle", 'id' => $id]),
+    "action" => Url::toRoute(["remision-entrega-prendas/nuevodetalle", 'id' => $id]),
     "enableClientValidation" => true,
     'options' => ['class' => 'form-horizontal'],
     
@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary",]) ?>
-            <a align="right" href="<?= Url::toRoute(["costo-producto/nuevodetalle", 'id' => $id]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <a align="right" href="<?= Url::toRoute(["remision-entrega-prendas/nuevodetalle", 'id' => $id]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -85,7 +85,7 @@ if ($mensaje != ""){
 <div class="table table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Registros : <span class="badge"><?= count($insumos) ?> </span>
+            Registros : <span class="badge"><?= count($referencias) ?> </span>
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-hover">
@@ -94,29 +94,27 @@ if ($mensaje != ""){
                     <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                     <th scope="col" style='background-color:#B9D5CE;'>Código</th>
                     <th scope="col" style='background-color:#B9D5CE;'>Descripción</th>
-                    <th scope="col" style='background-color:#B9D5CE;'>Medida</th>
-                     <th scope="col" style='background-color:#B9D5CE;'>Precio Unitario.</th>
-                    <th scope="col" style='background-color:#B9D5CE;'>Fecha entrada</th>                    
+                     <th scope="col" style='background-color:#B9D5CE;'>Precio con Iva.</th>
+                    <th scope="col" style='background-color:#B9D5CE;'>Precio sin Iva</th>                    
                     <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($insumos as $val): ?>
+                <?php foreach ($referencias as $val): ?>
                     <tr style="font-size: 85%;">
-                    <td><?= $val->id_insumos ?></td>
-                    <td><?= $val->codigo_insumo ?></td>
+                    <td><?= $val->id_referencia ?></td>
+                    <td><?= $val->codigo_producto ?></td>
                     <td><?= $val->descripcion ?></td>
-                    <td><?= $val->tipomedida->medida ?></td>
-                    <td style="text-align: right"><?= '$'.number_format($val->precio_unitario,2) ?></td>
-                    <td><?= $val->fecha_entrada ?></td>                    
-                    <td style="width: 30px;"><input type="checkbox" name="id_insumos[]" value="<?= $val->id_insumos ?>"></td>
+                    <td style="text-align: right"><?= '$'.number_format($val->precio_venta_mayorista,2) ?></td>
+                    <td style="text-align: right"><?= '$'.number_format($val->precio_venta_deptal,2) ?></td>
+                    <td style="width: 30px;"><input type="checkbox" name="id_referencia[]" value="<?= $val->id_referencia ?>"></td>
                 </tr>
                 </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['costo-producto/view', 'id' => $id], ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['remision-entrega-prendas/view', 'id' => $id], ['class' => 'btn btn-primary btn-sm']) ?>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Enviar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
 

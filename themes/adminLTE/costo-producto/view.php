@@ -25,9 +25,10 @@ $view = 'costo-producto';
             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_producto], ['class' => 'btn btn-default btn-sm']);
             echo Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_producto], ['class' => 'btn btn-default btn-sm']);            
             echo Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 15, 'codigo' => $model->id_producto,'view' => $view], ['class' => 'btn btn-default btn-sm']);                                                         
-           
+            
         }
         ?>
+        
     </p>
     <?php
     if ($mensaje != ""){
@@ -165,8 +166,8 @@ $view = 'costo-producto';
                                             </div>
                                             <div class="modal-footer">
                                                 <?= Html::beginForm(Url::toRoute("costo-producto/eliminardetalle"), "POST") ?>
-                                                <input type="text" name="iddetalle" value="<?= $val->id ?>">
-                                                <input type="text" name="idproducto" value="<?= $model->id_producto ?>">
+                                                <input type="hidden" name="iddetalle" value="<?= $val->id ?>">
+                                                <input type="hidden" name="idproducto" value="<?= $model->id_producto ?>">
                                                 <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
                                                 <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                                 <?= Html::endForm() ?>

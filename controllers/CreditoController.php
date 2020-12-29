@@ -253,7 +253,7 @@ class CreditoController extends Controller
                 foreach ($_POST["seleccion"] as $intCodigo)
                 {
                    $abono = Credito::findOne($intCodigo);                    
-                    if(Incapacidad::deleteAll("id_credito=:id_credito", [":id_credito" => $intCodigo]))
+                    if(Credito::deleteAll("id_credito=:id_credito", [":id_credito" => $intCodigo]))
                     {                        
                     } 
                 }

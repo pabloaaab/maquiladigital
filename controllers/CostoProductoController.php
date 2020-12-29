@@ -293,7 +293,7 @@ class CostoProductoController extends Controller
                 }
             }
         }
-        //return $this->render("_formeditardetalle", ["model" => $model,]);
+       //return $this->render("_formeditardetalle", ["id" => $model,]);
     }
    
     // ELIMINA LOS DETALLES DE INSUMOS
@@ -386,7 +386,6 @@ class CostoProductoController extends Controller
     
     //PROCESO QUE ACTUALIZA LOS COSTOS DEL PRODUCTO ANTES Y DESPUES DE IVA
     protected function actualizarCostos($idproducto) {
-        echo $idproducto;
         $costo_producto = CostoProducto::findOne($idproducto);
         $costo_producto_detalle = CostoProductoDetalle::find()->where(['=','id_producto', $idproducto])->all();
         $suma = 0; $totaliva = 0; $totalsiniva = 0;
