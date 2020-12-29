@@ -741,6 +741,11 @@ class ProgramacionNominaController extends Controller {
                 if ($tipo_nomina == 3){
                     $grupo_pago = GrupoPago::findOne($id_grupo_pago);
                     if(strtotime($grupo_pago->ultimo_pago_nomina) != strtotime($fecha_hasta)){
+                        $this->redirect(["programacion-nomina/view", 'id' => $id,
+                                        'id_grupo_pago' => $id_grupo_pago,
+                                        'fecha_desde' => $fecha_desde,
+                                        'fecha_hasta' => $fecha_hasta,
+                                       ]);
                         Yii::$app->getSession()->setFlash('warning', 'Para procesar las cesantias de este grupo de pago, todo el personal debe de tener todas las nominas a '. $fecha_hasta .'.');
                     }else{
                         //INICIO DE ACUMULADOS DE NOMINA
@@ -752,10 +757,10 @@ class ProgramacionNominaController extends Controller {
                         }else{
                             $ano = 2;
                         }  
+                        $total_acumulado = 0; $suma = 0; $suma2 = 0;
+                        $total_dias_ausentes = 0; $suma3 = 0; $salario_promedio = 0;
+                        $dias_reales = 0; $pago_cesantia = 0; $ibp_cesantia_anterior = 0;
                         foreach ($nominas as $cesantias):
-                            $total_acumulado = 0; $suma = 0; $suma2 = 0;
-                            $total_dias_ausentes = 0; $suma3 = 0; $salario_promedio = 0;
-                            $dias_reales = 0; $pago_cesantia = 0; $ibp_cesantia_anterior = 0;
                             $vector_nomina = ProgramacionNomina::find()->where(['>=', 'fecha_desde', $cesantias->fecha_desde])
                                                                     ->andWhere(['=','id_contrato', $cesantias->id_contrato])
                                                                     ->all();
@@ -780,27 +785,30 @@ class ProgramacionNominaController extends Controller {
                                 endforeach;
                             }
                             $contrato = Contrato::find()->where(['=','id_contrato', $cesantias->id_contrato])->one();
-                            $ibp_cesantia_anterior->ibp_cesantia_inicial;
+                            $ibp_cesantia_anterior = $contrato->ibp_cesantia_inicial;
                             if($ibp_cesantia_anterior > 0){
                                 $total_acumulado = $suma + $suma2 + $ibp_cesantia_anterior;
                             }else{
                                 $total_acumulado = $suma + $suma2;
                             }
-                            $total_dias_ausentes = $auxiliar;
+                           $total_dias_ausentes = $auxiliar;
                             $sw = 0;
-                            if(strtotime($cesantias->fecha_ultima_cesantia) < strtotime($cesantias->fecha_inicio_contrato)){
-                                $sw = 1;
-                            }
-                            $total_dias = $this->CrearCesantias($cesantias, $sw);
+                            if(strtotime($cesantias->fecha_inicio_contrato) < strtotime($cesantias->fecha_ultima_cesantia)){
+                               $sw = 1;
+                            } else {
+                              $sw = 2;  
+                            } 
+                            $total_dias = $this->CrearCesantias($cesantias, $sw, $ano);
+                            
                             $salario_promedio = ($total_acumulado / $total_dias) * 30;  
                             if($configuracion_c->aplicar_ausentismo == 1){
-                                 $dias_reales = $total_dias - $total_dias_ausentes;
+                                $dias_reales = ($total_dias ) - $total_dias_ausentes;
                             }else{
                                  $dias_reales = $total_dias;
                             }
                             if($contrato->auxilio_transporte == 1){
                                 $configuracion_transporte = ConfiguracionSalario::find()->where(['=','estado', 1])->one();
-                                $pago_cesantia = round((($salario_promedio + $configuracion_transporte->auxilio_transporte_actual)* $dias_reales)/360);
+                                echo $pago_cesantia = round((($salario_promedio + $configuracion_transporte->auxilio_transporte_actual)* $dias_reales)/360);
                             }else{
                                 $pago_cesantia = round((($salario_promedio)* $dias_reales)/360);
                             }
@@ -821,17 +829,18 @@ class ProgramacionNominaController extends Controller {
                                 $cesantias->total_devengado = $pago_cesantia;
                                 $cesantias->dias_ausentes = $total_dias_ausentes;
                                 $cesantias->salario_promedio = round($salario_promedio);
-                                $cesantias->save(false);
+                               $cesantias->save(false);
                             }
                         endforeach; //termina el FOREACH DE CESANTIAS    
+                        //codigo que actualiza el estado_generado de la tabla programacion_nomina
+                        $nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
+                        foreach ($nomina as $validar):
+                            $validar->estado_generado = 1;
+                            $validar->save(false);
+                        endforeach;
                     }
                 }//TERMINA CICLO DE CESANTIAS
-                //codigo que actualiza el estado_generado de la tabla programacion_nomina
-                $nomina = ProgramacionNomina::find()->where(['=', 'id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
-                foreach ($nomina as $validar):
-                    $validar->estado_generado = 1;
-                   $validar->save(false);
-                endforeach;
+              
             }
         }    
         $this->redirect(["programacion-nomina/view", 'id' => $id,
@@ -845,10 +854,26 @@ class ProgramacionNominaController extends Controller {
     protected function CrearCesantias($cesantias, $sw, $ano)
     {
        //codigo para aumentar dias
+        $mesInicio = 0;
+        $anioTerminacion = 0;
+        $anioInicio = 0;
+        $mesTerminacion = 0;
+        $diaTerminacion = 0;
+        $diaInicio = 0;
         $fecha = date($cesantias->fecha_ultima_cesantia);
         $fecha_inicio_dias = strtotime('1 day', strtotime($fecha));
         $fecha_inicio_dias = date('Y-m-d', $fecha_inicio_dias);
         if($sw == 1){    
+            $fecha_inicio = $fecha_inicio_dias;
+            $fecha_termino = $cesantias->fecha_hasta;
+            $diaTerminacion = substr($fecha_termino, 8, 8);
+            $mesTerminacion = substr($fecha_termino, 5, 2);
+            $anioTerminacion = substr($fecha_termino, 0, 4);
+            $diaInicio = substr($fecha_inicio, 8, 8);
+            $mesInicio = substr($fecha_inicio, 5, 2);
+            $anioInicio = substr($fecha_inicio, 0, 4);
+          
+        }else{
             $fecha_inicio = $cesantias->fecha_inicio_contrato;
             $fecha_termino = $cesantias->fecha_hasta;
             $diaTerminacion = substr($fecha_termino, 8, 8);
@@ -857,9 +882,8 @@ class ProgramacionNominaController extends Controller {
             $diaInicio = substr($fecha_inicio, 8, 8);
             $mesInicio = substr($fecha_inicio, 5, 2);
             $anioInicio = substr($fecha_inicio, 0, 4);
-        }else{
-            ///otro codigo
-        }    
+        } 
+        $mes = 0;
         $febrero = 0;
         $mes = $mesInicio-1;
         if($mes == 2){
