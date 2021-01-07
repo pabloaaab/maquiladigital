@@ -19,13 +19,15 @@ $this->params['breadcrumbs'][] = 'Editar';
           echo $this->render('_formadicion', [
             'model' => $model,
             'tipoadicion' => $tipoadicion,
-            'id'=>$id,  
+            'id'=>$id, 
+            'fecha_corte' => $fecha_corte,
            ]);
         }else{         
            echo $this->render('_formdescuento', [
             'model' => $model,
             'tipoadicion' => $tipoadicion, 
             'id'=>$id,  
+            'fecha_corte' => $fecha_corte
            ]);  
         }
          ?>

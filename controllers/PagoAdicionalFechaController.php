@@ -11,6 +11,9 @@ use app\models\FormFiltroPagoFecha;
 use app\models\FormPagoAdicionalFecha;
 use app\models\FormAdicionPermanente;
 use app\models\Contrato;
+use app\models\FormBuscarIntereses;
+use app\models\InteresesCesantia;
+use app\models\ConceptoSalarios;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -140,7 +143,7 @@ class PagoAdicionalFechaController extends Controller
         }
    }
    
-    public function actionView($id) {
+    public function actionView($id, $fecha_corte) {
         $fechacorte = PagoAdicionalFecha::findOne($id);
         $id= $fechacorte->id_pago_fecha;
         $estado_proceso= $fechacorte->estado_proceso;
@@ -214,8 +217,8 @@ class PagoAdicionalFechaController extends Controller
                             $intIndice++;
                         }
                     }
-                    echo"hola proceso";
-                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id]);
+
+                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id, 'fecha_corte' => $fecha_corte]);
                 }
                 if(isset($_POST['desactivar_periodo_registro'])){                            
                     if(isset($_REQUEST['id_pago_permanente'])){                            
@@ -228,7 +231,7 @@ class PagoAdicionalFechaController extends Controller
                             $intIndice++;
                         }
                     }
-                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id, 'fecha_corte' => $fecha_corte]);
                 }
                 if(isset($_POST['activar_periodo'])){                            
                     if(isset($_REQUEST['id_pago_permanente'])){                            
@@ -241,7 +244,7 @@ class PagoAdicionalFechaController extends Controller
                             $intIndice++;
                         }
                     }
-                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id, 'fecha_corte' => $fecha_corte]);
                 }
                 if(isset($_POST['desactivar_periodo'])){                            
                     if(isset($_REQUEST['id_pago_permanente'])){                            
@@ -254,7 +257,7 @@ class PagoAdicionalFechaController extends Controller
                             $intIndice++;
                         }
                     }
-                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view",'id'=>$id, 'fecha_corte' => $fecha_corte]);
                 }
             }
             $to = $count->count();
@@ -264,6 +267,8 @@ class PagoAdicionalFechaController extends Controller
                         'pagination' => $pages,
                         'id' => $id,
                         'estado_proceso'=>$estado_proceso,
+                        'fecha_corte' => $fecha_corte,
+                        'fechacorte' => $fechacorte,
             ]);
             
         }else{
@@ -297,7 +302,78 @@ class PagoAdicionalFechaController extends Controller
         $adicionalPago->estado_registro = 0;
         $adicionalPago->save(false);
     }
+ //FUNCION QUE IMPORTA LOS INTERESES
+    
+    public function actionImportinteres($id, $fecha_corte)
+    {
+        $intereses = InteresesCesantia::find()->where(['=','importado', 0])->orderBy('id_interes DESC')->all();
+        $form = new FormBuscarIntereses();
+        $documento = null;
+        $id_grupo_pago = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $documento = Html::encode($form->documento); 
+                $id_grupo_pago = Html::encode($form->id_grupo_pago);
+                if ($id_grupo_pago or $documento){
+                    $intereses = InteresesCesantia::find()
+                            ->where(['like','documento',$documento])
+                            ->andFilterWhere(['=','id_grupo_pago',$id_grupo_pago])
+                            ->orderBy('id_interes DESC')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+           $intereses = InteresesCesantia::find()->where(['=','importado', 0])->orderBy('id_interes DESC')->all();
+        }
+        if (isset($_POST["id_interes"])) {
+                $intIndice = 0;
+                $salario = ConceptoSalarios::find()->where(['=','intereses', 1])->one();
+               echo $fecha_corte = Html::encode($_POST["fecha_corte"]);
+                foreach ($_POST["id_interes"] as $intCodigo) {
+                    $table = new PagoAdicionalPermanente();
+                    $interes = InteresesCesantia::find()->where(['id_interes' => $intCodigo])->one();
+                    $pagos = PagoAdicionalPermanente::find()
+                        ->where(['=', 'id_contrato', $interes->id_contrato])
+                        ->andWhere(['=', 'codigo_salario', $salario->codigo_salario])
+                        ->all();
+                    $reg = count($pagos);
+                    if ($reg == 0) {
+                        $table->id_empleado = $interes->id_empleado;
+                        $table->codigo_salario = $salario->codigo_salario;
+                        $table->id_contrato = $interes->id_contrato;
+                        $table->id_grupo_pago = $interes->id_grupo_pago;
+                        $table->id_pago_fecha = $id;
+                        $table->fecha_corte = $fecha_corte;
+                        $table->tipo_adicion = 1;
+                        $table->vlr_adicion = $interes->vlr_intereses;
+                        $table->permanente = 2;
+                        $table->aplicar_dia_laborado = 0;
+                        $table->aplicar_prima = 0;
+                        $table->aplicar_cesantias = 0;
+                        $table->estado_registro = 1;
+                        $table->estado_periodo = 1;
+                        $table->detalle = 'Pago de intereses';
+                        $table->usuariosistema = Yii::$app->user->identity->username;
+                      $table->insert(); 
+                      //  $this->actualizarSaldo($id);
+                    }
+                }
+               $this->redirect(["pago-adicional-fecha/view", 'id' => $id, 'fecha_corte' => $fecha_corte]);
+            }else{
+                
+            }
+        return $this->render('_formimportinteres', [
+            'intereses' => $intereses,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+            'form' => $form,
+            'fecha_corte' => $fecha_corte,
 
+        ]);
+    }
     
     public function actionCreate() {   
       
@@ -324,7 +400,7 @@ class PagoAdicionalFechaController extends Controller
              ]);
     }
 
-    public function actionCreateadicion($id) {        
+    public function actionCreateadicion($id, $fecha_corte) {        
         $model = new FormAdicionPermanente();        
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -352,7 +428,7 @@ class PagoAdicionalFechaController extends Controller
                 $table->id_pago_fecha = $pagofecha->id_pago_fecha;
                 $table->fecha_corte = $pagofecha->fecha_corte;
                 if ($table->save(false)) {
-                    $this->redirect(["pago-adicional-fecha/view", 'id' =>$id]);
+                    $this->redirect(["pago-adicional-fecha/view", 'id' =>$id, 'fecha_corte' => $fecha_corte]);
                 } else {
                     $msg = "error";
                 }
@@ -360,10 +436,10 @@ class PagoAdicionalFechaController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('_formadicion', ['model' => $model, 'id'=> $id]);
+        return $this->render('_formadicion', ['model' => $model, 'id'=> $id, 'fecha_corte' => $fecha_corte]);
     }
     
-    public function actionCreatedescuento($id) {        
+    public function actionCreatedescuento($id, $fecha_corte) {        
         $model = new FormAdicionPermanente();        
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -391,7 +467,7 @@ class PagoAdicionalFechaController extends Controller
                 $table->id_pago_fecha = $pagofecha->id_pago_fecha;
                 $table->fecha_corte = $pagofecha->fecha_corte;
                 if ($table->save(false)) {
-                    $this->redirect(["pago-adicional-fecha/view", 'id'=> $id]);
+                    $this->redirect(["pago-adicional-fecha/view", 'id'=> $id, 'fecha_corte' => $fecha_corte]);
                 } else {
                     $msg = "error";
                 }
@@ -399,12 +475,12 @@ class PagoAdicionalFechaController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('_formdescuento', ['model' => $model, 'id'=> $id]);
+        return $this->render('_formdescuento', ['model' => $model, 'id'=> $id, 'fecha_corte' => $fecha_corte]);
     }
 
     
      // permir modificar la tabla periodopagofecha.
-     public function actionUpdate($id)
+     public function actionUpdate($id,$fecha_corte)
     {
         $model = new FormPagoAdicionalFecha();
        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
@@ -434,22 +510,24 @@ class PagoAdicionalFechaController extends Controller
                 return $this->redirect(['index']);    
         }
         return $this->render('update', [
-            'model' => $model, 'id'=>$id, 
+            'model' => $model,
+            'id'=>$id, 
+            'fecha_corte' => $fecha_corte,
         ]);
     }
    
        
-    public function actionVista($id_pago_permanente,$tipoadicion) {
+    public function actionVista($id_pago_permanente,$tipoadicion, $fecha_corte) {
         $model = PagoAdicionalPermanente::find()->Where(['=', 'id_pago_permanente', $id_pago_permanente])->one();
         $id = $model->id_pago_fecha;  
          return $this->render('vista', [
-            'model' => $model, 'id'=>$id, 'tipoadicion'=>$tipoadicion,
+            'model' => $model, 'id'=>$id, 'tipoadicion'=>$tipoadicion, 'fecha_corte' => $fecha_corte,
         ]);
     }  
     
     
     //permite modificar las adiciones y descuento de la tabla adicionpagopermanente
-     public function actionUpdatevista($id_pago_permanente, $tipoadicion)
+     public function actionUpdatevista($id_pago_permanente, $tipoadicion, $fecha_corte)
     {
         $model = new FormAdicionPermanente();
        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
@@ -474,7 +552,7 @@ class PagoAdicionalFechaController extends Controller
                         $table->id_grupo_pago = $contrato->id_grupo_pago;  
                     }    
                    $table->save(false);
-                   return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente]); 
+                   return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente, 'fecha_corte' => $fecha_corte]); 
                 }
         }
         if (Yii::$app->request->get("id_pago_permanente")) {
@@ -490,13 +568,13 @@ class PagoAdicionalFechaController extends Controller
                     $model->aplicar_cesantias = $table->aplicar_cesantias;
                     $model->detalle =  $table->detalle;
                 }else{
-                       return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente]); 
+                       return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente, 'fecha_corte' => $fecha_corte]); 
                 }
         } else {
-                  return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente]);   
+                  return $this->redirect(['view','id'=>$id,'id_pago_permanente'=>$id_pago_permanente, 'fecha_corte' => $fecha_corte]);   
         }
         return $this->render('updatevista', [
-            'model' => $model, 'id'=>$id, 'tipoadicion'=>$tipoadicion, 
+            'model' => $model, 'id'=>$id, 'tipoadicion'=>$tipoadicion, 'fecha_corte' => $fecha_corte, 
         ]);
     }
 
@@ -534,7 +612,7 @@ class PagoAdicionalFechaController extends Controller
     }
     
     //codigo que elimina el adicional de la vista
-     public function actionEliminaradicional($id_pago_permanente) {
+     public function actionEliminaradicional($id_pago_permanente, $fecha_corte) {
         if (Yii::$app->request->post()) {
             $pagoadicional = PagoAdicionalPermanente::findOne($id_pago_permanente);
             $id = $pagoadicional->id_pago_fecha;
@@ -542,24 +620,42 @@ class PagoAdicionalFechaController extends Controller
                 try {
                     PagoAdicionalPermanente::deleteAll("id_pago_permanente=:id_pago_permanente", [":id_pago_permanente" => $id_pago_permanente]);
                     Yii::$app->getSession()->setFlash('success', 'Registro Eliminado con exito.');
-                    $this->redirect(["pago-adicional-fecha/view" , 'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view" , 'id'=>$id, 'fecha_corte' => $fecha_corte]);
                 } catch (IntegrityException $e) {
-                    $this->redirect(["pago-adicional-fecha/view" ,'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view" ,'id'=>$id, 'fecha_corte' => $fecha_corte]);
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar el Id Nro: ' . $pagoadicional->id_pago_permanente . ', tiene registros asociados en otros procesos');
                 } catch (\Exception $e) {
 
-                    $this->redirect(["pago-adicional-fecha/view", 'id'=>$id]);
+                    $this->redirect(["pago-adicional-fecha/view", 'id'=>$id, 'fecha_corte' => $fecha_corte]);
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar el Id Nro:  ' . $pagoadicional->id_pago_permanente . ', tiene registros asociados en otros procesos');
                 }
             } else {
                 // echo "Ha ocurrido un error al eliminar el registros, redireccionando ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("pago-adicional-fecha/view, 'id'=>$id") . "'>";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("pago-adicional-fecha/view, 'id'=>$id, 'fecha_corte' => $fecha_corte") . "'>";
             }
         } else {
-            return $this->redirect(["pago-adicional-fecha/view", 'id'=>$id]);
+            return $this->redirect(["pago-adicional-fecha/view", 'id'=>$id, 'fecha_corte' => $fecha_corte]);
         }
     }
+     
+    //funcion que aplicar los pago de los intereses
     
+    public function actionAutorizado($id, $fecha_corte) {
+        $intereses = InteresesCesantia::find()->where(['=','importado', 0])->all();
+        $dato = 0;
+       echo $dato = count($intereses);
+        if($dato > 0){
+            foreach ($intereses as $valor):
+                $valor->importado = 1;
+                $valor->save(false);
+            endforeach;
+           $this->redirect(["pago-adicional-fecha/view" ,'id'=>$id, 'fecha_corte' => $fecha_corte]);
+        }else{    
+           $this->redirect(["pago-adicional-fecha/view" ,'id'=>$id, 'fecha_corte' => $fecha_corte]);
+            Yii::$app->getSession()->setFlash('error', 'No existen registros de intereses a las cesantias para aplicar al pago.');
+        }
+         
+    }
 
     /**
      * Finds the PagoAdicionalFecha model based on its primary key value.
@@ -602,8 +698,6 @@ class PagoAdicionalFechaController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
                                
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Id')
@@ -617,7 +711,8 @@ class PagoAdicionalFechaController extends Controller
                     ->setCellValue('I1', 'Aplicar Día Laborado')
                     ->setCellValue('J1', 'Aplicar Prima')
                     ->setCellValue('K1', 'Aplicar Cesantia')
-                    ->setCellValue('L1', 'fecha_corte');
+                    ->setCellValue('L1', 'fecha_corte')
+                     ->setCellValue('M1', 'Usuario');
         $i = 2;
         
         foreach ($tableexcel as $val) {
@@ -629,12 +724,13 @@ class PagoAdicionalFechaController extends Controller
                     ->setCellValue('D' . $i, $val->id_contrato)
                     ->setCellValue('E' . $i, $val->grupoPago->grupo_pago)                    
                     ->setCellValue('F' . $i, $val->DebitoCredito)
-                    ->setCellValue('G' . $i, '$ '.number_format($val->vlr_adicion))
+                    ->setCellValue('G' . $i, $val->vlr_adicion)
                     ->setCellValue('H' . $i, $val->permanentes)
                     ->setCellValue('I' . $i, $val->aplicarDiaLaborado)
                     ->setCellValue('J' . $i, $val->aplicarPrima)
                     ->setCellValue('K' . $i, $val->aplicarCesantia)
-                    ->setCellValue('L' . $i, $val->fecha_corte);
+                    ->setCellValue('L' . $i, $val->fecha_corte)
+                    ->setCellValue('M' . $i, $val->usuariosistema);
             $i++;
         }
 

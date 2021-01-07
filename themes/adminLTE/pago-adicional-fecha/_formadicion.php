@@ -66,7 +66,7 @@ $conceptosalario = ArrayHelper::map(ConceptoSalarios::find()->where(['adicion'=>
                      </div>
                 </div>   
                 <div class="panel-footer text-right">			
-                    <a href="<?= Url::toRoute(["pago-adicional-fecha/view", 'id'=>$id]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+                    <a href="<?= Url::toRoute(["pago-adicional-fecha/view", 'id'=>$id, 'fecha_corte' => $fecha_corte]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
                     <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
                 </div>
             </div>

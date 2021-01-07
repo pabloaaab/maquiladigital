@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </script>
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
-    "action" => Url::toRoute(["pago-adicional-fecha/view", 'id'=>$id]),
+    "action" => Url::toRoute(["pago-adicional-fecha/view", 'id'=>$id, 'fecha_corte' => $fecha_corte]),
     "enableClientValidation" => true,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
@@ -43,8 +43,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ]);
 $grupopago = ArrayHelper::map(GrupoPago::find()->orderBy('grupo_pago ASC')->all(), 'id_grupo_pago', 'grupo_pago');
 $empleado = ArrayHelper::map(Empleado::find()->orderBy('nombrecorto ASC')->all(), 'id_empleado','nombrecorto');
-$conceptosalario = ArrayHelper::map(ConceptoSalarios::find()->where(['tipo_adicion'=> 1])->orWhere(['tipo_adicion'=> 2])->all(), 'codigo_salario', 'nombre_concepto');
+$conceptosalario = ArrayHelper::map(ConceptoSalarios::find()->where(['tipo_adicion'=> 1])->orWhere(['tipo_adicion'=> 2])->orWhere(['=','intereses', 1])->all(), 'codigo_salario', 'nombre_concepto');
 ?>
+<div class="panel-footer text-left"> 
+    <a href="<?= Url::toRoute(["pago-adicional-fecha/index"]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>  
+    <?php if($fechacorte->estado_proceso == 1){?>   
+        <?= Html::a('<span class="glyphicon glyphicon-import"></span> Importar intereses', ['pago-adicional-fecha/importinteres', 'id' => $id, 'fecha_corte' => $fecha_corte], ['class' => 'btn btn-info btn-sm'])?>
+        <?= Html::a('<span class="glyphicon glyphicon-level-up"></span> Aplicar pago', ['autorizado', 'id' => $id, 'fecha_corte' => $fecha_corte],['class' => 'btn btn-default btn-sm']) ?>
+  <?php }?>  
+</div>
 <div class="panel panel-success panel-filters">
     <div class="panel-heading" onclick="mostrarfiltro()">
         Filtros de busqueda <i class="glyphicon glyphicon-filter"></i>
@@ -81,7 +88,7 @@ $conceptosalario = ArrayHelper::map(ConceptoSalarios::find()->where(['tipo_adici
         </div> 
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
-            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/view" , "id" => $id])?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/view" , "id" => $id, 'fecha_corte' => $fecha_corte])?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -138,23 +145,33 @@ $form = ActiveForm::begin([
                  <?php
                     if($contrato_activo->contrato_activo == 0){?>
                         <td colspan="3" align="center"><p style="color:red;">Closed</p></td>
-                    <?php }else{?>      
-                        <td style="width: 25px;">
-                            <a href="<?= Url::toRoute(["pago-adicional-fecha/vista", 'estado_proceso'=>$estado_proceso, "id" => $id , "id_pago_permanente" => $val->id_pago_permanente, "tipoadicion"=>$val->tipo_adicion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
-                         </td>
-                         <td style="width: 25px;">
-                             <a href="<?= Url::toRoute(["pago-adicional-fecha/updatevista", "id"=>$id, "id_pago_permanente" => $val->id_pago_permanente, "tipoadicion"=>$val->tipo_adicion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
-                        </td>
-                        <td style="width: 25px;">
-                            <?= Html::a('', ['eliminaradicional', 'id_pago_permanente' => $val->id_pago_permanente], [
-                                'class' => 'glyphicon glyphicon-trash',
-                                'data' => [
-                                    'confirm' => 'Esta seguro de eliminar el registro?',
-                                    'method' => 'post',
-                                ],
-                            ]) ?>
-                        </td>
-                     <?php } ?>     
+                    <?php }else{
+                        if($estado_proceso == 1){
+                            ?>   
+
+                            <td style="width: 25px;">
+                                <a href="<?= Url::toRoute(["pago-adicional-fecha/vista", 'estado_proceso'=>$estado_proceso, "id" => $id , "id_pago_permanente" => $val->id_pago_permanente, "tipoadicion"=>$val->tipo_adicion, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                             </td>
+                             <td style="width: 25px;">
+                                 <a href="<?= Url::toRoute(["pago-adicional-fecha/updatevista", "id"=>$id, "id_pago_permanente" => $val->id_pago_permanente, "tipoadicion"=>$val->tipo_adicion, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
+                            </td>
+                            <td style="width: 25px;">
+                                <?= Html::a('', ['eliminaradicional', 'id_pago_permanente' => $val->id_pago_permanente, 'fecha_corte' => $val->fecha_corte], [
+                                    'class' => 'glyphicon glyphicon-trash',
+                                    'data' => [
+                                        'confirm' => 'Esta seguro de eliminar el registro?',
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
+                            </td>
+                        <?php }else{ ?>
+                            <td style="width: 25px;">
+                                <a href="<?= Url::toRoute(["pago-adicional-fecha/vista", 'estado_proceso'=>$estado_proceso, "id" => $id , "id_pago_permanente" => $val->id_pago_permanente, "tipoadicion"=>$val->tipo_adicion, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                             </td>   
+                            <td></td>    
+                             <td></td>
+                        <?php }    
+                      } ?>     
                   <td><input type="checkbox" name="id_pago_permanente[]" value="<?= $val->id_pago_permanente ?>"></td>
             </tr>            
             </tbody>            
@@ -162,10 +179,10 @@ $form = ActiveForm::begin([
         </table> 
       <?php if($estado_proceso == 0){?>
         <div class="panel-footer text-right" >    
-           <a href="<?= Url::toRoute(["pago-adicional-fecha/index"]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>  
+           
             <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm']); ?>                
-            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createadicion", 'id'=>$id])?>" class="btn btn-success disabled btn-sm"><span class='glyphicon glyphicon-plus'></span></a>
-            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createdescuento", 'id'=> $id])?>" class="btn btn-info disabled  btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
+            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createadicion", 'id'=>$id, 'fecha_corte' => $fecha_corte])?>" class="btn btn-success disabled btn-sm"><span class='glyphicon glyphicon-plus'></span></a>
+            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createdescuento", 'id'=> $id, 'fecha_corte' => $fecha_corte])?>" class="btn btn-info disabled  btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
               <div class="btn-group">
                     <button type="button" class="btn btn-warning dropdown-toggle disabled btn-sm"
                             data-toggle="dropdown">
@@ -189,10 +206,9 @@ $form = ActiveForm::begin([
         </div>
       <?php }else{?>
        <div class="panel-footer text-right" >  
-           <a align="left" href="<?= Url::toRoute(["pago-adicional-fecha/index"]) ?>" class="btn btn-primary"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a> 
             <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm ']); ?>                
-            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createadicion", 'id'=>$id])?>" class="btn btn-success btn-sm "><span class='glyphicon glyphicon-plus'></span></a>
-            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createdescuento", 'id'=> $id])?>" class="btn btn-info btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
+            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createadicion", 'id'=>$id, 'fecha_corte' => $fecha_corte])?>" class="btn btn-success btn-sm "><span class='glyphicon glyphicon-plus'></span></a>
+            <a align="right" href="<?= Url::toRoute(["pago-adicional-fecha/createdescuento", 'id'=> $id, 'fecha_corte' => $fecha_corte])?>" class="btn btn-info btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
               <div class="btn-group">
                     <button type="button" class="btn btn-warning dropdown-toggle btn-sm"
                             data-toggle="dropdown">

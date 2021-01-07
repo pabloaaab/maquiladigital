@@ -13,6 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
  <!--<h1><?= Html::encode($this->title) ?></h1>-->
     <?= $this->render('_formadicion', [
         'model' => $model,
+        'fecha_corte' => $fecha_corte,
     ]) ?>
 
 </div>

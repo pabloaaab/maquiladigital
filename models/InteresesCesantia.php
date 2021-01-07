@@ -45,7 +45,7 @@ class InteresesCesantia extends \yii\db\ActiveRecord
     {
         return [
             [['id_programacion', 'id_grupo_pago', 'id_tipo_nomina', 'id_contrato', 'id_empleado', 'documento', 'vlr_intereses',
-                'salario_promedio','vlr_cesantia','id_periodo_pago_nomina','dias_generados'], 'integer'],
+                'salario_promedio','vlr_cesantia','id_periodo_pago_nomina','dias_generados','importado'], 'integer'],
             [['inicio_contrato', 'fecha_inicio', 'fecha_corte', 'fecha_creacion'], 'safe'],
             [['porcentaje'], 'number'],
             [['usuariosistema'], 'string', 'max' => 30],
@@ -80,6 +80,7 @@ class InteresesCesantia extends \yii\db\ActiveRecord
             'usuariosistema' => 'Usuariosistema',
             'id_periodo_pago_nomina' =>'Periodo_pago_nomina',
             'dias_generados' =>'Dias_generados',
+            'importado' => 'Pagado',
         ];
     }
 

@@ -149,7 +149,6 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-    //CODIGO QUE CREA EL NUEVO MODULO
      
     /**
      * Updates an existing Ordenproduccion model.

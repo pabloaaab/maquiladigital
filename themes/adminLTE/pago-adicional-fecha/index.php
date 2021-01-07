@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->usuariosistema?></td>
                 <?php if($val->estado_proceso == 0){?>
                    <td>
-                        <a href="<?= Url::toRoute(["pago-adicional-fecha/view", "id" => $val->id_pago_fecha, 'estado_proceso'=>$val->estado_proceso]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                   
+                        <a href="<?= Url::toRoute(["pago-adicional-fecha/view", "id" => $val->id_pago_fecha, 'estado_proceso'=>$val->estado_proceso, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                   
                    </td>
                    <td>
                    </td>
@@ -100,13 +100,13 @@ $this->params['breadcrumbs'][] = $this->title;
                    </td>
                 <?php }else{?> 
                    <td>
-                        <a href="<?= Url::toRoute(["pago-adicional-fecha/view", "id" => $val->id_pago_fecha]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                   
+                        <a href="<?= Url::toRoute(["pago-adicional-fecha/view", "id" => $val->id_pago_fecha, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                   
                    </td>
                    <td>
-                        <a href="<?= Url::toRoute(["pago-adicional-fecha/update", "id" => $val->id_pago_fecha]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
+                        <a href="<?= Url::toRoute(["pago-adicional-fecha/update", "id" => $val->id_pago_fecha, 'fecha_corte' => $val->fecha_corte]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
                    </td>
                     <td>
-                      <?= Html::a('', ['eliminar', 'id' => $val->id_pago_fecha], [
+                      <?= Html::a('', ['eliminar', 'id' => $val->id_pago_fecha, 'fecha_corte' => $val->fecha_corte], [
                         'class' => 'glyphicon glyphicon-trash',
                         'data' => [
                             'confirm' => 'Esta seguro de eliminar el registro?',

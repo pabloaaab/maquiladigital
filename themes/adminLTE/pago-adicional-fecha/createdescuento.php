@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_formdescuento', [
         'model' => $model,
+        'fecha_corte' => $fecha_corte,
 
     ]) ?>
 

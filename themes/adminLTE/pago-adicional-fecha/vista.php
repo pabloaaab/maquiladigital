@@ -11,7 +11,7 @@ use yii\db\ActiveQuery;
 /* @var $this yii\web\View */
 /* @var $model app\models\Licencia */
 
-$this->title = 'Adicionl por fecha';
+$this->title = 'Adicional por fecha';
 $this->params['breadcrumbs'][] = ['label' => 'Adicional x fecha', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id_pago_permanente;
 ?>
@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $model->id_pago_permanente;
  <div class="adicional-pago-fecha-vista">
               <!--<h1><?= Html::encode($this->title) ?></h1>-->
             <p>
-                 <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view','id'=>$id], ['class' => 'btn btn-primary btn-sm']) ?>
-                <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['updatevista', 'id_pago_permanente' => $model->id_pago_permanente, 'tipoadicion'=>$model->tipo_adicion , 'id'=>$id], ['class' => 'btn btn-success btn-sm']) ?>
+                 <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['view','id'=>$id, 'fecha_corte' => $fecha_corte], ['class' => 'btn btn-primary btn-sm']) ?>
+                
             </p>    
     
    
