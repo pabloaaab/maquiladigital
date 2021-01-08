@@ -28,6 +28,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
 use yii\db\Expression;
+use yii\db\Query;
 
 
 /**
@@ -151,53 +152,67 @@ class BalanceoController extends Controller
                     $intIndice++;
                 }
                $this->ActualizarSegundos($id);
-                return $this->redirect(["balanceo/view",
+               return $this->redirect(["balanceo/view",
                       'id'=> $id,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                     ]); 
             }
        }else{    
-                
-        return $this->render('view', [
-             'model' => $this->findModel($id),
-             'flujo_operaciones' => $flujo_operaciones,
-            'balanceo_detalle' => $balanceo_detalle,
-         ]);
+            return $this->render('view', [
+                 'model' => $this->findModel($id),
+                 'flujo_operaciones' => $flujo_operaciones,
+                'balanceo_detalle' => $balanceo_detalle,
+             ]);
        } 
     }
  // codigo que actualiza los minutos y segundos de los operarios
     
  protected function ActualizarSegundos($id)
     { 
-     $vector_balanceo = Balanceo::findOne($id);
-     $total_s = 0;
-     $balanceo = BalanceoDetalle::find()
-                            ->select([new Expression('SUM(segundos) as total_segundos'), 'id_operario'])                            
-                            ->groupBy('id_operario')
-                            ->all();
-    foreach ($balanceo as $dato) :
-        $total_s = $dato->total_segundos;
-        $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $dato->id_operario])->all();
-        foreach ($balanceo2 as $act):
-            $act->total_segundos = $total_s;
-            $act->save();
-        endforeach;
-    endforeach;
+    $vector_balanceo = Balanceo::findOne($id);
+    $operarios = \app\models\Operarios::find()->where(['=','estado', 1])->all();
+    $total_s = 0;
     $total_m = 0;
-     $balanceo = BalanceoDetalle::find()
-                            ->select([new Expression('SUM(minutos) as total_minutos'), 'id_operario'])                            
-                            ->groupBy('id_operario')
-                            ->all();
-    foreach ($balanceo as $dato) :
-        $total_m = $dato->total_minutos;
-        $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $dato->id_operario])->all();
-        foreach ($balanceo2 as $act):
-            $act->total_minutos = $total_m;
-            $act->sobrante_faltante = ''.number_format($vector_balanceo->tiempo_operario - $total_m, 2);
-            $act->save();
-        endforeach;
-    endforeach;
+    foreach ($operarios as $operario):
+          $query =new Query();
+          $table = BalanceoDetalle::find()->select([new Expression('SUM(minutos) as total_minutos'), 'id_operario'])
+                      ->where(['=','id_operario', $operario->id_operario])
+                      ->andWhere(['=','id_balanceo', $id])
+                      ->groupBy('id_operario')
+                      ->all();       
+        foreach ($table as $valor):
+             $total_m = $valor->total_minutos;
+             $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $operario->id_operario])->andWhere(['=','id_balanceo', $id])->all();
+             foreach ($balanceo2 as $act):
+                 $act->total_minutos = $total_m;
+                 $act->total_segundos = $act->total_minutos * 60;
+                 $act->sobrante_faltante = ''.number_format($vector_balanceo->tiempo_operario - $total_m, 2);
+                 $act->save();
+             endforeach;
+        endforeach;   
+    endforeach;  
+          /*  $balanceo = BalanceoDetalle::find()
+                                   ->select([new Expression('SUM(segundos) as total_segundos'), 'id_operario', 'id_balanceo'])                            
+                                   ->groupBy('id_operario')
+                                   ->all();
+          /* foreach ($balanceo as $dato) :
+               $total_s = $dato->total_segundos;
+               $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $dato->id_operario])->andWhere(['=','id_balanceo', $id])->all();
+               foreach ($balanceo2 as $act):
+                   $act->total_segundos = $total_s;
+                   $act->save();
+               endforeach;
+           endforeach;*/
+  
+
+       
+
+        /* $balanceo = BalanceoDetalle::find()->select([new Expression('SUM(minutos) as total'), 'id_operario'])->andWhere(['=','id_balanceo', $id])                         
+                                 ->groupBy('id_operario')
+                                 ->all();*/
+           
+
 
     }
 

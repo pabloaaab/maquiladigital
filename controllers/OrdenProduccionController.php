@@ -507,6 +507,7 @@ class OrdenProduccionController extends Controller {
             $cantidad = $cantidad + $val->cantidad;
         }        
         $ordenProduccion->cantidad = $cantidad;
+        $ordenProduccion->faltante = $cantidad;
         $ordenProduccion->update();
     }
     
@@ -589,6 +590,7 @@ class OrdenProduccionController extends Controller {
     public function actionProduccionbalanceo() {
         if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',98])->all()){
+            $balan = Balanceo::find()->all();
             $form = new FormFiltroOrdenProduccionProceso();
             $idcliente = null;
             $ordenproduccion = null;
@@ -644,6 +646,7 @@ class OrdenProduccionController extends Controller {
                         'model' => $model,
                         'form' => $form,
                         'pagination' => $pages,
+                        'balan' => $balan,
                         'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
                         'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
             ]);
@@ -1209,14 +1212,24 @@ class OrdenProduccionController extends Controller {
                                 Yii::$app->getSession()->setFlash('error', 'Favor validar la cantidad de prendas confeccionadas.!');
                             }    
                         endforeach;
+                        $orden = Ordenproduccion::findOne($idordenproduccion);
+                        $unidades = 0;
                         $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
                         $cantidad = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $intCodigo])->all();
+                        $ordenunidad = CantidadPrendaTerminadas::find()->where(['=','idordenproduccion', $idordenproduccion])->all();
                         $suma = 0;
+                        $cantidad_real = 0;
                         foreach ($cantidad as $detalle):
                             $suma +=$detalle->cantidad_terminada; 
                         endforeach;
                         $orden_detalle->faltante = $suma;
                         $orden_detalle->save(false);
+                        foreach ($ordenunidad as $cant):
+                            $unidades += $cant->cantidad_terminada; 
+                        endforeach;
+                        $cantidad_real= $orden->cantidad;
+                        $orden->faltante = $cantidad_real - $unidades;
+                        $orden->save(false);
                         return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
                     }
                 }

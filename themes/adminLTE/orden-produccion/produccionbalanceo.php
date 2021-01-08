@@ -94,7 +94,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <th scope="col" style='background-color:#B9D5CE;'>F. Procesada</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>F. Entrega</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Servicio</th>
-                                     <th scope="col" style='background-color:#B9D5CE;'>Uni.</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Unid.</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Estado</th>
                                     <th scope="col" style='background-color:#B9D5CE;'></th>
                                 </tr>
                             </thead>
@@ -110,6 +111,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td><?= date("Y-m-d", strtotime("$val->fechaentrega")) ?></td>
                                     <td><?= $val->tipo->tipo ?></td>
                                     <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
+                                    <?php if($val->faltante > 0){?>
+                                    <td style="font-size: 85%;background: #3B9785; color: #FFFFFF;"><?php echo 'EN PROCESO'?></td>
+                                    <?php }else{?>
+                                       <td style="font-size: 85%;background: #C0E7E3; color: #0A3664;"><?php echo 'TERMINADO'?></td>
+                                           
+                                    <?php }?>   
                                     <td style="width: 25px;">
                                         <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_balanceo', 'id' => $val->idordenproduccion] ) ?>
                                     </td>
