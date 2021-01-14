@@ -24,10 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-       <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['/orden-produccion/view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary']) ?>         
-       <?= Html::a('<span class="glyphicon glyphicon-check"></span> Generar Nro', ['generarnro', 'id' => $model->id_remision], ['class' => 'btn btn-default']); ?>
+       <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['/orden-produccion/view', 'id' => $idordenproduccion], ['class' => 'btn btn-primary btn-sm']) ?>         
+       <?= Html::a('<span class="glyphicon glyphicon-check"></span> Generar Nro', ['generarnro', 'id' => $model->id_remision], ['class' => 'btn btn-default btn-sm']); ?>
        <?php if ($model->numero > 0) { ?> 
-            <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_remision], ['class' => 'btn btn-default']); ?>
+            <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_remision], ['class' => 'btn btn-default btn-sm']); ?>
        <?php } ?>
        
         <!-- Editar modal detalle -->
@@ -72,52 +72,52 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
-                <tr>
-                    <th><?= Html::activeLabel($model, 'id_remision') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'id_remision') ?>:</th>
                     <td><?= Html::encode($model->id_remision) ?></td>
-                    <th><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'idordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'total_tulas') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_tulas') ?>:</th>
                     <td><?= Html::encode($model->total_tulas) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'fechacreacion') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechacreacion') ?>:</th>
                     <td><?= Html::encode($model->fechacreacion) ?></td>
-                    <th><?= Html::activeLabel($model, 'numero') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'numero') ?>:</th>
                     <td><?= Html::encode($model->numero) ?></td>
-                    <th><?= Html::activeLabel($model, 'total_exportacion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_exportacion') ?>:</th>
                     <td><?= Html::encode($model->total_exportacion) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'ordenProdInterna') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenProdInterna') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->ordenproduccion) ?></td>
-                    <th><?= Html::activeLabel($model, 'codigoProducto') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'codigoProducto') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->codigoproducto) ?></td>
-                    <th><?= Html::activeLabel($model, 'totalsegundas') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalsegundas') ?>:</th>
                     <td><?= Html::encode($model->totalsegundas) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'Cliente') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cliente->nombrecorto) ?></td>
-                    <th><?= Html::activeLabel($model, 'Contacto') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Contacto') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cliente->contacto) ?></td>
-                    <th><?= Html::activeLabel($model, 'total_colombia') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_colombia') ?>:</th>
                     <td><?= Html::encode($model->total_colombia) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'Direccion') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Direccion') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cliente->direccioncliente) ?></td>
-                    <th><?= Html::activeLabel($model, 'Ciudad') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Ciudad') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cliente->municipio->municipio) ?></td>
-                    <th><?= Html::activeLabel($model, 'total_confeccion') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_confeccion') ?>:</th>
                     <td><?= Html::encode($model->total_confeccion) ?></td>
                 </tr>
-                <tr>
-                    <th><?= Html::activeLabel($model, 'TipoOrden') ?>:</th>
+                <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'TipoOrden') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->tipo->tipo) ?></td>
-                    <th><?= Html::activeLabel($model, 'Cantidad') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cantidad') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cantidad) ?></td>
-                    <th><?= Html::activeLabel($model, 'total_despachadas') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_despachadas') ?>:</th>
                     <td><?= Html::encode($model->total_despachadas) ?></td>
                 </tr>
             </table>
@@ -170,7 +170,7 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'id', 'color');
                     $total = 0;
                 ?>
                 <?php foreach ($remisiondetalle as $val): ?>                
-                    <tr>                                            
+                    <tr style="font-size: 85%;">                                            
                         <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('color[]', $val->id_color ,$colores, ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true]) ?>
                         <?php if ($val->oc == 1) { ?>
                             <td style="padding-left: 1;padding-right: 1;"><?= Html::dropdownList('oc[]', $val->oc ,['0' => 'COLOMBIA', '1' => 'EXPORTACION'], ['class' => 'col-xs-13','prompt' => 'Seleccione...','required' => true, 'style'=> 'background-color:silver']) ?>
@@ -449,11 +449,11 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'id', 'color');
         </table>        
     </div>
     <div class="panel-footer text-right">
-        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['remision/nuevodetalle', 'id' => $model->id_remision, 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-success']); ?>        
+        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['remision/nuevodetalle', 'id' => $model->id_remision, 'idordenproduccion' => $idordenproduccion], ['class' => 'btn btn-success btn-sm']); ?>        
         <?php if ($datostallas) { ?>
-        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar y Nuevo", ["class" => "btn btn-success", 'name' => 'actualizarynuevo']) ?>
+        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar y Nuevo", ["class" => "btn btn-success btn-sm", 'name' => 'actualizarynuevo']) ?>
         <?php } ?>
-        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success", 'name' => 'actualizar']) ?>
+        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm", 'name' => 'actualizar']) ?>
     </div>
 </div>
 <?php ActiveForm::end(); ?>

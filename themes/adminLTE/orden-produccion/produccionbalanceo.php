@@ -111,12 +111,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <td><?= date("Y-m-d", strtotime("$val->fechaentrega")) ?></td>
                                     <td><?= $val->tipo->tipo ?></td>
                                     <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
-                                    <?php if($val->faltante > 0){?>
-                                    <td style="font-size: 85%;background: #3B9785; color: #FFFFFF;"><?php echo 'EN PROCESO'?></td>
-                                    <?php }else{?>
-                                       <td style="font-size: 85%;background: #C0E7E3; color: #0A3664;"><?php echo 'TERMINADO'?></td>
-                                           
-                                    <?php }?>   
+                                    <?php if($val->faltante == $val->cantidad){?>
+                                    <td style="font-size: 85%;background: #3B9785; color: #FFFFFF;"><?php echo 'PRODUCCION'?></td>
+                                    <?php }else{
+                                            if($val->faltante < $val->cantidad && $val->cerrar_orden == 0){?>
+                                                <td style="font-size: 85%;background: #316941; color: #FFFFFF;"><?php echo 'EN CONFECCION'?></td>
+                                            <?php }else{?>
+                                                    <td style="font-size: 85%;background: #D5F2E7; color: #0A3664;"><?php echo 'TERMINADO'?></td>
+                                            <?php }
+                                    }?>   
                                     <td style="width: 25px;">
                                         <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_balanceo', 'id' => $val->idordenproduccion] ) ?>
                                     </td>

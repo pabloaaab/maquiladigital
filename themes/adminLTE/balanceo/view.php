@@ -31,7 +31,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
     <div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'],['class' => 'btn btn-primary btn-xs']) ?></button>
         <?php if($model->estado_modulo == 0){?>
-           <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar modulo', ['cerrarmodulo', 'id' => $model->id_balanceo],['class' => 'btn btn-warning btn-xs',
+           <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar modulo', ['cerrarmodulo', 'id' => $model->id_balanceo, 'idordenproduccion' => $idordenproduccion],['class' => 'btn btn-warning btn-xs',
             'data' => ['confirm' => 'Esta seguro de cerrar el modulo Nro: '. $model->modulo. '', 'method' => 'post']]) ?></button>
         <?php }?>
     </div>    

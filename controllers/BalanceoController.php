@@ -163,6 +163,7 @@ class BalanceoController extends Controller
                  'model' => $this->findModel($id),
                  'flujo_operaciones' => $flujo_operaciones,
                 'balanceo_detalle' => $balanceo_detalle,
+                'idordenproduccion' => $idordenproduccion,
              ]);
        } 
     }
@@ -437,11 +438,14 @@ class BalanceoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
-    public function actionCerrarmodulo($id)
+    public function actionCerrarmodulo($id, $idordenproduccion)
     {
         $balanceo = Balanceo::findOne($id);
         $balanceo->estado_modulo = 1;
         $balanceo->save(false);
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+        $orden->cerrar_orden = 1;
+        $orden->save(false);
         return $this->redirect(["balanceo/index"]);
         
     }
