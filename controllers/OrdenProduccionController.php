@@ -841,7 +841,7 @@ class OrdenProduccionController extends Controller {
         ]);
     
     }
-    
+   //proceso que genera el porcentaje de produccion en la grafica despues de subir las unidades ESTE ES EL PROCESO
     public function actionDetalle_proceso($idordenproduccion, $iddetalleorden) {
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
         $detalle = Ordenproducciondetalle::findOne($iddetalleorden);
@@ -896,14 +896,10 @@ class OrdenProduccionController extends Controller {
                             if ($reg2!= 0) {
                                 $datoaguardar = Ordenproducciondetalleproceso::find()->where(['=','idproceso',$val->idproceso])->andWhere(['=','iddetalleorden',$iddetalleorden])->one();
                                 $tableprocesos = Ordenproducciondetalleproceso::findOne($val->iddetalleproceso);
-                                //$tableprocesos->idproceso = $val->idproceso;
-                                //$tableprocesos->proceso = $val->proceso;
                                 $tableprocesos->duracion = $datoaguardar->duracion;
                                 $tableprocesos->ponderacion = $datoaguardar->ponderacion;
                                 $tableprocesos->total = $datoaguardar->total;
-                                //$tableprocesos->cantidad_operada = 0;
                                 $tableprocesos->totalproceso = $datoaguardar->totalproceso;
-                                //$tableprocesos->iddetalleorden = $dato->iddetalleorden;
                                 $tableprocesos->update();
                             }
                         }
@@ -1137,7 +1133,6 @@ class OrdenProduccionController extends Controller {
         $porc = 0;
         $porci = 0;
         foreach ($detalle as $val){
-            //$porcentajeorden = $porcentajeorden + $val->porcentaje_cantidad;
             $porci = $val->cantidad_operada / $orden->cantidad * $val->porcentaje_cantidad; 
             $porc = $porc + $porci;
         }
@@ -1190,12 +1185,10 @@ class OrdenProduccionController extends Controller {
                 if (isset($_POST["enviarcantidad"])) { 
                     if (isset($_POST["id_detalle_orden"])) {
                         $intIndice = 0;
+                       
                         foreach ($_POST["id_detalle_orden"] as $intCodigo):
+                             $iddetalleorden = $intCodigo;
                             $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
-                            $cantidad = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $intCodigo])->all();
-                            foreach ($cantidad as $detalle):
-                                $suma +=$detalle->cantidad_terminada; 
-                            endforeach;
                             $total = $orden_detalle->faltante + $model->cantidad_terminada;
                             if($total <= $orden_detalle->cantidad){
                                 $table = new CantidadPrendaTerminadas();
@@ -1212,6 +1205,17 @@ class OrdenProduccionController extends Controller {
                                 Yii::$app->getSession()->setFlash('error', 'Favor validar la cantidad de prendas confeccionadas.!');
                             }    
                         endforeach;
+                        $detalle_proceso = Ordenproducciondetalleproceso::find()->where(['=','iddetalleorden', $intCodigo])->all();
+                        $contar = 0;
+                        foreach ($detalle_proceso as $entrarcantidad):
+                           $contar = $entrarcantidad->cantidad_operada; 
+                           $entrarcantidad->cantidad_operada = $model->cantidad_terminada + $contar;
+                           $entrarcantidad->save(false);
+                           $contar = 0;
+                        endforeach;
+                        $this->progresocantidad($iddetalleorden, $idordenproduccion);
+                        $this->porcentajeproceso($iddetalleorden);
+                        $this->progresoproceso($iddetalleorden, $idordenproduccion);
                         $orden = Ordenproduccion::findOne($idordenproduccion);
                         $unidades = 0;
                         $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
@@ -1230,7 +1234,7 @@ class OrdenProduccionController extends Controller {
                         $cantidad_real= $orden->cantidad;
                         $orden->faltante = $cantidad_real - $unidades;
                         $orden->save(false);
-                        return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
+                       return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
                     }
                 }
             }                
