@@ -841,6 +841,7 @@ class OrdenProduccionController extends Controller {
         ]);
     
     }
+    
    //proceso que genera el porcentaje de produccion en la grafica despues de subir las unidades ESTE ES EL PROCESO
     public function actionDetalle_proceso($idordenproduccion, $iddetalleorden) {
         $procesos = Ordenproducciondetalleproceso::find()->Where(['=', 'iddetalleorden', $iddetalleorden])->orderBy('proceso asc')->all();
