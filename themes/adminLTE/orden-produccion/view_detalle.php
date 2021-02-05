@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <th scope="col" style='background-color:#B9D5CE;'>Código</th>
                         <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
                         <th scope="col" style='background-color:#B9D5CE;'>Progreso</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad Operada</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad confeccionada</th>
                         <th style='background-color:#B9D5CE;'></th>
                         <th style='background-color:#B9D5CE;'></th>
                     </tr>
@@ -116,11 +116,16 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                             </div>
                         </td>
                         <td><?= $val->cantidad_operada ?></td>
-                        <td style="width: 25px;">
-                                
-                                <?= Html::a('<span class="glyphicon glyphicon-log-in"></span>', ['/orden-produccion/nuevo_detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden]) ?>
-                                <!-- Inicio Vista,Eliminar,Editar -->
-                        </td>
+                        <?php if($model->cerrar_orden == 0){?>
+                            <td style="width: 25px;">
+
+                                    <?= Html::a('<span class="glyphicon glyphicon-log-in"></span>', ['/orden-produccion/nuevo_detalle_proceso','id' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden]) ?>
+                                    <!-- Inicio Vista,Eliminar,Editar -->
+                            </td>
+                        <?php }else{?>
+                            <td style="width: 25px;">
+                            </td>
+                        <?php }?>    
                         <td style="width: 25px;">
                                 <?php echo Html::a('<span class="glyphicon glyphicon-pencil"></span>',
                                     ['/orden-produccion/detalle_proceso','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],

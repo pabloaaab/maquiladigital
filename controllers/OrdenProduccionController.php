@@ -1187,7 +1187,7 @@ class OrdenProduccionController extends Controller {
                     if (isset($_POST["id_detalle_orden"])) {
                         $intIndice = 0;
                         foreach ($_POST["id_detalle_orden"] as $intCodigo):
-                             $iddetalleorden = $intCodigo;
+                           $iddetalleorden = $intCodigo;
                             $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
                             $total = $orden_detalle->faltante + $model->cantidad_terminada;
                             if($total <= $orden_detalle->cantidad){
@@ -1231,9 +1231,7 @@ class OrdenProduccionController extends Controller {
                         $cantidad_real= $orden->cantidad;
                         $orden->faltante = $cantidad_real - $unidades;
                         $orden->save(false);
-                        $this->progresocantidad($iddetalleorden, $idordenproduccion);
-                        $this->porcentajeproceso($iddetalleorden);
-                        $this->progresoproceso($iddetalleorden, $idordenproduccion);
+                       $this->ActualizaPorcentajeCantidad($iddetalleorden, $idordenproduccion);                    
                        return $this->redirect(['view_balanceo','id' => $idordenproduccion]);
                     }
                 }
@@ -1243,10 +1241,31 @@ class OrdenProduccionController extends Controller {
             'model' => $model,       
             'idordenproduccion' => $idordenproduccion,
             
-        ]);        
+        ]);      
     }
         
-   
+    protected function ActualizaPorcentajeCantidad($iddetalleorden, $idordenproduccion) {
+        //actualiza detale
+        $canti_operada = 0; $cantidad = 0; $porcentaje = 0;
+        $orden_detalle_actualizada = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $iddetalleorden])->one();
+        $canti_operada = $orden_detalle_actualizada->faltante;
+        $cantidad = $orden_detalle_actualizada->cantidad;
+        $porcentaje = number_format(($canti_operada * 100)/ $cantidad,4);
+        $orden_detalle_actualizada->porcentaje_cantidad = $porcentaje;
+        $orden_detalle_actualizada->cantidad_operada = $canti_operada;
+        $orden_detalle_actualizada->save(false);
+        //actuliza orden produccion
+        $orden = Ordenproduccion::findOne($idordenproduccion);
+        $sumadetalle = Ordenproducciondetalle::find()->where(['=','idordenproduccion', $idordenproduccion])->all();
+        $contador = 0;
+        $total_porcentaje = 0;
+        foreach ($sumadetalle as $sumar):
+            $contador += $sumar->cantidad_operada;
+        endforeach;
+        $total_porcentaje = number_format(($contador * 100)/ $orden->cantidad,4);
+        $orden->porcentaje_cantidad = $total_porcentaje;
+        $orden->save(false);
+    }
     public function actionIndexconsulta() {
         if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',95])->all()){

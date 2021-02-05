@@ -26,6 +26,8 @@ class FormOperarios extends Model
     public $email;
     public $estado;
     public $polivalente;
+    public $vinculado;
+    public $tipo_operaria;
 
     /**
      * {@inheritdoc}
@@ -36,7 +38,7 @@ class FormOperarios extends Model
           [['documento', 'nombres','apellidos','id_tipo_documento','iddepartamento','idmunicipio'], 'required', 'message' => 'Campo requerido'],
             ['documento', 'identificacion_existe'],
             ['email', 'email_existe'],
-            [['documento', 'estado', 'id_tipo_documento','polivalente'], 'integer'],
+            [['documento', 'estado', 'id_tipo_documento','polivalente','vinculado','tipo_operaria'], 'integer'],
             ['documento', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             [['nombres', 'apellidos'], 'string', 'max' => 40],
             [['iddepartamento', 'idmunicipio','celular'], 'string', 'max' => 15],
@@ -51,17 +53,19 @@ class FormOperarios extends Model
     public function attributeLabels()
     {
         return [
-            'id_operario' => 'Id',
-            'documento' => 'Documento',
-            'id_tipo_documento' => 'Tipo Documento',
-            'nombres' => 'Nombres',
-            'apellidos' => 'Apellidos',
-            'celular' => 'Celular',
-            'email' => 'Email',
-            'estado' => 'Estado',
-            'polivalente' => 'Polivalente',
-            'idmunicipio' => 'Municipio',
-            'iddepartamento' => 'Departamento',
+            'id_operario' => 'Id:',
+            'documento' => 'Documento:',
+            'id_tipo_documento' => 'Tipo Documento:',
+            'nombres' => 'Nombres:',
+            'apellidos' => 'Apellidos:',
+            'celular' => 'Celular:',
+            'email' => 'Email:',
+            'estado' => 'Activo:',
+            'vinculado' =>'Vinculado:',
+            'tipo_operaria' => 'Tipo operaria:',
+            'polivalente' => 'Polivalente:',
+            'idmunicipio' => 'Municipio:',
+            'iddepartamento' => 'Departamento:',
             
         ];
     }

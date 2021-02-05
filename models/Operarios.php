@@ -49,7 +49,7 @@ class Operarios extends \yii\db\ActiveRecord
     {
         return [
             [['id_tipo_documento', 'documento', 'nombres', 'apellidos', 'iddepartamento','idmunicipio'], 'required'],
-            [['id_tipo_documento', 'documento'], 'integer'],
+            [['id_tipo_documento', 'documento','estado','polivalente','vinculado'], 'integer'],
             [['nombres', 'apellidos', 'email'], 'string', 'max' => 50],
             [['celular'], 'string', 'max' => 15],
             [['iddepartamento', 'idmunicipio'], 'string'],
@@ -78,6 +78,8 @@ class Operarios extends \yii\db\ActiveRecord
             'email' => 'Email',
             'usuariosistema' => 'Usuariosistema',
             'fecha_creacion' => 'Fecha Creacion',
+            'estado' => 'Activo',
+            'vinculado' => 'Vinculado',
         ];
     }
 
@@ -130,6 +132,24 @@ class Operarios extends \yii\db\ActiveRecord
             $polivalente = "NO";
         }
         return $polivalente;
+    }
+     public function getVinculadoOperacion()
+     {
+        if($this->vinculado == 1){
+            $vinculado = "SI";
+        }else{
+            $vinculado = "NO";
+        }
+        return $vinculado;
+    }
+     public function getTipoOperaria()
+     {
+        if($this->tipo_operaria == 1){
+            $tipoperaria = "CONFECCION";
+        }else{
+            $tipoperaria = "TERMINACION";
+        }
+        return $tipoperaria;
     }
             
 }

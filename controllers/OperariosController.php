@@ -175,6 +175,8 @@ class OperariosController extends Controller
                 $table->email = $model->email;
                 $table->iddepartamento = $model->iddepartamento;
                 $table->polivalente = $model->polivalente;
+                $table->vinculado = $model->vinculado;
+                $table->tipo_operaria = $model->tipo_operaria;
                 $table->idmunicipio = $model->idmunicipio;
                 $table->usuariosistema =  Yii::$app->user->identity->username;
                 if($table->save(false)){;
@@ -221,6 +223,8 @@ class OperariosController extends Controller
                    $table->idmunicipio = $model->idmunicipio;
                    $table->estado = $model->estado;
                    $table->polivalente = $model->polivalente;
+                   $table->vinculado = $model->vinculado;
+                   $table->tipo_operaria = $model->tipo_operaria;
                    $table->save(false);
                     return $this->redirect(["operarios/index"]);
                }
@@ -241,6 +245,8 @@ class OperariosController extends Controller
                 $model->idmunicipio = $table->idmunicipio;
                 $model->estado = $table->estado;
                 $model->polivalente = $table->polivalente;
+                $model->vinculado = $table->vinculado;
+                 $model->tipo_operaria = $table->tipo_operaria;
             }else{
                  return $this->redirect(["operarios/index"]);
             }    
