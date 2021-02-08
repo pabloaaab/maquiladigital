@@ -163,6 +163,7 @@
                                                 ['label' => 'Resumen Costos', 'icon' => 'plus-square-o', 'url' => ['resumen-costos/resumencostos', 'id' => 1]],
                                                 ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/index']],
                                                 ['label' => 'Seguimiento Producción', 'icon' => 'plus-square-o', 'url' => ['seguimiento-produccion/index']],
+                                                ['label' => 'Valor prenda', 'icon' => 'plus-square-o', 'url' => ['valor-prenda-unidad/index']],
                                             ],
                                         ],
                                         [
