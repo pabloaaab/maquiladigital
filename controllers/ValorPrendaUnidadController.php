@@ -108,7 +108,7 @@ class ValorPrendaUnidadController extends Controller
                            $intIndice++;
                         }  
                     }else{
-                        Yii::$app->getSession()->setFlash('error', 'Esta orden de produccion no tiene no se la ha asignado el valor a la prenda. Favor consultar con el administrador.');
+                        Yii::$app->getSession()->setFlash('error', 'Esta orden de produccion no se la ha asignado el valor a la prenda. Favor consultar con el administrador.');
                     }    
                 }
             }
