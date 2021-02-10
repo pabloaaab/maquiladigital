@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $servicio->tipo;
                 },
                 'filter' => ArrayHelper::map(\app\models\Ordenproducciontipo::find()->all(),'idtipo','tipo'),
-                'contentOptions' => ['class' => 'col-lg-4'],
+                'contentOptions' => ['class' => 'col-lg-2'],
                         
             ],
             [                
@@ -48,7 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'vlr_contrato',
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
-           
+             [                
+                'attribute' => 'total_pagar',
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
             [
                 'attribute' => 'estado_valor',
                 'value' => function($model){
@@ -58,9 +61,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(\app\models\ValorPrendaUnidad::find()->all(),'estado_valor','estadovalor'),
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
-                         [                
+            [
+                'attribute' => 'autorizado',
+                'value' => function($model){
+                    $autorizado = \app\models\ValorPrendaUnidad::findOne($model->id_valor);                    
+                    return $autorizado->autorizadoPago;
+                },
+                'filter' => ArrayHelper::map(\app\models\ValorPrendaUnidad::find()->all(),'autorizado','autorizadoPago'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+             [
+                'attribute' => 'cerrar_pago',
+                'value' => function($model){
+                    $cerrar = \app\models\ValorPrendaUnidad::findOne($model->id_valor);                    
+                    return $cerrar->cerradoPago;
+                },
+                'filter' => ArrayHelper::map(\app\models\ValorPrendaUnidad::find()->all(),'cerrar_pago','cerradoPago'),
+                'contentOptions' => ['class' => 'col-lg-1'],
+            ],
+            [                
                 'attribute' => 'usuariosistema',
-                'contentOptions' => ['class' => 'col-lg-2'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'class' => 'yii\grid\ActionColumn',              

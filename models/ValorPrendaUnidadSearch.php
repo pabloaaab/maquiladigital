@@ -17,7 +17,7 @@ class ValorPrendaUnidadSearch extends ValorPrendaUnidad
     public function rules()
     {
         return [
-            [['id_valor', 'idordenproduccion', 'idtipo', 'estado_valor'], 'integer'],
+            [['id_valor', 'idordenproduccion', 'idtipo', 'estado_valor','autorizado','cerrar_pago','total_pagar'], 'integer'],
             [['vlr_vinculado', 'vlr_contrato'], 'number'],
             [['fecha_proceso', 'usuariosistema'], 'safe'],
         ];
@@ -67,13 +67,19 @@ class ValorPrendaUnidadSearch extends ValorPrendaUnidad
             'vlr_contrato' => $this->vlr_contrato,
             'estado_valor' => $this->estado_valor,
             'fecha_proceso' => $this->fecha_proceso,
+            'autorizado' => $this->autorizado,
+            'cerrar_pago' => $this->cerrar_pago,
+             'total_pagar' => $this->total_pagar,
         ]);
 
         $query->andFilterWhere(['like', 'usuariosistema', $this->usuariosistema]);
         $query->andFilterWhere(['=', 'id_valor', $this->id_valor]);
         $query->andFilterWhere(['=', 'vlr_vinculado', $this->vlr_vinculado]);
         $query->andFilterWhere(['=', 'vlr_contrato', $this->vlr_contrato]);
-         $query->andFilterWhere(['=', 'estado_valor', $this->estado_valor]);
+        $query->andFilterWhere(['=', 'estado_valor', $this->estado_valor]);
+        $query->andFilterWhere(['=', 'autorizado', $this->autorizado]);
+        $query->andFilterWhere(['=', 'cerrar_pago', $this->cerrar_pago]);
+        $query->andFilterWhere(['like', 'total_pagar', $this->total_pagar]);
 
         return $dataProvider;
     }

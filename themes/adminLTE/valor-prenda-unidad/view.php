@@ -53,40 +53,50 @@ $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada'
                     <td><?= Html::encode($model->idordenproduccion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cliente') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cliente->nombrecorto) ?></td>
+                       <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Activo') ?>:</th>
+                    <td><?= Html::encode($model->estadovalor) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Vr_Vinculado') ?>:</th>
                     <td align="right"><?= Html::encode('$'.number_format($model->vlr_vinculado,0)) ?></td>
                    
                     
                 </tr>                
                  <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Servicio') ?>:</th>
-                    <td ><?= Html::encode($model->tipo->tipo) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_proceso') ?>:</th>
+                
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'F._proceso') ?>:</th>
                     <td><?= Html::encode($model->fecha_proceso) ?></td>
+                        <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Servicio') ?>:</th>
+                    <td ><?= Html::encode($model->tipo->tipo) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario_creador') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Autorizado') ?>:</th>
+                    <td><?= Html::encode($model->autorizadoPago) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Vr_contrato') ?>:</th>
                     <td align="right"><?= Html::encode('$'.number_format($model->vlr_contrato,0)) ?></td>
                 </tr>   
                  <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Activo') ?>:</th>
-                    <td><?= Html::encode($model->estadovalor) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_Editado') ?>:</th>
+                 
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'F._Editado') ?>:</th>
                     <td><?= Html::encode($model->fecha_editado) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario_editado') ?>:</th>
                     <td><?= Html::encode($model->usuario_editado) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Valor_total') ?>:</th>
-                    <td align="right"><?= Html::encode('$'.number_format($model->valor_total,0)) ?></td>
+                       <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Pago_Cerrado') ?>:</th>
+                    <td><?= Html::encode($model->cerradoPago) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total_Ajuste') ?>:</th>
+                    <td align="right"><?= Html::encode('$'.number_format($model->total_ajuste,0)) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_confeccion') ?>:</th>
+                    <td align="right"><?= Html::encode('$'.number_format($model->total_confeccion,0)) ?></td>
                  </tr>  
                  <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Autorizado') ?>:</th>
-                    <td><?= Html::encode($model->autorizadoPago) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Pago_Cerrado') ?>:</th>
-                    <td><?= Html::encode($model->cerradoPago) ?></td>
-                     <th style='background-color:#F0F3EF;'></th>
-                    <td></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad_procesada') ?>:</th>
-                    <td align="right"><?= Html::encode(''.number_format($model->cantidad_procesada,0)) ?></td>
+                    <th style='background-color:#F0F3EF;'> <?= Html::activeLabel($model, 'unidades') ?>:</th>
+                    <td align="right"><?= Html::encode(''.number_format($model->cantidad,0)) ?></td>
+                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad_operacion') ?>:</th>
+                   <td align="right"><?= Html::encode(''.number_format($model->cantidad_operacion,0)) ?></td>
+                   <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad_procesada') ?>:</th>
+                   <td align="right"><?= Html::encode(''.number_format($model->cantidad_procesada,0)) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_operacion') ?>:</th>
+                    <td align="right"><?= Html::encode('$'.number_format($model->total_operacion,0)) ?></td>   
+                   <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'total_pagar') ?>:</th>
+                   <td align="right"><?= Html::encode('$'.number_format($model->total_pagar,0)) ?></td>
                  </tr>   
                 
             </table>
@@ -104,6 +114,13 @@ $form = ActiveForm::begin([
         ]);
 ?>
     <!--INICIO LOS TABS-->
+     <div class="panel-footer text-right">
+                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
+                <?php if($model->autorizado == 0){?>                
+                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>        
+                        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
+                    <?php } ?>
+    </div>
     <div>
         <ul class="nav nav-tabs" role="tablist">
             <?php
@@ -122,7 +139,8 @@ $form = ActiveForm::begin([
                                 <thead>
                                     <tr style='font-size:85%;'>
                                         <th scope="col" style='background-color:#B9D5CE; width: 320px;'>Operario</th>                        
-                                        <th scope="col" style='background-color:#B9D5CE;width: 194px;'>Nro_orden</th>    
+                                        <th scope="col" style='background-color:#B9D5CE;width: 150px;'>Nro_orden</th> 
+                                         <th scope="col" style='background-color:#B9D5CE;width: 150px;'>Operación</th> 
                                         <th scope="col" style='background-color:#B9D5CE;'>Dia</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Cant.</th> 
                                         <th scope="col" style='background-color:#B9D5CE;'>Valor</th> 
@@ -136,7 +154,23 @@ $form = ActiveForm::begin([
                                            foreach ($detalles_pago as $val):?>
                                                <tr style='font-size: 85%;'> 
                                                     <td style="padding-left: 1;padding-right: 0;"><?= Html::dropDownList('id_operario[]', $val->id_operario, $operarios, ['class' => 'col-sm-10', 'prompt' => 'Seleccion...', 'required' => true]) ?></td>
-                                                    <td style="padding-left: 1;padding-right: 0;"><?= Html::dropDownList('idordenproduccion[]', $val->idordenproduccion, $ordenproduccion, ['class' => 'col-sm-7', 'prompt' => 'Seleccion...', 'required' => true]) ?></td>
+                                                    <td style="padding-left: 1;padding-right: 0;"><?= Html::dropDownList('idordenproduccion[]', $val->idordenproduccion, $ordenproduccion, ['class' => 'col-sm-7', $model->idordenproduccion, 'required' => true]) ?></td>
+                                                    <td style="padding-left: 1;padding-right: 0;"><select name="operacion[]">
+                                                            <?php if ($val->operacion == 0){
+                                                                   echo $operacion = "Confeccion";
+                                                                  }else{
+                                                                      if($val->operacion == 1){
+                                                                          echo $operacion ="Operacion";
+                                                                      }else{    
+                                                                          echo $operacion ="Ajuste";
+                                                                      }
+                                                                      
+                                                                   }?>      
+                                                            <option value="<?= $val->operacion ?>"><?= $operacion ?></option>
+                                                            <option value="0">Confeccion</option>
+                                                            <option value="1">Operacion</option>
+                                                            <option value="2">Ajuste</option>
+                                                    </select></td>
                                                     <td style="padding-left: 1;padding-right: 0;"><input type="date" name="dia_pago[]" value="<?= $val->dia_pago ?>" size="2" required></td>  
                                                     <td style="padding-left: 1;padding-right: 0;"><input type="text" name="cantidad[]" value="<?= $val->cantidad ?>" size="2" required></td>                        
                                                     <td style="padding-left: 1;padding-right: 0;"><input type="text" name="vlr_prenda[]" value="<?= $val->vlr_prenda ?>" size="4" ></td>                        
@@ -170,14 +204,6 @@ $form = ActiveForm::begin([
             </div>
             <!--INICIO EL OTRO TABS -->
         </div>
-            <div class="panel-footer text-right">
-                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
-                <?php if($model->autorizado == 0){?>                
-                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>        
-                        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
-                    <?php } ?>
-            </div>
-       
     </div> 
   <?php ActiveForm::end(); ?>
 <script type="text/javascript">

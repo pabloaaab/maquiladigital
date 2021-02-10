@@ -51,6 +51,7 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
             [['id_operario', 'idordenproduccion', 'cantidad', 'vlr_prenda', 'vlr_pago', 'id_valor'], 'integer'],
             [['dia_pago', 'fecha_creacion'], 'safe'],
             [['usuariosistema', 'observacion'], 'string', 'max' => 20],
+            [['operacion'], 'string', 'max' => 15],
             [['id_operario'], 'exist', 'skipOnError' => true, 'targetClass' => Operarios::className(), 'targetAttribute' => ['id_operario' => 'id_operario']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
             [['id_valor'], 'exist', 'skipOnError' => true, 'targetClass' => ValorPrendaUnidad::className(), 'targetAttribute' => ['id_valor' => 'id_valor']],
@@ -74,6 +75,7 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
             'fecha_creacion' => 'Fecha Creacion',
             'usuariosistema' => 'Usuariosistema',
             'observacion' => 'Observacion',
+            'operacion' => 'Operacion',
         ];
     }
 

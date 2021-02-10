@@ -73,6 +73,7 @@ class ValorPrendaUnidadController extends Controller
                 $table = ValorPrendaUnidadDetalles::findOne($intCodigo);
                 $table->id_operario = $_POST["id_operario"][$intIndice];
                 $table->idordenproduccion = $_POST["idordenproduccion"][$intIndice];
+                $table->operacion = $_POST["operacion"][$intIndice];
                 $table->dia_pago = $_POST["dia_pago"][$intIndice];
                 $table->cantidad = $_POST["cantidad"][$intIndice];
                 $operario = Operarios::find()->where(['=','id_operario', $_POST["id_operario"][$intIndice]])->one();
@@ -132,7 +133,9 @@ class ValorPrendaUnidadController extends Controller
         $orden = Ordenproduccion::find()->where(['=','pagada', 0])->orderBy('idordenproduccion desc')->all();  
         if ($model->load(Yii::$app->request->post()) && $model->save()){
             $model->usuariosistema = Yii::$app->user->identity->username;
-            $model->estado_valor = 0;  
+            $model->estado_valor = 0; 
+            $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
+            $model->cantidad = $ordenproduccion->cantidad;
             $model->update();
             return $this->redirect(['index', 'id' => $model->id_valor]);
         }
@@ -221,37 +224,66 @@ class ValorPrendaUnidadController extends Controller
     protected function Totalpagar($id) {
         $valor = ValorPrendaUnidad::findOne($id);
         $detalle = ValorPrendaUnidadDetalles::find()->where(['=','id_valor', $id])->all();
-        $suma=0;
+        $suma=0; 
+        $ajuste = 0;
+        $operacion = 0;
         foreach ($detalle as $val):
-            $suma += $val->vlr_pago;
+            if($val->operacion == 0){
+               $suma += $val->vlr_pago;
+            }else{
+                if($val->operacion == 1){
+                    $operacion += $val->vlr_pago;
+                }else{
+                    $ajuste += $val->vlr_pago;
+                }
+            }   
         endforeach;
-        $valor->valor_total = $suma;
+        $valor->total_confeccion = $suma;
+        $valor->total_operacion = $operacion;
+        $valor->total_ajuste = $ajuste;
+        $valor->total_pagar = $suma + $operacion + $ajuste;
         $valor->save(false);
     }
     //actualiza las cantidades
     protected function TotalCantidades($id) {
         $valor = ValorPrendaUnidad::findOne($id);
         $detalle = ValorPrendaUnidadDetalles::find()->where(['=','id_valor', $id])->all();
-        $suma=0;
+        $suma=0; $operacion = 0;
         foreach ($detalle as $val):
-            $suma += $val->cantidad;
+            if($val->operacion == 0){
+               $suma += $val->cantidad;
+            }else{
+                if(($val->operacion == 1)){
+                   $operacion += $val->cantidad; 
+                }
+            }
         endforeach;
         $valor->cantidad_procesada = $suma;
+        $valor->cantidad_operacion = $operacion;
         $valor->save(false);
+        if($valor->cantidad_procesada > $valor->cantidad  || $valor->cantidad_operacion > $valor->cantidad){
+             Yii::$app->getSession()->setFlash('error', 'La cantidad y/o operacion procesada es mayor que las unidades entradas en la orden Nro: '. $valor->idordenproduccion. '.');
+        }
     }
     
     public function actionAutorizado($id) {
         $model = $this->findModel($id);
         $mensaje = "";
-        if ($model->autorizado == 0) {                        
-            $model->autorizado = 1;            
-            $model->update();
-            $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);            
-        } else{
-            $model->autorizado = 0;
-            $model->update();
-             $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
-        }
+        if($model->cantidad_procesada > $model->cantidad  || $model->cantidad_operacion > $model->cantidad){
+            $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+             Yii::$app->getSession()->setFlash('error', 'La cantidad y/o operacion procesada es mayor que las unidades entradas en la orden Nro: '. $model->idordenproduccion. '.');
+        }else{  
+            if ($model->autorizado == 0) {                        
+                $model->autorizado = 1;            
+                $model->update();
+                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);  
+
+            } else{
+                $model->autorizado = 0;
+                $model->update();
+                 $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+            }
+        }    
     }
     
     public function actionCerrarpago($id, $idordenproduccion) {

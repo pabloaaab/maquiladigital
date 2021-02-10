@@ -36,7 +36,8 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
     {
         return [
             [['idordenproduccion', 'idtipo'], 'required'],
-            [['idordenproduccion', 'idtipo', 'estado_valor','valor_total','autorizado','cerrar_pago','cantidad_procesada'], 'integer'],
+            [['idordenproduccion', 'idtipo', 'estado_valor','autorizado','cerrar_pago','cantidad_procesada','total_confeccion','total_ajuste',
+                'total_operacion','total_pagar','cantidad','cantidad_operacion'], 'integer'],
             [['vlr_vinculado', 'vlr_contrato'], 'number'],
             [['fecha_proceso','fecha_editado'], 'safe'],
             [['usuariosistema','usuario_editado'], 'string', 'max' => 20],
@@ -61,10 +62,16 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
             'usuariosistema' => 'Usuario creador',
             'fecha_editado' => 'Fecha editado',
             'usuario_editado' => 'Usuario editado',
-            'valor_total' => 'Valor total',
+            'total_confeccion' => 'Total confección',
             'autorizado' => 'Autorizado',
             'cerrar_pago' => 'Cerrar pago',
-            'cantidad_procesada' => 'Cant. procesada',
+            'cantidad_procesada' => 'Conf-Term.',
+            'total_ajuste' => 'Total ajuste',
+            'total_operacion' => 'Total operacion',
+            'total_pagar' => 'Total pagar',
+            'cantidad' => 'Unidades',
+            'cantidad_operacion' => 'Cantidad operacion',
+            
         ];
     }
 
@@ -109,6 +116,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
         }
         return $cerradopago;
     }
+    
   
 
 }
