@@ -117,7 +117,7 @@ use app\models\Ordenproducciondetalle;
                                     <option value="<?= $val->estado ?>"><?= $estado ?></option>
                                     <option value="0">Abierto</option>
                                     <option value="1">Cerrado</option>
-                                </select></td>
+                            </select></td>
                             <td align="center"><input type="checkbox" name="iddetalleproceso2[]" value="<?= $val->iddetalleproceso ?>"></td>
                             <td align="center"><input type="hidden" name="iddetalleproceso1[]" value="<?= $val->iddetalleproceso ?>"></td>
                         </tr>
