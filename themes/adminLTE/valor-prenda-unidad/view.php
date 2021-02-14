@@ -23,6 +23,7 @@ $this->params['breadcrumbs'][] = $model->id_valor;
 $this->params['breadcrumbs'][] = $this->title;
 $operarios = ArrayHelper::map(Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto asc')->all(), 'id_operario', 'nombrecompleto');
 $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada', 0])->orderBy('idordenproduccion desc')->all(), 'idordenproduccion', 'idordenproduccion');
+
 ?> 
 <div class="valor-prenda-unidad-view">
 
@@ -36,13 +37,15 @@ $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada'
              if ($model->cerrar_pago == 0) { 
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_valor], ['class' => 'btn btn-default btn-sm']);
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar pago', ['cerrarpago', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion],['class' => 'btn btn-warning btn-xs',
-                'data' => ['confirm' => 'Esta seguro de cerrar el proceso de pago Nro : '. $model->id_valor. '', 'method' => 'post']]); 
+                'data' => ['confirm' => 'Esta seguro de cerrar el proceso de pago Nro : '. $model->id_valor. '', 'method' => 'post']]);
+                echo Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar pago-Orden', ['cerrarpagoorden', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion],['class' => 'btn btn-info btn-xs',
+                'data' => ['confirm' => 'Esta seguro de cerrar el proceso de pago Nro : '. $model->id_valor. ' y la orden de producción Nro: '.$model->idordenproduccion.'', 'method' => 'post']]);
              }    
         }?>
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">
-            Detalle del registro
+            Detalle del registro  
         </div>
         <div class="panel-body">
             <table class="table table-bordered table-striped table-hover">
@@ -58,7 +61,6 @@ $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada'
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Vr_Vinculado') ?>:</th>
                     <td align="right"><?= Html::encode('$'.number_format($model->vlr_vinculado,0)) ?></td>
                    
-                    
                 </tr>                
                  <tr style="font-size: 85%;">
                 
@@ -104,6 +106,7 @@ $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada'
     </div>
 </div>   
 <?php
+
 $form = ActiveForm::begin([
             'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
@@ -114,22 +117,22 @@ $form = ActiveForm::begin([
         ]);
 ?>
     <!--INICIO LOS TABS-->
+
      <div class="panel-footer text-right">
-                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
-                <?php if($model->autorizado == 0){?>                
-                        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>        
-                        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
-                    <?php } ?>
+       
+        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
+        <?php if($model->autorizado == 0){?>                
+                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>        
+                <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
+        <?php } ?>
     </div>
     <div>
         <ul class="nav nav-tabs" role="tablist">
             <?php
              $con = count($detalles_pago);
-          
              ?>
             <li role="presentation" class="active"><a href="#pago" aria-controls="pago" role="tab" data-toggle="tab">Detalle de pago: <span class="badge"><?= $con ?></span></a></li>
-
-        </ul>
+       </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="pago">
                 <div class="table-responsive">

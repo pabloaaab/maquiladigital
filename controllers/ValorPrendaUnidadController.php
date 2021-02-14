@@ -275,18 +275,28 @@ class ValorPrendaUnidadController extends Controller
         }else{  
             if ($model->autorizado == 0) {                        
                 $model->autorizado = 1;            
-                $model->update();
-                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);  
+               $model->update();
+               $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);  
 
             } else{
                 $model->autorizado = 0;
                 $model->update();
-                 $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
             }
         }    
     }
     
     public function actionCerrarpago($id, $idordenproduccion) {
+           $model = $this->findModel($id);
+           $orden = Ordenproduccion::findOne($idordenproduccion);
+           $model->cerrar_pago =  1;
+           $model->estado_valor = 1;
+           $model->save(false);
+           $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+    }
+    //cerrar el pago y la orden de produccion
+    
+    public function actionCerrarpagoorden($id, $idordenproduccion) {
            $model = $this->findModel($id);
            $orden = Ordenproduccion::findOne($idordenproduccion);
            $model->cerrar_pago = 1;
