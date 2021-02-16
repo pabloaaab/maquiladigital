@@ -122,7 +122,8 @@ $form = ActiveForm::begin([
        
         <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
         <?php if($model->autorizado == 0){?>                
-                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>        
+                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>   
+                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo-Modular', ['valor-prenda-unidad/nuevodetallemodular', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-info btn-sm']); ?>        
                 <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
         <?php } ?>
     </div>

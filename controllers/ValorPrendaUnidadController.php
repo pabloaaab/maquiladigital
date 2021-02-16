@@ -211,6 +211,57 @@ class ValorPrendaUnidadController extends Controller
         $model->insert();
         return $this->redirect(['view', 'id' => $id]);
     }
+    
+    //PROCESO QUE BUSCA EL MODULO Y TRAE LAS EMPLEADOS
+    
+     public function actionNuevodetallemodular($id, $idordenproduccion)
+    {              
+       $fecha_corte = date('Y-m-d'); 
+        $balanceo = \app\models\Balanceo::find()->where(['=','idordenproduccion', $idordenproduccion])->orderBy('id_balanceo desc')->all();
+        if ($balanceo){
+            foreach ($balanceo as $val):
+                //este bloque busca las unidades confeccionadas por fecha
+                $cantidad = \app\models\CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $val->id_balanceo])->andWhere(['=','fecha_entrada', $fecha_corte])->all();
+                if($cantidad){
+                    $suma = 0; $total = 0;
+                    foreach ($cantidad as $contar):
+                        $suma += $contar->cantidad_terminada; 
+                    endforeach;
+                    $total = round($suma / $val->cantidad_empleados); 
+                    //este proceso busca los operarios que estan en el modulo
+                    $detalle_balanceo = \app\models\BalanceoDetalle::find()->where(['=','id_balanceo', $contar->id_balanceo])->all();
+                    $operario = 0; $variable = 0;
+                    if($detalle_balanceo){
+                        foreach ($detalle_balanceo as $detalle):
+                           echo   $operario = $detalle->id_operario;
+                              if($variable <> $detalle->id_operario){
+                                 $operario = $detalle->id_operario; 
+                                 $variable = $operario;
+                                 $valor_prenda = new ValorPrendaUnidadDetalles();
+                                 $valor_prenda->id_operario = $operario;
+                                 $valor_prenda->id_valor = $id;
+                                 $valor_prenda->dia_pago= $fecha_corte;
+                                 $valor_prenda->idordenproduccion = $idordenproduccion;
+                                 $valor_prenda->cantidad = $total; 
+                                 $valor_prenda->insert();
+                              }
+                        endforeach;
+                    }else{
+                         $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+                         Yii::$app->getSession()->setFlash('error', 'La orden de produccion Nro: '. $idordenproduccion. ', no tiene asignado empleados para las operaciones.'); 
+                    }    
+                }else{
+                   $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+                   Yii::$app->getSession()->setFlash('error', 'El modulo de balanceo Nro: '. $val->id_balanceo. ', no realizo confeccion el dia '.$fecha_corte.'. Favor hacer este proceso manual.'); 
+                }    
+            endforeach;
+           // return $this->redirect(['view', 'id' => $id]);
+        }else{
+             $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+             Yii::$app->getSession()->setFlash('error', 'La orden de produccion Nro: '. $idordenproduccion. ', no tiene balanceo creado en sistema.!');
+        }
+       // return $this->redirect(['view', 'id' => $id]);
+    }
    
     public function actionEliminar($id,$detalle)
     {                                
