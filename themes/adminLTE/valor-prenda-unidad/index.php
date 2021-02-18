@@ -84,6 +84,7 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 <th scope="col" style='background-color:#B9D5CE;'>OP</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Servicio</th>
+                  <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Vr. Vinculado</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Vr. Contrato</th>
                 <th scope="col" style='background-color:#B9D5CE;'>T. Pagar</th>
@@ -107,6 +108,7 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                     <td><?= $val->idordenproduccion ?></td>
                     <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td><?= $val->tipo->tipo?></td>
+                    <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_vinculado,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_contrato,0) ?></td>
                     <td align="right"><?= ''.number_format($val->total_pagar,0) ?></td>
