@@ -35,7 +35,7 @@ class FormFiltroValorPrenda extends Model
     {
         return [
             'idordenproduccion' => 'Orden producción:',
-            'documento' => 'Servicio:',
+            'idtipo' => 'Servicio:',
             'estado_valor' => 'Activo:',
              'autorizado' => 'Autorizado:',
              'cerrar_pago' => 'Cerrar pago:',
