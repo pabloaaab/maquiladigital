@@ -2,19 +2,26 @@
 
 namespace app\controllers;
 
-use Yii;
 use app\models\ValorPrendaUnidad;
 use app\models\ValorPrendaUnidadSearch;
 use app\models\UsuarioDetalle;
 use app\models\Ordenproduccion;
 use app\models\ValorPrendaUnidadDetalles;
 use app\models\Operarios;
+use app\models\FormFiltroValorPrenda;
 //clases
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
+use yii\web\Response;
+use yii\helpers\Html;
+use yii\data\Pagination;
+use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
-use yii\db\ActiveQuery;
 
 /**
  * ValorPrendaUnidadController implements the CRUD actions for ValorPrendaUnidad model.
@@ -39,24 +46,78 @@ class ValorPrendaUnidadController extends Controller
      * Lists all ValorPrendaUnidad models.
      * @return mixed
      */
-   public function actionIndex()
-    {        
-        if (Yii::$app->user->identity){
-            if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',106])->all()){
-                $searchModel = new ValorPrendaUnidadSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+   public function actionIndex() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 106])->all()) {
+                $form = new FormFiltroValorPrenda();
+                $idtipo = null;
+                $idordenproduccion = null;
+                $estado_valor = null;
+                $cerrar_pago = null;
+                $autorizado = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $idtipo = Html::encode($form->idtipo);
+                        $idordenproduccion = Html::encode($form->idordenproduccion);
+                        $estado_valor = Html::encode($form->estado_valor);
+                        $cerrar_pago = Html::encode($form->cerrar_pago);
+                        $autorizado = Html::encode($form->autorizado);
+                        $table = ValorPrendaUnidad::find()
+                                ->andFilterWhere(['=', 'idtipo', $idtipo])
+                                ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
+                                ->andFilterWhere(['=', 'estado_valor', $estado_valor])
+                                ->andFilterWhere(['=', 'cerrar_pago', $cerrar_pago])
+                                ->andFilterWhere(['=', 'autorizado', $autorizado]);
+                        $table = $table->orderBy('id_valor DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 25,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_valor  DESC']);
+                            $this->actionExcelconsultaValorPrenda($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = ValorPrendaUnidad::find()
+                             ->orderBy('id_valor DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 25,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelconsultaValorPrenda($tableexcel);
+                    }
+                }
+                $to = $count->count();
                 return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
                 ]);
-            }else{
+            } else {
                 return $this->redirect(['site/sinpermiso']);
             }
-        }else{
+        } else {
             return $this->redirect(['site/login']);
         }
-    }    
+    }
     /**
      * Displays a single ValorPrendaUnidad model.
      * @param integer $id
@@ -383,35 +444,50 @@ class ValorPrendaUnidadController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":l".(1));
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'PAGO DE OPERACIONES')
                     ->setCellValue('A2', 'ORDEN')
                     ->setCellValue('B2', 'DOCUMENTO')
                     ->setCellValue('C2', 'OPERARIO(A)')
-                    ->setCellValue('D2', 'DIA PAGO')
-                    ->setCellValue('E2', 'CANTIDAD')
-                    ->setCellValue('F2', 'VR. PRENDA')
-                    ->setCellValue('G2', 'VR. PAGO')
-                    ->setCellValue('H2', 'USUARIO')
-                    ->setCellValue('I2', 'OBSERVACION')
-                    ->setCellValue('K2', 'TOTAL');
+                    ->setCellValue('D2', 'OPERACION')
+                    ->setCellValue('E2', 'DIA PAGO')
+                    ->setCellValue('F2', 'CANTIDAD')
+                    ->setCellValue('G2', 'VR. PRENDA')
+                    ->setCellValue('H2', 'VR. PAGO')
+                    ->setCellValue('I2', 'USUARIO')
+                    ->setCellValue('J2', 'OBSERVACION');
                   
         $i = 3;
+        $confeccion = 'CONFECCION';
+        $operaciones = 'OPERACIONES';
+        $ajuste = 'AJUSTE';
         foreach ($model as $val) {                            
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $ficha->idordenproduccion)
                     ->setCellValue('B' . $i, $val->operario->documento)
-                    ->setCellValue('C' . $i, $val->operario->nombrecompleto)   
-                    ->setCellValue('D' . $i, $val->dia_pago)
-                    ->setCellValue('E' . $i, $val->cantidad)
-                    ->setCellValue('F' . $i, $val->vlr_prenda)
-                    ->setCellValue('G' . $i, $val->vlr_pago)
-                    ->setCellValue('H' . $i, $val->usuariosistema)
-                    ->setCellValue('I' . $i, $val->observacion);
-                    
+                    ->setCellValue('C' . $i, $val->operario->nombrecompleto);
+                    if($val->operacion == 1){
+                         $objPHPExcel->setActiveSheetIndex(0)
+                      ->setCellValue('D' . $i, $confeccion);
+                    }else{
+                        if($val->operacion == 2){
+                             $objPHPExcel->setActiveSheetIndex(0)
+                             ->setCellValue('D' . $i, $operaciones);
+                        }else{
+                             $objPHPExcel->setActiveSheetIndex(0)
+                             ->setCellValue('D' . $i, $ajuste);
+                        }
+                    } 
+                     $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('E' . $i, $val->dia_pago)
+                    ->setCellValue('F' . $i, $val->cantidad)
+                    ->setCellValue('G' . $i, $val->vlr_prenda)
+                    ->setCellValue('H' . $i, $val->vlr_pago)
+                    ->setCellValue('I' . $i, $val->usuariosistema)
+                    ->setCellValue('J' . $i, $val->observacion);
+              
+                   
             $i++;                        
         }
         //promedio por dia
@@ -420,12 +496,12 @@ class ValorPrendaUnidadController extends Controller
            SELECT SUM(valor_prenda_unidad_detalles.vlr_pago) AS Total, valor_prenda_unidad_detalles.id_operario FROM valor_prenda_unidad_detalles WHERE id_valor = ".$id."  GROUP BY id_operario");
         $result = $command->queryAll();
         $i = 3;
-        foreach ($result as $promedio){
+       /* foreach ($result as $promedio){
             $objPHPExcel->setActiveSheetIndex(0)
                      ->setCellValue('K' . $i, $promedio['Total'])
                      ->setCellValue('L' . $i, $promedio['id_operario']);   
             $i++;            
-        }
+        }*/
         //fin promedio por dia
 
         $objPHPExcel->getActiveSheet()->setTitle('Total_pago_prendas');
@@ -451,5 +527,105 @@ class ValorPrendaUnidadController extends Controller
         //$objWriter->save($pFilename = 'Descargas');
         exit; 
         
+    }
+    
+     public function actionExcelconsultaValorPrenda($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'ID')
+                    ->setCellValue('B1', 'ORDEN PROD.')
+                    ->setCellValue('C1', 'CLIENTE')
+                    ->setCellValue('D1', 'SERVICIO')
+                    ->setCellValue('E1', 'VR. VINCULADO')                    
+                    ->setCellValue('F1', 'VR. CONTRATO')
+                    ->setCellValue('G1', 'TOTAL CONFECCION')
+                    ->setCellValue('H1', 'CANT. PROCESADA')
+                    ->setCellValue('I1', 'TOTAL AJUSTE')
+                    ->setCellValue('J1', 'TOTAL OPERACION')
+                    ->setCellValue('K1', 'CANT. OPERACION')
+                    ->setCellValue('L1', 'TOTAL PAGAR')
+                    ->setCellValue('M1', 'CANTIDAD') 
+                    ->setCellValue('N1', 'AUTORIZADO')
+                    ->setCellValue('O1', 'CERRADO')
+                    ->setCellValue('P1', 'ACTIVO')
+                    ->setCellValue('Q1', 'USUARIO CREADOR')
+                    ->setCellValue('R1', 'F. PROCESO')
+                    ->setCellValue('S1', 'USUARIO EDITADO')
+                    ->setCellValue('T1', 'F. EDITADO');;
+        $i = 2;
+        
+        foreach ($tableexcel as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_valor)
+                    ->setCellValue('B' . $i, $val->idordenproduccion)
+                    ->setCellValue('C' . $i, $val->ordenproduccion->cliente->nombrecorto)
+                    ->setCellValue('D' . $i, $val->tipo->tipo)                    
+                    ->setCellValue('E' . $i, $val->vlr_vinculado)
+                    ->setCellValue('F' . $i, $val->vlr_contrato)  
+                    ->setCellValue('G' . $i, $val->total_confeccion)
+                    ->setCellValue('H' . $i, $val->cantidad_procesada)
+                    ->setCellValue('I' . $i, $val->total_ajuste)
+                    ->setCellValue('J' . $i, $val->total_operacion)
+                    ->setCellValue('K' . $i, $val->cantidad_operacion)
+                    ->setCellValue('L' . $i, $val->total_pagar)
+                    ->setCellValue('M' . $i, $val->cantidad)
+                    ->setCellValue('N' . $i, $val->autorizadoPago)
+                    ->setCellValue('O' . $i, $val->cerradoPago)
+                    ->setCellValue('P' . $i, $val->estadovalor)
+                    ->setCellValue('Q' . $i, $val->usuariosistema)
+                    ->setCellValue('R' . $i, $val->fecha_proceso)
+                    ->setCellValue('S' . $i, $val->usuario_editado)
+                    ->setCellValue('T' . $i, $val->fecha_editado);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Valor_prenda');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="valor_prendas.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
     }
 }
