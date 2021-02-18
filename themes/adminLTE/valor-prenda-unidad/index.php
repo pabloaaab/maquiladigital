@@ -122,6 +122,7 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                     <td style='background-color:#DDE6E4;'><?= $val->idordenproduccion ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->tipo->tipo?></td>
+                    <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->vlr_vinculado,0) ?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->vlr_contrato,0) ?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->total_pagar,0) ?></td>
