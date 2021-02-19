@@ -20,6 +20,7 @@ use app\models\Producto;
 use app\models\Productodetalle;
 use app\models\Balanceo;
 use app\models\UsuarioDetalle;
+use app\models\FormFiltroConsultaUnidadConfeccionada;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -81,12 +82,77 @@ class OrdenProduccionController extends Controller {
         }
     }
 
-    /**
-     * Displays a single Ordenproduccion model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    //INDEX DE CONSULTA DE UNDIADES CONFECCIONADAS
+    
+     public function actionConsultaunidadconfeccionada() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 108])->all()) {
+                $form = new FormFiltroConsultaUnidadConfeccionada();
+                $id_balanceo = null;
+                $idordenproduccion = null;
+                $fecha_inicio = null;
+                $fecha_corte = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $id_balanceo = Html::encode($form->id_balanceo);
+                        $idordenproduccion = Html::encode($form->idordenproduccion);
+                        $fecha_inicio = Html::encode($form->fecha_inicio);
+                        $fecha_corte = Html::encode($form->fecha_corte);
+                        $table = CantidadPrendaTerminadas::find()
+                                ->andFilterWhere(['=', 'id_balanceo', $id_balanceo])
+                                ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
+                                ->andFilterWhere(['>=', 'fecha_entrada', $fecha_inicio])
+                                ->andFilterWhere(['<=', 'fecha_entrada', $fecha_corte]);
+                        $table = $table->orderBy('id_entrada DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 100,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_entrada  DESC']);
+                            $this->actionExcelConsultaUnidades($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = CantidadPrendaTerminadas::find()
+                             ->orderBy('id_entrada DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 100,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelConsultaUnidades($tableexcel);
+                    }
+                }
+                $to = $count->count();
+                return $this->render('consultaunidadconfeccionada', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
+                ]);
+            } else {
+                return $this->redirect(['site/sinpermiso']);
+            }
+        } else {
+            return $this->redirect(['site/login']);
+        }
+    } 
     public function actionView($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
@@ -1606,6 +1672,77 @@ class OrdenProduccionController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Ficha_operaciones.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+      public function actionExcelconsultaUnidades($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+                               
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'ID')
+                    ->setCellValue('B1', 'NRO BALANCEO')
+                    ->setCellValue('C1', 'ORD. PRODUCCION')
+                    ->setCellValue('D1', 'CLIENTE')
+                    ->setCellValue('E1', 'REFERENCIA')
+                    ->setCellValue('F1', 'CANTIDADES')
+                    ->setCellValue('G1', 'FACTURADO')
+                    ->setCellValue('H1', 'FECHA PROCESO')
+                    ->setCellValue('I1', 'USUARIO')
+                    ->setCellValue('J1', 'OBSERVACION');
+        $i = 2;
+        $facturado = 0;
+        foreach ($tableexcel as $val) {
+           $facturado = round($val->detalleorden->vlrprecio * $val->cantidad_terminada);                      
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_entrada)
+                    ->setCellValue('B' . $i, $val->id_balanceo)
+                    ->setCellValue('C' . $i, $val->idordenproduccion)
+                    ->setCellValue('D' . $i, $val->ordenproduccion->cliente->nombreClientes)
+                    ->setCellValue('E' . $i, $val->detalleorden->productodetalle->prendatipo->prenda .' / '. $val->detalleorden->productodetalle->prendatipo->talla->talla)
+                    ->setCellValue('F' . $i, $val->cantidad_terminada)
+                     ->setCellValue('G' . $i, $facturado)
+                    ->setCellValue('H' . $i, $val->fecha_entrada)
+                    ->setCellValue('I' . $i, $val->usuariosistema)
+                    ->setCellValue('J' . $i, $val->observacion);
+                  
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('Unidades_confeccionadas');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Cantidad_unidades.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

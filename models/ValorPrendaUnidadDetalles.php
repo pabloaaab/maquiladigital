@@ -48,7 +48,7 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_operario', 'idordenproduccion', 'cantidad', 'vlr_prenda', 'vlr_pago', 'id_valor'], 'integer'],
+            [['id_operario', 'idordenproduccion', 'cantidad', 'vlr_prenda', 'vlr_pago', 'id_valor','registro_pagado'], 'integer'],
             [['dia_pago', 'fecha_creacion'], 'safe'],
             [['usuariosistema', 'observacion'], 'string', 'max' => 20],
             [['operacion'], 'string', 'max' => 15],
@@ -76,6 +76,7 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
             'usuariosistema' => 'Usuariosistema',
             'observacion' => 'Observacion',
             'operacion' => 'Operacion',
+            'registro_pagado' => 'Registro pago',
         ];
     }
 
@@ -101,5 +102,27 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
     public function getValor()
     {
         return $this->hasOne(ValorPrendaUnidad::className(), ['id_valor' => 'id_valor']);
+    }
+    
+    public function getOperacionPrenda(){
+        if($this->operacion == 1){
+            $operacionprenda = 'CONFECCION';
+        }else{
+            if($this->operacion == 2){
+                $operacionprenda = 'OPERACION';
+            }else{
+                $operacionprenda = 'AJUSTE';
+            }
+        }
+        return $operacionprenda;
+    }
+    
+     public function getRegistroPagado(){
+        if($this->registro_pagado == 1){
+            $registropagado = 'SI';
+        }else{
+                $registropagado = 'NO';
+        }
+        return $registropagado;
     }
 }

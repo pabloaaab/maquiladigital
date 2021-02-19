@@ -175,6 +175,7 @@
                                                 ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/indexconsulta']],
                                                 ['label' => 'Seguimiento Producción', 'icon' => 'plus-square-o', 'url' => ['seguimiento-produccion/indexconsulta']],
                                                 ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsultaficha']],
+                                                ['label' => 'Unidades confeccionadas', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/consultaunidadconfeccionada']],
                                             ],
                                         ],
                                         [
@@ -183,7 +184,8 @@
                                             'url' => '#',
                                             'items' => [
                                             ['label' => 'Flujo de operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/produccionbalanceo']], 
-                                            ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/index']],                                            
+                                            ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/index']],    
+                                            ['label' => 'Pago de prenda', 'icon' => 'plus-square-o', 'url' => ['/valor-prenda-unidad/indexsoporte']], 
                                             ],
                                         ],
                                         [

@@ -9,6 +9,7 @@ use app\models\Ordenproduccion;
 use app\models\ValorPrendaUnidadDetalles;
 use app\models\Operarios;
 use app\models\FormFiltroValorPrenda;
+use app\models\FormFiltroResumePagoPrenda;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -118,13 +119,107 @@ class ValorPrendaUnidadController extends Controller
             return $this->redirect(['site/login']);
         }
     }
-    /**
-     * Displays a single ValorPrendaUnidad model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
+    
+   //index de consulta o pago
+    public function actionIndexsoporte() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 107])->all()) {
+                $form = new FormFiltroResumePagoPrenda();
+                $id_operario = null;
+                $idordenproduccion = null;
+                $operacion = null;
+                $dia_pago = null;
+                $fecha_corte = null;
+                $registro = NULL;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $id_operario = Html::encode($form->id_operario);
+                        $idordenproduccion = Html::encode($form->idordenproduccion);
+                        $operacion = Html::encode($form->operacion);
+                        $dia_pago = Html::encode($form->dia_pago);
+                        $fecha_corte = Html::encode($form->fecha_corte);
+                        $registro = Html::encode($form->registro_pagado);
+                        $table = ValorPrendaUnidadDetalles::find()
+                                ->andFilterWhere(['=', 'id_operario', $id_operario])
+                                ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
+                                ->andFilterWhere(['=', 'operacion', $operacion])
+                                ->andFilterWhere(['>=', 'dia_pago', $dia_pago])
+                                ->andFilterWhere(['<=', 'dia_pago', $fecha_corte])
+                                ->andFilterWhere(['=', 'registro_pagado', $registro]);
+                        $table = $table->orderBy('consecutivo DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 120,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['consecutivo  DESC']);
+                            $this->actionExcelResumeValorPrenda($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = ValorPrendaUnidadDetalles::find()
+                             ->orderBy('consecutivo DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 120,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelResumeValorPrenda($tableexcel);
+                    }
+                }
+                 if(isset($_POST['cerrar_abrir'])){                            
+                        if(isset($_REQUEST['consecutivo'])){                            
+                            $intIndice = 0;
+                            foreach ($_POST["consecutivo"] as $intCodigo) {
+                                if ($_POST["consecutivo"][$intIndice]) {                                
+                                 echo   $codigo = $_POST["consecutivo"][$intIndice];
+                                   $this->actionCerrarAbrirRegistro($codigo);
+                                }
+                                $intIndice++;
+                            }
+                        }
+                       $this->redirect(["valor-prenda-unidad/indexsoporte"]);
+                 }
+                $to = $count->count();
+                return $this->render('indexsoporte', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
+                ]);
+            } else {
+                return $this->redirect(['site/sinpermiso']);
+            }
+        } else {
+            return $this->redirect(['site/login']);
+        }
+    } 
+    
+    public function actionCerrarAbrirRegistro($codigo) {
+        $detalle = ValorPrendaUnidadDetalles::findOne($codigo);
+        if($detalle->registro_pagado == 0){
+          $detalle->registro_pagado = 1;
+        }else{
+            $detalle->registro_pagado = 0;
+        }  
+        $detalle->save(false);
+    }
+   public function actionView($id)
     {
         $detalles_pago = ValorPrendaUnidadDetalles::find()->where(['=','id_valor', $id])->orderBy('consecutivo desc')->all();
         //proceso para actualizar
@@ -419,6 +514,10 @@ class ValorPrendaUnidadController extends Controller
            $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
     }
     
+    public function actionCerrarabrir($consecutivo) {
+        
+    }
+    
     public function actionGenerarexcel($id) {        
         $ficha = ValorPrendaUnidad::findOne($id);
         $model = ValorPrendaUnidadDetalles::find()->where(['=','id_valor',$id])->orderBy([ 'id_operario' =>SORT_ASC ])->all();
@@ -528,6 +627,96 @@ class ValorPrendaUnidadController extends Controller
         exit; 
         
     }
+    
+    public function actionExcelResumeValorPrenda($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+  
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'ID')
+                    ->setCellValue('B1', 'ORD. PRODUCCION')
+                    ->setCellValue('C1', 'OPERARIO')
+                    ->setCellValue('D1', 'OPERACION')
+                    ->setCellValue('E1', 'FECHA PROCESO')                    
+                    ->setCellValue('F1', 'CANT.')
+                    ->setCellValue('G1', 'VR. PRENDA')
+                    ->setCellValue('H1', 'TOTAL PAGADO')
+                    ->setCellValue('I1', 'USUARIO')
+                    ->setCellValue('J1', 'ESTADO_REGISTRO')
+                    ->setCellValue('K1', 'OBSERVACION');
+                   
+        $i = 2;
+        $confeccion = 'CONFECCION';
+        $operaciones = 'OPERACIONES';
+        $ajuste = 'AJUSTE';
+        foreach ($tableexcel as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->consecutivo)
+                    ->setCellValue('B' . $i, $val->idordenproduccion)
+                    ->setCellValue('C' . $i, $val->operario->nombrecompleto);
+                        if($val->operacion == 1){
+                             $objPHPExcel->setActiveSheetIndex(0)
+                          ->setCellValue('D' . $i, $confeccion);
+                        }else{
+                            if($val->operacion == 2){
+                                 $objPHPExcel->setActiveSheetIndex(0)
+                                 ->setCellValue('D' . $i, $operaciones);
+                            }else{
+                                 $objPHPExcel->setActiveSheetIndex(0)
+                                 ->setCellValue('D' . $i, $ajuste);
+                            }
+                        } 
+                     $objPHPExcel->setActiveSheetIndex(0)                    
+                    ->setCellValue('E' . $i, $val->dia_pago)
+                    ->setCellValue('F' . $i, $val->cantidad)  
+                    ->setCellValue('G' . $i, $val->vlr_prenda)
+                    ->setCellValue('H' . $i, $val->vlr_pago)
+                    ->setCellValue('I' . $i, $val->usuariosistema)
+                    ->setCellValue('J' . $i, $val->registroPagado)
+                    ->setCellValue('K' . $i, $val->observacion);
+                  
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Resumen pago');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Resumen_pago.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }        
     
      public function actionExcelconsultaValorPrenda($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
