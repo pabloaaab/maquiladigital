@@ -361,11 +361,22 @@ class ValorPrendaUnidadController extends Controller
      public function actionNuevodetalle($id)
     {              
         $valor_unidad = ValorPrendaUnidad::findOne($id);
-        $model = new ValorPrendaUnidadDetalles();
-        $model->id_valor = $id;                
-        $model->dia_pago= date('Y-m-d');
-        $model->insert();
-        return $this->redirect(['view', 'id' => $id]);
+        if($valor_unidad->cantidad_operacion >= $valor_unidad->cantidad){
+           $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+           Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque supero la cantidad de las operaciones.');  
+        }else{
+            if($valor_unidad->cantidad_procesada >= $valor_unidad->cantidad){
+                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+                Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque supero la Cantidad en Confección y/o Terminación.');
+            }else{    
+                $model = new ValorPrendaUnidadDetalles();
+                $model->id_valor = $id;                
+                $model->dia_pago= date('Y-m-d');
+                $model->insert();
+                return $this->redirect(['view', 'id' => $id]);
+            }
+        }
+       
     }
     
     //PROCESO QUE BUSCA EL MODULO Y TRAE LAS EMPLEADOS
@@ -456,21 +467,22 @@ class ValorPrendaUnidadController extends Controller
         $valor = ValorPrendaUnidad::findOne($id);
         $detalle = ValorPrendaUnidadDetalles::find()->where(['=','id_valor', $id])->all();
         $suma=0; $operacion = 0;
-        foreach ($detalle as $val):
-            if($val->operacion == 0){
-               $suma += $val->cantidad;
-            }else{
-                if(($val->operacion == 1)){
-                   $operacion += $val->cantidad; 
+            foreach ($detalle as $val):
+                if($val->operacion == 0){
+                   $suma += $val->cantidad;
+                }else{
+                    if(($val->operacion == 1)){
+                       $operacion += $val->cantidad; 
+                    }
                 }
-            }
-        endforeach;
-        $valor->cantidad_procesada = $suma;
-        $valor->cantidad_operacion = $operacion;
-        $valor->save(false);
+            endforeach;
+            $valor->cantidad_procesada = $suma;
+            $valor->cantidad_operacion = $operacion;
+            $valor->save(false);
         if($valor->cantidad_procesada > $valor->cantidad  || $valor->cantidad_operacion > $valor->cantidad){
-             Yii::$app->getSession()->setFlash('error', 'La cantidad y/o operacion procesada es mayor que las unidades entradas en la orden Nro: '. $valor->idordenproduccion. '.');
-        }
+                Yii::$app->getSession()->setFlash('error', 'La cantidad y/o operacion procesada es mayor que las unidades entradas en la orden Nro: '. $valor->idordenproduccion. '.');
+        } 
+       
     }
     
     public function actionAutorizado($id) {
