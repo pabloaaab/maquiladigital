@@ -363,11 +363,11 @@ class ValorPrendaUnidadController extends Controller
         $valor_unidad = ValorPrendaUnidad::findOne($id);
         if($valor_unidad->cantidad_operacion >= $valor_unidad->cantidad){
            $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
-           Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque supero la cantidad de las operaciones.');  
+           Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque la cantidad de operaciones  '.$valor_unidad->cantidad_operaciones.' es mayor o igual que la cantidad del lote '.$valor_unidad->cantidad .'.');  
         }else{
             if($valor_unidad->cantidad_procesada >= $valor_unidad->cantidad){
                 $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
-                Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque supero la Cantidad en Confección y/o Terminación.');
+                Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque la cantidad de confeccion de Confección y/o Terminación '.$valor_unidad->cantidad_procesada.' es mayor o igual que la cantidad del lote '.$valor_unidad->cantidad.'.');
             }else{    
                 $model = new ValorPrendaUnidadDetalles();
                 $model->id_valor = $id;                
