@@ -21,6 +21,9 @@ use app\models\Productodetalle;
 use app\models\Balanceo;
 use app\models\UsuarioDetalle;
 use app\models\FormFiltroConsultaUnidadConfeccionada;
+use app\models\FormFiltroEntradaSalida;
+use app\models\SalidaEntradaProduccion;
+use app\models\SalidaEntradaProduccionDetalle;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -84,7 +87,7 @@ class OrdenProduccionController extends Controller {
 
     //INDEX DE CONSULTA DE UNDIADES CONFECCIONADAS
     
-     public function actionConsultaunidadconfeccionada() {
+    public function actionConsultaunidadconfeccionada() {
         if (Yii::$app->user->identity) {
             if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 108])->all()) {
                 $form = new FormFiltroConsultaUnidadConfeccionada();
@@ -153,6 +156,84 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(['site/login']);
         }
     } 
+    
+    // INDEX DE ENTRADA Y SALIDAS DE LA OP DEL CLIENTE
+     public function actionIndexentradasalida() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 109])->all()) {
+                $form = new FormFiltroEntradaSalida();
+                $idcliente = null;
+                $idordenproduccion = null;
+                $fecha_desde = null;
+                $fecha_hasta = null;
+                $tipo_proceso = null;
+                $codigo_producto = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $idcliente = Html::encode($form->idcliente);
+                        $idordenproduccion = Html::encode($form->idordenproduccion);
+                        $fecha_desde = Html::encode($form->fecha_desde);
+                        $fecha_hasta = Html::encode($form->fecha_hasta);
+                        $tipo_proceso = Html::encode($form->tipo_proceso);
+                        $codigo_producto = Html::encode($form->codigo_producto);
+                        $table = SalidaEntradaProduccion::find()
+                                ->andFilterWhere(['=', 'idcliente', $idcliente])
+                                ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
+                                ->andFilterWhere(['>=', 'fecha_entrada_salida', $fecha_desde])
+                                ->andFilterWhere(['<=', 'fecha_entrada_salida', $fecha_hasta])
+                                ->andFilterWhere(['=', 'codigo_producto', $codigo_producto])
+                                ->andFilterWhere(['=', 'tipo_proceso', $tipo_proceso]);
+                        $table = $table->orderBy('id_salida DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 40,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_salida  DESC']);
+                            $this->actionExcelEntradaSalida($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = SalidaEntradaProduccion::find()
+                             ->orderBy('id_salida DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelEntradaSalida($tableexcel);
+                    }
+                }
+                $to = $count->count();
+                return $this->render('indexentradasalida', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
+                ]);
+            } else {
+                return $this->redirect(['site/sinpermiso']);
+            }
+        } else {
+            return $this->redirect(['site/login']);
+        }
+    } 
+    
     public function actionView($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
@@ -166,11 +247,9 @@ class OrdenProduccionController extends Controller {
                             Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
                             $this->redirect(["orden-produccion/view", 'id' => $id]);
                         } catch (IntegrityException $e) {
-                            //$this->redirect(["producto/view", 'id' => $id]);
                             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
                         } catch (\Exception $e) {
                             Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
-                            //$this->redirect(["producto/view", 'id' => $id]);
                         }
                 }
                 $this->Actualizartotal($id);
@@ -187,7 +266,37 @@ class OrdenProduccionController extends Controller {
                     'mensaje' => $mensaje,
         ]);
     }
-
+   
+    public function actionViewsalida($id) {
+        $modeldetalles = SalidaEntradaProduccionDetalle::find()->Where(['=', 'id_salida', $id])->all();
+        $modeldetalle = new SalidaEntradaProduccionDetalle();
+        $mensaje = "";
+        if (isset($_POST["eliminarsalida"])) {
+            if (isset($_POST["seleccion"])) {
+                foreach ($_POST["seleccion"] as $intCodigo) {
+                    try {
+                            $eliminar = Ordenproducciondetalle::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["orden-produccion/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        }
+                }
+                $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');                
+            }                        
+        }       
+        return $this->render('viewsalida', [
+                    'model' => SalidaEntradaProduccion::findOne($id),
+                    'modeldetalle' => $modeldetalle,
+                    'modeldetalles' => $modeldetalles,
+                    'mensaje' => $mensaje,
+        ]);
+    }
     /**
      * Creates a new Ordenproduccion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -212,6 +321,27 @@ class OrdenProduccionController extends Controller {
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
                     'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
+        ]);
+    }
+    
+    // nuevo salida / entrada
+    
+    public function actionCreatesalida() {
+        $model = new SalidaEntradaProduccion();
+        $clientes = Cliente::find()->all();
+        $orden = Ordenproduccion::find()->orderBy('idordenproduccion asc')->all();        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->usuariosistema = Yii::$app->user->identity->username;
+            $orden = Ordenproduccion::findOne($model->idordenproduccion);
+            $model->codigo_producto = $orden->codigoproducto;
+            $model->update();
+            return $this->redirect(['indexentradasalida']);
+        }
+
+        return $this->render('createsalida', [
+                    'model' => $model,
+                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+                    'orden' => ArrayHelper::map($orden, "idordenproduccion", "ordenproduccion"),
         ]);
     }
     
@@ -240,6 +370,25 @@ class OrdenProduccionController extends Controller {
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
                     'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
+        ]);
+    }
+    
+    //actualiza el registro
+    public function actionUpdatesalida($id) {
+        $model = SalidaEntradaProduccion::findOne($id);
+        $clientes = Cliente::find()->all();
+        $orden = Ordenproduccion::find()->orderBy('idordenproduccion asc')->all(); 
+        if (SalidaEntradaProduccionDetalle::find()->where(['=', 'id_salida', $id])->all()) {
+            Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        } else {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['indexentradasalida']);
+            }
+        }
+        return $this->render('updatesalida', [
+                    'model' => $model,
+                    'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+                  'orden' => ArrayHelper::map($orden, "idordenproduccion", "ordenproduccion"),
         ]);
     }
 
@@ -291,6 +440,26 @@ class OrdenProduccionController extends Controller {
             $this->redirect(["orden-produccion/view", 'id' => $id]);
         }
     }
+    
+    public function actionAutorizadosalidaentrada($id) {
+        $model = SalidaEntradaProduccion::findOne($id);
+        $entrada = SalidaEntradaProduccion::findOne($id);
+        if($model->total_cantidad > $model->ordenproduccion->cantidad){
+           Yii::$app->getSession()->setFlash('warning', 'Las unidades de entrada no pueden ser mayores que la cantidad del lote.'); 
+           $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+        }else{
+            if ($model->autorizado == 0) {
+                $detalles = Ordenproducciondetalle::find();
+                $model->autorizado = 1;
+                $model->update();
+                $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+            } else {
+                $model->autorizado = 0;
+                $model->update();
+                $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+            }
+        }    
+    }
 
     public function actionNuevodetalles($idordenproduccion, $idcliente) {
         $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
@@ -337,7 +506,46 @@ class OrdenProduccionController extends Controller {
                     'ordenProduccion' => $ordenProduccion,
         ]);
     }
-
+    
+    //nueva linea de entrada o salida
+    
+    public function actionNuevalinea($id, $idordenproduccion, $idcliente) {
+        $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion', $idordenproduccion])->all();        
+        if (isset($_POST["idproductodetalle"])) {
+            $intIndice = 0;
+            foreach ($_POST["idproductodetalle"] as $intCodigo) {  
+                if($_POST["entradasalida"][$intIndice] > 0){
+                    $table = new SalidaEntradaProduccionDetalle();
+                    $table->idproductodetalle = $_POST["idproductodetalle"][$intIndice];
+                    $table->cantidad = $_POST["entradasalida"][$intIndice];
+                    $table->id_salida = $id;
+                    $table->insert(); 
+                }    
+                $intIndice++;  
+            }                    
+            $this->ActualizarCantidadEntradaSalida($id);
+           $this->redirect(["orden-produccion/viewsalida", 'idordenproduccion' => $idordenproduccion, 'id' => $id]); 
+        }                                       
+        return $this->render('_formnuevalinea', [
+                    'detalle_orden' => $detalle_orden,
+                    'idordenproduccion' => $idordenproduccion,
+                    'id' => $id,
+        ]);
+    }
+    
+ //proceso que actualiza las cantidades
+    protected function ActualizarCantidadEntradaSalida($id)
+    {
+     $salida_entrada = SalidaEntradaProduccion::findOne($id);    
+     $salida = SalidaEntradaProduccionDetalle::find()->where(['=','id_salida', $id])->all();
+     $suma = 0;
+     foreach ($salida as $valor):
+         $suma += $valor->cantidad;
+     endforeach;
+     $salida_entrada->total_cantidad = $suma;
+     $salida_entrada->save(false);
+    }
+    
     public function actionEditardetalle() {
         $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
         $idordenproduccion = Html::encode($_POST["idordenproduccion"]);
@@ -368,6 +576,32 @@ class OrdenProduccionController extends Controller {
             }
         }
         
+    }
+    
+    //Editar detalles de la salida y entrada
+    public function actionEditardetallesalida($id) {
+        $mds = SalidaEntradaProduccionDetalle::find()->where(['=', 'id_salida', $id])->all();
+         $entrada = SalidaEntradaProduccion::findOne($id);
+        $error = 0;
+        if (isset($_POST["consecutivo"])) {
+            $intIndice = 0;
+            foreach ($_POST["consecutivo"] as $intCodigo) {
+                if ($_POST["cantidad"][$intIndice] > 0) {
+                    $table = SalidaEntradaProduccionDetalle::findOne($intCodigo);
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->update();                        
+                }
+                $intIndice++;
+            }
+         
+            $this->ActualizarCantidadEntradaSalida($id);
+            $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);            
+        }
+        return $this->render('_formeditardetallesalida', [
+                    'mds' => $mds,
+                    'id' => $id,
+                    'entrada' => $entrada,
+        ]);
     }
     
     //EDITAR ENTRADA DE PRENDAS CONFECCIONADAS
@@ -419,6 +653,29 @@ class OrdenProduccionController extends Controller {
                     'mds' => $mds,
                     'idordenproduccion' => $idordenproduccion,
         ]);
+    }
+    
+    ///PERMITE MODIFICAR UNA LINEA DEL DETALLE DE ENTRADA Y SALIDA
+   public function actionEditardetallesalidaunico() {
+        $consecutivo = Html::encode($_POST["consecutivo"]);
+        $id = Html::encode($_POST["id_salida"]);
+        $error = 0;
+        if (Yii::$app->request->post()) {
+            if ((int) $consecutivo) {
+                $table = SalidaEntradaProduccionDetalle::findOne($consecutivo);
+                if ($table) {
+                    $table->cantidad = Html::encode($_POST["cantidad"]);
+                    $table->update();
+                    $this->ActualizarCantidadEntradaSalida($id);
+                    $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+                                            
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            }
+        }
+        
     }
     
     //editar flujo de operaciones
@@ -496,6 +753,35 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(["orden-produccion/index"]);
         }
     }
+    
+    //ELIMINA LOS DETALLES DE LA ENTRADA  Y SALIDA
+    
+    public function actionEliminardetallesalida() {
+        if (Yii::$app->request->post()) {
+            $consecutivo = Html::encode($_POST["consecutivo"]);
+            $id = Html::encode($_POST["id_salida"]);
+            if ((int) $id) {
+                $Detalle = SalidaEntradaProduccionDetalle::findOne($consecutivo);
+                try {
+                    SalidaEntradaProduccionDetalle::deleteAll("consecutivo=:consecutivo", [":consecutivo" => $consecutivo]);
+                    $this->ActualizarCantidadEntradaSalida($id);
+                    $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                } catch (\Exception $e) {
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
+                    $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
+                }
+                
+                
+            } else {
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
+            }
+        } else {
+            return $this->redirect(["orden-produccion/index"]);
+        }
+    }
 
     public function actionEliminardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
@@ -546,6 +832,12 @@ class OrdenProduccionController extends Controller {
 
         return $this->render('../formatos/ordenProduccion', [
                     'model' => $this->findModel($id),
+        ]);
+    }
+     public function actionImprimirsalida($id) {
+        $model = SalidaEntradaProduccion::findOne($id);       
+        return $this->render('../formatos/salidaEntrada', [
+                    'model' => $model,
         ]);
     }
     
@@ -1236,6 +1528,17 @@ class OrdenProduccionController extends Controller {
         if(count($rows)>0){
             foreach($rows as $row){
                 echo "<option value='$row->codigo' required>$row->codigonombre</option>";
+            }
+        }
+    }
+    
+    public function actionOrdenes($id){
+        $rows = Ordenproduccion::find()->where(['=','idcliente', $id])->orderBy('idordenproduccion desc')->all();
+
+        echo "<option value='' required>Seleccione una orden...</option>";
+        if(count($rows)>0){
+            foreach($rows as $row){
+                echo "<option value='$row->idordenproduccion' required>$row->ordenproduccion</option>";
             }
         }
     }
