@@ -151,7 +151,7 @@ class PeriodoNominaController extends Controller {
                             $intIndice++;
                         }
                     }
-                    $this->redirect(["periodo-nomina/indexconsulta"]);
+                   // $this->redirect(["periodo-nomina/indexconsulta"]);
                 }
                 if(isset($_POST['crear_periodo_prima'])){                            
                     if(isset($_REQUEST['id_grupo_pago'])){                            
@@ -200,16 +200,31 @@ class PeriodoNominaController extends Controller {
         $grupo_pago = GrupoPago::findOne($id_grupo_pago);
         $periodo_pago = PeriodoPago::findOne($grupo_pago->id_periodo_pago);                                                 
         $dias = $periodo_pago->dias;
-        
-        $fecha_inicial = $grupo_pago->ultimo_pago_nomina;                
+        $fecha_inicial = $grupo_pago->ultimo_pago_nomina;
         $anio_inicio = strtotime ('Y' , strtotime($fecha_inicial )) ;
         $anio_inicio = date('Y',$anio_inicio);
-        $mes_inicio = strtotime ('m' , strtotime($fecha_inicial )) ;
+        $mes_inicio = strtotime ('m' , strtotime($fecha_inicial)) ;
         $mes_inicio = date('m',$mes_inicio);
         $dia_inicio = strtotime ('d' , strtotime($fecha_inicial )) ;
         $dia_inicio = date('d',$dia_inicio);
+        $diaFebrero = substr($fecha_inicial, 8, 8);
+        $sw = 0;
+        if($diaFebrero == 28){
+            if($grupo_pago->periodoPago->dias == 15 or $grupo_pago->periodoPago->dias == 30){
+                $sw = 1;
+                $fecha_inicial = strtotime('1 day', strtotime($fecha_inicial));
+                $fecha_inicial = date('Y-m-d', $fecha_inicial);
+            }     
+        }
+        if($diaFebrero == 29){
+            if($grupo_pago->periodoPago->dias == 15 or $grupo_pago->periodoPago->dias == 30){
+                $sw = 2;
+                $fecha_inicial = strtotime('1 day', strtotime($fecha_inicial));
+                $fecha_inicial = date('Y-m-d', $fecha_inicial);
+            }            
+        }
         
-        $numero_dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes_inicio, $anio_inicio);
+       $numero_dias_mes = cal_days_in_month(CAL_GREGORIAN, $mes_inicio, $anio_inicio);
         
         if ($periodo_pago->continua == 1){            
             $nueva_fecha_inicial = strtotime ( '+1 day' , strtotime ( $fecha_inicial ) ) ;
@@ -294,8 +309,29 @@ class PeriodoNominaController extends Controller {
         $periodo_pago_nomina->id_grupo_pago = $id_grupo_pago;
         $periodo_pago_nomina->id_periodo_pago = $periodo_pago->id_periodo_pago;
         $periodo_pago_nomina->id_tipo_nomina = 1; // nomina
-        $periodo_pago_nomina->fecha_desde = $nueva_fecha_inicial;
-        $periodo_pago_nomina->fecha_hasta = $nueva_fecha_final;
+        $diaFebrero = substr($fecha_inicial, 8, 8);
+        if($sw == 0) {
+            $periodo_pago_nomina->fecha_desde = $nueva_fecha_inicial;
+            $periodo_pago_nomina->fecha_hasta = $nueva_fecha_final;
+        }else{
+            if($sw == 1) {
+                 $nueva_fecha_inicial = strtotime('-1 day', strtotime($nueva_fecha_inicial));
+                 $nueva_fecha_inicial = date('Y-m-d', $nueva_fecha_inicial);
+                 $periodo_pago_nomina->fecha_desde = $nueva_fecha_inicial;
+                 $nueva_fecha_final = strtotime('+14 day', strtotime($nueva_fecha_inicial));
+                 $nueva_fecha_final = date('Y-m-d', $nueva_fecha_final);
+                 $periodo_pago_nomina->fecha_hasta = $nueva_fecha_final;
+            }else{
+                if($sw == 2) {
+                    $nueva_fecha_inicial = strtotime('-1 day', strtotime($nueva_fecha_inicial));
+                    $nueva_fecha_inicial = date('Y-m-d', $nueva_fecha_inicial);
+                    $periodo_pago_nomina->fecha_desde = $nueva_fecha_inicial;
+                    $nueva_fecha_final = strtotime('+14 day', strtotime($nueva_fecha_inicial));
+                    $nueva_fecha_final = date('Y-m-d', $nueva_fecha_final);
+                    $periodo_pago_nomina->fecha_hasta = $nueva_fecha_final;
+                }
+            }
+        }
         $periodo_pago_nomina->fecha_real_corte = $nueva_fecha_final;
         $periodo_pago_nomina->dias_periodo = $periodo_pago->dias;
         $periodo_pago_nomina->estado_periodo = 0;
