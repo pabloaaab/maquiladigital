@@ -45,11 +45,12 @@ class CostoProducto extends \yii\db\ActiveRecord
     {
         return [
             [['descripcion','codigo_producto','id_tipo_producto'], 'required'],
-            [['id_tipo_producto', 'costo_sin_iva', 'costo_con_iva','autorizado','aplicar_iva','codigo_producto'], 'integer'],
+            [['id_tipo_producto', 'costo_sin_iva', 'costo_con_iva','autorizado','aplicar_iva'], 'integer'],
             [['fecha_creacion'], 'safe'],
             [['porcentaje_iva'], 'number'],
             ['codigo_producto', 'codigo_existe'],
             [['descripcion'], 'string', 'max' => 45],
+            [['codigo_producto'], 'string', 'max' => 10],
             [['observacion'], 'string', 'max' => 80],
             [['usuariosistema'], 'string', 'max' => 20],
             [['id_tipo_producto'], 'exist', 'skipOnError' => true, 'targetClass' => TipoProducto::className(), 'targetAttribute' => ['id_tipo_producto' => 'id_tipo_producto']],

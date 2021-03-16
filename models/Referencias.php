@@ -70,11 +70,11 @@ class Referencias extends \yii\db\ActiveRecord
     {
         return [
             [['id_producto', 'existencias', 'idproveedor','id_bodega'], 'required'],
-            [['id_producto', 'codigo_producto', 'existencias','id_bodega', 'total_existencias', 'precio_costo', 'precio_venta_mayorista', 'precio_venta_deptal', 'idproveedor', 'estado_existencia', 'autorizado', 't2', 't4', 't6', 't8', 't10', 't12', 't14', 't16', 't18', 't20', 't22', 't24', 't26', 't28', 't30', 't32', 't34', 't36', 't38', 't40', 't42', 't44', 'xs', 's', 'm', 'l', 'xl'], 'integer'],
+            [['id_producto', 'existencias','id_bodega', 'total_existencias', 'precio_costo', 'precio_venta_mayorista', 'precio_venta_deptal', 'idproveedor', 'estado_existencia', 'autorizado', 't2', 't4', 't6', 't8', 't10', 't12', 't14', 't16', 't18', 't20', 't22', 't24', 't26', 't28', 't30', 't32', 't34', 't36', 't38', 't40', 't42', 't44', 'xs', 's', 'm', 'l', 'xl'], 'integer'],
             [['porcentaje_mayorista', 'porcentaje_deptal'], 'number'],
             [['fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],
-            [['descripcion'], 'string'],
+            [['descripcion','codigo_producto'], 'string'],
             [['id_producto'], 'exist', 'skipOnError' => true, 'targetClass' => CostoProducto::className(), 'targetAttribute' => ['id_producto' => 'id_producto']],
             [['idproveedor'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['idproveedor' => 'idproveedor']],
             [['id_bodega'], 'exist', 'skipOnError' => true, 'targetClass' => Bodega::className(), 'targetAttribute' => ['id_bodega' => 'id_bodega']],
