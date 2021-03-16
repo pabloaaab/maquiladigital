@@ -96,6 +96,7 @@ if ($mensaje != ""){
                     <th scope="col" style='background-color:#B9D5CE;'>Descripción</th>
                      <th scope="col" style='background-color:#B9D5CE;'>Precio con Iva.</th>
                     <th scope="col" style='background-color:#B9D5CE;'>Precio sin Iva</th>                    
+                    <th scope="col" style='background-color:#B9D5CE;'>Existencias</th> 
                     <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                 </tr>
                 </thead>
@@ -107,6 +108,7 @@ if ($mensaje != ""){
                     <td><?= $val->descripcion ?></td>
                     <td style="text-align: right"><?= '$'.number_format($val->precio_venta_mayorista,2) ?></td>
                     <td style="text-align: right"><?= '$'.number_format($val->precio_venta_deptal,2) ?></td>
+                       <td style="text-align: right"><?= ''.number_format($val->total_existencias,0) ?></td>
                     <td style="width: 30px;"><input type="checkbox" name="id_referencia[]" value="<?= $val->id_referencia ?>"></td>
                 </tr>
                 </tbody>

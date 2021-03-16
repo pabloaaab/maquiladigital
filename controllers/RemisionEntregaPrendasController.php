@@ -221,28 +221,22 @@ class RemisionEntregaPrendasController extends Controller
                 $form->getErrors();
             }                    
         } else {
-            $referencias = \app\models\Referencias::find()->where(['=','autorizado', 1])->orderBy('descripcion asc')->all();
+            $referencias = \app\models\Referencias::find()->where(['=','autorizado', 1])->andWhere(['>','total_existencias', 0])->orderBy('descripcion asc')->all();
         }
         if (isset($_POST["id_referencia"])) {
                 $intIndice = 0;
                 foreach ($_POST["id_referencia"] as $intCodigo) {
                     $table = new RemisionEntregaPrendaDetalles();
                     $referencia = \app\models\Referencias::find()->where(['id_referencia' => $intCodigo])->one();
-                    $detalles = RemisionEntregaPrendaDetalles::find()
-                        ->where(['=', 'id_remision', $id])
-                        ->andWhere(['=', 'id_referencia', $referencia->id_referencia])
-                        ->all();
-                    $reg = count($detalles);
-                    if ($reg == 0) {
-                        $table->id_referencia = $referencia->id_referencia;
-                        $table->codigo_producto = $referencia->codigo_producto;
-                        $table->cantidad = 1;
-                        $table->valor_unitario = $referencia->precio_venta_deptal;
-                        $table->total_linea = round($table->cantidad * $table->valor_unitario,2);
-                        $table->id_remision = $id;
-                        $table->insert(); 
-                        $this->actualizarSaldo($id);
-                    }
+                    $table->id_referencia = $referencia->id_referencia;
+                    $table->codigo_producto = $referencia->codigo_producto;
+                    $table->cantidad = 1;
+                    $table->valor_unitario = $referencia->precio_venta_deptal;
+                    $table->total_linea = round($table->cantidad * $table->valor_unitario,2);
+                    $table->id_remision = $id;
+                    $table->insert(); 
+                    $this->actualizarSaldo($id);
+                    
                 }
                $this->redirect(["remision-entrega-prendas/view", 'id' => $id]);
             }else{
@@ -312,15 +306,20 @@ class RemisionEntregaPrendasController extends Controller
     public function actionAutorizado($id) {
         $model = $this->findModel($id);
         $mensaje = "";
-        if ($model->autorizado == 0) {                        
-            $model->autorizado = 1;            
-            $model->update();
-            $this->redirect(["remision-entrega-prendas/view", 'id' => $id]);            
-        } else{
-            $model->autorizado = 0;
-            $model->update();
-             $this->redirect(["remision-entrega-prendas/view", 'id' => $id]); 
-        }
+        if ($model->valor_pagar == 0){
+            $this->redirect(["remision-entrega-prendas/view", 'id' => $id]);
+            Yii::$app->getSession()->setFlash('warning', 'No se puede autorizar la remision porque no tiene detalles asociados.');
+        }else{    
+            if ($model->autorizado == 0) {                        
+                $model->autorizado = 1;            
+                $model->update();
+                $this->redirect(["remision-entrega-prendas/view", 'id' => $id]);            
+            } else{
+                $model->autorizado = 0;
+                $model->update();
+                 $this->redirect(["remision-entrega-prendas/view", 'id' => $id]); 
+            }
+        }    
 
     }
     //CODIGO QUE GENERA EL CONSECUTIVO
@@ -334,9 +333,20 @@ class RemisionEntregaPrendasController extends Controller
         $consecutivo->save(false);
         $remision->nro_remision = $consecutivo->consecutivo;
         $remision->save(false);
-        
+        $this->ActualizarExistencias($id);
         $this->redirect(["remision-entrega-prendas/view",'id' => $id]);
             
+    }
+    
+    protected function ActualizarExistencias($id) {
+        $detalle = RemisionEntregaPrendaDetalles::find()->where(['=','id_remision', $id])->all();
+        foreach ($detalle as $detalle):
+            $contador = 0;
+            $referencia = \app\models\Referencias::find()->where(['=','id_referencia', $detalle->id_referencia])->one();
+            $contador = $referencia->total_existencias - $detalle->cantidad;
+            $referencia->total_existencias = $contador;
+            $referencia->save(false);
+        endforeach;
     }
     
     public function actionImprimir($id) {

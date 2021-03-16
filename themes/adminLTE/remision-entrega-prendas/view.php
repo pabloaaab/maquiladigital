@@ -156,7 +156,6 @@ $view = 'remision-entrega-prendas';
                                                         <div class="col-lg-2">
                                                             <input type="text" style="text-align: right" name="descuento" value="<?=  $val->porcentaje_descuento ?>" class="form-control" >
                                                         </div>
-
                                                         <input type="hidden" name="iddetalle" value="<?= $val->id_detalle?>">
                                                         <input type="hidden" name="idremision" value="<?= $model->id_remision ?>">
                                                     </div>
