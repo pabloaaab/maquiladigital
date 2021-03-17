@@ -18,11 +18,15 @@ use kartik\depdrop\DepDrop;
 
 <?php
 $form = ActiveForm::begin([
-            'options' => ['class' => 'form-horizontal condensed ', 'role' => 'form'],
+            "method" => "post",
+            'id' => 'formulario',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => false,
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
-                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-                'labelOptions' => ['class' => 'col-sm-3 control-label'],
-                'options' => []
+            'template' => '{label}<div class="col-sm-3 form-group">{input}{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => []
             ],
         ]);
 ?>
@@ -35,8 +39,6 @@ $form = ActiveForm::begin([
         <div class="row">
             <?= $form->field($model, 'idcliente')->dropDownList($clientes,['prompt'=>'Seleccione un cliente...', 'onchange'=>' $.get( "'.Url::toRoute('orden-produccion/productos').'", { id: $(this).val() } ) .done(function( data ) {
         $( "#'.Html::getInputId($model, 'codigoproducto',['required', 'class' => 'select-2']).'" ).html( data ); });']); ?>
-        </div>
-        <div class="row">            
             <?= $form->field($model, 'codigoproducto')->widget(Select2::classname(), [
             'data' => $codigos,
             'options' => ['placeholder' => 'Seleccione un producto'],
@@ -46,16 +48,14 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?= $form->field($model, 'idtipo')->dropDownList($ordenproducciontipos, ['prompt' => 'Seleccione un tipo...']) ?>
-        </div>
-        <div class="row">
             <?= $form->field($model, 'ordenproduccion')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'ordenproduccionext')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'duracion')->textInput(['maxlength' => true]) ?>
         </div>
-
         <div class="row">
-            <?=
+             <?=
             $form->field($model, 'fechallegada')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
@@ -63,8 +63,6 @@ $form = ActiveForm::begin([
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
             ?>
-        </div>
-        <div class="row">
             <?=
             $form->field($model, 'fechaprocesada')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
@@ -75,7 +73,7 @@ $form = ActiveForm::begin([
             ?>
         </div>
         <div class="row">
-            <?=
+             <?=
             $form->field($model, 'fechaentrega')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
@@ -83,19 +81,16 @@ $form = ActiveForm::begin([
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
             ?>
-        </div>
-        <div class="row">
             <?= $form->field($model, 'ponderacion')->textInput(['maxlength' => true]) ?>
+           
         </div>
         <div class="row">
-            <?= $form->field($model, 'duracion')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row"
-           <?= $form->field($model, 'aplicar_balanceo')->dropDownList(['1'=> 'SI', '0'=> 'NO'], ['prompt' => 'Seleccione']) ?>
-         </div> 
-        <div class="row">
+            <?= $form->field($model, 'aplicar_balanceo')->dropDownList(['1'=> 'SI', '0'=> 'NO'], ['prompt' => 'Seleccione']) ?>
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>
+         <div class="checkbox checkbox-success" align ="right">
+               <?= $form->field($model, 'pagada')->checkBox(['label' => 'Pagada',''=>'small', 'class'=>'bs_switch','style'=>'margin-bottom:5px;', 'id'=>'pagada']) ?>
+         </div>
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("orden-produccion/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		
