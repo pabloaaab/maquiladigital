@@ -168,8 +168,7 @@ $form = ActiveForm::begin([
                                                                       }else{    
                                                                           echo $operacion ="Ajuste";
                                                                       }
-                                                                      
-                                                                   }?>      
+                                                                  }?>      
                                                             <option value="<?= $val->operacion ?>"><?= $operacion ?></option>
                                                             <option value="0">Confeccion</option>
                                                             <option value="1">Operacion</option>

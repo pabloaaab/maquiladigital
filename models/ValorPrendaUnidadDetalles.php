@@ -48,10 +48,9 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_operario', 'idordenproduccion', 'cantidad', 'vlr_prenda', 'vlr_pago', 'id_valor','registro_pagado'], 'integer'],
+            [['id_operario', 'idordenproduccion', 'cantidad', 'vlr_prenda', 'vlr_pago', 'id_valor','registro_pagado','operacion'], 'integer'],
             [['dia_pago', 'fecha_creacion'], 'safe'],
             [['usuariosistema', 'observacion'], 'string', 'max' => 20],
-            [['operacion'], 'string', 'max' => 15],
             [['id_operario'], 'exist', 'skipOnError' => true, 'targetClass' => Operarios::className(), 'targetAttribute' => ['id_operario' => 'id_operario']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
             [['id_valor'], 'exist', 'skipOnError' => true, 'targetClass' => ValorPrendaUnidad::className(), 'targetAttribute' => ['id_valor' => 'id_valor']],
