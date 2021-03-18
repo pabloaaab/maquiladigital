@@ -46,13 +46,14 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
     {
         return [
             [['idcliente', 'idordenproduccion', 'tipo_proceso', 'fecha_entrada_salida'], 'required'],
-            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'total_cantidad','numero_tulas'], 'integer'],
+            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'total_cantidad','numero_tulas','id_entrada_tipo'], 'integer'],
             [['fecha_entrada_salida', 'fecha_proceso'], 'safe'],
             [['codigo_producto'], 'string', 'max' => 15],
             [['usuariosistema'], 'string', 'max' => 20],
             [['observacion'], 'string', 'max' => 100],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
+             [['id_entrada_tipo'], 'exist', 'skipOnError' => true, 'targetClass' => TipoEntrada::className(), 'targetAttribute' => ['id_entrada_tipo' => 'id_entrada_tipo']],
         ];
     }
 
@@ -73,6 +74,7 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
             'fecha_proceso' => 'Fecha Proceso:',
             'observacion' => 'Observacion:',
             'numero_tulas'=> 'Nro tulas:',
+            'id_entrada_tipo' => 'Tipo entrada:',
         ];
     }
 
@@ -100,6 +102,11 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
         return $this->hasMany(SalidaEntradaProduccionDetalle::className(), ['id_salida' => 'id_salida']);
     }
     
+    public function getTipoentrada()
+    {
+        return $this->hasOne(TipoEntrada::className(), ['id_entrada_tipo' => 'id_entrada_tipo']);
+    }
+    
     public function getTipoProceso()
     {
         if($this->tipo_proceso == 1){
@@ -117,5 +124,6 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
             $autorizadosalida = 'NO';
         }
         return $autorizadosalida;
-    }       
+    } 
+    
 }

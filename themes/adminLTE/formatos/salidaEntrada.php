@@ -121,14 +121,22 @@ class PDF extends FPDF {
           $this->SetFont('Arial', '', 8);
           $this->Cell(40, 5, utf8_decode('ENTRADA'), 0, 0, 'J');
         }else{
-            $this->SetFont('Arial', '', 8);
+            $this->SetFont('', '', 8);
           $this->Cell(40, 5, utf8_decode('SALIDA'), 0, 0, 'J');
         }
+         //find
+        
+        $this->SetXY(10, 64); //FILA 5
+        $this->SetFont('Arial', 'B', 8);
+        $this->Cell(24, 5, utf8_decode("TIPO ENTRADA:"), 0, 0, 'c');
+        $this->SetFont('Arial', '', 8);
+        $this->Cell(100, 5, utf8_decode($salida->tipoentrada->concepto), 0, 0, 'J');
+             
        
         //Lineas del encabezado
-        $this->Line(10, 70, 10, 140);//x1,y1,x2,y2        
-        $this->Line(130, 70, 130, 140);
-        $this->Line(200, 70, 200, 164);
+        $this->Line(10, 71, 10, 140);//x1,y1,x2,y2        
+        $this->Line(130, 71, 130, 140);
+        $this->Line(200, 71, 200, 164);
         
         $this->Line(10, 140, 200, 140); //linea horizontal inferior x1,y1,x2,y2
         

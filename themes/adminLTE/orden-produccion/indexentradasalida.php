@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ]);
 
 $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 'idcliente', 'nombrecorto');
+$entrada = ArrayHelper::map(app\models\TipoEntrada::find()->orderBy('concepto ASC')->all(), 'id_entrada_tipo', 'concepto');
 ?>
 <div class="panel panel-success panel-filters">
     <div class="panel-heading" onclick="mostrarfiltro()">
@@ -70,6 +71,13 @@ $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 
                 ],
             ]); ?>
              <?= $formulario->field($form, 'tipo_proceso')->dropDownList(['' => 'TODOS', '1' => 'ENTRADA', '2' => 'SALIDA'],['prompt' => 'Seleccione el procesp ...']) ?>
+        <?= $formulario->field($form, 'id_entrada_tipo')->widget(Select2::classname(), [
+                'data' => $entrada,
+                'options' => ['prompt' => 'Seleccione el cliente'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
@@ -97,12 +105,12 @@ $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 
                 <th scope="col" style='background-color:#B9D5CE;'>OP Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
+                 <th scope="col" style='background-color:#B9D5CE;'>Tipo entrada</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Codigo</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Unidades</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Entrada/Salida</th>
                  <th scope="col" style='background-color:#B9D5CE;'>Tulas</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
-                <th scope="col" style='background-color:#B9D5CE;'>F. Registro</th>
+                 <th scope="col" style='background-color:#B9D5CE;'>F. Registro</th>
                  <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
@@ -118,12 +126,12 @@ $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 
                       <td><?= $val->ordenproduccion->ordenproduccion ?></td>
                     <td><?= $val->cliente->nombrecorto ?></td>
                     <td><?= $val->tipoProceso?></td>
+                     <td><?= $val->tipoentrada->concepto?></td>
                      <td><?= $val->codigo_producto?></td>
                     <td align="right"><?= ''.number_format($val->total_cantidad,0) ?></td>
                     <td><?= $val->fecha_entrada_salida?></td>
                      <td><?= $val->numero_tulas?></td>
-                    <td><?= $val->usuariosistema ?></td>
-                    <td><?= $val->fecha_proceso?></td>
+                     <td><?= $val->fecha_proceso?></td>
                     <td><?= $val->observacion?></td>
                 
                     <td style= 'width: 25px; height: 25px;'>

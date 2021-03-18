@@ -168,6 +168,7 @@ class OrdenProduccionController extends Controller {
                 $fecha_hasta = null;
                 $tipo_proceso = null;
                 $codigo_producto = null;
+                 $tipo_entrada = null;
                 if ($form->load(Yii::$app->request->get())) {
                     if ($form->validate()) {
                         $idcliente = Html::encode($form->idcliente);
@@ -176,13 +177,15 @@ class OrdenProduccionController extends Controller {
                         $fecha_hasta = Html::encode($form->fecha_hasta);
                         $tipo_proceso = Html::encode($form->tipo_proceso);
                         $codigo_producto = Html::encode($form->codigo_producto);
+                        $tipo_entrada = Html::encode($form->id_entrada_tipo);
                         $table = SalidaEntradaProduccion::find()
                                 ->andFilterWhere(['=', 'idcliente', $idcliente])
                                 ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
                                 ->andFilterWhere(['>=', 'fecha_entrada_salida', $fecha_desde])
                                 ->andFilterWhere(['<=', 'fecha_entrada_salida', $fecha_hasta])
                                 ->andFilterWhere(['=', 'codigo_producto', $codigo_producto])
-                                ->andFilterWhere(['=', 'tipo_proceso', $tipo_proceso]);
+                                ->andFilterWhere(['=', 'tipo_proceso', $tipo_proceso])
+                                 ->andFilterWhere(['=', 'id_entrada_tipo', $tipo_entrada]);
                         $table = $table->orderBy('id_salida DESC');
                         $tableexcel = $table->all();
                         $count = clone $table;

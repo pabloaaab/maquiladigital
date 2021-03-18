@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use app\models\Cliente;
+use app\models\TipoEntrada;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
@@ -26,7 +26,9 @@ $form = ActiveForm::begin([
             ],
         ]);
 ?>
-<?php ?>
+<?php 
+$tipoentrada = ArrayHelper::map(TipoEntrada::find()->orderBy('concepto asc')->all(),'id_entrada_tipo','concepto');
+?>
 <div class="panel panel-success">
     <div class="panel-heading">
         Nuevo
@@ -47,6 +49,9 @@ $form = ActiveForm::begin([
         <div class="row">
                <?= $form->field($model, 'tipo_proceso')->dropDownList(['1'=> 'ENTRADA', '2'=> 'SALIDA'], ['prompt' => 'Seleccione']) ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'id_entrada_tipo')->dropDownList($tipoentrada, ['prompt' => 'Seleccione...']) ?>
+        </div>   
         <div class="row">
             <?=
             $form->field($model, 'fecha_entrada_salida')->widget(DatePicker::className(), ['name' => 'check_issue_date',

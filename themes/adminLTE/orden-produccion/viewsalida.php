@@ -73,7 +73,7 @@ $view = 'orden-produccion/indexentradasalida';
                     <td><?= Html::encode($model->codigo_producto) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Proceso') ?>:</th>
                     <td><?= Html::encode($model->tipoProceso) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Cantidad') ?>:</th>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Despacho') ?>:</th>
                     <td><?= Html::encode(''.number_format($model->total_cantidad,0)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
@@ -85,10 +85,17 @@ $view = 'orden-produccion/indexentradasalida';
                     <td><?= Html::encode($model->autorizadoSalida) ?></td>                    
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th style='-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="3"><?= Html::encode($model->observacion) ?></td>  
+                    <th style='-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario') ?>:</th>
+                    <td><?= Html::encode($model->usuariosistema) ?></td>  
+                    <th style='-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tipo_Entrada') ?>:</th>
+                    <td><?= Html::encode($model->tipoentrada->concepto) ?></td> 
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Unidades_Lote') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion->cantidad) ?></td>       
+                </tr>
+                 <tr style="font-size: 85%;">
+                    <th style='-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>  
+                        
                 </tr>
                  <?php 
                  $mensaje = 'Las unidades de entrada no pueden ser mayores que la cantidad del lote.';
