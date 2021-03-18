@@ -45,7 +45,7 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'fecha_entrada_salida'], 'required'],
+            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'fecha_entrada_salida','id_entrada_tipo'], 'required'],
             [['idcliente', 'idordenproduccion', 'tipo_proceso', 'total_cantidad','numero_tulas','id_entrada_tipo'], 'integer'],
             [['fecha_entrada_salida', 'fecha_proceso'], 'safe'],
             [['codigo_producto'], 'string', 'max' => 15],
