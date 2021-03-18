@@ -57,7 +57,9 @@ $form = ActiveForm::begin([
                     'todayHighlight' => true]])
             ?>
         </div>
-
+        <div class="row">
+              <?= $form->field($model, 'numero_tulas')->textInput(['maxlength' => true]) ?>
+        </div>
         <div class="row">
             <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
         </div>

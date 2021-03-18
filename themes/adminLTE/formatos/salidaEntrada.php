@@ -178,6 +178,11 @@ class PDF extends FPDF {
         $pdf->SetXY(10, 140);
         $this->SetFont('Arial', 'B', 8);
         $pdf->MultiCell(120, 8, 'ITEMS: '.$items, 1, 'J');
+        
+        $pdf->SetXY(50, 140);
+        $this->SetFont('Arial', 'B', 8);
+        $pdf->MultiCell(80, 8, 'TULAS: '.$model->numero_tulas, 1, 'J');
+        
         $pdf->SetXY(130, 140);
         $pdf->MultiCell(70, 8, 'CANTIDAD: '.$model->total_cantidad, 1, 'J');
         $pdf->SetXY(10, 149);

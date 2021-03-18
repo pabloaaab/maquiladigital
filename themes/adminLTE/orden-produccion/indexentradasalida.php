@@ -97,9 +97,10 @@ $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 
                 <th scope="col" style='background-color:#B9D5CE;'>OP Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Codigo</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Unidades</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Entrada/Salida</th>
+                 <th scope="col" style='background-color:#B9D5CE;'>Tulas</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Registro</th>
                  <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
@@ -120,6 +121,7 @@ $cliente = ArrayHelper::map(cliente::find()->orderBy('nombrecorto ASC')->all(), 
                      <td><?= $val->codigo_producto?></td>
                     <td align="right"><?= ''.number_format($val->total_cantidad,0) ?></td>
                     <td><?= $val->fecha_entrada_salida?></td>
+                     <td><?= $val->numero_tulas?></td>
                     <td><?= $val->usuariosistema ?></td>
                     <td><?= $val->fecha_proceso?></td>
                     <td><?= $val->observacion?></td>

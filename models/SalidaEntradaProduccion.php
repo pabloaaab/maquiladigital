@@ -46,7 +46,7 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
     {
         return [
             [['idcliente', 'idordenproduccion', 'tipo_proceso', 'fecha_entrada_salida'], 'required'],
-            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'total_cantidad'], 'integer'],
+            [['idcliente', 'idordenproduccion', 'tipo_proceso', 'total_cantidad','numero_tulas'], 'integer'],
             [['fecha_entrada_salida', 'fecha_proceso'], 'safe'],
             [['codigo_producto'], 'string', 'max' => 15],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -72,6 +72,7 @@ class SalidaEntradaProduccion extends \yii\db\ActiveRecord
             'usuariosistema' => 'Usuario:',
             'fecha_proceso' => 'Fecha Proceso:',
             'observacion' => 'Observacion:',
+            'numero_tulas'=> 'Nro tulas:',
         ];
     }
 

@@ -82,7 +82,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'facturado' => 'Fact.',
             'proceso_control' => 'Control',
             'autorizado' => 'Aut.',
-            'ordenproduccion' => 'Op cliente',
+            'ordenproduccion' => 'Op cliente:',
             'ordenproduccionext' => 'Op Externa',
             'idtipo' => 'Servicio',
             'usuariosistema' => 'Usuario Sistema',
@@ -93,6 +93,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'duracion' => 'Duración',
             'aplicar_balanceo' => 'Aplicar balanceo',
             'faltante' => 'Faltante',
+          
         ];
     }
 
