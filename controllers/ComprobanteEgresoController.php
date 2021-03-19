@@ -277,7 +277,7 @@ class ComprobanteEgresoController extends Controller
         $compraegreso = Compra::find()
             ->where(['=', 'id_proveedor', $id_proveedor])
             ->andWhere(['=', 'autorizado', 1])->andWhere(['<>', 'numero', 0])
-            ->andWhere(['<>', 'saldo', 0])->orderBy('id_compra DESC')
+            ->andWhere(['>', 'saldo', 0])->orderBy('id_compra DESC')
             ->all();
         $mensaje = "";
         if(Yii::$app->request->post()) {

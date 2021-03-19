@@ -188,7 +188,7 @@ class ValorPrendaUnidadController extends Controller
                             $intIndice = 0;
                             foreach ($_POST["consecutivo"] as $intCodigo) {
                                 if ($_POST["consecutivo"][$intIndice]) {                                
-                                 echo   $codigo = $_POST["consecutivo"][$intIndice];
+                                   $codigo = $_POST["consecutivo"][$intIndice];
                                    $this->actionCerrarAbrirRegistro($codigo);
                                 }
                                 $intIndice++;
