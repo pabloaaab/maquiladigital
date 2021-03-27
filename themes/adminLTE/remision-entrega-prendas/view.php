@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
-
+use yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $model app\models\ComprobanteEgreso */
 
@@ -121,56 +121,27 @@ $view = 'remision-entrega-prendas';
                             <td style="text-align: right"><?= '$ '.number_format($val->total_linea,0) ?></td>
                             
                         <?php if ($model->autorizado == 0) { ?>
-                            <td style="width: 30px;">
-                                <a href="#" data-toggle="modal" data-target="#iddetalleremision2<?= $val->id_detalle ?>"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <!-- Editar modal detalle -->
-                                <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleremision2<?= $val->id_detalle ?>">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title">Editar detalle <?= $val->id_detalle ?></h4>
-                                            </div>
-                                            <?= Html::beginForm(Url::toRoute("remision-entrega-prendas/editardetalle"), "POST") ?>
-                                            <div class="modal-body">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading">
-                                                       Detalle producto
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <div class="col-lg-1">
-                                                            <label>Cant.:</label>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <input type="text" name="cantidad" value="<?= $val->cantidad ?>" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <label>Vlr_Unitario:</label>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <input type="text" name="valor_unitario" value="<?=  $val->valor_unitario ?>" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <label>% Dcto:</label>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <input type="text" style="text-align: right" name="descuento" value="<?=  $val->porcentaje_descuento ?>" class="form-control" >
-                                                        </div>
-                                                        <input type="hidden" name="iddetalle" value="<?= $val->id_detalle?>">
-                                                        <input type="hidden" name="idremision" value="<?= $model->id_remision ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
-                                            </div>
-                                            <?= Html::endForm() ?>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
+                            <td style="width: 15px;">
+                               <p>
+                                <!-- parametros -->
+                                 <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>',            
+                                     ['/remision-entrega-prendas/editardetalleremisiontallas','id_detalle' => $val->id_detalle, 'id' => $model->id_remision, 'id_referencia' => $val->id_referencia],
+                                     [
+                                         'title' => 'Editar tallas',
+                                         'data-toggle'=>'modal',
+                                         'data-target'=>'#modaleditardetalleremisiontallas'.$val->id_detalle, 'id' => $model->id_remision, 'id_referencia' => $val->id_referencia,
+                                         'class' => 'btn btn-info btn-xs'
+                                     ]
+                                 );
+                                 ?>
+                                <div class="modal remote fade" id="modaleditardetalleremisiontallas<?= $val->id_detalle ?>">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content"></div>
+                                    </div>
+                                </div>
+                            </p>    
                             </td>
-                            <td style="width: 30px;">
+                            <td style="width: 40px;">
                                 <!-- Eliminar modal detalle -->
                                 <a href="#" data-toggle="modal" data-target="#iddetalleremision<?= $val->id_detalle ?>"><span class="glyphicon glyphicon-trash"></span></a>
                                 <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleremision<?= $val->id_detalle ?>">
@@ -185,10 +156,11 @@ $view = 'remision-entrega-prendas';
                                             </div>
                                             <div class="modal-footer">
                                                 <?= Html::beginForm(Url::toRoute("remision-entrega-prendas/eliminardetalle"), "POST") ?>
-                                                <input type="hidden" name="iddetalle" value="<?= $val->id_detalle ?>">
-                                                <input type="hidden" name="idremision" value="<?= $model->id_remision ?>">
-                                                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+                                                <input type="text" name="iddetalle" value="<?= $val->id_detalle ?>">
+                                                <input type="text" name="idremision" value="<?= $model->id_remision ?>">
+                                                <input type="text" name="id_referencia" value="<?= $val->id_referencia ?>">
+                                                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                                <button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                                 <?= Html::endForm() ?>
                                             </div>
                                         </div><!-- /.modal-content -->

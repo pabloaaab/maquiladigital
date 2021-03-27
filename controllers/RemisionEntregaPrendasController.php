@@ -20,6 +20,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
 
+
 //modelos
 use app\models\RemisionEntregaPrendaDetalles;
 use app\models\RemisionEntregaPrendasSearch;
@@ -29,6 +30,7 @@ use app\models\RemisionEntregaPrendas;
 use app\models\FormFiltroRemisionEntrega;
 use app\models\FormMaquinaBuscar;
 use app\models\Consecutivo;
+use app\models\FormEditarDetalleRemisionEntrega;
 
 /**
  * RemisionEntregaPrendasController implements the CRUD actions for RemisionEntregaPrendas model.
@@ -180,15 +182,18 @@ class RemisionEntregaPrendasController extends Controller
     {
         if(Yii::$app->request->post())
         {
-            $iddetalle = Html::encode($_POST["iddetalle"]);
-            $idremision = Html::encode($_POST["idremision"]);
+           echo $iddetalle = Html::encode($_POST["iddetalle"]);
+            echo $idremision = Html::encode($_POST["idremision"]);
+            echo $id_referencia = Html::encode($_POST["id_referencia"]);
             if((int) $iddetalle)
             {
+                $sw = 2;
+                $id = $idremision;
+                $this->ActualizarTallasReferencia($id, $id_referencia, $sw);
                 if(RemisionEntregaPrendaDetalles::deleteAll("id_detalle=:id_detalle", [":id_detalle" => $iddetalle]))
                 {
-                    $id = $idremision;
                     $this->actualizarSaldo($id);
-                    $this->redirect(["remision-entrega-prendas/view",'id' => $idremision]);
+                   $this->redirect(["remision-entrega-prendas/view",'id' => $idremision]);
                 }else{
                     echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("remision-entrega_prendas/index")."'>";
                 }
@@ -196,7 +201,7 @@ class RemisionEntregaPrendasController extends Controller
                 echo "<meta http-equiv='refresh' content='3; ".Url::toRoute("remision-entrega_prendas/index")."'>";
             }
         }else{
-            return $this->redirect(["remision-entrega_prendas/index"]);
+          return $this->redirect(["remision-entrega_prendas/index"]);
         }
     }
 
@@ -253,7 +258,231 @@ class RemisionEntregaPrendasController extends Controller
     
     //FUNCION QUE EDITA EL DETALLE
     
-    public function actionEditardetalle()
+     public function actionEditardetalleremisiontallas($id_detalle, $id, $id_referencia) {                
+        $model = new FormEditarDetalleRemisionEntrega();
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {            
+            if ($model->validate()) {
+                $referencia = \app\models\Referencias::findOne($id_referencia);
+                $archivo = RemisionEntregaPrendaDetalles::findOne($id_detalle);
+                 $contador = 0;
+                if (isset($_POST["actualizar"])) { 
+                    if($archivo->cantidad <= $referencia->total_existencias){
+                        $descuento = 0; $sw = 1; 
+                        $archivo->cantidad = $model->cantidad;
+                        $archivo->valor_unitario = $model->valor_unitario;
+                        $archivo->porcentaje_descuento = $model->porcentaje_descuento;
+                        $descuento = round($model->valor_unitario -($model->valor_unitario * $model->porcentaje_descuento)/100);
+                        if($model->porcentaje_descuento > 0){;
+                           $archivo->valor_descuento = $descuento;
+                        }else{
+                            $archivo->valor_descuento = 0;
+                        }   
+                        $archivo->total_linea = ($descuento * $model->cantidad);
+                        $archivo->t2 = $model->t2;
+                        $archivo->t4 = $model->t4;
+                        $archivo->t6 = $model->t6;
+                        $archivo->t8 = $model->t8;
+                        $archivo->t10 = $model->t10;
+                        $archivo->t12 = $model->t12;
+                        $archivo->t14 = $model->t14;
+                        $archivo->t16 = $model->t16;
+                        $archivo->t18 = $model->t18;
+                        $archivo->t20 = $model->t20;
+                        $archivo->t22 = $model->t22;
+                        $archivo->t24 = $model->t24;
+                        $archivo->t26 = $model->t26;
+                        $archivo->t28 = $model->t28;
+                        $archivo->t30 = $model->t30;
+                        $archivo->t32 = $model->t32;
+                        $archivo->t34 = $model->t34;
+                        $archivo->t36= $model->t36;
+                        $archivo->t38 = $model->t38;
+                        $archivo->t40 = $model->t40;
+                        $archivo->t42 = $model->t42;
+                        $archivo->t44 = $model->t44;
+                        $archivo->xs = $model->xs;
+                        $archivo->s = $model->s;
+                        $archivo->m = $model->m;
+                        $archivo->l = $model->l;
+                        $archivo->xl = $model->xl;
+                        $archivo->xxl = $model->xxl;
+                        $archivo->t_unica = $model->t_unica;
+                        $archivo->save(false);
+                        $this->actualizarSaldo($id);
+                        $this->ActualizarTallasReferencia($id, $id_referencia, $sw);
+                        $this->redirect(["remision-entrega-prendas/view", 'id' => $id]); 
+                    }else{
+                        $contador = 1; 
+                      
+                    } 
+                    if($contador == 1){
+                           $this->redirect(["remision-entrega-prendas/view", 'id' => $id]); 
+                            Yii::$app->getSession()->setFlash('success', 'Las existencia de estas referencia son menores que las vendidas. Favor validar con el administrador.');
+                    }
+                }
+            }
+        }
+        if (Yii::$app->request->get("id_detalle")) {
+            $table = RemisionEntregaPrendaDetalles::find()->where(['id_detalle' => $id_detalle])->one(); 
+            $cantidad_unidad= \app\models\Referencias::find()->where(['=','id_referencia', $id_referencia])->andWhere(['>','total_existencias', 0])->one();
+            $existencia = \app\models\Referencias::find()->where(['=','id_referencia', $id_referencia])->one();
+            if ($table) {  
+                $mensaje = '';
+                $model->cantidad = $table->cantidad;
+                $model->id_detalle = $id_detalle;                 
+                $model->valor_unitario = $table->valor_unitario; 
+                $model->porcentaje_descuento = $table->porcentaje_descuento;
+                $model->total_linea = $table->total_linea;
+                $model->t2 = $table->t2;
+                $model->t4 = $table->t4;
+                $model->t6 = $table->t6;
+                $model->t8 = $table->t8;
+                $model->t10 = $table->t10;
+                $model->t12 = $table->t12;
+                $model->t14 = $table->t14;
+                $model->t16 = $table->t16;
+                $model->t18 = $table->t18;
+                $model->t20 = $table->t20;
+                $model->t22 = $table->t22;
+                $model->t24 = $table->t24;
+                $model->t26 = $table->t26;
+                $model->t28 = $table->t28;
+                $model->t30 = $table->t30;
+                $model->t32 = $table->t32;
+                $model->t34 = $table->t34;
+                $model->t36 = $table->t36;
+                $model->t38 = $table->t38;
+                $model->t40 = $table->t40;
+                $model->t42 = $table->t42;
+                $model->t44 = $table->t44;
+                $model->xs = $table->xs;
+                $model->s = $table->s;
+                $model->m = $table->m;
+                $model->l = $table->l;
+                $model->xl = $table->xl;
+                $model->xxl = $table->xxl;
+                $model->t_unica = $table->t_unica;
+            }
+            
+        }
+        return $this->renderAjax('_editardetalleremisionentrega', [
+                                                                   'model' => $model,
+                                                                   'id_detalle' => $id_detalle,
+                                                                   'cantidad_unidad' => $cantidad_unidad,
+                                                                   'id' => $id, 'existencia' => $existencia,
+                                                                    'mensaje' => $mensaje]);
+    }
+    
+    protected function ActualizarTallasReferencia($id, $id_referencia, $sw) {
+        //declaracion de variable
+        $t2 = 0; $t4 = 0; $t6 = 0; $t8 = 0; $t10 = 0; $t12 = 0; $t14 = 0; $t16 = 0; $t18 = 0; $t20 = 0; $t22 = 0; $t24 = 0; 
+        $t26 = 0; $t28 = 0; $t30 = 0; $t32 = 0; $t34 = 0; $t36 = 0; $t38 = 0; $t40 = 0; $t42 = 0; $t44 = 0; $txs = 0; $ts = 0; $tm = 0; 
+        $tl = 0; $txl = 0; $txxl = 0; $t_unica = 0; $cantidad = 0;
+        $remision_detalle = RemisionEntregaPrendaDetalles::find()->where(['=','id_remision', $id])->andWhere(['=','id_referencia', $id_referencia])->all();
+        foreach ($remision_detalle as $detalle):
+            $t2 += $detalle->t2;
+            $t4 += $detalle->t4;
+            $t6 += $detalle->t6;
+            $t8 += $detalle->t8;
+            $t10 += $detalle->t10;
+            $t12 += $detalle->t12;
+            $t14 += $detalle->t14;
+            $t16 += $detalle->t16;
+            $t18 += $detalle->t18;
+            $t20 += $detalle->t20;
+            $t22 += $detalle->t22;
+            $t24 += $detalle->t24;  
+            $t26 += $detalle->t26;
+            $t28 += $detalle->t28;
+            $t30 += $detalle->t30;
+            $t32 += $detalle->t32;
+            $t34 += $detalle->t34;
+            $t36 += $detalle->t36;
+            $t38 += $detalle->t38;
+            $t40 += $detalle->t40;
+            $t42 += $detalle->t42;
+            $t44 += $detalle->t44;
+            $txs += $detalle->xs;
+            $ts += $detalle->s;
+            $tm += $detalle->m;
+            $tl += $detalle->l;
+            $txl += $detalle->xl;
+            $txxl += $detalle->xxl;
+            $t_unica += $detalle->t_unica;
+            $cantidad = $detalle->cantidad;
+        endforeach;
+        $referencia = \app\models\Referencias::find()->where(['=','id_referencia', $id_referencia])->one();
+       if($sw == 1){
+            $referencia->t2 =  $referencia->t2 - $t2;
+            $referencia->t4 =  $referencia->t4 - $t4;
+            $referencia->t6 =  $referencia->t6 - $t6;
+            $referencia->t8 =  $referencia->t8 - $t8;
+            $referencia->t10 =  $referencia->t10 - $t10;
+            $referencia->t12 =  $referencia->t12 - $t12;
+            $referencia->t14 =  $referencia->t14 - $t14;
+            $referencia->t16 =  $referencia->t16 - $t16;
+            $referencia->t18 =  $referencia->t18 - $t18;
+            $referencia->t20 =  $referencia->t20 - $t20;
+            $referencia->t22 =  $referencia->t22 - $t22;
+            $referencia->t24 =  $referencia->t24 - $t24;
+            $referencia->t26 =  $referencia->t26 - $t26;
+            $referencia->t28 =  $referencia->t28 - $t28;
+            $referencia->t30 =  $referencia->t30 - $t30;
+            $referencia->t32 =  $referencia->t32 - $t32;
+            $referencia->t34 =  $referencia->t34 - $t34;
+            $referencia->t36 =  $referencia->t36 - $t36;
+            $referencia->t38 =  $referencia->t38 - $t38;
+            $referencia->t40 =  $referencia->t40 - $t40;
+            $referencia->t42 =  $referencia->t42 - $t42;
+            $referencia->t44 =  $referencia->t44 - $t44;
+            $referencia->xs =  $referencia->xs - $txs;
+            $referencia->s =  $referencia->s - $ts;
+            $referencia->m =  $referencia->m - $tm;
+            $referencia->l =  $referencia->l - $tl;
+            $referencia->xl =  $referencia->xl - $txl;
+            $referencia->xxl =  $referencia->xxl - $txxl;
+            $referencia->t_unica =  $referencia->t_unica - $t_unica;
+            $referencia->total_existencias = $referencia->total_existencias - $cantidad; 
+       }else{
+           $referencia->t2 =  $referencia->t2 + $t2;
+            $referencia->t4 =  $referencia->t4 + $t4;
+            $referencia->t6 =  $referencia->t6 + $t6;
+            $referencia->t8 =  $referencia->t8 + $t8;
+            $referencia->t10 =  $referencia->t10 + $t10;
+            $referencia->t12 =  $referencia->t12 + $t12;
+            $referencia->t14 =  $referencia->t14 + $t14;
+            $referencia->t16 =  $referencia->t16 + $t16;
+            $referencia->t18 =  $referencia->t18 + $t18;
+            $referencia->t20 =  $referencia->t20 + $t20;
+            $referencia->t22 =  $referencia->t22 + $t22;
+            $referencia->t24 =  $referencia->t24 + $t24;
+            $referencia->t26 =  $referencia->t26 + $t26;
+            $referencia->t28 =  $referencia->t28 + $t28;
+            $referencia->t30 =  $referencia->t30 + $t30;
+            $referencia->t32 =  $referencia->t32 + $t32;
+            $referencia->t34 =  $referencia->t34 + $t34;
+            $referencia->t36 =  $referencia->t36 + $t36;
+            $referencia->t38 =  $referencia->t38 + $t38;
+            $referencia->t40 =  $referencia->t40 + $t40;
+            $referencia->t42 =  $referencia->t42 + $t42;
+            $referencia->t44 =  $referencia->t44 + $t44;
+            $referencia->xs =  $referencia->xs + $txs;
+            $referencia->s =  $referencia->s + $ts;
+            $referencia->m =  $referencia->m + $tm;
+            $referencia->l =  $referencia->l + $tl;
+            $referencia->xl =  $referencia->xl + $txl;
+            $referencia->xxl =  $referencia->xxl + $txxl;
+            $referencia->t_unica =  $referencia->t_unica + $t_unica;
+            $referencia->total_existencias = $referencia->total_existencias + $cantidad; 
+       }    
+        $referencia->save(false);
+    }
+    
+  /*  public function actionEditardetalle()
     {
         $iddetalle = Html::encode($_POST["iddetalle"]);
         $idremision = Html::encode($_POST["idremision"]);
@@ -283,7 +512,7 @@ class RemisionEntregaPrendasController extends Controller
             }
         }
        //return $this->render("_formeditardetalle", ["id" => $model,]);
-    }
+    }*/
     
     //FUNCION QUE ACTUALIZA TOTALES Y CANTIDADES
     protected function actualizarSaldo($id) {

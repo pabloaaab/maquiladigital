@@ -36,8 +36,9 @@ class RemisionEntregaPrendaDetalles extends \yii\db\ActiveRecord
     {
         return [
             [[ 'cantidad', 'valor_unitario'], 'required'],
-            [['id_referencia', 'cantidad', 'valor_unitario', 'valor_descuento', 'total_linea', 'id_remision','codigo_producto'], 'integer'],
+            [['id_referencia', 'cantidad', 'valor_unitario', 'valor_descuento', 'total_linea', 'id_remision'], 'integer'],
             [['porcentaje_descuento'], 'number'],
+            [['codigo_producto'], 'string'],
             [['id_referencia'], 'exist', 'skipOnError' => true, 'targetClass' => Referencias::className(), 'targetAttribute' => ['id_referencia' => 'id_referencia']],
             [['id_remision'], 'exist', 'skipOnError' => true, 'targetClass' => RemisionEntregaPrendas::className(), 'targetAttribute' => ['id_remision' => 'id_remision']],
         ];

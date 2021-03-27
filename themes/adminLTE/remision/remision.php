@@ -151,10 +151,10 @@ $colores = ArrayHelper::map(app\models\Color::find()->all(), 'id', 'color');
                     <th scope="col">Color</th>
                     <th scope="col">OC</th>
                     <th scope="col">Tula</th>
-                    <?php if ($datostallas){ 
-                        foreach ($datostallas as $val): ?>
-                        <th scope="col"><?= $val ?></th>
-                    <?php endforeach; 
+                        <?php if ($datostallas){ 
+                            foreach ($datostallas as $val): ?>
+                            <th scope="col"><?= $val ?></th>
+                        <?php endforeach; 
                      } else {  ?>
                         <th scope="col"></th>
                     <?php }?>    
