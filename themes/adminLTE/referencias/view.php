@@ -107,6 +107,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <th scope="col" style='background-color:#B9D5CE;'>T-m</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>T-l</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>T-xl</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>T-xxl</th>
+                                     <th scope="col" style='background-color:#B9D5CE;'>T-Unica</th>
                           
                                 </tr>
                             </thead>
@@ -142,6 +144,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                    <td><?= $model->m?></td>
                                    <td><?= $model->l?></td>
                                    <td><?= $model->xl?></td>
+                                   <td><?= $model->xxl?></td>
+                                   <td><?= $model->t_unica?></td>
                                 </tr>
                                 
                             </tbody>        

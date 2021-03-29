@@ -200,11 +200,13 @@ class ReferenciasController extends Controller
                 $table->m = Html::encode($_POST["tm"]);
                 $table->l = Html::encode($_POST["tl"]);
                 $table->xl = Html::encode($_POST["txl"]);
+                $table->xxl = Html::encode($_POST["txxl"]);
+                $table->t_unica = Html::encode($_POST["t_unica"]);
                 $total = 0;
                 $suma = Html::encode($_POST["t2"])+ Html::encode($_POST["t4"])+ Html::encode($_POST["t6"])+ Html::encode($_POST["t8"])+ Html::encode($_POST["t10"])+ Html::encode($_POST["t12"]); 
                 $suma2 = Html::encode($_POST["t12"])+ Html::encode($_POST["t16"])+ Html::encode($_POST["t18"])+ Html::encode($_POST["t20"])+ Html::encode($_POST["t22"])+ Html::encode($_POST["t24"])+ Html::encode($_POST["t26"]);
                 $suma3 = Html::encode($_POST["t28"])+ Html::encode($_POST["t30"])+Html::encode($_POST["t32"])+ Html::encode($_POST["t34"])+ Html::encode($_POST["t36"])+ Html::encode($_POST["t38"])+ Html::encode($_POST["t40"]);
-                $suma4 = Html::encode($_POST["t42"])+ Html::encode($_POST["t44"])+ Html::encode($_POST["txs"])+Html::encode($_POST["ts"])+Html::encode($_POST["tm"])+Html::encode($_POST["tl"])+Html::encode($_POST["txl"]);
+                $suma4 = Html::encode($_POST["t42"])+ Html::encode($_POST["t44"])+ Html::encode($_POST["txs"])+Html::encode($_POST["ts"])+Html::encode($_POST["tm"])+Html::encode($_POST["tl"])+Html::encode($_POST["txl"])+ Html::encode($_POST["txxl"] +Html::encode($_POST["t_unica"]));
                 $total = $suma + $suma2 + $suma3 + $suma4;
                 if($total == $model->existencias){
                      $table->total_existencias = $total;
@@ -291,11 +293,13 @@ class ReferenciasController extends Controller
                 $model->m = Html::encode($_POST["tm"]);
                 $model->l = Html::encode($_POST["tl"]);
                 $model->xl = Html::encode($_POST["txl"]);
+                $model->xxl = Html::encode($_POST["txxl"]);
+                $model->t_unica = Html::encode($_POST["t_unica"]);
                 $total = 0; $suma = 0; $suma2 = 0; $suma3 = 0; $suma4 = 0;
                 $suma = Html::encode($_POST["t2"])+ Html::encode($_POST["t4"])+ Html::encode($_POST["t6"])+ Html::encode($_POST["t8"])+ Html::encode($_POST["t10"])+ Html::encode($_POST["t12"]); 
                 $suma2 = Html::encode($_POST["t12"])+ Html::encode($_POST["t16"])+ Html::encode($_POST["t18"])+ Html::encode($_POST["t20"])+ Html::encode($_POST["t22"])+ Html::encode($_POST["t24"])+ Html::encode($_POST["t26"]);
                 $suma3 = Html::encode($_POST["t28"])+ Html::encode($_POST["t30"])+Html::encode($_POST["t32"])+ Html::encode($_POST["t34"])+ Html::encode($_POST["t36"])+ Html::encode($_POST["t38"])+ Html::encode($_POST["t40"]);
-                $suma4 = Html::encode($_POST["t42"])+ Html::encode($_POST["t44"])+ Html::encode($_POST["txs"])+Html::encode($_POST["ts"])+Html::encode($_POST["tm"])+Html::encode($_POST["tl"])+Html::encode($_POST["txl"]);
+                $suma4 = Html::encode($_POST["t42"])+ Html::encode($_POST["t44"])+ Html::encode($_POST["txs"])+Html::encode($_POST["ts"])+Html::encode($_POST["tm"])+Html::encode($_POST["tl"])+Html::encode($_POST["txl"])+ Html::encode($_POST["txxl"]) +Html::encode($_POST["t_unica"]);
                 $total = $suma + $suma2 + $suma3 + $suma4;
                 if($total == $model->existencias){
                     $model->total_existencias = $total;
@@ -349,6 +353,8 @@ class ReferenciasController extends Controller
                     $model->m = $table->m;
                     $model->l = $table->l;
                     $model->xl  = $table->xl;
+                    $model->xxl  = $table->xxl;
+                    $model->t_unica  = $table->t_unica;
 
                 }else{
                     return $this->redirect(['index']);

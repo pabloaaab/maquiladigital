@@ -103,6 +103,8 @@ $bodega = ArrayHelper::map(Bodega::find()->where(['=','estado', 1])->orderBy ('d
                                 <td style="padding-left: 1;padding-right: 1; "><b>T m:</b><input type="text" name="tm" value="0" style="text-align:right" value="<?= $model->m ?>" size="3"></td>
                                 <td style="padding-left: 1;padding-right: 1; "><b>T l:</b><input type="text" name="tl" value="0" style="text-align:right" value"<?= $model->l ?>" size="3"></td>
                                 <td style="padding-left: 1;padding-right: 1; "><b>T xl:</b><input type="text" name="txl" value="0" style="text-align:right" value="<?= $model->xl ?>" size="3"></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T xxl:</b><input type="text" name="txxl" value="0" style="text-align:right" value="<?= $model->xxl ?>" size="3"></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T_unica:</b><input type="text" name="t_unica" value="0" style="text-align:right" value="<?= $model->t_unica ?>" size="3"></td>
                                
                            </tr>
                            

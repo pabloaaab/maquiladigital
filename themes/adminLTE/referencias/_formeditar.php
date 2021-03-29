@@ -79,10 +79,10 @@ $bodega = ArrayHelper::map(Bodega::find()->where(['=','estado', 1])->orderBy ('d
                                 
                            </tr>
                            <tr>
-                                <td style="padding-left: 1;padding-right: 1; "><b>T 24:</b><input type="text" name="t24"  style="text-align:right" value="<?= $model->t24 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>  
-                                <td style="padding-left: 1;padding-right: 1; "><b>T 26:</b><input type="text" name="t26"  style="text-align:right" value="<?= $model->t26 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
-                                <td style="padding-left: 1;padding-right: 1; "><b>T 28:</b><input type="text" name="t28"  style="text-align:right" value="<?= $model->t28 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
-                                <td style="padding-left: 1;padding-right: 1;"><b>T 30:</b><input type="text" name="t30"  style="text-align:right" value="<?= $model->t30 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T 24:</b><input type="text" name="t24"  style="text-align:right" value="<?= $model->t24 ?>" size="2" onkeypress="return esInteger(event)" style="background-color:silver" required></td>  
+                                <td style="padding-left: 1;padding-right: 1; "><b>T 26:</b><input type="text" name="t26"  style="text-align:right" value="<?= $model->t26 ?>" size="2" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T 28:</b><input type="text" name="t28"  style="text-align:right" value="<?= $model->t28 ?>" size="2" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                                <td style="padding-left: 1;padding-right: 1;"><b>T 30:</b><input type="text" name="t30"  style="text-align:right" value="<?= $model->t30 ?>" size="2" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                                <td style="padding-left: 1;padding-right: 1; "><b>T 32:</b><input type="text" name="t32"  style="text-align:right" value="<?= $model->t32 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td> 
                                <td style="padding-left: 1;padding-right: 1; "><b>T 34:</b><input type="text" name="t34"  style="text-align:right" value="<?= $model->t34 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                                <td style="padding-left: 1;padding-right: 1; "><b>T 36:</b><input type="text" name="t36"  style="text-align:right" value="<?= $model->t36 ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
@@ -97,6 +97,8 @@ $bodega = ArrayHelper::map(Bodega::find()->where(['=','estado', 1])->orderBy ('d
                                 <td style="padding-left: 1;padding-right: 1; "><b>T m:</b><input type="text" name="tm"  style="text-align:right" value="<?= $model->m ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                                 <td style="padding-left: 1;padding-right: 1; "><b>T l:</b><input type="text" name="tl"  style="text-align:right" value="<?= $model->l ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                                 <td style="padding-left: 1;padding-right: 1; "><b>T xl:</b><input type="text" name="txl"  style="text-align:right" value="<?= $model->xl ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T xxl:</b><input type="text" name="txxl"  style="text-align:right" value="<?= $model->xxl ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
+                                <td style="padding-left: 1;padding-right: 1; "><b>T_Unica:</b><input type="text" name="t_unica"  style="text-align:right" value="<?= $model->t_unica ?>" size="3" onkeypress="return esInteger(event)" style="background-color:silver" required></td>
                                
                            </tr>
                            
