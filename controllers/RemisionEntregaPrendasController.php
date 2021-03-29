@@ -562,7 +562,6 @@ class RemisionEntregaPrendasController extends Controller
         $consecutivo->save(false);
         $remision->nro_remision = $consecutivo->consecutivo;
         $remision->save(false);
-        $this->ActualizarExistencias($id);
         $this->redirect(["remision-entrega-prendas/view",'id' => $id]);
             
     }
