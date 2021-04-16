@@ -217,6 +217,9 @@ class IncapacidadController extends Controller
                                         $table->transcripcion = $model->transcripcion;
                                         $table->cobrar_administradora = $model->cobrar_administradora;
                                         $table->aplicar_adicional = $model->aplicar_adicional;
+                                        if($table->aplicar_adicional){
+                                            $table->estado_incapacidad_adicional = 1;
+                                        }
                                         $table->pagar_empleado = $model->pagar_empleado;
                                         $table->prorroga = $model->prorroga;
                                         $table->fecha_inicio_empresa = $model->fecha_inicio;
@@ -236,6 +239,7 @@ class IncapacidadController extends Controller
                                         $table->dias_incapacidad = round($total / 86400)+1; 
                                         $table->dias_acumulados =  $table->dias_incapacidad;
                                         $dias = round($total/ 86400)+1;
+                                        
                                         //codigo que valide si el contrato es medio tiempo
                                        $tiempo_servicio = TiempoServicio::find()->all(); 
                                        $contador = 0;
@@ -594,6 +598,11 @@ class IncapacidadController extends Controller
                                         $table->dias_incapacidad = round($total / 86400)+1; 
                                         $table->dias_acumulados =  $table->dias_incapacidad;
                                         $dias = round($total/ 86400)+1;
+                                        if($table->aplicar_adicional){
+                                            $table->estado_incapacidad_adicional = 1;
+                                        }else{
+                                            $table->estado_incapacidad_adicional = 0;
+                                        }
                                         $tiempo_servicio = TiempoServicio::find()->all(); 
                                         $contador = 0;
                                         $incapacidad = 0;

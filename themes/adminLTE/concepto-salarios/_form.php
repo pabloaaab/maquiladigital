@@ -31,7 +31,7 @@ $form = ActiveForm::begin([
                     <?= $form->field($model, 'nombre_concepto')->textInput(['maxlength' => true]) ?>
                 </div>        
                 <div class="row">
-                   <?= $form->field($model, 'porcentaje')->textInput(['maxlength' => true, 'value'=>0]) ?>
+                   <?= $form->field($model, 'porcentaje')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'porcentaje_tiempo_extra')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="row">

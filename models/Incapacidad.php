@@ -74,7 +74,7 @@ class Incapacidad extends \yii\db\ActiveRecord
         return [
             [['codigo_incapacidad', 'id_empleado', 'id_codigo', 'numero_incapacidad', 'fecha_inicio', 'fecha_final', 'fecha_documento_fisico', 'fecha_aplicacion'], 'required'],
             [['id_incapacidad', 'codigo_incapacidad', 'id_empleado', 'identificacion', 'id_contrato', 'id_grupo_pago', 'id_codigo', 'numero_incapacidad','dias_incapacidad', 'dias_cobro_eps','dias_cobro_eps', 'transcripcion',
-                'cobrar_administradora','aplicar_adicional','pagar_empleado', 'id_entidad_salud', 'prorroga','numero_incapacidad','vlr_pago_empresa','ibc_total_incapacidad'], 'integer'],
+                'cobrar_administradora','aplicar_adicional','pagar_empleado', 'id_entidad_salud', 'prorroga','numero_incapacidad','vlr_pago_empresa','ibc_total_incapacidad','estado_incapacidad_adicional'], 'integer'],
             [['fecha_inicio', 'fecha_final','fecha_documento_fisico','fecha_aplicacion','fecha_creacion', 'fecha_inicio_empresa', 'fecha_final_empresa', 'fecha_inicio_administradora', 'fecha_final_administradora'], 'safe'],
             [['salario_mes_anterior', 'salario', 'vlr_liquidado', 'porcentaje_pago', 'vlr_cobro_administradora', 'vlr_saldo_administrador', 'dias_administradora', 'dias_empresa', 'dias_acumulados', 'vlr_hora'], 'number'],
             [['nombre_medico'], 'string', 'max' => 50],
@@ -135,7 +135,7 @@ class Incapacidad extends \yii\db\ActiveRecord
             'transcripcion' =>'Transcripcion',
             'cobrar_administradora'=> 'Cobrar_administradora',
             'aplicar_adicional' => 'Aplicar_adicional',
-             'observacion' => 'Observacion',
+            'observacion' => 'Observacion',
             
         ];
     }

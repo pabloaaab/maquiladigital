@@ -530,7 +530,7 @@ class ProgramacionNominaController extends Controller {
             $contNovedad = count($novedad_tiempo_extra);
             if ($contNovedad > 0) {
                 foreach ($novedad_tiempo_extra as $tiempo_extra) {
-                    $this->Novedadtiempoextra($tiempo_extra, $id, $fecha_desde, $fecha_hasta);
+                   $this->Novedadtiempoextra($tiempo_extra, $id, $fecha_desde, $fecha_hasta);
                 }
             }
             //codigo que envia parametros de los creditos
@@ -558,7 +558,7 @@ class ProgramacionNominaController extends Controller {
             $contAdicion = count($adicion_fecha);
             if ($contAdicion > 0) {
                 foreach ($adicion_fecha as $adicionfecha) {
-                    $this->Moduloadicionfecha($fecha_desde, $fecha_hasta, $adicionfecha, $id);
+                   $this->Moduloadicionfecha($fecha_desde, $fecha_hasta, $adicionfecha, $id);
                 }
             }
             //codigo que valide el adicion al pago permanente
@@ -571,7 +571,7 @@ class ProgramacionNominaController extends Controller {
             $contAdicionP = count($adicion_permanente);
             if ($contAdicionP > 0) {
                 foreach ($adicion_permanente as $adicionpermanente) {
-                  $this->Moduloadicionpermanente($fecha_desde, $fecha_hasta, $adicionpermanente, $id, $grupo_pago);
+                   $this->Moduloadicionpermanente($fecha_desde, $fecha_hasta, $adicionpermanente, $id, $grupo_pago);
                 }
             }
             //codigo que valida las licencias
@@ -585,15 +585,25 @@ class ProgramacionNominaController extends Controller {
                    $this->ModuloLicencias($fecha_desde, $fecha_hasta, $valor_licencia, $id);
                 }
             }
-            // codigo que valida las incapacidades
+            // codigo que valida las incapacidades del mismo periodo
             $incapacidad = Incapacidad::find()->where(['=', 'id_grupo_pago', $id_grupo_pago])
                     ->andWhere(['<=', 'fecha_inicio', $fecha_hasta])
                     ->andWhere(['>=', 'fecha_final', $fecha_desde])
                     ->all();
             $contIncapacidad = count($incapacidad);
+            
             if ($contIncapacidad > 0) {
                 foreach ($incapacidad as $valor_incapacidad) {
                   $this->ModuloIncapacidad($fecha_desde, $fecha_hasta, $valor_incapacidad, $id);
+                  
+                }
+            }
+            
+            //codigo que validad incapacidades del mes anterior
+            $incapacidad_mes_anterior = Incapacidad::find()->where(['=','fecha_aplicacion', $fecha_hasta])->andWhere(['=','estado_incapacidad_adicional', 1])->all();
+            if($incapacidad_mes_anterior > 0){
+                foreach ($incapacidad_mes_anterior as $valor_incapacidad){
+                    $this->ModuloIncapacidad($fecha_desde, $fecha_hasta, $valor_incapacidad, $id);  
                 }
             }
             //codigo que actualiza el estado_generado de la tabla programacion_nomina
@@ -1578,7 +1588,7 @@ class ProgramacionNominaController extends Controller {
             }
         }    
 
-       $this->redirect(["programacion-nomina/view", 'id' => $id,
+     $this->redirect(["programacion-nomina/view", 'id' => $id,
           'id_grupo_pago' => $id_grupo_pago,
           'fecha_desde' => $fecha_desde,
           'fecha_hasta' => $fecha_hasta,
@@ -1645,8 +1655,8 @@ class ProgramacionNominaController extends Controller {
         $detalle_programacion = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $actualizar_dias->id_programacion])->all();
         foreach ($detalle_programacion as $detalle):
             if ($detalle->codigo_salario == $concepto_salario->codigo_salario) {
-                $actualizar_dias->dia_real_pagado = $detalle->dias_reales;
-                $actualizar_dias->horas_pago = $actualizar_dias->dia_real_pagado * 8;
+               $actualizar_dias->dia_real_pagado = $detalle->dias_reales;
+               $actualizar_dias->horas_pago = $actualizar_dias->dia_real_pagado * 8;
                 $actualizar_dias->save(false);
             }
         endforeach;
@@ -1689,8 +1699,8 @@ class ProgramacionNominaController extends Controller {
         $detalle_no = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $acumular_prestacion->id_programacion])->orderBy('id_programacion DESC')->all();
         foreach ($detalle_no as $saldo_devengado):
             $contar += ($saldo_devengado->vlr_devengado + $saldo_devengado->vlr_ajuste_incapacidad)-  $saldo_devengado->vlr_devengado_no_prestacional;
-            $vlr_no_prestacional = $vlr_no_prestacional + $saldo_devengado->vlr_licencia_no_pagada; 
-            $contar_medio = $contar_medio + $saldo_devengado->vlr_ibc_medio_tiempo;
+            $vlr_no_prestacional += $saldo_devengado->vlr_licencia_no_pagada; 
+            $contar_medio +=  $saldo_devengado->vlr_ibc_medio_tiempo;
         endforeach;
         $acumular_prestacion->ibc_prestacional = $contar;
         $acumular_prestacion->total_ibc_no_prestacional = $vlr_no_prestacional;
@@ -1872,7 +1882,7 @@ class ProgramacionNominaController extends Controller {
     //controlador de actualizacion de ibc y ibp
     protected function ModuloActualizarDiasIncapacidades($validar) {
         $con = 0;
-        $actualizar_incapacidad = ConceptoSalarios::find()->where(['=', 'concepto_incapacidad', 1])->all();
+        $actualizar_incapacidad = ConceptoSalarios::find()->where(['=', 'concepto_incapacidad', 1])->andWhere(['=','compone_salario', 1])->all();
         foreach ($actualizar_incapacidad as $actualizar):
             $suma = 0;
             $deta1 = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $validar->id_programacion])->andWhere(['=', 'codigo_salario', $actualizar->codigo_salario])->orderBy('codigo_salario ASC')->one();
@@ -2005,6 +2015,18 @@ class ProgramacionNominaController extends Controller {
             $grupo_pago = GrupoPago::find()->where(['=','id_grupo_pago', $id_grupo_pago])->one();
             $grupo_pago->ultimo_pago_nomina = $fecha_hasta;
             $grupo_pago->save(false);
+            
+            //codigo que actualiza el estado de la incapacidad adicional
+            $incapacidad = Incapacidad::find()->where(['=','fecha_aplicacion', $fecha_hasta])->andWhere(['=','estado_incapacidad_adicional', 1])->orderBy('id_empleado asc')->all();
+            foreach ($incapacidad as $buscar){
+                $buscar_incapacidad = ProgramacionNominaDetalle::find(['=','id_incapacidad', $buscar->id_incapacidad])->one();
+                if($buscar_incapacidad){
+                    $buscar->estado_incapacidad_adicional = 2;
+                    $buscar->save(false);
+                }
+            }
+            
+            
             
             //codigo que genera el consecutivo a la nomina nropago de la colilla
             $nomina = ProgramacionNomina::find()->where(['=','id_periodo_pago_nomina', $id])->orderBy('id_programacion DESC')->all();
