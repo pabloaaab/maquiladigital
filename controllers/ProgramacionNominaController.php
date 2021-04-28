@@ -33,6 +33,7 @@ use app\models\AbonoCredito;
 use app\models\Consecutivo;
 use app\models\ConfiguracionPrestaciones;
 use app\models\InteresesCesantia;
+use app\models\FormMaquinaBuscar;
 // clases de yii
 use Yii;
 use yii\web\Controller;
@@ -243,9 +244,11 @@ class ProgramacionNominaController extends Controller {
                         ->andWhere(['>', 'saldo_credito', 0])
                         ->andWhere(['=', 'id_grupo_pago', $id_grupo_pago])
                         ->orderBy('id_empleado DESC')->all();
-
+        
+        
         if (Yii::$app->request->post()) {
-            if (isset($_POST["id_programacion"])) {
+
+           if (isset($_POST["id_programacion"])) {
                 foreach ($_POST["id_programacion"] as $intCodigo) {
                     try {
                         $eliminar = ProgramacionNomina::findOne($intCodigo);
@@ -395,6 +398,87 @@ class ProgramacionNominaController extends Controller {
         }
     }
 
+    //agregar un empleado para hacerla la nomina.
+    
+     public function actionAgregarempleado($id, $id_grupo_pago, $fecha_hasta, $fecha_desde, $tipo_nomina)
+    {
+        $contratos = Contrato::find()->where(['=','contrato_activo', 1])->andWhere(['<=','fecha_inicio', $fecha_hasta])->andWhere(['=','id_grupo_pago', $id_grupo_pago])->orderBy('id_contrato asc')->all();
+        $form = new FormMaquinaBuscar();
+        $q = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $q = Html::encode($form->q);                                
+                if ($q){
+                    $contratos = Contrato::find()
+                            ->where(['like','identificacion',$q])
+                            ->orwhere(['like','descripcion',$q])
+                            ->orderBy('id_empleado asc')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+            $contratos = Contrato::find()->where(['=','contrato_activo', 1])->andWhere(['<=','fecha_inicio', $fecha_hasta])->andWhere(['=','id_grupo_pago', $id_grupo_pago])->orderBy('id_contrato asc')->all();
+        }
+        if (isset($_POST["id_contrato"])) {
+                $intIndice = 0;
+                $cont = 0;
+                foreach ($_POST["id_contrato"] as $intCodigo) {
+                    $table = new ProgramacionNomina();
+                    $contrato = Contrato::find()->where(['id_contrato' => $intCodigo])->one();
+                    $periodo = PeriodoPagoNomina::findOne($id);
+                    $configuracion_salario = ConfiguracionSalario::find()->where(['=', 'estado', 1])->one();
+                    $table->id_grupo_pago = $id_grupo_pago;
+                    $table->id_periodo_pago_nomina = $id;
+                    $table->id_tipo_nomina = $tipo_nomina;
+                    $table->id_contrato = $contrato->id_contrato;
+                    $table->id_empleado = $contrato->id_empleado;
+                    $table->cedula_empleado = $contrato->identificacion;
+                    $table->salario_contrato = $contrato->salario;
+                    $table->fecha_inicio_contrato = $contrato->fecha_inicio;
+                    $table->fecha_desde = $fecha_desde;
+                    $table->fecha_hasta = $fecha_hasta;
+                    $table->fecha_ultima_prima= $contrato->ultima_prima;
+                    $table->fecha_ultima_cesantia = $contrato->ultima_cesantia;
+                    $table->fecha_ultima_vacacion = $contrato->ultima_vacacion;
+                    $table->fecha_real_corte = $fecha_hasta;
+                    $table->dias_pago = $periodo->dias_periodo;
+                    $table->tipo_salario = $contrato->tipo_salario;
+                    $table->usuariosistema = Yii::$app->user->identity->username;
+                    $tiempo = TiempoServicio::find()->where(['=', 'id_tiempo', $contrato->id_tiempo])->one();
+                    $table->factor_dia = $tiempo->horas_dia;
+                    if ($table->factor_dia == 4) {
+                        $table->salario_medio_tiempo = $configuracion_salario->salario_minimo_actual;
+                    }
+                    $table->save(false); 
+                    $cont += 1;
+                    $periodo->cantidad_empleado = $cont;
+                }
+                $periodo->save(false);
+               $this->redirect(["programacion-nomina/view", 'id' => $id,
+                                'id_grupo_pago' => $id_grupo_pago,
+                                'fecha_hasta' => $fecha_hasta,
+                                'fecha_desde' => $fecha_desde,
+                                'tipo_nomina' => $tipo_nomina,
+                               ]);
+            }else{
+                
+            }
+        return $this->render('_formagregarempleado', [
+            'contratos' => $contratos,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+            'id_grupo_pago' => $id_grupo_pago,
+            'fecha_hasta' => $fecha_hasta,
+            'fecha_desde' => $fecha_desde,
+            'tipo_nomina' => $tipo_nomina,
+            'form' => $form,
+
+        ]);
+    }
+    
     public function actionNuevo() {
         $model = new FormPeriodoPagoNomina();
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
@@ -2204,13 +2288,77 @@ class ProgramacionNominaController extends Controller {
         $abono_credito->insert();
     }
     
+    public function actionEditarcolillapagonomina($id_programacion, $id_grupo_pago, $id, $fecha_desde, $fecha_hasta) {
+        
+        $model = ProgramacionNomina::findOne($id_programacion);
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["eliminardetallecolilla"])) { 
+                if (isset($_POST["id_detalle_colilla"])) {
+                    $intIndice = 0; $codigo = 0;
+                    foreach ($_POST["id_detalle_colilla"] as $intCodigo):
+                        $codigo = $intCodigo;
+                        $eliminar = ProgramacionNominaDetalle::findOne($intCodigo);
+                        $this->ActualizarColillaPago($id_programacion, $codigo);
+                        $eliminar->delete(); 
+                        $this->redirect(["programacion-nomina/view", 'id' => $id, 'id_grupo_pago' => $id_grupo_pago, 'fecha_desde' => $fecha_desde, 'fecha_hasta' => $fecha_hasta]);
+                        $intIndice ++;
+                    endforeach;
+                }
+               return $this->redirect(['view','id' => $id, 'id_grupo_pago' => $id_grupo_pago, 'fecha_desde' => $fecha_desde, 'fecha_hasta' => $fecha_hasta]);
+            }    
+        }else{
+            return $this->render('editarcolillapagonomina', [
+                        'id_programacion' => $id_programacion,
+                        'model' => $model,  
+                        'id' => $id,
+                        'fecha_desde' => $fecha_desde,
+                        'fecha_hasta' => $fecha_hasta,
+                        'id_grupo_pago' => $id_grupo_pago,
+            ]); 
+        } 
+    }
+    
+    protected function ActualizarColillaPago($id_programacion, $codigo) {
+        $model = ProgramacionNominaDetalle::findOne($codigo);
+        $concepto = ConceptoSalarios::find()->all();
+        $nomina = ProgramacionNomina::findOne($id_programacion);
+        $prestacional = 0; $vlr_no_prestacional = 0; $descuento = 0;
+        $total_prestacional = 0; $total_no_prestacional = 0; $total_descuento = 0; $transporte = 0; $total_transporte = 0;
+        foreach ($concepto as $detalle):
+            if($detalle->codigo_salario === $model->codigo_salario){
+                 $codigo;
+                 if ($detalle->prestacional == 1){
+                     $prestacional = $model->vlr_devengado;
+                 }
+                 if($detalle->debito_credito == 2){
+                     $descuento = $model->vlr_deduccion;
+                 }  
+                 if ($detalle->prestacional == 0){
+                        $vlr_no_prestacional = $model->vlr_devengado_no_prestacional;
+                 } 
+                  if ($detalle->auxilio_transporte == 1){
+                        $transporte = $model->auxilio_transporte;
+                 } 
+            }
+        endforeach;    
+        $total_prestacional += $prestacional;
+        $total_descuento += $descuento;
+        $total_no_prestacional += $vlr_no_prestacional;
+        $total_transporte += $transporte;
+        $nomina->ibc_prestacional = $nomina->ibc_prestacional - $prestacional;
+        $nomina->ibc_no_prestacional =  $nomina->ibc_no_prestacional - $total_no_prestacional;
+        $nomina->total_auxilio_transporte =  $nomina->total_auxilio_transporte - $total_transporte;
+        $nomina->total_devengado = $nomina->total_devengado - $total_prestacional - $total_no_prestacional - $total_transporte;
+        $nomina->total_deduccion = $nomina->total_deduccion - $total_descuento;
+        $nomina->total_pagar = $nomina->total_devengado - $nomina->total_deduccion;
+        $nomina->save(false);
+    }
+    
     public function actionVernomina($id_programacion, $id_empleado, $id_grupo_pago, $id_periodo_pago_nomina)
     {
         $model = new \app\models\FormSoportePagoNomina();
-        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
+       
+     
         if (Yii::$app->request->get("id_programacion")) {
            $nomina = ProgramacionNomina::find()->where(['=','id_programacion', $id_programacion])->one();            
             if ($nomina) {                                
@@ -2241,6 +2389,7 @@ class ProgramacionNominaController extends Controller {
                'id_empleado' => $id_empleado,
                'id_grupo_pago' => $id_grupo_pago,
                'id_periodo_pago_nomina' => $id_periodo_pago_nomina,    
+                  
                ]);
     }
     
@@ -2253,7 +2402,7 @@ class ProgramacionNominaController extends Controller {
         ]);
     }
     
-   public function actionEditarcolillapagosabatino($id_programacion, $id, $id_grupo_pago, $fecha_desde, $fecha_hasta){
+        public function actionEditarcolillapagosabatino($id_programacion, $id, $id_grupo_pago, $fecha_desde, $fecha_hasta){
         
         $model= ProgramacionNomina::findone($id_programacion);
         if (Yii::$app->request->post()) { 
@@ -2587,6 +2736,4 @@ class ProgramacionNominaController extends Controller {
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
- 
 }

@@ -156,9 +156,9 @@ $view = 'remision-entrega-prendas';
                                             </div>
                                             <div class="modal-footer">
                                                 <?= Html::beginForm(Url::toRoute("remision-entrega-prendas/eliminardetalle"), "POST") ?>
-                                                <input type="text" name="iddetalle" value="<?= $val->id_detalle ?>">
-                                                <input type="text" name="idremision" value="<?= $model->id_remision ?>">
-                                                <input type="text" name="id_referencia" value="<?= $val->id_referencia ?>">
+                                                <input type="hidden" name="iddetalle" value="<?= $val->id_detalle ?>">
+                                                <input type="hidden" name="idremision" value="<?= $model->id_remision ?>">
+                                                <input type="hidden" name="id_referencia" value="<?= $val->id_referencia ?>">
                                                 <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
                                                 <button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
                                                 <?= Html::endForm() ?>

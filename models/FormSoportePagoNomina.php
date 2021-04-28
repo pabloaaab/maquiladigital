@@ -31,6 +31,7 @@ class FormSoportePagoNomina extends Model
     public $usuariosistema;
     public $fecha_creacion;
     public $dias_ausentes;
+    public $id_detalle;
 
 
 

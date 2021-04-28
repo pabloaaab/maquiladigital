@@ -22,6 +22,7 @@ $view = 'programacion nomina';
                 <button type="button" class="btn btn-default btn-sm"> <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'],['class' => 'btn btn-primary btn-xs']) ?></button>
                 <button type="button" class="btn btn-default btn-sm"><?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $model->id_periodo_pago_nomina], ['class' => 'btn btn-success btn-xs']) ?></button>
                 <button type="button" class="btn btn-default btn-sm"><?= Html::a('<span class="glyphicon glyphicon-export"></span> Cargar Empleados', ['cargar', 'id' => $model->id_periodo_pago_nomina, 'tipo_nomina' => $model->id_tipo_nomina , 'id_grupo_pago' =>$model->id_grupo_pago, 'fecha_desde' => $model->fecha_desde, 'fecha_hasta' =>$model->fecha_hasta], ['class' => 'btn btn-default btn-xs']) ?></button>
+                <button type="button" class="btn btn-default btn-sm"><?= Html::a('<span class="glyphicon glyphicon-plus"></span> Agregar Empleado', ['agregarempleado', 'id' => $model->id_periodo_pago_nomina, 'tipo_nomina' => $model->id_tipo_nomina , 'id_grupo_pago' =>$model->id_grupo_pago, 'fecha_desde' => $model->fecha_desde, 'fecha_hasta' =>$model->fecha_hasta], ['class' => 'btn btn-green btn-xs']) ?></button>
 
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-info btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -191,6 +192,7 @@ $view = 'programacion nomina';
                                     <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo servicio">Ts</span></th>
                                      <th scope="col" style='background-color:#B9D5CE;'></th>
                                       <th scope="col" style='background-color:#B9D5CE;'></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
                                     <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                                 </tr>
                                 </thead>
@@ -240,26 +242,51 @@ $view = 'programacion nomina';
                                                     echo $s;
                                                 }
                                             }?></td>
-                                        <td>
+                                        
                                             <?php
-                                            if($val->estado_generado == 1){?>
-                                                <?= Html::a('<span class="glyphicon glyphicon-book"></span>',            
-                                                ['programacion-nomina/vernomina','id_programacion'=>$val->id_programacion, 'id_empleado' => $val->id_empleado, 'id_grupo_pago' => $val->id_grupo_pago, 'id_periodo_pago_nomina' => $val->id_periodo_pago_nomina],
-                                                    [
-                                                        'title' => 'Comprobante de pago',
-                                                        'data-toggle'=>'modal',
-                                                        'data-target'=>'#modalvernomina'.$val->id_programacion,
-                                                        'class' => 'btn btn-info btn-xs'
-                                                    ]
-                                                );
-                                                ?>
-                                                 <div class="modal remote fade" id="modalvernomina<?= $val->id_programacion ?>">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content"></div>
-                                                    </div>
-                                                 </div>
-                                            <?php }?>    
-                                        </td>
+                                            if($val->estado_generado == 1 and $val->estado_cerrado == 0){?>
+                                                <td style="width: 0.5%; height: 0.5%; ">  
+                                                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>',            
+                                                    ['programacion-nomina/vernomina','id_programacion'=>$val->id_programacion, 'id_empleado' => $val->id_empleado, 'id_grupo_pago' => $val->id_grupo_pago, 'id_periodo_pago_nomina' => $val->id_periodo_pago_nomina],
+                                                        [
+                                                            'title' => 'Comprobante de pago',
+                                                            'data-toggle'=>'modal',
+                                                            'data-target'=>'#modalvernomina'.$val->id_programacion,
+                                                            'class' => 'btn btn-info btn-xs'
+                                                        ]
+                                                    );
+                                                    ?>
+                                                     <div class="modal remote fade" id="modalvernomina<?= $val->id_programacion ?>">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content"></div>
+                                                        </div>
+                                                     </div>
+                                               </td>
+                                                <td style="width: 25px;">				
+                                                    <a href="<?= Url::toRoute(["programacion-nomina/editarcolillapagonomina", 'id' => $model->id_periodo_pago_nomina,"id_programacion" => $val->id_programacion, 'id_grupo_pago' => $val->id_grupo_pago, 'id' => $val->id_periodo_pago_nomina, 'fecha_desde' => $val->fecha_desde, 'fecha_hasta' => $val->fecha_hasta]) ?>" ><span class="glyphicon glyphicon-book"></span></a>
+                                                </td>
+                                            <?php }else{?>
+                                                   <td style="width: 0.5%; height: 0.5%; ">  
+                                                        <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>',            
+                                                        ['programacion-nomina/vernomina','id_programacion'=>$val->id_programacion, 'id_empleado' => $val->id_empleado, 'id_grupo_pago' => $val->id_grupo_pago, 'id_periodo_pago_nomina' => $val->id_periodo_pago_nomina],
+                                                            [
+                                                                'title' => 'Comprobante de pago',
+                                                                'data-toggle'=>'modal',
+                                                                'data-target'=>'#modalvernomina'.$val->id_programacion,
+                                                                'class' => 'btn btn-info btn-xs'
+                                                            ]
+                                                        );
+                                                        ?>
+                                                         <div class="modal remote fade" id="modalvernomina<?= $val->id_programacion ?>">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content"></div>
+                                                            </div>
+                                                         </div>
+                                                    </td>
+                                                    <td></td>    
+                                            <?php }?>         
+                                            
+                                          
                                         <td>
                                             <?php //este condicion permite saber si es sabatino
                                             if($contrato->id_tiempo == 3 && $val->estado_liquidado == 1 && $val->estado_cerrado == 0){?> 

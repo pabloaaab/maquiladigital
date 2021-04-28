@@ -1,33 +1,39 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\bootstrap\Modal;
 use app\models\Empleado;
 use app\models\GrupoPago;
 use app\models\ProgramacionNominaDetalle;
 use app\models\ConceptoSalarios;
 use app\models\PeriodoPagoNomina;
+
+$empleado = Empleado::findOne($id_empleado); 
+$detalle_nomina = ProgramacionNominaDetalle::find()->where(['=','id_programacion', $model->id_programacion])->orderBy('vlr_deduccion ASC')->all();
+$grupo_pago = GrupoPago::findOne($id_grupo_pago); 
+$periodo_pago = PeriodoPagoNomina::findOne($id_periodo_pago_nomina); 
+$tipo_pago = app\models\TipoNomina::findOne($periodo_pago->id_tipo_nomina); 
 ?>
+<?php
+$form = ActiveForm::begin([
+            "method" => "post",
+            'id' => 'formulario',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => true,
+            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+            'fieldConfig' => [
+            'template' => '{label}<div class="col-sm-6 form-group">{input}{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-3 control-label'],
+            'options' => []
+        ],
+        ]);
 
-
-<?php $form = ActiveForm::begin([
-
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-]); ?>
+?>
 <div class="programacion-nomina-view">
 
  <!--<h1><?= Html::encode($this->title) ?></h1>-->
-    
-<?php $empleado = Empleado::findOne($id_empleado); ?>
-<?php $detalle_nomina = ProgramacionNominaDetalle::find()->where(['=','id_programacion', $model->id_programacion])->orderBy('vlr_deduccion ASC')->all();?>    
-<?php $grupo_pago = GrupoPago::findOne($id_grupo_pago); ?>
-<?php $periodo_pago = PeriodoPagoNomina::findOne($id_periodo_pago_nomina); ?>
-<?php $tipo_pago = app\models\TipoNomina::findOne($periodo_pago->id_tipo_nomina); ?>
-    
+   
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title"></h4>
@@ -99,14 +105,7 @@ use app\models\PeriodoPagoNomina;
             </div>
         </div>
     </div>
-    <?php $form = ActiveForm::begin([
-    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-    'fieldConfig' => [
-        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-        'labelOptions' => ['class' => 'col-sm-3 control-label'],
-        'options' => []
-    ],
-    ]);?>
+   
     <div>
         <div class="modal-body">
             <div class="panel panel-success">
@@ -125,7 +124,7 @@ use app\models\PeriodoPagoNomina;
                                  <th scope="col">Nro_Dias</th>    
                                  <th scope="col">Vr. Día</th>  
                                  <th scope="col">Deducción</th>   
-                                 <th scope="col">Devengado</th>   
+                                 <th scope="col">Devengado</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -163,6 +162,7 @@ use app\models\PeriodoPagoNomina;
                                                <td align="right"><?= ''.number_format($val->vlr_dia, 2) ?></td>
                                                <td align="right"><?= '$'.number_format($val->vlr_deduccion,0) ?></td>
                                                <td align="right"><?= '$'.number_format($val->vlr_devengado,0) ?></td>
+                                               
                                           </tr>
                                        <?php }
                             endforeach;
@@ -172,11 +172,13 @@ use app\models\PeriodoPagoNomina;
                 </div>    
             </div> 
             <div class="modal-footer">
-				<?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['programacion-nomina/imprimircolilla', 'id' => $model->id_programacion], ['class' => 'btn btn-default']); ?>
+		<?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['programacion-nomina/imprimircolilla', 'id' => $model->id_programacion], ['class' => 'btn btn-default btn-sm']); ?>
 	    </div>
         </div>
     </div>  
-</div>    
+</div>  
+<?php $form->end() ?>
+
     
 
 
