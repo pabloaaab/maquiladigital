@@ -1809,11 +1809,13 @@ class OrdenProduccionController extends Controller {
     
     public function actionViewconsultaficha($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+       // $costoservicio = \app\models\ValorPrendaUnidad::find()->where(['=','idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
         return $this->render('view_consulta_ficha', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
+         //           'costoservicio' => $costoservicio,
         ]);
     }
     
