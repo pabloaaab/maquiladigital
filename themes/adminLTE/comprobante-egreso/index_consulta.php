@@ -105,12 +105,12 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
             <thead>
             <tr>                
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                 <th scope="col" style='background-color:#B9D5CE;'>Nro Compro.</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Tipo Pago</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. Pago</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>Banco</th> 
                 <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Proveedor</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Numero</th>                
-                <th scope="col" style='background-color:#B9D5CE;'>Tipo</th>
-                <th scope="col" style='background-color:#B9D5CE;'>F. pago</th>                
-                <th scope="col" style='background-color:#B9D5CE;'>Banco</th> 
                 <th scope="col" style='background-color:#B9D5CE;'>Valor</th>                
                 <th scope="col" style='background-color:#B9D5CE;'>Aut.</th>                
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>  
@@ -121,15 +121,16 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
             <?php foreach ($model as $val): ?>
                 <tr style="font-size: 85%;">                
                 <td><?= $val->id_comprobante_egreso ?></td>
-                <td><?= $val->proveedor->cedulanit ?></td>
-                <td><?= $val->proveedor->nombrecorto ?></td>
-                <td><?= $val->numero ?></td>
+                 <td><?= $val->numero ?></td>
                 <td><?= $val->comprobanteEgresoTipo->concepto ?></td>                
                 <td><?= $val->fecha_comprobante ?></td>                
                 <td><?= $val->banco->entidad ?></td>
+                <td><?= $val->proveedor->cedulanit ?></td>
+                <td><?= $val->proveedor->nombrecorto ?></td>
                 <td><?= number_format($val->valor,0) ?></td>                
                 <td><?= $val->autorizar ?></td>   
                  <td><?= $val->usuariosistema ?></td>
+
                 <td>				
                 <a href="<?= Url::toRoute(["comprobante-egreso/viewconsulta", "id" => $val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
                 </td>
@@ -144,6 +145,7 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
                         ]);
                 ?>    
                 <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary ']); ?>
+            
             <?php $form->end() ?>
         </div>
     </div>
