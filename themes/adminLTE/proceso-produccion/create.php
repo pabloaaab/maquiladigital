@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProcesoProduccion */
 
-$this->title = 'Nuevo Proceso Producción';
-$this->params['breadcrumbs'][] = ['label' => 'Procesos Producción', 'url' => ['index']];
+$this->title = 'Nuevo operación';
+$this->params['breadcrumbs'][] = ['label' => 'Operacion prendas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proceso-produccion-create">

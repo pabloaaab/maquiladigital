@@ -74,9 +74,30 @@ class ProcesoProduccionController extends Controller
     public function actionCreate()
     {
         $model = new ProcesoProduccion();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->validate()) { 
+                $table = new ProcesoProduccion();
+                $table->proceso = $model->proceso;
+                $table->segundos = $model->segundos;
+                if ($table->segundos == ''){
+                    $table->segundos = 0;
+                    $table->minutos = 0;
+                    $table->estandarizado = $model->estandarizado;
+                    $table->save(false);
+                    return $this->redirect(['index']);
+                }else{
+                    $table->minutos = ($table->segundos * 1)/60;
+                    $table->estandarizado = $model->estandarizado;
+                    $table->save(false);
+                    return $this->redirect(['index']);
+                }
+            }else{
+                   $model->getErrors();
+            }
         }
 
         return $this->render('create', [
@@ -93,12 +114,37 @@ class ProcesoProduccionController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = new ProcesoProduccion();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())) {
+            $table = ProcesoProduccion::find()->where(['idproceso' => $id])->one();
+            $table->proceso = $model->proceso;
+            $table->segundos = $model->segundos;
+            if($table->segundos == ''){
+                $table->segundos = 0;
+                $table->minutos = 0;
+                $table->estandarizado = $model->estandarizado;
+                $table->save();
+                return $this->redirect(['index']);
+            }else{
+                $table->minutos = ($model->segundos * 1)/60;
+                $table->estandarizado = $model->estandarizado;
+                $table->save();
+                return $this->redirect(['index']);
+            }    
         }
-
+        if (Yii::$app->request->get("id")) {
+          $table = ProcesoProduccion::find()->where(['idproceso' => $id])->one();
+            if($table){ 
+                $model->proceso =   $table->proceso;
+                $model->segundos = $table->segundos;
+                $model->estandarizado = $table->estandarizado;
+            }else{
+                return $this->redirect(['index']);
+            }
+        } else {
+            return $this->redirect(['index']);
+        }    
         return $this->render('update', [
             'model' => $model,
         ]);

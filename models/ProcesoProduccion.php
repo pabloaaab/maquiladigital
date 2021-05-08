@@ -37,7 +37,9 @@ class ProcesoProduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['estado'], 'integer'],
+            [['proceso'], 'required','message'=> 'Campo obligatorio'],
+            [['estado','estandarizado'], 'integer'],
+           [['segundos','minutos'], 'number'],
             [['proceso'], 'string', 'max' => 50],
         ];
     }
@@ -48,9 +50,12 @@ class ProcesoProduccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idproceso' => 'Idproceso',
-            'proceso' => 'Proceso',
+            'idproceso' => 'Id',
+            'proceso' => 'Operación',
             'estado' => 'Estado',
+            'segundos' => 'Segundos',
+            'minutos' => 'Minutos',
+            'estandarizado' => 'Estandar',
         ];
     }
 
@@ -61,4 +66,21 @@ class ProcesoProduccion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Ordenproducciondetalleproceso::className(), ['idproceso' => 'idproceso']);
     }
+    
+    public function getEstandar(){
+        if ($this->estandarizado == 1){
+            $estandarizado = 'SI';
+        }else{
+            $estandarizado = 'NO';
+        }
+        return $estandarizado;
+    } 
+     public function getActivoRegistro(){
+        if ($this->estado == 0){
+            $estadoregistro = 'SI';
+        }else{
+            $estadoregistro = 'NO';
+        }
+        return $estadoregistro;
+    } 
 }

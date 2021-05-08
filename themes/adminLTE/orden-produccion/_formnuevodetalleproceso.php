@@ -111,9 +111,13 @@ $maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->al
                         <tr style="font-size: 85%;">
                             <td><?= $val->idproceso ?></td>
                             <td><?= $val->proceso ?></td>
-                            <td><input type="text" name="duracion[]" value="0" required></td>
+                            <?php if($val->segundos == 0){?> 
+                              <td><input type="text" name="duracion[]" value="0" required></td>
+                            <?php }else{?>
+                                <td style="background:#ADD1D1; font-weight:bold;"><input type="text" name="duracion[]" value="<?= $val->segundos ?>" required></td>
+                            <?php }?>
                             <td><input type="text" name="ponderacion[]" value="<?= $model->ponderacion ?>" required></td>
-                            <td><?= Html::dropDownList('id_tipo[]', $val->id_tipo, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>
+                            <td><?= Html::dropDownList('id_tipo[]', $val->estado, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>
                             <td><input type="hidden" name="proceso[]" value="<?= $val->proceso ?>"></td>
                             <td><input type="hidden" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
                         </tr>

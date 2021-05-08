@@ -1048,7 +1048,7 @@ class OrdenProduccionController extends Controller {
                 }
             }
         }else {
-            $procesos = ProcesoProduccion::find()->orderBy('proceso asc');
+            $procesos = ProcesoProduccion::find()->orderBy('proceso ASC');
             //$cont = count($procesos);
             $count = clone $procesos;
             $pages = new Pagination([

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
+use app\models\ProcesoProduccion;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProcesoProduccionSearch */
@@ -23,11 +25,28 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'idproceso',
-                'contentOptions' => ['class' => 'col-lg-5'],
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
                 'attribute' => 'proceso',
-                'contentOptions' => ['class' => 'col-lg-6'],
+                'contentOptions' => ['class' => 'col-lg-5'],
+            ],
+            [
+                'attribute' => 'segundos',
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
+            [
+                'attribute' => 'minutos',
+                'contentOptions' => ['class' => 'col-lg-2'],
+            ],
+            [
+                'attribute' => 'estandarizado',
+                'value' => function($model) {
+                    $estandar = ProcesoProduccion::findOne($model->idproceso);
+                    return $estandar->estandar;
+                },
+                'filter' => ArrayHelper::map(ProcesoProduccion::find()->all(), 'estandarizado', 'estandar'),
+                'contentOptions' => ['class' => 'col-lg-1'],
             ],
 
             ['class' => 'yii\grid\ActionColumn'],

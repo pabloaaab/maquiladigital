@@ -18,7 +18,8 @@ class ProcesoProduccionSearch extends ProcesoProduccion
     public function rules()
     {
         return [
-            [['idproceso', 'estado'], 'integer'],
+            [['estandarizado', 'estado'], 'integer'],
+            [['segundos', 'minutos'], 'number'],
             [['proceso'], 'safe'],
         ];
     }
@@ -47,7 +48,7 @@ class ProcesoProduccionSearch extends ProcesoProduccion
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['idproceso' => SORT_DESC]] // Agregar esta linea para agregar el orden por defecto
+            'sort'=> ['defaultOrder' => ['proceso' => SORT_ASC]] // Agregar esta linea para agregar el orden por defecto
         ]);
 
         $this->load($params);
@@ -60,12 +61,16 @@ class ProcesoProduccionSearch extends ProcesoProduccion
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'idproceso' => $this->idproceso,
-            'estado' => $this->estado,
+            'estandarizado' => $this->estandarizado,
+            'segundos' => $this->segundos,
+            'minutos' => $this->minutos,
         ]);
 
         $query->andFilterWhere(['like', 'proceso', $this->proceso]);
-
+        $query->andFilterWhere(['=', 'segundos', $this->segundos]);
+        $query->andFilterWhere(['=', 'minutos', $this->minutos]);
+        $query->andFilterWhere(['=', 'estandarizado', $this->estandarizado]);
+       
         return $dataProvider;
     }
 }
