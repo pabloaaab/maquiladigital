@@ -303,7 +303,7 @@
                                             'icon' => 'exchange',
                                             'url' => '#',
                                             'items' => [
-                                            //['label' => 'Banco', 'icon' => 'plus-square-o', 'url' => ['/banco/index']],                                            
+                                            ['label' => 'Pago incapacidad', 'icon' => 'plus-square-o', 'url' => ['/incapacidad/indexpagoincapacidad']],                                            
                                             ],
                                         ],
                                         [
@@ -311,7 +311,6 @@
                                             'icon' => 'cube',
                                             'url' => '#',
                                             'items' => [                                              
-                                                ['label' => 'Periodo de nomina', 'icon' => 'plus-square-o', 'url' => ['/periodo-nomina/indexconsulta']],
                                                 ['label' => 'Control Acceso Covid', 'icon' => 'plus-square-o', 'url' => ['control-acceso/validar']],
                                             ],
                                         ],

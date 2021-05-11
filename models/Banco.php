@@ -60,7 +60,7 @@ class Banco extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idbanco' => 'Id',
+            'idbanco' => 'Codigo',
             'nitbanco' => 'Nit',
             'entidad' => 'Entidad',
             'direccionbanco' => 'Direccion',

@@ -22,6 +22,12 @@ use app\models\FormIncapacidad;
 use app\models\ConfiguracionSalario;
 use app\models\ProgramacionNominaDetalle;
 use app\models\TiempoServicio;
+use app\models\FormFiltroPagoIncapacidad;
+use app\models\Pagoincapacidadeps;
+use app\models\PagoincacidadepsDetalle;
+use app\models\FormPagoIncapacidad;
+use \app\models\FormMaquinaBuscar;
+use app\models\Consecutivo;
 // aplicacion de yii
 use Yii;
 use yii\web\Controller;
@@ -139,6 +145,76 @@ class IncapacidadController extends Controller
            return $this->redirect(['site/login']);
         }
    }
+   
+    public function actionIndexpagoincapacidad() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 110])->all()) {
+               $form = new FormFiltroPagoIncapacidad();
+                $id_entidad_salud = null;
+                $nro_pago = null;
+                $fecha_desde = null;
+                $fecha_hasta = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $id_entidad_salud = Html::encode($form->id_entidad_salud);
+                        $nro_pago = Html::encode($form->nro_pago);
+                        $fecha_desde = Html::encode($form->fecha_desde);
+                        $fecha_hasta = Html::encode($form->fecha_hasta);
+                        $table = Pagoincapacidadeps::find()
+                                ->andFilterWhere(['=', 'id_entidad_salud', $id_entidad_salud])
+                                ->andFilterWhere(['=', 'nro_pago', $nro_pago])
+                                ->andFilterWhere(['>=', 'fecha_pago_entidad', $fecha_desde])
+                                ->andFilterWhere(['<=', 'fecha_pago_entidad', $fecha_hasta]);
+                        $table = $table->orderBy('id_pago DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 40,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_pago  DESC']);
+                            $this->actionExcelPagoIncapacidad($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = Pagoincapacidadeps::find()
+                             ->orderBy('id_pago DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelPagoIncapacidad($tableexcel);
+                    }
+                }
+                $to = $count->count();
+                return $this->render('indexpagoincapacidad', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
+                ]);
+            } else {
+                return $this->redirect(['site/sinpermiso']);
+            }
+        } else {
+            return $this->redirect(['site/login']);
+        }
+    } 
    
    public function actionNuevo() {   
         $model = new FormIncapacidad();
@@ -443,7 +519,39 @@ class IncapacidadController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-   public function actionView($id)
+    
+    //nuevo pago de incapacidad
+    
+    public function actionNuevopagoincapacidad() {
+        $model = new FormPagoIncapacidad();
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {  
+             if($model->validate()){
+                 $table = new Pagoincapacidadeps();
+                 if($table){
+                     $table->id_entidad_salud = $model->id_entidad_salud;
+                     $table->fecha_pago_entidad = $model->fecha_pago_entidad;
+                     $table->idbanco = $model->idbanco;
+                     $table->observacion = $model->observacion;
+                     $table->usuariosistema = Yii::$app->user->identity->username;  
+                    $table->save(false);
+                    return $this->redirect(["incapacidad/indexpagoincapacidad"]);
+                 }
+                 
+             }else{
+                 $model->getErrors();
+             }
+        }
+         return $this->render('formnuevopago', [
+            'model' => $model,
+        ]); 
+    }
+    
+    //PROCESO DE LA VISTA
+    public function actionView($id)
     {
        $seguimiento = SeguimientoIncapacidad::find()->where(['=','id_incapacidad',$id])->all();
        $registros = count($seguimiento);
@@ -467,6 +575,171 @@ class IncapacidadController extends Controller
              'registros' => $registros,
         ]);
     }
+    
+  ///VISTA DEL DETALLE DE PAGO
+  public function actionViewdetallepago($id_pago){
+      $model = Pagoincapacidadeps::findOne($id_pago);
+      $detallepago = PagoincacidadepsDetalle::find()->where(['=','id_pago', $id_pago])->all();
+       if (isset($_POST["actualizar_detalle"])) {
+            $intIndice = 0; $saldo_actual = 0;
+            foreach ($_POST["actualizar_detalle"] as $intCodigo) {                
+                $table = PagoincacidadepsDetalle::findOne($intCodigo);
+                $saldo_actual = $table->vlr_pago_administradora;
+                $table->abono = $_POST["vlrabono"][$intIndice];
+                $table->vlr_saldo = $saldo_actual - $table->abono;
+                $table->save(false);
+                $intIndice++;
+            }
+            $this->ActualizarSaldoPagoIncapacidad($id_pago);
+            return $this->redirect(['viewdetallepago', 'id_pago' => $id_pago]);
+        }
+        return $this->render('viewdetallepago', [
+            'model' => $model,
+            'id_pago' => $id_pago,
+            'detallepago' => $detallepago,
+        ]);
+  }  
+  
+  protected function ActualizarSaldoPagoIncapacidad($id_pago) {
+      
+      $detalle = PagoincacidadepsDetalle::find()->where(['=','id_pago', $id_pago])->all();
+      $pago = Pagoincapacidadeps::findOne($id_pago);
+      $total = 0;
+      foreach ($detalle as $valor):
+          $total += $valor->abono;
+      endforeach;
+      $pago->valor_pago = $total;
+      $pago->save(false);
+  }
+  //NUEVO DETALLE DE INCAPACIDADES
+   public function actionNuevodetalleincapacidad($id_eps, $id_pago)
+    {
+        $incapacidades = Incapacidad::find()->where(['>','vlr_saldo_administradora', 0])->andWhere(['=','id_entidad_salud', $id_eps])->orderBy('codigo_incapacidad')->all();
+        $form = new FormMaquinaBuscar();
+        $q = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $q = Html::encode($form->q);                                
+                if ($q){
+                    $incapacidades = Incapacidad::find()
+                            ->where(['=','identificacion',$q])
+                            ->orwhere(['like','numero_incapacidad',$q])
+                            ->orderBy('codigo_incapacidad asc')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+            $incapacidades = Incapacidad::find()->where(['>','vlr_saldo_administradora', 0])->andWhere(['=','id_entidad_salud', $id_eps])->orderBy('codigo_incapacidad')->all();
+        }
+        if (isset($_POST["id_incapacidad"])) {
+                $intIndice = 0;
+                foreach ($_POST["id_incapacidad"] as $intCodigo) {
+                    $table = new PagoincacidadepsDetalle();
+                    $incapacidad = Incapacidad::find()->where(['id_incapacidad' => $intCodigo])->one();
+                    $detalles = PagoincacidadepsDetalle::find()
+                        ->where(['=', 'id_pago', $id_pago])
+                        ->andWhere(['=', 'id_incapacidad', $incapacidad->id_incapacidad])
+                        ->all();
+                    $reg = count($detalles);
+                    if ($reg == 0) {
+                        $table->id_pago = $id_pago;
+                        $table->id_incapacidad = $incapacidad->id_incapacidad;
+                        $table->numero = $incapacidad->numero_incapacidad;
+                        $table->codigo_incapacidad = $incapacidad->codigo_incapacidad;
+                        $table->vlr_pago_administradora = $incapacidad->vlr_saldo_administradora;
+                        $table->abono = $incapacidad->vlr_saldo_administradora;
+                        $table->vlr_saldo = 0;
+                        $table->insert(); 
+                    }    
+                }
+                 $this->ActualizarSaldoPagoIncapacidad($id_pago);
+              $this->redirect(["incapacidad/viewdetallepago", 'id_pago' => $id_pago]);
+            }else{
+                
+            }
+        return $this->render('_formlistadoincapacidad', [
+            'incapacidades' => $incapacidades,            
+            'mensaje' => $mensaje,
+            'id_pago' => $id_pago,
+            'id_eps' => $id_eps,
+            'form' => $form,
+
+        ]);
+    }
+  ///PROCESO QUE AUTORIZA
+    public function actionAutorizado($id_pago) {
+        $model = Pagoincapacidadeps::findOne($id_pago);
+        $detalle = PagoincacidadepsDetalle::find()->where(['=','id_pago', $id_pago])->one();
+        if (!$detalle){
+            $this->redirect(["incapacidad/viewdetallepago", 'id_pago' => $id_pago]);
+                Yii::$app->getSession()->setFlash('error', 'No se puede autorizar porque no existen detalles en el proceso.');
+        }else{        
+            if($model->nro_pago > 0){
+                $this->redirect(["incapacidad/viewdetallepago", 'id_pago' => $id_pago]);
+                Yii::$app->getSession()->setFlash('error', 'No se puede desautorizar porque ya esta generado el Numero de pago.');          
+            }else{
+                if ($model->autorizado == 0) {                        
+                   $model->autorizado = 1;            
+                   $model->update();
+                   $this->redirect(["incapacidad/viewdetallepago", 'id_pago' => $id_pago]);  
+
+                } else{
+                    $model->autorizado = 0;
+                    $model->update();
+                    $this->redirect(["incapacidad/viewdetallepago", 'id_pago' => $id_pago]);  
+                }
+            }    
+        }
+        
+    }
+    // generar consecutivo
+    
+    public function actionGenerarconsecutivo($id_pago)
+    {
+        $model = Pagoincapacidadeps::findOne($id_pago);
+        $mensaje = "";
+        $pago = Pagoincapacidadeps::findOne($id_pago);
+        if ($pago->nro_pago == 0){
+                $consecutivo = Consecutivo::findOne(13);// PAGO DE INCAPACIDADES
+                $consecutivo->consecutivo = $consecutivo->consecutivo + 1;
+                $pago->nro_pago = $consecutivo->consecutivo;
+                $pago->save(false);
+                $consecutivo->save(false);
+                $this->SaldoIncapacidad($id_pago);
+                $this->redirect(["incapacidad/viewdetallepago",'id_pago' => $id_pago]);
+        }else{
+                Yii::$app->getSession()->setFlash('error', 'El numero de pago ya fue generado para este proceso');
+                $this->redirect(["incapacidad/viewdetallepago",'id_pago' => $id_pago]);
+        }
+    }
+    
+    //para actualizar saldo en la incapacidad
+    
+    //proceso para actualizar saldos en incapacidad
+    protected function SaldoIncapacidad($id_pago) {
+        $detalle = PagoincacidadepsDetalle::find()->where(['=','id_pago', $id_pago])->all();
+        foreach ($detalle as $valor):
+            $dato = 0;
+            $incapacidad = Incapacidad::findOne($valor->id_incapacidad);
+            if ($incapacidad){
+                $incapacidad->vlr_saldo_administradora -= $valor->abono;
+                $incapacidad->save(false);
+            }
+        endforeach;
+    }
+    //ELIMINAR DETALLES DE PAGO
+    
+     public function actionEliminardetalle($id_pago,$id_detalle)
+    {                                
+        $detalle = PagoincacidadepsDetalle::findOne($id_detalle);
+        $detalle->delete();
+        $this->ActualizarSaldoPagoIncapacidad($id_pago);
+        $this->redirect(["viewdetallepago",'id_pago' => $id_pago]);        
+    }
+    
   // crear nuevo seguimiento a la incapacidad
     public function actionNuevoseguimiento($id_incapacidad)
     {
@@ -824,6 +1097,47 @@ class IncapacidadController extends Controller
         ]);
     }
 
+    
+   //editar registro de pago
+   public function actionEditarpagoincapacidad($id_pago) {
+        $model = new FormPagoIncapacidad();
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {  
+            if($model->validate()){
+                $table = Pagoincapacidadeps::find()->where(['id_pago'=>$id_pago])->one();
+                if ($table){
+                    $table->id_entidad_salud = $model->id_entidad_salud;
+                    $table->idbanco = $model->idbanco;
+                    $table->fecha_pago_entidad = $model->fecha_pago_entidad;
+                    $table->observacion = $model->observacion;
+                    $table->save(false);
+                     return $this->redirect(['indexpagoincapacidad']);  
+                } 
+            }else{
+                $model->getErrors();
+            }
+        }
+         if (Yii::$app->request->get("id_pago")) {
+             $table = Pagoincapacidadeps::findOne($id_pago);  
+             if($table){
+                 $model->id_entidad_salud = $table->id_entidad_salud;
+                 $model->fecha_pago_entidad = $table->fecha_pago_entidad;
+                 $model->idbanco = $table->idbanco;
+                 $model->observacion = $table->observacion;
+             }else{
+                 return $this->redirect(['indexpagoincapacidad']);
+             }
+         }
+         return $this->render('formnuevopago', [
+            'model' => $model,
+            'id_pago' => $id_pago,
+            
+        ]);
+   }
+    
    public function actionEliminar($id) {
         if (Yii::$app->request->post()) {
             $incapacidad = Incapacidad::findOne($id);
@@ -964,6 +1278,78 @@ class IncapacidadController extends Controller
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Incapacidades.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+     public function actionExcelPagoIncapacidad($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                     ->setCellValue('A1', 'ID')
+                    ->setCellValue('B1', 'EPS')
+                    ->setCellValue('C1', 'FECHA PAGO')
+                    ->setCellValue('D1', 'FECHA REGISTRO')
+                    ->setCellValue('E1', 'BANCO')
+                    ->setCellValue('F1', 'VR. PAGO')
+                    ->setCellValue('G1', 'USUARIO')                    
+                    ->setCellValue('H1', 'AUTORIZADO')
+                    ->setCellValue('I1', 'NRO PAGO')
+                    ->setCellValue('J1', 'OBSERVACION');
+                  
+                   
+        $i = 2  ;
+        
+        foreach ($tableexcel as $val) {
+                                  
+            $objPHPExcel->setActiveSheetIndex(0)
+                     ->setCellValue('A' . $i, $val->id_pago)
+                    ->setCellValue('B' . $i, $val->entidadSalud->entidad)
+                    ->setCellValue('C' . $i, $val->fecha_pago_entidad)
+                    ->setCellValue('D' . $i, $val->fecha_registro)
+                    ->setCellValue('E' . $i, $val->banco->entidad)
+                    ->setCellValue('F' . $i, $val->valor_pago)                    
+                    ->setCellValue('G' . $i, $val->usuariosistema)
+                    ->setCellValue('H' . $i, $val->autorizadoPago)
+                    ->setCellValue('I' . $i, $val->nro_pago)
+                    ->setCellValue('J' . $i, $val->observacion);
+            $i++;
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Pagoincapacidades');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="PagoIncapacidades.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

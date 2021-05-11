@@ -174,13 +174,21 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $valor_total = 0; $utilidad = 0; $porcentaje = 0;
+                                    $valor_total = 0; $utilidad = 0; $porcentaje = 0; $buscar1 = 0; $buscar2 = 0;$costo1 =0; $costo2 =0;
                                     foreach ($ordenproduccion as $val):
                                         $valor_prenda = ValorPrendaUnidad::find()->where(['=','idordenproduccion', $val->idordenproduccion])->all();
                                         foreach ($valor_prenda as $valor):
                                             $valor_total += $valor->total_pagar;   
                                         endforeach;  
                                         $utilidad = $val->totalorden - $valor_total;
+                                        if($val->tipo->idtipo == 1){
+                                            $buscar1 = $utilidad;
+                                            $costo1 = $valor_total;
+                                        }
+                                        if($val->tipo->idtipo == 2){
+                                            $buscar2 = $utilidad;
+                                            $costo2 = $valor_total;
+                                        }
                                         $porcentaje = round(((100 * $valor_total)/$val->totalorden),2);
                                          ?>
                                            <tr style="font-size: 85%;">
@@ -204,7 +212,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         </div>
                     </div>    
                 </div>
-            
-        </div>    
+            <?php include('indicador.php'); ?>   
+            </div>    
    </div>
 </div>    

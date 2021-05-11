@@ -526,9 +526,7 @@ class ValorPrendaUnidadController extends Controller
            $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
     }
     
-    public function actionCerrarabrir($consecutivo) {
-        
-    }
+   
     
     public function actionGenerarexcel($id) {        
         $ficha = ValorPrendaUnidad::findOne($id);

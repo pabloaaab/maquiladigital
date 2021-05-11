@@ -81,10 +81,6 @@ $view = 'operarios';
         <ul class="nav nav-tabs" role="tablist">
             <?php
               $contMaquina = count($maquina_operario);
-            /*  $inca = count($incapacidad);
-              $lice = count($licencia);
-              $cred = count($credito);
-              $estu = count($estudio);*/
              ?>
             <li role="presentation" class="active"><a href="#maquinas" aria-controls="maquinas" role="tab" data-toggle="tab">Maquinas: <span class="badge"><?= $contMaquina ?></span></a></li>
 

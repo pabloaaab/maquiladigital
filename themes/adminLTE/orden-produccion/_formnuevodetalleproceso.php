@@ -92,7 +92,7 @@ $maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->al
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                    Procesos: <span class="badge"><?= $pagination->totalCount ?></span>
+                    Operaciones <span class="badge"><?= $pagination->totalCount ?></span>
                 </div>
                 <div class="panel-body">
                     <table class="table table-responsive">
@@ -100,6 +100,7 @@ $maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->al
                         <tr>
                             <th scope="col">Id</th>
                             <th scope="col">Proceso</th>
+                            <th scope="col">Estandar</th>
                             <th scope="col">Duración</th>
                             <th scope="col">Ponderación</th>
                              <th scope="col">Maquina</th>
@@ -112,9 +113,11 @@ $maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->al
                             <td><?= $val->idproceso ?></td>
                             <td><?= $val->proceso ?></td>
                             <?php if($val->segundos == 0){?> 
-                              <td><input type="text" name="duracion[]" value="0" required></td>
+                              <td style="background:#ADB9D1; font-weight:bold;"><?= $val->segundos ?></td>
+                              <td style="background:#ADB9D1; font-weight:bold;"><input type="text" name="duracion[]" value="0" required></td>
                             <?php }else{?>
-                                <td style="background:#ADD1D1; font-weight:bold;"><input type="text" name="duracion[]" value="<?= $val->segundos ?>" required></td>
+                                <td style="background:#ADD1D1; font-weight:bold;"><?= $val->segundos ?></td>
+                                <td style="background:#ADD1D1; font-weight:bold;"><input type="text" name="duracion[]" value="0" required></td>
                             <?php }?>
                             <td><input type="text" name="ponderacion[]" value="<?= $model->ponderacion ?>" required></td>
                             <td><?= Html::dropDownList('id_tipo[]', $val->estado, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>

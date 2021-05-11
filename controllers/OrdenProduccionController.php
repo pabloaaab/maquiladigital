@@ -1072,18 +1072,20 @@ class OrdenProduccionController extends Controller {
                             ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
-                        $table = new Ordenproducciondetalleproceso();
-                        $table->idproceso = $intCodigo;
-                        $table->proceso = $_POST["proceso"][$intIndice];
-                        $table->duracion = $_POST["duracion"][$intIndice];
-                        $table->ponderacion = $_POST["ponderacion"][$intIndice];
-                        $table->cantidad_operada = 0;
-                        $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
-                        $table->totalproceso = $detalleorden->cantidad * $table->total;
-                        $table->iddetalleorden = $iddetalleorden;
-                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
-                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
-                        $table->insert();
+                        if($_POST["id_tipo"][$intIndice] > 0){
+                            $table = new Ordenproducciondetalleproceso();
+                            $table->idproceso = $intCodigo;
+                            $table->proceso = $_POST["proceso"][$intIndice];
+                            $table->duracion = $_POST["duracion"][$intIndice];
+                            $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                            $table->cantidad_operada = 0;
+                            $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
+                            $table->totalproceso = $detalleorden->cantidad * $table->total;
+                            $table->iddetalleorden = $iddetalleorden;
+                            $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                            $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                            $table->insert();
+                        }    
                     }
                 }
                 $intIndice++;
@@ -1138,17 +1140,19 @@ class OrdenProduccionController extends Controller {
                             ->all();
                     $reg = count($detalles);
                     if ($reg == 0) {
-                        $table = new Ordenproducciondetalleproceso();
-                        $table->idproceso = $intCodigo;
-                        $table->proceso = $_POST["proceso"][$intIndice];
-                        $table->duracion = $_POST["duracion"][$intIndice];
-                        $table->ponderacion = $_POST["ponderacion"][$intIndice];
-                        $table->cantidad_operada = 0;
-                        $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
-                        $table->totalproceso = $detalleorden->cantidad * $table->total;
-                        $table->iddetalleorden = $iddetalleorden;
-                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
-                        $table->insert();
+                        if($_POST["id_tipo"][$intIndice] > 0){
+                            $table = new Ordenproducciondetalleproceso();
+                            $table->idproceso = $intCodigo;
+                            $table->proceso = $_POST["proceso"][$intIndice];
+                            $table->duracion = $_POST["duracion"][$intIndice];
+                            $table->ponderacion = $_POST["ponderacion"][$intIndice];
+                            $table->cantidad_operada = 0;
+                            $table->total = $_POST["duracion"][$intIndice] + ($_POST["duracion"][$intIndice] * $_POST["ponderacion"][$intIndice] / 100);
+                            $table->totalproceso = $detalleorden->cantidad * $table->total;
+                            $table->iddetalleorden = $iddetalleorden;
+                            $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                            $table->insert();
+                        }    
                     }
                 }
                 $intIndice++;
