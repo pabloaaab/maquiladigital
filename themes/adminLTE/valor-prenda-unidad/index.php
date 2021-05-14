@@ -81,7 +81,8 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
             <thead>
                 <tr style ='font-size:85%;'>                
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                <th scope="col" style='background-color:#B9D5CE;'>OP</th>
+                <th scope="col" style='background-color:#B9D5CE;'>OP_In</th>
+                  <th scope="col" style='background-color:#B9D5CE;'>Cod_Prod.</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Servicio</th>
                   <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
@@ -106,6 +107,7 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 <?php if($val->cerrar_pago == 0){?>   
                     <td><?= $val->id_valor ?></td>
                     <td><?= $val->idordenproduccion ?></td>
+                      <td><?= $val->ordenproduccion->codigoproducto ?></td>
                     <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td><?= $val->tipo->tipo?></td>
                     <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
@@ -120,6 +122,7 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 <?php }else {?>
                     <td style='background-color:#DDE6E4;'><?= $val->id_valor ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->idordenproduccion ?></td>
+                    <td style='background-color:#DDE6E4;'><?= $val->ordenproduccion->codigoproducto ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->tipo->tipo?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->cantidad,0) ?></td>
