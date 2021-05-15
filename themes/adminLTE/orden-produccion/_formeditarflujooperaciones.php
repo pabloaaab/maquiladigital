@@ -56,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                      <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                     <th scope="col" style='background-color:#B9D5CE;'>Orden aleatorio</th>
+                      <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                     <th scope="col" style='background-color:#B9D5CE;'></th>
                 </tr>
                 </thead>
@@ -68,7 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td><?= $val->segundos ?></td>
                             <td><?= $val->minutos ?></td>
                              <td><?= $val->tipomaquina->descripcion ?></td>
-                            <td><input type="text" name="orden_aleatorio[]" value="<?= $val->orden_aleatorio ?>" required></td>
+                             <td><input type="text" name="orden_aleatorio[]" value="<?= $val->orden_aleatorio ?>" size="4" required></td>
+                             <td align="center"><select name="operacionflujo[]" style="width: 100px;">
+                                    <?php if ($val->operacion == 0){echo $operacionflujo = "BALANCEO";}else{echo $operacionflujo ="OPERACION";}?>
+                                    <option value="<?= $val->operacion ?>"><?= $operacionflujo ?></option>
+                                    <option value="0">BALANCEO</option>
+                                    <option value="1">OPERACION</option>
+                            </select></td>
                             <td><input type="hidden" name="id[]" value="<?= $val->id ?>"></td>
                         </tr>
                     <?php endforeach; ?>

@@ -97,4 +97,6 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Operarios::className(), ['id_operario' => 'id_operario']);
     }
+    
+   
 }

@@ -125,6 +125,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Segundos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Ordenamiento</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha creación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                                         <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
@@ -148,6 +149,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                     $conminuto = 0;
                                     $consegundo = 0;
+                                    $total_balanceo = 0;
                                     $prenda = app\models\FlujoOperaciones::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
                                     foreach ($prenda as $registro):?>
                                             <tr style="font-size: 85%;">
@@ -156,7 +158,12 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                                 <td><?= $registro->proceso->proceso ?></td>
                                                 <td><?= ''.number_format($registro->segundos,0) ?></td>
                                                 <td><?= ''.number_format($registro->minutos ,2) ?></td>
-                                                 <td><?= $registro->orden_aleatorio ?></td>
+                                                <td><?= $registro->orden_aleatorio ?></td>
+                                                <?php if($registro->operacion == 0){?>
+                                                   <td style='background-color:#B9D5CE;'><?= 'BALANCEO' ?></td>
+                                                <?php }else{?>
+                                                   <td style='background-color:#A5D3E6;'><?= 'OPERACION' ?></td>
+                                                <?php }?>   
                                                  <td><?= $registro->fecha_creacion ?></td>
                                                 <?php 
                                                 if($registro->id_tipo == ''){?>
@@ -169,9 +176,12 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                        $consegundo += $registro->segundos;
                                        $conminuto += $registro->minutos;
-                                    endforeach; ?>
+                                       if($registro->orden_aleatorio > 0){
+                                          $total_balanceo +=  $registro->minutos;
+                                       }
+                                    endforeach; ?>  
                                 </tbody> 
-                                <td colspan="3"></td><td style="font-size: 85%;"><b>Total:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Total:</b> <?= $conminuto ?></td><td colspan="4"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Minutos:</b> <?= $conminuto ?></td><td style="font-size: 85%; color: "><b>Sam_Balanceo:</b> <?= $total_balanceo ?></td><td colspan="4"></td>
                             </table>
                         </div>    
                     </div>
