@@ -42,6 +42,8 @@ use yii\web\UploadedFile;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
+use yii\db\Expression;
+use yii\db\Query;
 
 
 /**
@@ -1367,6 +1369,7 @@ class OrdenProduccionController extends Controller {
                                                                     ->orderBy('id_tipo DESC')
                                                                    ->all();
         $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
+        $cantidad_confeccionada = CantidadPrendaTerminadas::find()->where(['=','idordenproduccion', $id])->orderBy('fecha_entrada asc')->all();
         $modeldetalle = new Ordenproducciondetalle();
         if (Yii::$app->request->post()) {
             if (isset($_POST["eliminarflujo"])) {
@@ -1397,6 +1400,8 @@ class OrdenProduccionController extends Controller {
                     'modeldetalles' => $modeldetalles,
                     'operaciones' => $operaciones,
                     'modulos' => $modulos,
+                    'cantidad_confeccionada' => $cantidad_confeccionada,
+                     
         ]);
     }        
   

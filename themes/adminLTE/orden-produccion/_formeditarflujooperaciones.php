@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                              <td><?= $val->tipomaquina->descripcion ?></td>
                              <td><input type="text" name="orden_aleatorio[]" value="<?= $val->orden_aleatorio ?>" size="4" required></td>
                              <td align="center"><select name="operacionflujo[]" style="width: 100px;">
-                                    <?php if ($val->operacion == 0){echo $operacionflujo = "BALANCEO";}else{echo $operacionflujo ="OPERACION";}?>
+                                    <?php if ($val->operacion == 0){echo $operacionflujo = "BALANCEO";}else{echo $operacionflujo ="PREPARACION";}?>
                                     <option value="<?= $val->operacion ?>"><?= $operacionflujo ?></option>
                                     <option value="0">BALANCEO</option>
                                     <option value="1">OPERACION</option>

@@ -65,6 +65,9 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'minutos')->textInput(['maxlength' => true]) ?>
            <?= $form->field($model, 'segundos')->textInput(['maxlength' => true]) ?>
         </div>
+          <div class="row" col>
+            <?= $form->field($model, 'ordenamiento')->textInput(['maxlength' => true]) ?>
+        </div>
         <div class="row" col>
       
         <div class="panel-footer text-right">                        

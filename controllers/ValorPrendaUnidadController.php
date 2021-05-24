@@ -400,7 +400,7 @@ class ValorPrendaUnidadController extends Controller
                     $operario = 0; $variable = 0;
                     if($detalle_balanceo){
                         foreach ($detalle_balanceo as $detalle):
-                           echo   $operario = $detalle->id_operario;
+                             $operario = $detalle->id_operario;
                               if($variable <> $detalle->id_operario){
                                  $operario = $detalle->id_operario; 
                                  $variable = $operario;

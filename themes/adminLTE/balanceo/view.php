@@ -142,7 +142,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <?php if($val->operacion == 0){?>
                                                  <td style='background-color:#B9D5CE;'><?= 'BALANCEO' ?></td>
                                               <?php }else{?>
-                                                 <td style='background-color:#A5D3E6;'><?= 'OPERACION' ?></td>
+                                                 <td style='background-color:#A5D3E6;'><?= 'PREPARACION' ?></td>
                                             <?php }?>   
                                              <td><?= $val->tipomaquina->descripcion ?></td>
                                             <td><?= Html::dropDownList('id_operario[]', '', $operarios, ['class' => 'col-sm-12', 'prompt' => 'Seleccion el operario']) ?></td>
@@ -153,6 +153,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <input type="hidden" name="minutos[]" value="<?= $val->minutos ?>">
                                             <input type="hidden" name="totalminutos[]" value="<?= $totalminutos ?>">
                                             <input type="hidden" name="totalsegundos[]" value="<?= $totalsegundos ?>">
+                                             <input type="hidden" name="orden_aleatorio[]" value="<?= $val->orden_aleatorio ?>">
                                              
                                         </tr>
                                    <?php endforeach;
@@ -185,6 +186,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                          <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Minutos x operacion">Min.</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Segundos x operacion">Seg.</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Tiempo asignado">T. Asig.</span></th>
@@ -204,6 +206,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <td><?= $val->id_detalle?></td>
                                             <td><?= $val->operario->nombrecompleto ?></td>
                                             <td><?= $val->proceso->proceso ?></td>
+                                             <td><?= $val->ordenamiento ?></td>
                                             <td><?= $val->minutos ?></td>
                                             <td><?= $val->segundos ?></td>
                                              <td><?= $val->total_minutos ?></td>
@@ -241,12 +244,12 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                    endforeach; ?>
                                 </tbody>  
                                 <?php if(count($balanceo_detalle)> 0){?>
-                                    <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $total_mi?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
+                                    <td colspan="4"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $total_mi?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
                                     <?php 
                                      if($total_mi > $model->total_minutos){
                                         Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');
-                                     } ?> 
-                                <?php }?>    
+                                     } 
+                                 }?>    
                             </table>
                         </div>
                                             

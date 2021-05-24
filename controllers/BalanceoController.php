@@ -147,6 +147,7 @@ class BalanceoController extends Controller
                         $table->total_minutos = $_POST["minutos"][$intIndice];
                         $table->total_segundos = $_POST["segundos"][$intIndice];
                         $table->usuariosistema = Yii::$app->user->identity->username;
+                        $table->ordenamiento = $_POST["orden_aleatorio"][$intIndice];
                         $table->insert();
                     }
                     $intIndice++;
@@ -193,28 +194,6 @@ class BalanceoController extends Controller
              endforeach;
         endforeach;   
     endforeach;  
-          /*  $balanceo = BalanceoDetalle::find()
-                                   ->select([new Expression('SUM(segundos) as total_segundos'), 'id_operario', 'id_balanceo'])                            
-                                   ->groupBy('id_operario')
-                                   ->all();
-          /* foreach ($balanceo as $dato) :
-               $total_s = $dato->total_segundos;
-               $balanceo2 = BalanceoDetalle::find()->where(['=','id_operario', $dato->id_operario])->andWhere(['=','id_balanceo', $id])->all();
-               foreach ($balanceo2 as $act):
-                   $act->total_segundos = $total_s;
-                   $act->save();
-               endforeach;
-           endforeach;*/
-  
-
-       
-
-        /* $balanceo = BalanceoDetalle::find()->select([new Expression('SUM(minutos) as total'), 'id_operario'])->andWhere(['=','id_balanceo', $id])                         
-                                 ->groupBy('id_operario')
-                                 ->all();*/
-           
-
-
     }
 
     public function actionCreate($idordenproduccion)
@@ -395,6 +374,7 @@ class BalanceoController extends Controller
             $tabla_detalle->id_operario = $model->id_operario;
             $tabla_detalle->segundos = $model->segundos;
             $tabla_detalle->minutos = $model->minutos;    
+             $tabla_detalle->ordenamiento = $model->ordenamiento;    
             $tabla_detalle->save(false);     
             $this->ActualizarSegundos($id);
             $this->actionActualizarSobranteRestante($id);
@@ -408,6 +388,7 @@ class BalanceoController extends Controller
                 $model->id_operario= $table->id_operario;
                 $model->segundos = $table->segundos;
                 $model->minutos = $table->minutos;
+                $model->ordenamiento = $table->ordenamiento;
                       
             }    
         }

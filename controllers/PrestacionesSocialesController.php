@@ -522,7 +522,7 @@ class PrestacionesSocialesController extends Controller
         //PROCESO PARA PRIMA
         $sw = 0;
         if($configuracion_p->codigo_salario ==  $concepto_p->codigo_salario){
-            if (strtotime($model->ultimo_pago_prima) > strtotime($model->fecha_inicio_contrato) and $contrato_trabajo->contrato_activo == 1 ){ 
+            if (strtotime($model->ultimo_pago_prima) > strtotime($model->fecha_inicio_contrato)){ 
                  $sw = 1;
                 $this->CrearPrima($model, $sw, $ano);
             }
@@ -531,14 +531,16 @@ class PrestacionesSocialesController extends Controller
                 $this->CrearPrima($model, $sw, $ano);
             }
             if (strtotime($model->fecha_termino_contrato)< strtotime($model->ultimo_pago_prima  )){
-             $sw = 3;
+             $sw = 3; 
                 $this->CrearPrima($model, $sw, $ano);
             }
             
             if (strtotime($model->fecha_inicio_contrato) == strtotime($model->ultimo_pago_prima)){
-               $sw = 4;
+               $sw = 4; 
                 $this->CrearPrima($model, $sw, $ano);
             }
+            
+            
         }
         //PROCESO PARA CESANTIAS
         $sw = 0;
@@ -749,9 +751,9 @@ class PrestacionesSocialesController extends Controller
                 $total_dias = 0;
             }else{
                 $fecha = date($model->ultimo_pago_cesantias);
-                $fecha_inicio_dias = strtotime('1 day', strtotime($fecha));
+                $fecha_inicio_dias = strtotime('2 day', strtotime($fecha));
                 $fecha_inicio_dias = date('Y-m-d', $fecha_inicio_dias);
-                $fecha_inicio = $model->$fecha_inicio_dias;      
+                $fecha_inicio = $fecha_inicio_dias;      
                 $fecha_termino = $model->fecha_termino_contrato;
                 $diaTerminacion = substr($fecha_termino, 8, 8);
                 $mesTerminacion = substr($fecha_termino, 5, 2);
@@ -837,7 +839,7 @@ class PrestacionesSocialesController extends Controller
              endforeach;
         }
         if($sw==3){
-            $nomina = ProgramacionNomina::find()->where(['=','id_contrato',$model->id_contrato])->andWhere(['>','ultimo_pago_cesantias',$model->ultimo_pago_cesantias])->all();
+            $nomina = ProgramacionNomina::find()->where(['=','id_contrato',$model->id_contrato])->andWhere(['>','fecha_ultima_cesantia', $model->ultimo_pago_cesantias])->all();
              foreach ($nomina as $valor_nomina):
                  $detalle_nomina = ProgramacionNominaDetalle::find()->where(['=','id_programacion', $valor_nomina->id_programacion])->all();
                      foreach ($detalle_nomina as $valor_detalle ):
