@@ -4,6 +4,7 @@ use app\models\Ordenproducciondetalle;
 use app\models\Ordenproducciondetalleproceso;
 use app\models\Ordenproduccion;
 use app\models\Cliente;
+use app\models\CantidadPrendaTerminadas;
 //clases
 use yii\bootstrap\Progress;
 use yii\helpers\Html;
@@ -24,6 +25,9 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\db\Expression;
+use yii\db\Query;
+
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -110,6 +114,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
             <li role="presentation" class="active"><a href="#operaciones" aria-controls="operaciones" role="tab" data-toggle="tab">Flujo: <span class="badge"><?= count($operaciones) ?></span></a></li>
             <li role="presentation"><a href="#modulo" aria-controls="tallas" role="modulo" data-toggle="tab">Modulos: <span class="badge"><?= count($modulos) ?></span></a></li>
             <li role="presentation"><a href="#tallas" aria-controls="tallas" role="tab" data-toggle="tab">Tallas: <span class="badge"><?= count($modeldetalles) ?></span></a></li>
+            <li role="presentation"><a href="#grafica" aria-controls="grafica" role="tab" data-toggle="tab">Gráfica: </a></li>
         </ul>
         <div class="tab-content">
            <div role="tabpanel" class="tab-pane active" id="operaciones">
@@ -162,7 +167,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                                 <?php if($registro->operacion == 0){?>
                                                    <td style='background-color:#B9D5CE;'><?= 'BALANCEO' ?></td>
                                                 <?php }else{?>
-                                                   <td style='background-color:#A5D3E6;'><?= 'OPERACION' ?></td>
+                                                   <td style='background-color:#A5D3E6;'><?= 'PREPARACION' ?></td>
                                                 <?php }?>   
                                                  <td><?= $registro->fecha_creacion ?></td>
                                                 <?php 
@@ -316,8 +321,44 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     </div>
                 </div>    
             </div>
+           
+           <!--TERMINA TABS-->
+           <div role="tabpanel" class="tab-pane" id="grafica">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha entrada</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Unidades</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'></th>
 
-       </div>  
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                      <?php
+                                      $fecha_entrada = 0;
+                                      $suma = 0; 
+                                      $cantidad =new Query();
+                                      $cantidad->select('SUM(cantidad_terminada) as total, fecha_entrada')->from('cantidad_prenda_terminadas')
+                                                      ->where(['=','idordenproduccion', $model->idordenproduccion])
+                                                      ->groupBy('fecha_entrada')
+                                                      ->all(); 
+                                       foreach ($cantidad as $eficiencia):?>
+                                       
+                                         
+                                       <?php                                    
+                                       endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>       
+                    </div>
+                </div>
+                <?php include('grafica.php'); ?> 
+            </div>
+           </div>  
     </div>   
     <?php ActiveForm::end(); ?>
 </div>
