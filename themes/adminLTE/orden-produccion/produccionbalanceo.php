@@ -86,9 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                                    <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Op_Int.</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Op-Cliente</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Código</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>F. Llegada</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>F. Procesada</th>
@@ -103,8 +103,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php foreach ($model as $val): ?>
                                 <tr style="font-size: 85%;">
                                     <td><?= $val->idordenproduccion ?></td>
-                                    <td><?= $val->codigoproducto ?></td>
                                     <td><?= $val->ordenproduccion ?></td>
+                                      <td><?= $val->codigoproducto ?></td>
                                     <td><?= $val->cliente->nombrecorto ?></td>
                                     <td><?= date("Y-m-d", strtotime("$val->fechallegada")) ?></td>
                                     <td><?= date("Y-m-d", strtotime("$val->fechaprocesada")) ?></td>
