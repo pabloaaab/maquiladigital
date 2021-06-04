@@ -19,7 +19,7 @@ class PDF extends FPDF {
         $municipio = Municipio::findOne($config->idmunicipio);
         $departamento = Departamento::findOne($config->iddepartamento);        
         //Encabezado
-       $this->SetXY(43, 10);
+        $this->SetXY(43, 10);
         $this->Image('dist/images/logos/logomaquila.png', 10, 10, 30, 19);
         //Encabezado
         $this->SetFillColor(220, 220, 220);
@@ -69,6 +69,7 @@ class PDF extends FPDF {
         $this->Cell(162, 7, utf8_decode("REMISIÓN DE ENTREGA"), 0, 0, 'l', 0);
         $this->Cell(30, 7, utf8_decode('N°. '.str_pad($remision->numero, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);        
         $this->SetFillColor(200, 200, 200);
+        //inicio
         $this->SetXY(10, 42); //FILA 1
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("NIT:"), 0, 0, 'L');
@@ -78,6 +79,7 @@ class PDF extends FPDF {
         $this->Cell(33, 5, utf8_decode("FECHA LLEGADA:"), 0, 0, 'J');
         $this->SetFont('Arial', '', 8);
         $this->Cell(40, 5, utf8_decode($remision->ordenproduccion->fechallegada), 0, 0, 'J');
+        //fin
         $this->SetXY(10, 46); //FILA 2
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("CLIENTE:"), 0, 0, 'L');
@@ -87,6 +89,7 @@ class PDF extends FPDF {
         $this->Cell(33, 5, utf8_decode("FECHA ENTREGA:"), 0, 0, 'c');
         $this->SetFont('Arial', '', 8);
         $this->Cell(40, 5, utf8_decode($remision->fechacreacion), 0, 0, 'J');
+        //fin
         $this->SetXY(10, 50); //FILA 3
         $this->SetFont('Arial', 'B', 8);
         $this->Cell(24, 5, utf8_decode("TELÉFONO:"), 0, 0, 'c');

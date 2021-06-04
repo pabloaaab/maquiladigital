@@ -85,5 +85,56 @@ $view = 'facturaventa';
             </table>
         </div>
     </div>
+    <!--COMIENZA EL TABS-->
+    <div>
+        <ul class="nav nav-tabs" role="tablist">
+            <?php
+             $con = count($comprobante_pago);
+             ?>
+            <li role="presentation" class="active"><a href="#comprobantepago" aria-controls="comprobantepago" role="tab" data-toggle="tab">Comprobantes <span class="badge"><?= $con ?></span></a></li>
+       </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="comprobantepago">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr style='font-size:85%;'>
+                                        <tr>                
+                                            <th scope="col" style='background-color:#B9D5CE;'>Id_Compra</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Id_Comprobante</th>
+                                             <th scope="col" style='background-color:#B9D5CE;'>Numero</th>                
+                                            <th scope="col" style='background-color:#B9D5CE;'>Tipo Pago</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>F. Pago</th>                
+                                            <th scope="col" style='background-color:#B9D5CE;'>Vr. Pago</th>                
+                                            <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>  
+                                            <th scope="col" style='background-color:#B9D5CE;'></th>                               
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($comprobante_pago as $val): ?>
+                                        <tr style="font-size: 85%;">                
+                                            <td><?= $val->id_compra ?></td>
+                                             <td><?= $val->id_comprobante_egreso ?></td>
+                                             <td><?= $val->comprobanteEgreso->numero ?></td>
+                                            <td><?= $val->comprobanteEgreso->comprobanteEgresoTipo->concepto ?></td>  
+                                             <td><?= $val->comprobanteEgreso->fecha_comprobante ?></td>     
+                                             <td style="text-align: right;"><?= ''.number_format($val->vlr_abono,0) ?></td>
+                                             <td><?= $val->comprobanteEgreso->usuariosistema ?></td> 
+                                            <td style="width: 25px;">				
+                                                <a href="<?= Url::toRoute(["imprimir",'id'=>$val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-print" title="Imprimir "></span></a>
+                                            </td>
+                                       </tr>
+                                    <?php endforeach; ?>
+                                </tbody>       
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    
     
 </div>

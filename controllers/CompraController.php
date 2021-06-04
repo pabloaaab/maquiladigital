@@ -12,6 +12,9 @@ use app\models\UsuarioDetalle;
 use app\models\Consecutivo;
 use app\models\Matriculaempresa;
 use app\models\FormFiltroConsultaCompra;
+use app\models\ComprobanteEgreso;
+use app\models\ComprobanteEgresoDetalle;
+//clases
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -389,12 +392,22 @@ class CompraController extends Controller
     
     public function actionViewconsulta($id)
     {
-                                
+        $comprobante_pago = ComprobanteEgresoDetalle::find()->where(['=','id_compra', $id])->all();                        
         return $this->render('view_consulta', [
-            'model' => $this->findModel($id),            
+            'model' => $this->findModel($id),
+            'comprobante_pago' => $comprobante_pago,            
         ]);
     }
     
+    
+    public function actionImprimir($id)
+    {                                
+       $model = ComprobanteEgreso::findOne($id);
+        return $this->render('../formatos/comprobanteEgreso', [
+            'model' => $model,
+            
+        ]);
+    }
     public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties

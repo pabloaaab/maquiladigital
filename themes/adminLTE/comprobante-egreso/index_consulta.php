@@ -116,29 +116,33 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
                 <th scope="col" style='background-color:#B9D5CE;'>Aut.</th>                
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>  
                 <th scope="col" style='background-color:#B9D5CE;'></th>                               
+                <th scope="col" style='background-color:#B9D5CE;'></th> 
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($model as $val): ?>
-                <tr style="font-size: 85%;">                
-                <td><?= $val->id_comprobante_egreso ?></td>
-                 <td><?= $val->numero ?></td>
-                <td><?= $val->comprobanteEgresoTipo->concepto ?></td>                
-                <td><?= $val->fecha_comprobante ?></td>                
-                <td><?= $val->fecha ?></td>        
-                <td><?= $val->banco->entidad ?></td>
-                <td><?= $val->proveedor->cedulanit ?></td>
-                <td><?= $val->proveedor->nombrecorto ?></td>
-                <td><?= number_format($val->valor,0) ?></td>                
-                <td><?= $val->autorizar ?></td>   
-                 <td><?= $val->usuariosistema ?></td>
+                <?php foreach ($model as $val): ?>
+                    <tr style="font-size: 85%;">                
+                        <td><?= $val->id_comprobante_egreso ?></td>
+                         <td><?= $val->numero ?></td>
+                        <td><?= $val->comprobanteEgresoTipo->concepto ?></td>                
+                        <td><?= $val->fecha_comprobante ?></td>                
+                        <td><?= $val->fecha ?></td>        
+                        <td><?= $val->banco->entidad ?></td>
+                        <td><?= $val->proveedor->cedulanit ?></td>
+                        <td><?= $val->proveedor->nombrecorto ?></td>
+                        <td><?= number_format($val->valor,0) ?></td>                
+                        <td><?= $val->autorizar ?></td>   
+                         <td><?= $val->usuariosistema ?></td>
 
-                <td>				
-                <a href="<?= Url::toRoute(["comprobante-egreso/viewconsulta", "id" => $val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
-                </td>
-            </tr>
-            </tbody>
-            <?php endforeach; ?>
+                        <td style="width: 25px;">			
+                        <a href="<?= Url::toRoute(["comprobante-egreso/viewconsulta", "id" => $val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
+                        </td>
+                         <td style="width: 25px;">				
+                            <a href="<?= Url::toRoute(["imprimir",'id'=>$val->id_comprobante_egreso]) ?>" ><span class="glyphicon glyphicon-print" title="Imprimir "></span></a>
+                        </td>
+                   </tr>
+                <?php endforeach; ?>
+            </tbody>       
         </table>    
         <div class="panel-footer text-right" >            
             <?php

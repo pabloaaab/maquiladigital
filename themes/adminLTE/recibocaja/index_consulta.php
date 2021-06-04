@@ -104,7 +104,8 @@ $tipos = ArrayHelper::map(TipoRecibo::find()->all(), 'idtiporecibo', 'concepto')
                 <th scope="col">Fecha Pago</th>
                 <th scope="col">Vlr Pago</th>                
                 <th scope="col">Autorizado</th>                
-                <th scope="col"></th>                               
+                <th scope="col"></th>         
+                <th scope="col"></th>   
             </tr>
             </thead>
             <tbody>
@@ -119,8 +120,11 @@ $tipos = ArrayHelper::map(TipoRecibo::find()->all(), 'idtiporecibo', 'concepto')
                 <td><?= date("Y-m-d", strtotime("$val->fechapago")) ?></td>
                 <td><?= number_format($val->valorpagado,0) ?></td>                
                 <td><?= $val->autorizar ?></td>                
-                <td>				
-                <a href="<?= Url::toRoute(["recibocaja/viewconsulta", "id" => $val->idrecibo]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
+                <td style="width: 25px;">				
+                    <a href="<?= Url::toRoute(["recibocaja/viewconsulta", "id" => $val->idrecibo]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                
+                </td>
+                <td style="width: 25px;">				
+                    <a href="<?= Url::toRoute(["imprimir",'id'=>$val->idrecibo]) ?>" ><span class="glyphicon glyphicon-print" title="Imprimir "></span></a>
                 </td>
             </tr>
             </tbody>
