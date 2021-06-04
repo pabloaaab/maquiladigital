@@ -133,7 +133,11 @@ class ContabilizarController extends Controller {
                         $contabilidad->comprobante = $proceso;
                         $contabilidad->proceso = 'recibo de caja';
                         $contabilidad->fecha = $recibo->fechapago;
-                        $contabilidad->documento = $detalle->factura->nrofactura;
+                        if($detalle->idfactura == ''){
+                           $contabilidad->documento = 0;
+                        }else{
+                            $contabilidad->documento = $detalle->factura->nrofactura;
+                        }
                         $contabilidad->documento_ref = $recibo->numero;
                         $empresa = CuentaPub::find()->where(['=','codigo_cuenta',$tipo->cuenta])->one();
                         if ($empresa){

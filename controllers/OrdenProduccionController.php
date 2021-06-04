@@ -694,6 +694,7 @@ class OrdenProduccionController extends Controller {
                     $table = FlujoOperaciones::findOne($intCodigo);
                     $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
                     $table->operacion = $_POST["operacionflujo"][$intIndice];
+                    $table->id_tipo = $_POST["id_tipo"][$intIndice];
                     $table->save(false); 
                 
                 $intIndice++;

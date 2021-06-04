@@ -105,9 +105,10 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
             <thead>
             <tr>                
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                 <th scope="col" style='background-color:#B9D5CE;'>Nro Compro.</th>                
+                 <th scope="col" style='background-color:#B9D5CE;'>Numero</th>                
                 <th scope="col" style='background-color:#B9D5CE;'>Tipo Pago</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Pago</th>                
+                <th scope="col" style='background-color:#B9D5CE;'>F. Proceso</th> 
                 <th scope="col" style='background-color:#B9D5CE;'>Banco</th> 
                 <th scope="col" style='background-color:#B9D5CE;'>Cedula/Nit</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Proveedor</th>
@@ -124,6 +125,7 @@ $tipos = ArrayHelper::map(ComprobanteEgresoTipo::find()->orderBy('concepto ASC')
                  <td><?= $val->numero ?></td>
                 <td><?= $val->comprobanteEgresoTipo->concepto ?></td>                
                 <td><?= $val->fecha_comprobante ?></td>                
+                <td><?= $val->fecha ?></td>        
                 <td><?= $val->banco->entidad ?></td>
                 <td><?= $val->proveedor->cedulanit ?></td>
                 <td><?= $val->proveedor->nombrecorto ?></td>

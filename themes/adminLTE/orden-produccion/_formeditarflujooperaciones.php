@@ -10,6 +10,7 @@ use app\models\Ordenproduccion;
 use app\models\Producto;
 use app\models\Ordenproducciondetalle;
 use app\models\OrdenproduccionSearch;
+use app\models\TiposMaquinas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,6 +24,7 @@ use yii\db\ActiveQuery;
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 /* @var $form yii\widgets\ActiveForm */
+$maquinas = ArrayHelper::map(TiposMaquinas::find()->where(['=','estado', 1])->all(), 'id_tipo', 'descripcion');
 ?>
 <?php
 $this->title = 'Ordenar operaciones';
@@ -56,7 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                      <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                     <th scope="col" style='background-color:#B9D5CE;'>Orden aleatorio</th>
-                      <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
+                    <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
+                     <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                     <th scope="col" style='background-color:#B9D5CE;'></th>
                 </tr>
                 </thead>
@@ -74,8 +77,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php if ($val->operacion == 0){echo $operacionflujo = "BALANCEO";}else{echo $operacionflujo ="PREPARACION";}?>
                                     <option value="<?= $val->operacion ?>"><?= $operacionflujo ?></option>
                                     <option value="0">BALANCEO</option>
-                                    <option value="1">OPERACION</option>
+                                    <option value="1">PREPARACION</option>
                             </select></td>
+                            <td><?= Html::dropDownList('id_tipo[]', $val->id_tipo, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>
                             <td><input type="hidden" name="id[]" value="<?= $val->id ?>"></td>
                         </tr>
                     <?php endforeach; ?>

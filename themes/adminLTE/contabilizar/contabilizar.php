@@ -53,15 +53,15 @@ $tipos = ArrayHelper::map(ContabilidadComprobanteTipo::find()->all(), 'codigo', 
 	
     <div class="panel-body" id="filtrocontabilizar" style="display:none">
         <div class="row" >
-            
-            <?= $formulario->field($form, 'desde')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+         
+            <?= $formulario->field($form, 'proceso')->dropDownList($tipos, ['prompt' => 'Seleccione un proceso...']) ?>
+              <?= $formulario->field($form, 'desde')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
                     'todayHighlight' => true]])
             ?>
-            <?= $formulario->field($form, 'proceso')->dropDownList($tipos, ['prompt' => 'Seleccione un proceso...']) ?>
             <?= $formulario->field($form, 'hasta')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
                 'options' => ['placeholder' => 'Seleccione una fecha ...'],

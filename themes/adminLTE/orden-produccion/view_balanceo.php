@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_standar') ?>:</th>
                     <td><?= Html::encode($model->duracion.'  minutos') ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_operativo') ?>:</th>
-                     <td><?= Html::encode($model->segundosficha/60, 2) ?></td>
+                     <td><?= Html::encode(''.number_format($model->segundosficha/60, 2)) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Servicio') ?>:</th>
                     <td colspan="2"><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
@@ -155,6 +155,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     $conminuto = 0;
                                     $consegundo = 0;
                                     $total_balanceo = 0;
+                                    $tota_preparacion = 0;
                                     $prenda = app\models\FlujoOperaciones::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
                                     foreach ($prenda as $registro):?>
                                             <tr style="font-size: 85%;">
@@ -184,9 +185,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                        if($registro->orden_aleatorio > 0){
                                           $total_balanceo +=  $registro->minutos;
                                        }
-                                    endforeach; ?>  
+                                    endforeach;
+                                    $tota_preparacion = $conminuto - $total_balanceo;
+                                    ?>  
                                 </tbody> 
-                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Minutos:</b> <?= $conminuto ?></td><td style="font-size: 85%; color: "><b>Sam_Balanceo:</b> <?= $total_balanceo ?></td><td colspan="4"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Minutos:</b> <?= $conminuto ?></td><td style="font-size: 85%; color: "><b>Sam_Balanceo:</b> <?= $total_balanceo ?><td style="font-size: 85%; color: "><b>Sam_Preparacion:</b> <?= $tota_preparacion ?></td><td colspan="3"></td>
                             </table>
                         </div>    
                     </div>

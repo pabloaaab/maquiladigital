@@ -619,8 +619,8 @@ class RecibocajaController extends Controller
                     $tipo = Html::encode($form->tipo);
                     $table = Recibocaja::find()
                             ->andFilterWhere(['=', 'idcliente', $idcliente])
-                            ->andFilterWhere(['>=', 'fecharecibo', $desde])
-                            ->andFilterWhere(['<=', 'fecharecibo', $hasta])
+                            ->andFilterWhere(['>=', 'fechapago', $desde])
+                            ->andFilterWhere(['<=', 'fechapago', $hasta])
                             ->andFilterWhere(['=', 'numero', $numero])
                             ->andFilterWhere(['=', 'idtiporecibo', $tipo]);
                     $table = $table->orderBy('idrecibo desc');
