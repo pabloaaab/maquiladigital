@@ -268,7 +268,9 @@ class PagoAdicionalPermanenteController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('createdescuento', ['model' => $model]);
+        return $this->render('createdescuento', [
+            'model' => $model,  
+        ]);
     }
 
 
