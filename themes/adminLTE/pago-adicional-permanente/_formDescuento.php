@@ -9,6 +9,8 @@ use app\models\ConceptoSalarios;
 use app\models\Empleado;
 use kartik\select2\Select2;
 use kartik\date\DatePicker;
+use yii\web\NotFoundHttpException;
+
 
 $this->title = 'Descuento Permanente';
 ?>
