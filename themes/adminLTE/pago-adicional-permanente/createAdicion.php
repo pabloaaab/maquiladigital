@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\PagoAdicionalPermanente */
 
 $this->title = 'Adicional Permanente';
-$this->params['breadcrumbs'][] = ['label' => 'Pago Adicional Permanentes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Adicional Permanentes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="pago-adicional-permanente-adicional">
