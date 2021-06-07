@@ -186,6 +186,7 @@
                                             ['label' => 'Flujo de operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/produccionbalanceo']], 
                                             ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/index']],    
                                             ['label' => 'Pago de prenda', 'icon' => 'plus-square-o', 'url' => ['/valor-prenda-unidad/indexsoporte']], 
+                                            ['label' => 'Prestamo operarios', 'icon' => 'plus-square-o', 'url' => ['/credito-operarios/index']],     
                                             ],
                                         ],
                                         [
