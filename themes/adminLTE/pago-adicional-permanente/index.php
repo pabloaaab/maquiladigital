@@ -160,8 +160,8 @@ $form = ActiveForm::begin([
         </table> 
         <div class="panel-footer text-right" >     
             <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm ']); ?>                
-            <a align="right" href="<?= Url::toRoute("pago-adicional-permanente/createadicion")?>" class="btn btn-success btn-sm"><span class='glyphicon glyphicon-plus'></span></a>
-            <a align="right" href="<?= Url::toRoute("pago-adicional-permanente/createdescuento")?>" class="btn btn-info btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
+            <a align="right" href="<?= Url::toRoute("pago-adicional-permanente/crearadicion")?>" class="btn btn-success btn-sm"><span class='glyphicon glyphicon-plus'></span></a>
+            <a align="right" href="<?= Url::toRoute("pago-adicional-permanente/creardescuento")?>" class="btn btn-info btn-sm"><span class='glyphicon glyphicon-minus-sign'></span></a>
             <div class="btn-group">
                   <button type="button" class="btn btn-warning dropdown-toggle btn-sm"
                           data-toggle="dropdown">

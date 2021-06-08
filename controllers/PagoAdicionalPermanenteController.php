@@ -199,7 +199,7 @@ class PagoAdicionalPermanenteController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-     public function actionCreateadicion() {        
+     public function actionCrearadicion() {        
         $model = new FormAdicionPermanente();        
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -232,10 +232,10 @@ class PagoAdicionalPermanenteController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('createadicion', ['model' => $model]);
+        return $this->render('_form', ['model' => $model]);
     }
     
-     public function actionCreatedescuento() {        
+     public function actionCreardescuento() {        
         $model = new FormAdicionPermanente();        
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -268,7 +268,7 @@ class PagoAdicionalPermanenteController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('createdescuento', [
+        return $this->render('_formdescuento', [
             'model' => $model,  
         ]);
     }
