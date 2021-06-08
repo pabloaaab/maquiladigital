@@ -232,7 +232,9 @@ class PagoAdicionalPermanenteController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('createadicion', ['model' => $model]);
+        return $this->render('newadicion', [
+            'model' => $model,
+            ]);
     }
     
      public function actionCreardescuento() {        
@@ -268,7 +270,7 @@ class PagoAdicionalPermanenteController extends Controller
                 $model->getErrors();
             }
         }
-        return $this->render('createdescuento', [
+        return $this->render('newdescuento', [
             'model' => $model,  
         ]);
     }
