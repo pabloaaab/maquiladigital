@@ -195,6 +195,7 @@
                                             'url' => '#',
                                             'items' => [
                                                 ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/index']],
+                                                 ['label' => 'Orden Tercero', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indextercero']],
                                                  ['label' => 'Entrada / Salida', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexentradasalida']],
                                                 ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/proceso']],
                                             ],

@@ -24,6 +24,9 @@ use app\models\FormFiltroConsultaUnidadConfeccionada;
 use app\models\FormFiltroEntradaSalida;
 use app\models\SalidaEntradaProduccion;
 use app\models\SalidaEntradaProduccionDetalle;
+use app\models\FormFiltroOrdenTercero;
+use app\models\OrdenProduccionTercero;
+use app\models\OrdenProduccionTerceroDetalle;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -239,6 +242,84 @@ class OrdenProduccionController extends Controller {
         }
     } 
     
+    //orden de produccion para tercero
+    
+    public function actionIndextercero() {
+        if (Yii::$app->user->identity) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 112])->all()) {
+                $form = new FormFiltroOrdenTercero();
+                $idproveedor = null;
+                $idordenproduccion = null;
+                $fecha_inicio = null;
+                $fecha_corte = null;
+                $idtipo = null;
+                $idcliente = null;
+                if ($form->load(Yii::$app->request->get())) {
+                    if ($form->validate()) {
+                        $idproveedor = Html::encode($form->idproveedor);
+                        $idordenproduccion = Html::encode($form->idordenproduccion);
+                        $idtipo = Html::encode($form->idtipo);
+                        $idcliente = Html::encode($form->idcliente);
+                        $fecha_inicio = Html::encode($form->fecha_inicio);
+                        $fecha_corte = Html::encode($form->fecha_corte);
+                        $table = OrdenProduccionTercero::find()
+                                ->andFilterWhere(['=', 'idtipo', $idtipo])
+                                ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
+                                ->andFilterWhere(['>=', 'fecha_proceso', $fecha_inicio])
+                                ->andFilterWhere(['=', 'idproveedor', $idproveedor])
+                                ->andFilterWhere(['=', 'idcliente', $idcliente])
+                                ->andFilterWhere(['<=', 'fecha_proceso', $fecha_corte]);
+                        $table = $table->orderBy('id_orden_tercero DESC');
+                        $tableexcel = $table->all();
+                        $count = clone $table;
+                        $to = $count->count();
+                        $pages = new Pagination([
+                            'pageSize' => 100,
+                            'totalCount' => $count->count()
+                        ]);
+                        $modelo = $table
+                                ->offset($pages->offset)
+                                ->limit($pages->limit)
+                                ->all();
+                        if (isset($_POST['excel'])) {
+                            $check = isset($_REQUEST['id_orden_tercero  DESC']);
+                            $this->actionExcelOrdenTercero($tableexcel);
+                        }
+                    } else {
+                        $form->getErrors();
+                    }
+                } else {
+                    $table = OrdenProduccionTercero::find()
+                             ->orderBy('id_orden_tercero DESC');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $pages = new Pagination([
+                        'pageSize' => 100,
+                        'totalCount' => $count->count(),
+                    ]);
+                    $modelo = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if (isset($_POST['excel'])) {
+                        //$table = $table->all();
+                        $this->actionExcelOrdenTercero($tableexcel);
+                    }
+                }
+                $to = $count->count();
+                return $this->render('indextercero', [
+                            'modelo' => $modelo,
+                            'form' => $form,
+                            'pagination' => $pages,
+                ]);
+            } else {
+                return $this->redirect(['site/sinpermiso']);
+            }
+        } else {
+            return $this->redirect(['site/login']);
+        }
+    } 
+    //vista para orden de produccion
     public function actionView($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
@@ -272,6 +353,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
    
+    // vista para salida de produccion
     public function actionViewsalida($id) {
         $modeldetalles = SalidaEntradaProduccionDetalle::find()->Where(['=', 'id_salida', $id])->all();
         $modeldetalle = new SalidaEntradaProduccionDetalle();
@@ -302,6 +384,42 @@ class OrdenProduccionController extends Controller {
                     'mensaje' => $mensaje,
         ]);
     }
+    
+    // vista para ordenes de tercero
+    
+    public function actionViewtercero($id) {
+        $modeldetalles = OrdenProduccionTerceroDetalle::find()->Where(['=', 'id_orden_tercero', $id])->all();
+        $modeldetalle = new OrdenProduccionTerceroDetalle();
+        $mensaje = "";
+        $model = OrdenProduccionTercero::findOne($id);
+        if (isset($_POST["eliminar"])) {
+            if (isset($_POST["seleccion"])) {
+                foreach ($_POST["seleccion"] as $intCodigo) {
+                    try {
+                            $eliminar = Ordenproducciondetalle::findOne($intCodigo);
+                            $eliminar->delete();
+                            Yii::$app->getSession()->setFlash('success', 'Registro Eliminado.');
+                            $this->redirect(["orden-produccion/view", 'id' => $id]);
+                        } catch (IntegrityException $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        } catch (\Exception $e) {
+                            Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otros procesos');
+                        }
+                }
+                $this->Actualizartotal($id);
+                $this->Actualizarcantidad($id);
+                $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');                
+            }                        
+        }       
+        return $this->render('viewtercero', [
+                    'model' => $model,
+                    'modeldetalle' => $modeldetalle,
+                    'modeldetalles' => $modeldetalles,
+                    'mensaje' => $mensaje,
+        ]);
+    }
     /**
      * Creates a new Ordenproduccion model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -310,8 +428,8 @@ class OrdenProduccionController extends Controller {
     public function actionCreate() {
         $model = new Ordenproduccion();
         $clientes = Cliente::find()->all();
+          $codigos = Producto::find()->orderBy('idproducto desc')->all(); 
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        $codigos = Producto::find()->orderBy('idproducto desc')->all();        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
@@ -322,6 +440,33 @@ class OrdenProduccionController extends Controller {
         }
 
         return $this->render('create', [
+                    'model' => $model,
+              'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+                    'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
+                    
+        ]);
+    }
+    
+    //NUEVA ORDER PARA TERCERO
+    
+     public function actionNuevaordentercero() {
+        $model = new OrdenProduccionTercero();
+        $clientes = Cliente::find()->all();
+        $ordenproducciontipos = Ordenproducciontipo::find()->all();
+        $codigos = Producto::find()->orderBy('idproducto desc')->all();        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $orden = Ordenproduccion::find()->where(['=','idcliente', $model->idcliente])
+                                           ->andWhere(['=','codigoproducto', $model->codigo_producto])
+                                           ->orderBy('idordenproduccion DESC')->one();
+            $model->idordenproduccion = $orden->idordenproduccion;
+            $model->usuariosistema = Yii::$app->user->identity->username;
+            $model->autorizado = 0;
+            $model->update();
+            return $this->redirect(['indextercero']);
+        }
+
+        return $this->render('_formnewtercero', [
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                     'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
@@ -378,7 +523,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-    //actualiza el registro
+    //actualiza el registro de la orden de salida
     public function actionUpdatesalida($id) {
         $model = SalidaEntradaProduccion::findOne($id);
         $clientes = Cliente::find()->all();
@@ -394,6 +539,27 @@ class OrdenProduccionController extends Controller {
                     'model' => $model,
                     'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
                   'orden' => ArrayHelper::map($orden, "idordenproduccion", "ordenproduccion"),
+        ]);
+    }
+    
+    //PERMITE MODIFICAR LA ORDEN DE TERCERO
+    public function actionEditarordentercero($id) {
+        $model = OrdenProduccionTercero::findOne($id);
+        $clientes = Cliente::find()->all();
+        $codigos = Producto::find()->orderBy('idproducto desc')->all(); 
+        $ordenproducciontipos = Ordenproducciontipo::find()->all();
+        if (OrdenProduccionTerceroDetalle::find()->where(['=', 'id_orden_tercero', $id])->all()) {
+            Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
+        } else {
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['indextercero']);
+            }
+        }
+        return $this->render('_formnewtercero', [
+                    'model' => $model,
+            'clientes' => ArrayHelper::map($clientes, "idcliente", "nombreClientes"),
+                    'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+                    'codigos' => ArrayHelper::map($codigos, "codigo", "codigonombre"),
         ]);
     }
 
@@ -454,7 +620,6 @@ class OrdenProduccionController extends Controller {
            $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
         }else{
             if ($model->autorizado == 0) {
-                $detalles = Ordenproducciondetalle::find();
                 $model->autorizado = 1;
                 $model->update();
                 $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
@@ -465,7 +630,21 @@ class OrdenProduccionController extends Controller {
             }
         }    
     }
-
+    
+   // proceso par autorizar las ordenes de tercero
+    public function actionAutorizadotercero($id) {
+        $model = OrdenProduccionTercero::findOne($id);
+        if ($model->autorizado == 0) {
+            $model->autorizado = 1;
+            $model->update();
+            $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+        } else {
+            $model->autorizado = 0;
+            $model->update();
+            $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+        }
+    }
+  // nuevo detalle para las ordenes de produccion
     public function actionNuevodetalles($idordenproduccion, $idcliente) {
         $ordenProduccion = Ordenproduccion::findOne($idordenproduccion);
         //$productosCliente = Productodetalle::find()->where(['=', 'idcliente', $idcliente])->andWhere(['=', 'idtipo', $ordenProduccion->idtipo])->andWhere(['>', 'stock', 0])->all();
@@ -509,6 +688,48 @@ class OrdenProduccionController extends Controller {
                     'productosCliente' => $productosCliente,
                     'idordenproduccion' => $idordenproduccion,
                     'ordenProduccion' => $ordenProduccion,
+        ]);
+    }
+    
+    // nuevo detalle para los ordenes de produccion para tercero
+    
+    public function actionNuevodetallestercero($idordenproduccion, $idcliente, $id) {
+        $ordenProduccion = OrdenProduccionTercero::findOne($id);
+        $productocodigo = Producto::find()->where(['=','idcliente', $idcliente])->andWhere(['=','codigo',$ordenProduccion->codigo_producto])->one();        
+        $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion', $idordenproduccion])->all();
+            
+        $ponderacion = 0;
+        $error = 0;
+        $totalorden = 0;
+        $cantidad = 0;
+        if (isset($_POST["idproductodetalle"])) {
+            $intIndice = 0;
+            foreach ($_POST["idproductodetalle"] as $intCodigo) {                       
+                $detalles = OrdenProduccionTerceroDetalle::find()
+                        ->where(['=', 'id_orden_tercero', $id])
+                        ->andWhere(['=', 'idproductodetalle', $intCodigo])
+                        ->all();
+                $reg = count($detalles);
+                if ($reg == 0) {  
+                    if($_POST["cantidad"][$intIndice] > 0){
+                        $table = new OrdenProduccionTerceroDetalle();
+                        $table->id_orden_tercero = $id;
+                        $table->idproductodetalle = $_POST["idproductodetalle"][$intIndice];
+                        $table->cantidad = $_POST["cantidad"][$intIndice];
+                        $table->vlr_minuto = $ordenProduccion->vlr_minuto;
+                        $table->total_pagar =  ($table->cantidad *  $table->vlr_minuto) * $ordenProduccion->cantidad_minutos ;
+                        $table->insert(); 
+                    }    
+                }
+                  $intIndice++;  
+            }                    
+        $this->ActualizarValorTercero($id);
+        $this->redirect(["orden-produccion/viewtercero", 'id' => $id, 'idordenproduccion' => $idordenproduccion]); 
+        }                                       
+        return $this->render('_formnuevodetallestercero', [
+                    'id' => $id,
+                    'idordenproduccion' => $idordenproduccion,
+                    'detalle_orden' => $detalle_orden,
         ]);
     }
     
@@ -673,16 +894,37 @@ class OrdenProduccionController extends Controller {
                     $table->update();
                     $this->ActualizarCantidadEntradaSalida($id);
                     $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
-                                            
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
                     $tipomsg = "danger";
                 }
             }
         }
-        
     }
     
+  //ESTE PROCESO EDITA UN REGISTRO DE LA ORDEN DE TERCERO
+  public function actionEditardetalletercero() {
+        $id_detalle = Html::encode($_POST["id_detalle"]);
+        $id = Html::encode($_POST["id"]);
+        $error = 0;
+        if (Yii::$app->request->post()) {
+            if ((int) $id_detalle) {
+                $table = OrdenProduccionTerceroDetalle::findOne($id_detalle);
+                $total = 0;
+                if ($table) {
+                    $orden = OrdenProduccionTercero::findOne($id);
+                    $table->cantidad = Html::encode($_POST["cantidad"]);
+                    $table->total_pagar = ($table->vlr_minuto * $orden->cantidad_minutos) * $table->cantidad;
+                    $table->update();
+                    $this->ActualizarValorTercero($id);
+                    $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+                } else {
+                    $msg = "El registro seleccionado no ha sido encontrado";
+                    $tipomsg = "danger";
+                }
+            }
+        }
+    }  
     //editar flujo de operaciones
     
     public function actionEditarflujooperaciones($idordenproduccion) {
@@ -788,7 +1030,7 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(["orden-produccion/index"]);
         }
     }
-
+   
     public function actionEliminardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $mensaje = "";
@@ -834,10 +1076,47 @@ class OrdenProduccionController extends Controller {
         ]);
     }
 
+    //ELIMINAR DETALLES DE LA ORDEN DE TERCERO
+    
+    public function actionEliminardetalletercero() {
+        if (Yii::$app->request->post()) {
+            $id_detalle = Html::encode($_POST["id_detalle_orden"]);
+            $id = Html::encode($_POST["id"]);
+            if ((int) $id) {
+                $Detalle = OrdenProduccionTerceroDetalle::findOne($id_detalle);
+                try {
+                    OrdenProduccionTerceroDetalle::deleteAll("id_detalle=:id_detalle", [":id_detalle" => $id_detalle]);
+                    $this->ActualizarValorTercero($id);
+                    $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en otro proceso');
+                } catch (\Exception $e) {
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados  en otro proceso');
+                    $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+                }
+                
+                
+            } else {
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/indextercero") . "'>";
+            }
+        } else {
+            return $this->redirect(["orden-produccion/indextercero"]);
+        }
+    }
+   
+   //IMPRIMIR ORDEN DE CONFECCION
     public function actionImprimir($id) {
 
         return $this->render('../formatos/ordenProduccion', [
                     'model' => $this->findModel($id),
+        ]);
+    }
+    
+     public function actionImprimirtercero($id) {
+        $model = OrdenProduccionTercero::findOne($id);
+        return $this->render('../formatos/ordenproducciontercero', [
+                    'model' => $model,
         ]);
     }
      public function actionImprimirsalida($id) {
@@ -883,6 +1162,20 @@ class OrdenProduccionController extends Controller {
             $total = $total + $val->subtotal;
         }        
         $ordenProduccion->totalorden = round($total,0);
+        $ordenProduccion->update();
+    }
+    
+   //SUBPROCESO QUE ACTUALIZA EL VALOR A PAGAR LA ORDEN PARA EL TERCERO
+    protected function ActualizarValorTercero($id) {
+        $ordenProduccion = OrdenProduccionTercero::findOne($id);
+        $ordenproducciondetalle = OrdenProduccionTerceroDetalle::find()->where(['=','id_orden_tercero',$id])->all();
+        $total = 0; $total_unidad = 0;
+        foreach ($ordenproducciondetalle as $val) {
+            $total = $total + $val->total_pagar;
+            $total_unidad += $val->cantidad;
+        }        
+        $ordenProduccion->total_pagar = round($total,0);
+        $ordenProduccion->cantidad_unidades = round($total_unidad,0);
         $ordenProduccion->update();
     }
     
@@ -2003,7 +2296,7 @@ class OrdenProduccionController extends Controller {
         exit;
     }
     
-      public function actionExcelconsultaUnidades($tableexcel) {                
+    public function actionExcelconsultaUnidades($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties
         $objPHPExcel->getProperties()->setCreator("EMPRESA")
@@ -2061,6 +2354,92 @@ class OrdenProduccionController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Cantidad_unidades.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    public function actionExcelOrdenTercero($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+                               
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'NRO ORDEN')
+                    ->setCellValue('B1', 'PROVEEDOR')
+                    ->setCellValue('C1', 'CLIENTE')
+                    ->setCellValue('D1', 'OP CLIENTE')
+                    ->setCellValue('E1', 'PROCESO')
+                    ->setCellValue('F1', 'REFERENCIA')
+                    ->setCellValue('G1', 'FECHA PROCESO')
+                    ->setCellValue('H1', 'FECHA REGISTRO')
+                    ->setCellValue('I1', 'VR. MINUTO')
+                    ->setCellValue('J1', 'TOTAL MINUTOS')
+                    ->setCellValue('K1', 'TOTAL UNIDADES')
+                     ->setCellValue('L1', 'TOTAL PAGAR')
+                     ->setCellValue('M1', 'USUARIO')
+                     ->setCellValue('N1', 'AUTORIZADO')
+                     ->setCellValue('O1', 'OBSERVACION');
+                    
+        $i = 2;
+        foreach ($tableexcel as $val) {
+         
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_orden_tercero)
+                    ->setCellValue('B' . $i, $val->proveedor->nombrecorto)
+                    ->setCellValue('C' . $i, $val->cliente->nombrecorto)
+                    ->setCellValue('D' . $i, $val->idordenproduccion)
+                    ->setCellValue('E' . $i, $val->tipo->tipo)
+                    ->setCellValue('F' . $i, $val->codigo_producto)
+                    ->setCellValue('G' . $i, $val->fecha_proceso)
+                    ->setCellValue('H' . $i, $val->fecha_registro)
+                    ->setCellValue('I' . $i, $val->vlr_minuto)
+                    ->setCellValue('J' . $i, $val->cantidad_minutos)
+                    ->setCellValue('K' . $i, $val->cantidad_unidades)
+                    ->setCellValue('L' . $i, $val->total_pagar)
+                    ->setCellValue('M' . $i, $val->usuariosistema)
+                    ->setCellValue('N' . $i, $val->autorizadoTercero)
+                    ->setCellValue('O' . $i, $val->observacion);
+                    
+                  
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('Orden_prodccion_tercero');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Orden_produccion.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
