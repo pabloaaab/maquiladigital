@@ -135,10 +135,10 @@ $entrada = ArrayHelper::map(app\models\TipoEntrada::find()->orderBy('concepto AS
                     <td><?= $val->observacion?></td>
                 
                     <td style= 'width: 25px; height: 25px;'>
-                            <a href="<?= Url::toRoute(["orden-produccion/viewsalida", "id" => $val->id_salida, ]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                            <a href="<?= Url::toRoute(["orden-produccion/viewsalida", "id" => $val->id_salida ]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                     </td>
                     <td style= 'width: 25px; height: 25px;'>
-                            <a href="<?= Url::toRoute(["orden-produccion/updatesalida", "id" => $val->id_salida, ]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                            <a href="<?= Url::toRoute(["orden-produccion/updatesalida", "id" => $val->id_salida ]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
                     </td>
                 </tr>
                     

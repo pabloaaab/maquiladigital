@@ -527,11 +527,14 @@ class OrdenProduccionController extends Controller {
     public function actionUpdatesalida($id) {
         $model = SalidaEntradaProduccion::findOne($id);
         $clientes = Cliente::find()->all();
-        $orden = Ordenproduccion::find()->orderBy('idordenproduccion asc')->all(); 
+        $orden = Ordenproduccion::find()->orderBy('idordenproduccion DESC')->all(); 
         if (SalidaEntradaProduccionDetalle::find()->where(['=', 'id_salida', $id])->all()) {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $orden_produccion = Ordenproduccion::find()->where(['=','idordenproduccion', $model->idordenproduccion])->one();
+                $model->codigo_producto = $orden_produccion->codigoproducto;
+                $model->update();
                 return $this->redirect(['indexentradasalida']);
             }
         }
