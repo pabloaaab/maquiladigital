@@ -12,7 +12,7 @@ use app\models\Municipio;
 use app\models\Departamento;
 use app\models\TipoDocumento;
 use yii\widgets\LinkPager;
-
+use kartik\select2\Select2;
 $this->title = 'Editar Cliente';
 $this->params['breadcrumbs'][] = ['label' => 'Clientes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -84,7 +84,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
             </div>	
             <div class="row">
                 <?= $form->field($model, 'celularcontacto')->input("text") ?>
-                			
+                <?= $form->field($model, 'proceso')->dropdownList(['0' => 'N/A', '1' => 'MAQUILA', '2' => 'PAQUETE COMPLETO'], ['prompt' => 'Seleccione...']) ?>			
             </div>    
             <div class="row">
                 <?= $form->field($model, 'formapago')->dropdownList(['1' => 'CONTADO', '2' => 'CRÉDITO'], ['prompt' => 'Seleccione...', 'onchange' => 'fpago()', 'id' => 'formapago']) ?>

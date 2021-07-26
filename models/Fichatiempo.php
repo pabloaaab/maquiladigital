@@ -38,12 +38,12 @@ class Fichatiempo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_empleado','referencia','total_segundos','id_horario'], 'required'],
-            [['id_empleado','estado','id_horario'], 'integer',],
+            [['id_operario','referencia','total_segundos','id_horario'], 'required'],
+            [['id_operario','estado','id_horario'], 'integer',],
             [['cumplimiento','total_segundos'], 'number'],
             [['observacion','referencia'], 'string'],
             [['desde','hasta'], 'safe'],
-            [['id_empleado'], 'exist', 'skipOnError' => true, 'targetClass' => Empleado::className(), 'targetAttribute' => ['id_empleado' => 'id_empleado']],            
+            [['id_operario'], 'exist', 'skipOnError' => true, 'targetClass' => Operarios::className(), 'targetAttribute' => ['id_operario' => 'id_operario']],            
         ];
     }
 
@@ -54,7 +54,7 @@ class Fichatiempo extends \yii\db\ActiveRecord
     {
         return [
             'id_ficha_tiempo' => 'Id',
-            'id_empleado' => 'Empleado',
+            'id_operario' => 'Operario',
             'id_horario' => 'Horario',
             'cumplimiento' => 'Cumplimiento',
             'observacion' => 'Observacion',
@@ -69,9 +69,9 @@ class Fichatiempo extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getEmpleado()
+    public function getOperario()
     {
-        return $this->hasOne(Empleado::className(), ['id_empleado' => 'id_empleado']);
+        return $this->hasOne(Operarios::className(), ['id_operario' => 'id_operario']);
     }
     
     /**
@@ -90,5 +90,10 @@ class Fichatiempo extends \yii\db\ActiveRecord
             $cerrado = "NO";
         }
         return $cerrado;
+    }
+    
+    public function getFichatiempos()
+    {
+        return $this->hasMany(Fichatiempo::className(), ['id_ficha_tiempo' => 'id_ficha_tiempo']);
     }
 }

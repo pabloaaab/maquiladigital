@@ -406,7 +406,7 @@ class FichatiempoController extends Controller
                     ->setCellValue('A1', 'RESULTADO DE LA PRUEBA TECNICA')
                     ->setCellValue('A2', 'Referencia')
                     ->setCellValue('B2', 'Documento')
-                    ->setCellValue('C2', 'Empleado')
+                    ->setCellValue('C2', 'Operario')
                     ->setCellValue('D2', 'Dia')
                     ->setCellValue('E2', 'Hora')
                     ->setCellValue('F2', 'Total Segundos')
@@ -420,8 +420,8 @@ class FichatiempoController extends Controller
         
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $j, $ficha->referencia)
-                    ->setCellValue('B' . $j, $ficha->empleado->identificacion)
-                    ->setCellValue('C' . $j, $ficha->empleado->nombrecorto);    
+                    ->setCellValue('B' . $j, $ficha->operario->documento)
+                    ->setCellValue('C' . $j, $ficha->operario->nombrecompleto);    
         $i = 3;
         $fecha = 0;
         foreach ($model as $val) {                            
@@ -495,18 +495,18 @@ class FichatiempoController extends Controller
         if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',43])->all()){
             $form = new FormFiltroConsultaFichatiempo();
-            $idempleado = null;
+            $id_operario = null;
             $desde = null;
             $hasta = null;
             $referencia = null;            
             if ($form->load(Yii::$app->request->get())) {
                 if ($form->validate()) {
-                    $idempleado = Html::encode($form->idempleado);
+                    $id_operario = Html::encode($form->id_operario);
                     $desde = Html::encode($form->desde);
                     $hasta = Html::encode($form->hasta);
                     $referencia = Html::encode($form->referencia);                    
                     $table = Fichatiempo::find()
-                            ->andFilterWhere(['=', 'id_empleado', $idempleado])
+                            ->andFilterWhere(['=', 'id_operario', $id_operario])
                             ->andFilterWhere(['>=', 'desde', $desde])
                             ->andFilterWhere(['<=', 'desde', $hasta])
                             ->andFilterWhere(['=', 'referencia', $referencia]);
@@ -606,8 +606,8 @@ class FichatiempoController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);                       
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Id')
-                    ->setCellValue('B1', 'Identificacion')
-                    ->setCellValue('C1', 'Empleado')
+                    ->setCellValue('B1', 'Documento')
+                    ->setCellValue('C1', 'Operario')
                     ->setCellValue('D1', 'Desde')
                     ->setCellValue('E1', 'Hasta')                    
                     ->setCellValue('F1', '% Cumplimiento')
@@ -621,8 +621,8 @@ class FichatiempoController extends Controller
                                   
             $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A' . $i, $val->id_ficha_tiempo)
-                    ->setCellValue('B' . $i, $val->empleado->identificacion)
-                    ->setCellValue('C' . $i, $val->empleado->nombreEmpleado)
+                    ->setCellValue('B' . $i, $val->operario->documento)
+                    ->setCellValue('C' . $i, $val->operario->nombrecompleto)
                     ->setCellValue('D' . $i, $val->desde)
                     ->setCellValue('E' . $i, $val->hasta)                    
                     ->setCellValue('F' . $i, $val->cumplimiento)

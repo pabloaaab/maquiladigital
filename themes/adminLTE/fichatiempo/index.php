@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 /* @var $searchModel app\models\FichatiempoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Lista Fichas tiempos';
+$this->title = 'Tiempo por operario';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="Fichatiempos-index">
@@ -27,12 +27,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['class' => 'col-lg-1'],
             ],
             [
-                'attribute' => 'id_empleado',
+                'attribute' => 'id_operario',
                 'value' => function($model){
                     $empleados = app\models\Fichatiempo::findOne($model->id_ficha_tiempo);
-                    return "{$empleados->empleado->nombrecorto} - {$empleados->empleado->identificacion}";
+                    return "{$empleados->operario->nombrecompleto} - {$empleados->operario->documento}";
                 },
-                'filter' => ArrayHelper::map(app\models\Empleado::find()->all(),'id_empleado','nombreEmpleado'),
+                'filter' => ArrayHelper::map(app\models\Operarios::find()->all(),'id_operario','nombrecompleto'),
                 'contentOptions' => ['class' => 'col-lg-3'],
             ],
             [               

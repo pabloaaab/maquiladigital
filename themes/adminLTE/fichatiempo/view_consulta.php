@@ -13,7 +13,7 @@ use yii\db\ActiveQuery;
 /* @var $this yii\web\View */
 /* @var $model app\models\Fichatiempo */
 
-$this->title = 'Detalle Consulta Ficha Tiempo';
+$this->title = 'Detalle Ficha Tiempo';
 $this->params['breadcrumbs'][] = ['label' => 'Fichas Tiempos', 'url' => ['indexconsulta']];
 $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
 ?>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta'], ['class' => 'btn btn-primary']) ?>		
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsulta'], ['class' => 'btn btn-primary btn-sm']) ?>		
     </p>
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -33,8 +33,8 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
                 <tr>
                     <th><?= Html::activeLabel($model, 'id_ficha_tiempo') ?>:</th>
                     <td><?= Html::encode($model->id_ficha_tiempo) ?></td>
-                    <th><?= Html::activeLabel($model, 'id_empleado') ?>:</th>
-                    <td><?= Html::encode($model->empleado->nombrecorto) ?></td>
+                    <th><?= Html::activeLabel($model, 'id_operario') ?>:</th>
+                    <td><?= Html::encode($model->operario->nombrecompleto) ?></td>
                     <th><?= Html::activeLabel($model, 'cumplimiento') ?>:</th>
                     <td><?= Html::encode($model->cumplimiento) ?></td>
                 </tr>
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
         'model' => $model,
         'attributes' => [
             'id_ficha_tiempo',
-            'id_empleado',
+            'id_operario',
             'cumplimiento',
             'observacion:ntext',
         ],

@@ -17,7 +17,7 @@ class FichatiempoSearch extends Fichatiempo
     public function rules()
     {
         return [
-            [['id_ficha_tiempo', 'id_empleado','estado'], 'integer'],
+            [['id_ficha_tiempo', 'id_operario','estado'], 'integer'],
             [['cumplimiento'], 'number'],
             [['desde','hasta'], 'safe'],
             [['observacion','referencia'], 'string'],
@@ -62,7 +62,7 @@ class FichatiempoSearch extends Fichatiempo
         // grid filtering conditions
         $query->andFilterWhere([
             'id_ficha_tiempo' => $this->id_ficha_tiempo,
-            'id_empleado' => $this->id_empleado,
+            'id_operario' => $this->id_operario,
             'cumplimiento' => $this->cumplimiento,
             'desde' => $this->desde,
             'hasta' => $this->hasta,

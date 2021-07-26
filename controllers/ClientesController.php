@@ -120,6 +120,7 @@ class ClientesController extends Controller {
                 $table->observacion = $model->observacion;
                 $table->minuto_confeccion = $model->minuto_confeccion;
                 $table->minuto_terminacion = $model->minuto_terminacion;
+                $table->proceso = $model->proceso;
                 $table->dv = $dv;
                 if ($model->id_tipo_documento == 1) {
                     $table->nombrecorto = $model->nombrecliente . " " . $model->apellidocliente;
@@ -180,6 +181,7 @@ class ClientesController extends Controller {
                     $table->observacion = $model->observacion;
                     $table->minuto_confeccion = $model->minuto_confeccion;
                     $table->minuto_terminacion = $model->minuto_terminacion;
+                    $table->proceso = $model->proceso;
                     $table->dv = $dv;
                     if ($model->id_tipo_documento == 1) {
                         $table->nombrecorto = strtoupper($model->nombrecliente . " " . $model->apellidocliente);
@@ -191,9 +193,9 @@ class ClientesController extends Controller {
                     }
                     if ($table->update()) {
                         $msg = "El registro ha sido actualizado correctamente";
-                        $this->redirect(["clientes/index"]);
+                       $this->redirect(["clientes/index"]);
                     } else {
-                         $this->redirect(["clientes/index"]);
+                        $this->redirect(["clientes/index"]);
                     }
                 } else {
                     $msg = "El registro seleccionado no ha sido encontrado";
@@ -235,6 +237,7 @@ class ClientesController extends Controller {
                 $model->observacion = $table->observacion;
                 $model->minuto_confeccion = $table->minuto_confeccion;
                 $model->minuto_terminacion = $table->minuto_terminacion;
+                $model->proceso = $table->proceso;
             } else {
                 return $this->redirect(["clientes/index"]);
             }

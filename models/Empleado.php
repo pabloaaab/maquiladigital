@@ -288,10 +288,7 @@ class Empleado extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFichatiempos()
-    {
-        return $this->hasMany(Fichatiempo::className(), ['id_ficha_tiempo' => 'id_ficha_tiempo']);
-    }
+    
     
     public function getEmpleado()
     {

@@ -22,7 +22,7 @@ $form = ActiveForm::begin([
         ]);
 ?>
 <?php
-$empleado = ArrayHelper::map(app\models\Empleado::find()->all(), 'id_empleado', 'nombrecorto');
+$operario = ArrayHelper::map(app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC')->all(), 'id_operario', 'nombrecompleto');
 $horario = ArrayHelper::map(app\models\Horario::find()->all(), 'id_horario', 'nombreHorario');
 $referencia = ArrayHelper::map(app\models\Producto::find()->all(), 'codigo', 'codigonombre');
 ?>
@@ -32,9 +32,9 @@ $referencia = ArrayHelper::map(app\models\Producto::find()->all(), 'codigo', 'co
     </div>
     <div class="panel-body">        														   		
         <div class="row">            
-            <?= $form->field($model, 'id_empleado')->widget(Select2::classname(), [
-            'data' => $empleado,
-            'options' => ['placeholder' => 'Seleccione un empleado'],
+            <?= $form->field($model, 'id_operario')->widget(Select2::classname(), [
+            'data' => $operario,
+            'options' => ['placeholder' => 'Seleccione el operario...'],
             'pluginOptions' => [
                 'allowClear' => true
             ],

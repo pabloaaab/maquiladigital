@@ -20,17 +20,17 @@ $this->params['breadcrumbs'][] = ['label' => 'Fichas Tiempos', 'url' => ['index'
 $this->params['breadcrumbs'][] = $model->id_ficha_tiempo;
 ?>
 <?php
-$clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto');
+$clientes = ArrayHelper::map(Cliente::find()->where(['=','proceso', 1])->all(), 'idcliente', 'nombrecorto');
 ?>
 <div class="Fichatiempo-view">
 
     <!--<?= Html::encode($this->title) ?>-->
 
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary btn-sm']) ?>
+		<?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['update', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success btn-sm']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['delete', 'id' => $model->id_ficha_tiempo], [
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger btn-sm',
             'data' => [
                 'confirm' => 'Esta seguro de eliminar el registro?',
                 'method' => 'post',
@@ -39,7 +39,7 @@ $clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto')
         <?php 
         if ($model->estado == 0){ ?>
             <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar', ['cerrar', 'id' => $model->id_ficha_tiempo], [
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-default btn-sm',
                 'data' => [
                 'confirm' => 'Esta seguro de cerrar el registro?',
                 'method' => 'post',
@@ -58,8 +58,8 @@ $clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto')
                 <tr>
                     <th><?= Html::activeLabel($model, 'id_ficha_tiempo') ?>:</th>
                     <td><?= Html::encode($model->id_ficha_tiempo) ?></td>
-                    <th><?= Html::activeLabel($model, 'id_empleado') ?>:</th>
-                    <td><?= Html::encode($model->empleado->nombrecorto) ?></td>
+                    <th><?= Html::activeLabel($model, 'id_operario') ?>:</th>
+                    <td><?= Html::encode($model->operario->nombrecompleto) ?></td>
                     <th><?= Html::activeLabel($model, 'cumplimiento') ?>:</th>
                     <td><?= Html::encode($model->cumplimiento) ?></td>
                 </tr>
@@ -93,7 +93,7 @@ $clientes = ArrayHelper::map(Cliente::find()->all(), 'idcliente', 'nombrecorto')
         'model' => $model,
         'attributes' => [
             'id_ficha_tiempo',
-            'id_empleado',
+            'id_operario',
             'cumplimiento',
             'observacion:ntext',
         ],
@@ -167,10 +167,10 @@ $form = ActiveForm::begin([
         </table>
     </div>
     <div class="panel-footer text-right">
-        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-primary ']); ?>
+        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-primary btn-sm ']); ?>
         <?php if ($model->estado == 0) { ?>
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success']); ?>
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success",]) ?>
+            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['nuevodetalle', 'id' => $model->id_ficha_tiempo], ['class' => 'btn btn-success btn-sm']); ?>
+            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
         <?php } ?>
     </div>
 </div>

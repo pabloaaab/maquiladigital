@@ -10,7 +10,7 @@ use yii\base\Model;
  */
 class FormFiltroConsultaFichatiempo extends Model
 {
-    public $idempleado;
+    public $id_operario;
     public $desde;
     public $hasta;
     public $referencia;    
@@ -19,7 +19,7 @@ class FormFiltroConsultaFichatiempo extends Model
     {
         return [
 
-            ['idempleado', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
+            ['id_operario', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['desde', 'safe'],
             ['hasta', 'safe'],
             ['referencia', 'default'],            
@@ -29,7 +29,7 @@ class FormFiltroConsultaFichatiempo extends Model
     public function attributeLabels()
     {
         return [
-            'idempleado' => 'Empleado:',            
+            'id_operario' =>'Operario:',            
             'desde' => 'Desde:',
             'hasta' => 'Hasta:',
             'referencia' => 'Referencia:',

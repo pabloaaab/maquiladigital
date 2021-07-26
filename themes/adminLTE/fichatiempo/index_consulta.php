@@ -10,14 +10,14 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 use app\models\Cliente;
-use app\models\Empleado;
+use app\models\Operarios;
 use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 use yii\data\Pagination;
 use kartik\depdrop\DepDrop;
 
-$this->title = 'Consulta Fichas de Tiempo';
+$this->title = 'Fichas de Tiempo';
 $this->params['breadcrumbs'][] = $this->title;
 
 
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ]);
 
-$empleados = ArrayHelper::map(Empleado::find()->all(), 'id_empleado', 'nombreEmpleados');
+$operario = ArrayHelper::map(Operarios::find()->orderBy('nombrecompleto ASC')->all(), 'id_operario', 'nombrecompleto');
 ?>
 
 <div class="panel panel-success panel-filters">
@@ -53,9 +53,9 @@ $empleados = ArrayHelper::map(Empleado::find()->all(), 'id_empleado', 'nombreEmp
 	
     <div class="panel-body" id="filtro" style="display:none">
         <div class="row" >
-            <?= $formulario->field($form, 'idempleado')->widget(Select2::classname(), [
-                'data' => $empleados,
-                'options' => ['prompt' => 'Seleccione un empleado ...'],
+            <?= $formulario->field($form, 'id_operario')->widget(Select2::classname(), [
+                'data' => $operario,
+                'options' => ['prompt' => 'Seleccione un operario...'],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -94,8 +94,8 @@ $empleados = ArrayHelper::map(Empleado::find()->all(), 'id_empleado', 'nombreEmp
             <thead>
             <tr>                
                 <th scope="col">Id</th>
-                <th scope="col">Identificación</th>
-                <th scope="col">Empleado</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Operario</th>
                 <th scope="col">Cumplimiento</th>
                 <th scope="col">Desde</th>
                 <th scope="col">Hasta</th>
@@ -108,8 +108,8 @@ $empleados = ArrayHelper::map(Empleado::find()->all(), 'id_empleado', 'nombreEmp
             <?php foreach ($model as $val): ?>
             <tr>                
                 <td><?= $val->id_ficha_tiempo ?></td>
-                <td><?= $val->empleado->identificacion ?></td>
-                <td><?= $val->empleado->nombrecorto ?></td>
+                <td><?= $val->operario->documento ?></td>
+                <td><?= $val->operario->nombrecompleto ?></td>
                 <td><?= $val->cumplimiento ?></td>
                 <td><?= $val->desde ?></td>
                 <td><?= $val->hasta ?></td>

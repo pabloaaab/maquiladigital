@@ -41,12 +41,14 @@ class FormCliente extends Model
     public $fechaingreso;
     public $minuto_confeccion;
     public $minuto_terminacion;
+    public $proceso;
 
     public function rules()
     {
         return [
 			
             ['id_tipo_documento', 'required', 'message' => 'Campo requerido'],
+             [['proceso'], 'integer'],
             ['cedulanit', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],            
@@ -109,6 +111,7 @@ class FormCliente extends Model
             'observacion' => 'Observaciones:',
             'minuto_confeccion' => 'Minuto Confección:',
             'minuto_terminacion' => 'Minuto Terminación:',
+            'proceso' => 'Proceso:',
 
         ];
     }
