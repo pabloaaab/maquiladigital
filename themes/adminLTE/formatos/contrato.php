@@ -14,34 +14,32 @@ use app\models\Empleado;
 class PDF extends FPDF {
 
     function Header() {
-        $id_contrato = $GLOBALS['id_contrato'];
-        $contrato = Contrato::findOne($id_contrato);
-        $config = Matriculaempresa::findOne(1);
-        $municipio = Municipio::findOne($config->idmunicipio);
-        $departamento = Departamento::findOne($config->iddepartamento);
-        //Logo
-        $this->SetXY(53, 10);
-        $this->Image('dist/images/logos/logomaquila.png', 10, 10, 30, 19);
-        //Encabezado
-        $this->SetFont('Arial', '', 10);
-        $this->SetXY(53, 9);
-        $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
-        $this->SetXY(53, 13.5);
-        $this->Cell(150, 7, utf8_decode(" NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
-        $this->SetXY(53, 18);
-        $this->Cell(150, 7, utf8_decode($config->direccionmatricula. " Teléfono: " .$config->telefonomatricula), 0, 0, 'C', 0);
-        $this->SetXY(53, 23);
-        $this->Cell(150, 7, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'C', 0);
-        $this->SetXY(53, 28);
-        $this->Cell(150, 7, utf8_decode($config->tipoRegimen->regimen), 0, 0, 'C', 0);
-        //$this->SetXY(10, 42);
-        //$this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________"), 0, 0, 'C', 0);
-        
-        $this->EncabezadoDetalles();
-    }    
-    function EncabezadoDetalles() {
-
-    }
+        if ( $this->PageNo() == 1 ) {
+            $id_contrato = $GLOBALS['id_contrato'];
+            $contrato = Contrato::findOne($id_contrato);
+            $config = Matriculaempresa::findOne(1);
+            $municipio = Municipio::findOne($config->idmunicipio);
+            $departamento = Departamento::findOne($config->iddepartamento);
+            //Logo
+            $this->SetXY(53, 10);
+            $this->Image('dist/images/logos/logomaquila.png', 10, 10, 30, 19);
+            //Encabezado
+            $this->SetFont('Arial', '', 10);
+            $this->SetXY(53, 9);
+            $this->Cell(150, 7, utf8_decode($config->razonsocialmatricula), 0, 0, 'C', 0);
+            $this->SetXY(53, 13.5);
+            $this->Cell(150, 7, utf8_decode(" NIT:" .$config->nitmatricula." - ".$config->dv), 0, 0, 'C', 0);
+            $this->SetXY(53, 18);
+            $this->Cell(150, 7, utf8_decode($config->direccionmatricula. " Teléfono: " .$config->telefonomatricula), 0, 0, 'C', 0);
+            $this->SetXY(53, 23);
+            $this->Cell(150, 7, utf8_decode($config->municipio->municipio." - ".$config->departamento->departamento), 0, 0, 'C', 0);
+            $this->SetXY(53, 28);
+            $this->Cell(150, 7, utf8_decode($config->tipoRegimen->regimen), 0, 0, 'C', 0);
+            //$this->SetXY(10, 42);
+            //$this->Cell(190, 7, utf8_decode("_________________________________________________________________________________________________"), 0, 0, 'C', 0);
+        }                
+    } 
+    
     function Body($pdf, $modelocontrato) {
         $config = Matriculaempresa::findOne(1);
         $contrato = Contrato::findOne($modelocontrato->id_contrato);
@@ -110,11 +108,13 @@ class PDF extends FPDF {
         $cadenaCambiada = preg_replace($patronx, $sustitucionx, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     } 
+      
    function Footer() {
         $this->SetFont('Arial', '', 8);
-        $this->Text(10, 290, utf8_decode('Nuestra compañía, en favor del medio ambiente.'));
+        $this->Text(10, 290, utf8_decode(''));
         $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
     } 
+      
     public static function MesesEspañol($mes) {
         
         if ($mes == '01'){
