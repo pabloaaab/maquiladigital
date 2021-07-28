@@ -31,7 +31,7 @@ $view = 'contrato';
                 ],
             ]) ?>
         <?php }?>
-        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimir', 'id' => $model->id_contrato], ['class' => 'btn btn-default btn-sm']); ?>
+        <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir', ['imprimircontrato', 'id' => $model->id_contrato], ['class' => 'btn btn-default btn-sm']); ?>
         <?= Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 11, 'codigo' => $model->id_contrato,'view' => $view], ['class' => 'btn btn-default btn-sm']) ?>        
         <?php if ($model->contrato_activo == 1){ ?>
                 <!-- Inicio Cerrar contrato -->

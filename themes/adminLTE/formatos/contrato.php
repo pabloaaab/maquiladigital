@@ -42,9 +42,9 @@ class PDF extends FPDF {
     function EncabezadoDetalles() {
 
     }
-    function Body($pdf, $id_contrato) {
+    function Body($pdf, $modelocontrato) {
         $config = Matriculaempresa::findOne(1);
-        $contrato = Contrato::findOne($id_contrato);
+        $contrato = Contrato::findOne($modelocontrato->id_contrato);
         $tipo_contrato = TipoContrato::find()->where(['=','id_tipo_contrato', $contrato->id_tipo_contrato])->one();
         $formato = FormatoContenido::find()->where(['=','id_configuracion_prefijo', $tipo_contrato->id_configuracion_prefijo])->one();
         $pdf->SetFont('Arial', '', 9);
@@ -110,11 +110,11 @@ class PDF extends FPDF {
         $cadenaCambiada = preg_replace($patronx, $sustitucionx, $cadenaCambiada);
         $pdf->MultiCell(0,5, $cadenaCambiada);
     } 
-    function Footer() {
+   function Footer() {
         $this->SetFont('Arial', '', 8);
         $this->Text(10, 290, utf8_decode('Nuestra compañía, en favor del medio ambiente.'));
         $this->Text(170, 290, utf8_decode('Página ') . $this->PageNo() . ' de {nb}');
-    }
+    } 
     public static function MesesEspañol($mes) {
         
         if ($mes == '01'){
@@ -316,13 +316,13 @@ class PDF extends FPDF {
 
 }
 global $id_contrato;
-$id_contrato = $model->id_contrato;
+$id_contrato = $modelocontrato->id_contrato;
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
-$pdf->Body($pdf,$model);
+$pdf->Body($pdf,$modelocontrato);
 $pdf->AliasNbPages();
 $pdf->SetFont('Times', '', 10);
-$pdf->Output("Contrato$model->id_contrato.pdf", 'D');
+$pdf->Output("Contrato$modelocontrato->id_contrato.pdf", 'D');
 
 exit;

@@ -505,6 +505,14 @@ class ContratoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
     
+    protected function findModelocontrato($id)
+    {
+    if (($modelocontrato = Contrato::findOne($id)) !== null) {
+            return $modelocontrato;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    
     protected function findModelocambio($id_cambio_salario)
     {
     if (($modelocambio = CambioSalario::findOne($id_cambio_salario)) !== null) {
@@ -529,10 +537,10 @@ class ContratoController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
        
-    public function actionImprimir($id)
+    public function actionImprimircontrato($id)
     {
         return $this->render('../formatos/contrato', [
-            'model' => $this->findModel($id),
+            'modelocontrato' => $this->findModelocontrato($id),
             
         ]);
     }
