@@ -38,9 +38,9 @@ class PDF extends FPDF {
         
     }
 
-    function Body($pdf, $id_pago_adicion) {
+    function Body($pdf, $modelootrosi) {
         $config = Matriculaempresa::findOne(1);
-        $model = PagoAdicionSalario::findOne($id_pago_adicion);
+        $model = PagoAdicionSalario::findOne($modelootrosi->id_pago_adicion);
         $contrato = Contrato::findOne($model->id_contrato);
         $formato = FormatoContenido::findOne($model->id_formato_contenido);
         $pdf->SetFont('Arial', '', 9);

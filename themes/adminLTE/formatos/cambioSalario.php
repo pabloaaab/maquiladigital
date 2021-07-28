@@ -43,7 +43,7 @@ class PDF extends FPDF {
 
     function Body($pdf, $modelocambio) {
         $config = Matriculaempresa::findOne(1);
-        $model = CambioSalario::findOne($modelocambio);
+        $model = CambioSalario::findOne($modelocambio->id_cambio_salario);
         $contrato = Contrato::findOne($model->id_contrato);
         $formato = FormatoContenido::findOne($model->id_formato_contenido);
         $pdf->SetFont('Arial', '', 10);
