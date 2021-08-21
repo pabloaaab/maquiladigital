@@ -340,7 +340,8 @@ class VacacionesController extends Controller
                     if(strtotime($model->fecha_ingreso) <= strtotime($model->fecha_hasta_disfrute)){
                          Yii::$app->getSession()->setFlash('error', 'Error en la fecha de inicio de labores: La fecha de inicio de labores del empleado con documento Nro  '. $contrato->identificacion. ' no puede ser menor o igual a la fecha final de vacaciones.');     
                     }else{
-                        $this->ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final);
+                        $cedula = $model->id_empleado;
+                        $this->ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final, $cedula);
                         $table= new Vacaciones();
                         $table->id_empleado = $model->id_empleado;
                         $table->dias_disfrutados = $model->dias_disfrutados;
@@ -384,13 +385,18 @@ class VacacionesController extends Controller
         ]);
     }
     //PROCESO QUE VALIDE SI HAY INCAPACIDADES
-    protected function ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final) {
-        $incapacidad = \app\models\Incapacidad::find()->where(['=','id_empleado', $contrato->id_empleado])->orderBy('id_incapacidad DESC')->one();
-        $licencia = \app\models\Licencia::find()->where(['=','id_empleado', $contrato->id_empleado])->orderBy('id_licencia_pk DESC')->one();
-        if (strtotime($incapacidad->fecha_final) >= strtotime($fecha_inicio)){
+    protected function ValidarIncapacidadLicencia($contrato, $fecha_inicio, $fecha_final, $cedula) {
+       
+        $incapacidad = \app\models\Incapacidad::find()->where(['=','id_empleado', $cedula])
+                ->andWhere(['>=','fecha_inicio', $fecha_inicio])
+                ->andWhere(['<=', 'fecha_final', $fecha_final])->orderBy('id_incapacidad DESC')->one();
+        $licencia = \app\models\Licencia::find()->where(['=','id_empleado', $cedula])
+                ->andWhere(['>=','fecha_desde', $fecha_inicio])
+                ->andWhere(['<=', 'fecha_hasta', $fecha_final])->orderBy('id_licencia_pk DESC')->one();
+        if ($incapacidad){
             Yii::$app->getSession()->setFlash('warning', 'No es posible generar las vacaciones en este rango de fechas, la incapacidad Nro  '. $incapacidad->id_incapacidad. ' termina el dia '.$incapacidad->fecha_final.', favor corregir la fecha de inicio de vacaciones.');     
         }
-        if (strtotime($licencia->fecha_hasta) >= strtotime($fecha_inicio)){
+       if ($licencia){
             Yii::$app->getSession()->setFlash('warning', 'No es posible generar las vacaciones en este rango de fechas, la licencia Nro  '. $licencia->id_licencia_pk. ' termina el dia '.$licencia->fecha_hasta.', favor corregir la fecha de inicio de vacaciones.');     
         }
     }
