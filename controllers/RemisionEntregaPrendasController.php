@@ -182,9 +182,9 @@ class RemisionEntregaPrendasController extends Controller
     {
         if(Yii::$app->request->post())
         {
-           echo $iddetalle = Html::encode($_POST["iddetalle"]);
-            echo $idremision = Html::encode($_POST["idremision"]);
-            echo $id_referencia = Html::encode($_POST["id_referencia"]);
+           $iddetalle = Html::encode($_POST["iddetalle"]);
+            $idremision = Html::encode($_POST["idremision"]);
+            $id_referencia = Html::encode($_POST["id_referencia"]);
             if((int) $iddetalle)
             {
                 $sw = 2;

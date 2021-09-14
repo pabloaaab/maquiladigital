@@ -130,18 +130,20 @@ class BalanceoController extends Controller
      */
     public function actionView($id, $idordenproduccion)
     {
-        $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('orden_aleatorio asc')->all();
+        $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('operacion, orden_aleatorio asc')->all();
         $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
+        $operarios = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC');
         if (isset($_POST["guardar"])) {
-            if (isset($_POST["idproceso"])) {
-                $intIndice = 0;
-                foreach ($_POST["idproceso"] as $intCodigo) {
-                    if ($_POST["id_operario"][$intIndice] > 0) {
+            if ($_POST["id_operario"] > 0) {  
+                   
+                if (isset($_POST["idproceso"])) {
+                     $intIndice = 0;
+                    foreach ($_POST["idproceso"] as $intCodigo) {
                         $table = new BalanceoDetalle();
-                        $table->id_proceso = $intCodigo;
+                       echo $table->id_proceso = $intCodigo;
                         $table->id_balanceo = $id;
                         $table->id_tipo = $_POST["id_tipo"][$intIndice];
-                        $table->id_operario = $_POST["id_operario"][$intIndice];
+                        $table->id_operario = $_POST["id_operario"];
                         $table->segundos = $_POST["segundos"][$intIndice];
                         $table->minutos = $_POST["minutos"][$intIndice];
                         $table->total_minutos = $_POST["minutos"][$intIndice];
@@ -149,22 +151,37 @@ class BalanceoController extends Controller
                         $table->usuariosistema = Yii::$app->user->identity->username;
                         $table->ordenamiento = $_POST["orden_aleatorio"][$intIndice];
                         $table->insert();
-                    }
-                    $intIndice++;
+                        $intIndice++;
+                     }   
+                     $this->ActualizarSegundos($id);
+                        return $this->redirect(["balanceo/view",
+                      'id'=> $id,
+                      'idordenproduccion' => $idordenproduccion,
+                      'balanceo_detalle' => $balanceo_detalle,
+                    ]); 
+                }else{
+                   Yii::$app->getSession()->setFlash('warning', 'Debe seleccionar las operaciones para el operario.');
+                    return $this->redirect(["balanceo/view",
+                      'id'=> $id,
+                      'idordenproduccion' => $idordenproduccion,
+                      'balanceo_detalle' => $balanceo_detalle,
+                    ]); 
                 }
-               $this->ActualizarSegundos($id);
-               return $this->redirect(["balanceo/view",
+            }else{
+                 Yii::$app->getSession()->setFlash('error', 'Debe de seleccionar un operario.');
+                  return $this->redirect(["balanceo/view",
                       'id'=> $id,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                     ]); 
             }
-       }else{    
+        }else{    
             return $this->render('view', [
                  'model' => $this->findModel($id),
                  'flujo_operaciones' => $flujo_operaciones,
                 'balanceo_detalle' => $balanceo_detalle,
                 'idordenproduccion' => $idordenproduccion,
+                'operarios'=> $operarios,
              ]);
        } 
     }

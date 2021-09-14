@@ -18,6 +18,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
@@ -105,19 +106,29 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
+                            <div class="panel panel-success">
+                                <table class="table table-bordered table-hover">
+                                                        <div class="panel-heading">
+                                    
+                                </div>
+                                    <th><?= Html::dropDownList('id_operario', '', $operarios, ['class' => 'col-sm-4', 'prompt' => 'Seleccione el operario']) ?></th>
+                                   
+                                </table>  
+                            </div>    
+                         
                             <table class="table table-bordered table-hover">
                                 <thead>
+                                     
                                     <tr>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Op</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Segundos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Operarios</th>
-                                        
+                                                                         
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -133,7 +144,11 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         }
                                         ?>
                                          <tr style="font-size: 85%;">
-                                            <td><?= $val->id?></td>
+                                             <?php if($val->operacion == 0){?>
+                                               <td style="width: 30px;"><input type="checkbox"  name="idproceso[]" value="<?= $val->idproceso ?>"></td>
+                                             <?php }else{?>
+                                               <td style="width: 30px;"><input type="checkbox" disabled="true" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
+                                             <?php }?>  
                                             <td><?= $val->proceso->proceso ?></td>
                                             <td><?= $val->idordenproduccion ?></td>
                                             <td><?= $val->segundos ?></td>
@@ -145,9 +160,8 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                                  <td style='background-color:#A5D3E6;'><?= 'PREPARACION' ?></td>
                                             <?php }?>   
                                              <td><?= $val->tipomaquina->descripcion ?></td>
-                                            <td><?= Html::dropDownList('id_operario[]', '', $operarios, ['class' => 'col-sm-12', 'prompt' => 'Seleccion el operario']) ?></td>
+                                           
                                             <input type="hidden" name="id_balanceo[]" value="<?= $model->id_balanceo ?>">
-                                            <input type="hidden" name="idproceso[]" value="<?= $val->idproceso ?>">
                                             <input type="hidden" name="id_tipo[]" value="<?= $val->id_tipo ?>">
                                             <input type="hidden" name="segundos[]" value="<?= $val->segundos ?>">
                                             <input type="hidden" name="minutos[]" value="<?= $val->minutos ?>">

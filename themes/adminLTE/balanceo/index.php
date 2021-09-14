@@ -53,13 +53,13 @@ $cliente = ArrayHelper::map(Cliente::find()->orderBy('nombrecorto ASC')->all(), 
 	
     <div class="panel-body" id="filtro" style="display:none">
         <div class="row" >
-             <?= $formulario->field($form, 'idcliente')->widget(Select2::classname(), [
-                'data' => $cliente,
-                'options' => ['prompt' => 'Seleccione...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
+                <?= $formulario->field($form, 'idcliente')->widget(Select2::classname(), [
+                   'data' => $cliente,
+                   'options' => ['prompt' => 'Seleccione...'],
+                   'pluginOptions' => [
+                       'allowClear' => true
+                   ],
+               ]); ?>
              <?= $formulario->field($form, "idordenproduccion")->input("search") ?>
             <?= $formulario->field($form, 'fecha_inicio')->widget(DatePicker::className(), ['name' => 'check_issue_date',
                 'value' => date('d-M-Y', strtotime('+2 days')),
