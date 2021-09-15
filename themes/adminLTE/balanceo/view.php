@@ -48,7 +48,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Nro_modulo') ?>:</th>
                     <td><?= Html::encode($model->modulo) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Orden_Produccion') ?>:</th>
-                    <td><?= Html::encode($model->idordenproduccion) ?></td>
+                    <td><?= Html::encode($model->idordenproduccion)?> - Cliente: <?= Html::encode($model->ordenproduccion->ordenproduccion)?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Operarios') ?>:</th>
                     <td align="right"><?= Html::encode($model->cantidad_empleados) ?></td>
                 </tr>
@@ -121,8 +121,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                      
                                     <tr>
                                          <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
-                                         <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Op</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Operaciones</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Segundos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
@@ -149,8 +148,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                              <?php }else{?>
                                                <td style="width: 30px;"><input type="checkbox" disabled="true" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
                                              <?php }?>  
-                                            <td><?= $val->proceso->proceso ?></td>
-                                            <td><?= $val->idordenproduccion ?></td>
+                                            <td ><?= $val->proceso->proceso ?></td>
                                             <td><?= $val->segundos ?></td>
                                             <td><?= $val->minutos ?></td>
                                              <td><?= $val->orden_aleatorio ?></td>
@@ -176,7 +174,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                     $model->save(false);
                                    ?>
                                 </tbody>  
-                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 90px;" ><b>Total:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $totalminutos ?></td><td colspan="1"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="4"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $totalminutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
                             </table>
                         </div>   
                         <?php

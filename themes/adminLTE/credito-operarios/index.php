@@ -80,6 +80,7 @@ $codigocredito = ArrayHelper::map(\app\models\ConfiguracionCredito::find()->orde
                     'format' => 'yyyy-m-d',
                     'todayHighlight' => true]])
             ?>
+            <?= $formulario->field($form, 'saldo')->dropDownList(['1' => 'SI'],['prompt' => 'Seleccione una opcion ...']) ?>
         </div>
         
         <div class="panel-footer text-right">
@@ -135,13 +136,12 @@ $codigocredito = ArrayHelper::map(\app\models\ConfiguracionCredito::find()->orde
                 <?php if($val->saldo_credito <= 0){?>   
                  <td style='width: 25px;'>
                         <a href="<?= Url::toRoute(["credito-operarios/view", "id" => $val->id_credito]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>                   
-                    </td>
+                 </td>
                     <td>
                     </td>   
                     <td>
                     </td>
-                    <td>
-                    </td>  
+                   
                 <?php }else{ ?>   
                    <td style='width: 25px;'>
                         <a href="<?= Url::toRoute(["credito-operarios/view", "id" => $val->id_credito]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>

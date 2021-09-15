@@ -63,17 +63,22 @@ class CreditoOperariosController extends Controller
                 $codigo_credito = null;
                 $desde = null;
                 $hasta = null;
+                $saldo = null;
                 if ($form->load(Yii::$app->request->get())) {
                     if ($form->validate()) {                        
                         $id_operario = Html::encode($form->id_operario);
                         $codigo_credito = Html::encode($form->codigo_credito);
                         $desde = Html::encode($form->desde);
                         $hasta = Html::encode($form->hasta);
+                        $saldo = Html::encode($form->saldo);
                        $table = CreditoOperarios::find()
                                 ->andFilterWhere(['=', 'id_operario', $id_operario])                                                                                              
                                 ->andFilterWhere(['=','codigo_credito', $codigo_credito])
                                 ->andFilterWhere(['>=','fecha_inicio', $desde])
                                 ->andFilterWhere(['<=','fecha_inicio', $hasta]);
+                        if ($saldo == 1){
+                            $table = $table->andFilterWhere(['>', 'saldo_credito', $saldo]);
+                        }        
                         $table = $table->orderBy('id_credito DESC');
                         $tableexcel = $table->all();
                         $count = clone $table;

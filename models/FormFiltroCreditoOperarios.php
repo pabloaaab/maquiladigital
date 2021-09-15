@@ -14,6 +14,7 @@ class FormFiltroCreditoOperarios extends Model
     public $codigo_credito;
     public $desde;
     public $hasta;
+    public $saldo;
 
 
     public function rules()
@@ -22,6 +23,7 @@ class FormFiltroCreditoOperarios extends Model
 
             [['id_operario', 'codigo_credito'], 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             [['desde','hasta'], 'safe'],
+            ['saldo', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
            
         ];
     }
@@ -33,6 +35,7 @@ class FormFiltroCreditoOperarios extends Model
             'codigo_credito' =>'Tipo crédito:',
             'desde' => 'Desde:',
             'hasta' => 'Hasta:',
-        ];
+            'saldo' => 'Saldo:',
+         ];
     }
 }

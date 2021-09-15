@@ -139,22 +139,22 @@ class BalanceoController extends Controller
                 if (isset($_POST["idproceso"])) {
                      $intIndice = 0;
                     foreach ($_POST["idproceso"] as $intCodigo) {
+                        $proceso = FlujoOperaciones::find()->where(['=','idproceso', $intCodigo])->andWhere(['=','idordenproduccion', $idordenproduccion])->one();
                         $table = new BalanceoDetalle();
-                       echo $table->id_proceso = $intCodigo;
+                        $table->id_proceso = $intCodigo;
                         $table->id_balanceo = $id;
-                        $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                        $table->id_tipo = $proceso->id_tipo;
                         $table->id_operario = $_POST["id_operario"];
-                        $table->segundos = $_POST["segundos"][$intIndice];
-                        $table->minutos = $_POST["minutos"][$intIndice];
-                        $table->total_minutos = $_POST["minutos"][$intIndice];
-                        $table->total_segundos = $_POST["segundos"][$intIndice];
+                        $table->segundos = $proceso->segundos;
+                        $table->minutos = $proceso->minutos;
+                        $table->total_minutos = $proceso->minutos;
+                        $table->total_segundos = $proceso->segundos;
                         $table->usuariosistema = Yii::$app->user->identity->username;
-                        $table->ordenamiento = $_POST["orden_aleatorio"][$intIndice];
+                        $table->ordenamiento = $proceso->orden_aleatorio;
                         $table->insert();
-                        $intIndice++;
                      }   
                      $this->ActualizarSegundos($id);
-                        return $this->redirect(["balanceo/view",
+                     return $this->redirect(["balanceo/view",
                       'id'=> $id,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
