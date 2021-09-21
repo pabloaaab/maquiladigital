@@ -3,9 +3,8 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\bootstrap\Modal;
+
 use app\models\CantidadPrendaTerminadas;
-use yii\db\Query;
-use yii\db\Expression;
 use app\models\Balanceo;
 use app\models\Horario;
 use app\models\Ordenproduccion;
