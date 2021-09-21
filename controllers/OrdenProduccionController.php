@@ -2139,8 +2139,6 @@ class OrdenProduccionController extends Controller {
       public function actionVereficiencia($id_balanceo, $op)
     {
         $model = new \app\models\FormEficienciaFecha();
-       
-     
         if (Yii::$app->request->get("id_balanceo")) {
            $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
            $orden = Ordenproduccion::findOne($op);
