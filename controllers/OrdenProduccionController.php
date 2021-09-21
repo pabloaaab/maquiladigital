@@ -2148,11 +2148,17 @@ class OrdenProduccionController extends Controller {
                 $model->fecha_inicio = $balanceo->fecha_inicio;
                 $model->fecha_terminacion = $balanceo->fecha_terminacion;
                 $model->orden_produccion = $op;
+                 return $this->renderAjax('eficienciafecha',
+               ['model' => $model,
+               'id_balanceo' => $id_balanceo,
+               'orden' => $orden,
+               ]);
             }
         }
        return $this->renderAjax('eficienciafecha',
                ['model' => $model,
                'id_balanceo' => $id_balanceo,
+               'orden' => $orden,
                ]);
     }
     
