@@ -246,8 +246,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                             <td><?= $registro_modulo->fecha_inicio ?></td>
                                             <td><?= $registro_modulo->fecha_terminacion ?></td>
                                             <td><?= $registro_modulo->observacion ?></td>
-                                            <td style="width: 0.5%; height: 0.5%; "></td>  
-                                            <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',            
+                                            <td style="width: 0.5%; height: 0.5%; ">
+                                               <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',            
                                                     ['/orden-produccion/vereficiencia','id_balanceo'=>$registro_modulo->id_balanceo, 'op' =>$model->idordenproduccion],
                                                         [
                                                             'title' => 'Eficiencia por fecha',
