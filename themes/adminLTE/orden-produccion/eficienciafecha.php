@@ -75,12 +75,47 @@ $form = ActiveForm::begin([
    <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#eficiencia" aria-controls="eficiencia" role="modulo" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
+            <li role="presentation" class="active"><a href="#listado" aria-controls="listado" role="tab" data-toggle="tab">Listado </a></li>
+            <li role="presentation"><a href="#eficiencia" aria-controls="eficiencia" role="modulo" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
         </ul>
         <div class="tab-content" >
-           
-            <!-- TERMINA TAB-->
-            <div role="tabpanel" class="tab-pane" id="eficiencia">
+            <div role="tabpanel" class="tab-pane active" id="listado">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-striped table-hover" width="100%"
+                                <thead>
+                                    <tr align="center" >
+                                        <th scope="col" style='background-color:#B9D5CE;'>Referencia</th>   
+                                        <th scope="col" style='background-color:#B9D5CE;'>Nro Unidades</th>  
+                                        <th scope="col" style='background-color:#B9D5CE;'>Facturación</th>  
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha confección</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha/hora Confección</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Observación</th>                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($cantidad_prendas as $val):?>
+                                        <tr style ='font-size:100%;'>
+                                            <td><?= $val->detalleorden->productodetalle->prendatipo->prenda. ' / '. $val->detalleorden->productodetalle->prendatipo->talla->talla?></td>
+                                            <td><?= $val->cantidad_terminada ?></td>  
+                                            <td align="right"><?= ''. number_format($val->detalleorden->vlrprecio * $val->cantidad_terminada,0) ?></td>
+                                            <td ><?= $val->fecha_entrada ?></td>
+                                            <td ><?= $val->fecha_procesada ?></td>
+                                            <td ><?= $val->usuariosistema ?></td>
+                                            <td ><?= $val->observacion ?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                               </tbody>
+                            </table>
+                        </div>    
+                   </div> 
+                </div>
+            </div>
+        <!-- TERMINA TAB-->
+        <div role="tabpanel" class="tab-pane" id="eficiencia">
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
