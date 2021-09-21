@@ -8,11 +8,11 @@ use app\models\Ordenproduccion;
 
 $cantidad_prendas= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->all(); 
 $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
-$balanceo = Balanceo::find()->where(['=','id_balanceo', $model->id_balanceo])->one();
+$balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();
 $horario = Horario::findOne(1);
 $calculo = 0;
 $calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
-$orden_produccion = Ordenproduccion::findOne($model->orden_produccion); 
+$orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion); 
 ?>
 <?php $form = ActiveForm::begin([
 
@@ -39,23 +39,23 @@ $orden_produccion = Ordenproduccion::findOne($model->orden_produccion);
             <div class="panel-body">
                 <table class="table table-bordered table-striped table-hover" width="100%">
                     <tr style ='font-size:95%;'>
-                        <th><?= Html::activeLabel($model, 'Nro_Balanceo') ?>:</th>
-                        <td><?= Html::encode($model->id_balanceo) ?></td>
-                        <th><?= Html::activeLabel($model, 'fecha_inicio') ?>:</th>
-                        <td><?= Html::encode($model->fecha_inicio) ?></td>
-                         <th><?= Html::activeLabel($model, 'fecha_terminacion') ?></th>
-                        <td><?= Html::encode($model->fecha_terminacion) ?></td>
-                        <th><?= Html::activeLabel($model, 'Minutos_Proveedor') ?>:</th>
+                        <th><?= Html::activeLabel($balanceo, 'Nro_Balanceo') ?>:</th>
+                        <td><?= Html::encode($balanceo->id_balanceo) ?></td>
+                        <th><?= Html::activeLabel($balanceo, 'fecha_inicio') ?>:</th>
+                        <td><?= Html::encode($balanceo->fecha_inicio) ?></td>
+                         <th><?= Html::activeLabel($balanceo, 'fecha_terminacion') ?></th>
+                        <td><?= Html::encode($balanceo->fecha_terminacion) ?></td>
+                        <th><?= Html::activeLabel($balanceo, 'Minutos_Proveedor') ?>:</th>
                         <td><?= Html::encode($orden_produccion->duracion) ?></td>
                         </tr>   
                     <tr style ='font-size:95%;'>
-                           <th><?= Html::activeLabel($model, 'Minutos_Confección') ?>:</th>
+                           <th><?= Html::activeLabel($balanceo, 'Minutos_Confección') ?>:</th>
                         <td><?= Html::encode($balanceo->total_minutos) ?></td>
-                         <th><?= Html::activeLabel($model, 'Minutos_Balanceo') ?>:</th>
+                         <th><?= Html::activeLabel($balanceo, 'Minutos_Balanceo') ?>:</th>
                         <td><?= Html::encode($balanceo->tiempo_balanceo) ?></td>
-                        <th><?= Html::activeLabel($model, 'Tiempo_Operario') ?>:</th>
+                        <th><?= Html::activeLabel($balanceo, 'Tiempo_Operario') ?>:</th>
                          <td><?= Html::encode($balanceo->tiempo_operario) ?></td>
-                        <th><?= Html::activeLabel($model, 'Usuario') ?>:</th>
+                        <th><?= Html::activeLabel($balanceo, 'Usuario') ?>:</th>
                         <td colspan="5"><?= Html::encode($balanceo->usuariosistema) ?></td>
                     </tr>   
                 </table>
@@ -133,13 +133,13 @@ $orden_produccion = Ordenproduccion::findOne($model->orden_produccion);
                                            $con += 1;
                                            $fecha_entrada = $eficiencia->fecha_entrada;
                                            $total = 0;
-                                           $var_1 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $model->id_balanceo])->all();
+                                           $var_1 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $balanceo->id_balanceo])->all();
                                            foreach ($var_1 as $dato_1):
                                                     $total +=  1;
                                            endforeach;
                                            if($total == 1){
                                              $suma = 0;  
-                                             $var_2 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $model->id_balanceo])->one();
+                                             $var_2 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $balanceo->id_balanceo])->one();
                                              $calculo_dia = round($calculo * $eficiencia->nro_operarios);
                                              $suma =   $eficiencia->cantidad_terminada;
                                              $cumplimiento = round(($suma * 100)/$calculo_dia,2);
@@ -155,7 +155,7 @@ $orden_produccion = Ordenproduccion::findOne($model->orden_produccion);
                                            <?php 
                                            }else{
                                                     $suma = 0;
-                                                    $var_3 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $model->id_balanceo])->all();
+                                                    $var_3 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $balanceo->id_balanceo])->all();
                                                     foreach ($var_3 as $dato):    
                                                     $suma += $dato->cantidad_terminada;
                                                     endforeach;

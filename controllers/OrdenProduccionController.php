@@ -2138,26 +2138,11 @@ class OrdenProduccionController extends Controller {
     
       public function actionVereficiencia($id_balanceo, $op)
     {
-        $model = new \app\models\FormEficienciaFecha();
-        if (Yii::$app->request->get("id_balanceo")) {
-           $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
-           $orden = Ordenproduccion::findOne($op);
-            if ($balanceo) {                                
-                $model->id_balanceo = $id_balanceo;
-                $model->fecha_entrada = $model->fecha_entrada;
-                $model->fecha_inicio = $balanceo->fecha_inicio;
-                $model->fecha_terminacion = $balanceo->fecha_terminacion;
-                $model->orden_produccion = $op;
-                 return $this->renderAjax('eficienciafecha',
-               ['model' => $model,
-               'id_balanceo' => $id_balanceo,
-               'orden' => $orden,
-               ]);
-            }
-        }
+       // $model = new \app\models\FormEficienciaFecha();
+        $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
+        $orden = Ordenproduccion::findOne($op);
        return $this->renderAjax('eficienciafecha',
-               ['model' => $model,
-               'id_balanceo' => $id_balanceo,
+               ['id_balanceo' => $id_balanceo,
                'orden' => $orden,
                ]);
     }
