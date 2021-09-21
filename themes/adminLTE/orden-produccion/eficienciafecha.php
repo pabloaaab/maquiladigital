@@ -192,7 +192,7 @@ $form = ActiveForm::begin([
             <!---TERMINA TAB-->
     </div> 
 </div>
-<?php ActiveForm::end(); ?>
+<?php $form->end() ?> 
 
     
 
