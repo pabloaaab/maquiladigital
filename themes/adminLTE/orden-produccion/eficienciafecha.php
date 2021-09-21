@@ -14,21 +14,15 @@ $calculo = 0;
 $calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
 $orden_produccion = Ordenproduccion::findOne($model->orden_produccion); 
 ?>
-<?php
-$form = ActiveForm::begin([
-            "method" => "post",
-            'id' => 'formulario',
-            'enableClientValidation' => false,
-            'enableAjaxValidation' => true,
-            'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
-            'fieldConfig' => [
-            'template' => '{label}<div class="col-sm-6 form-group">{input}{error}</div>',
-            'labelOptions' => ['class' => 'col-sm-3 control-label'],
-            'options' => []
-        ],
-        ]);
+<?php $form = ActiveForm::begin([
 
-?>
+    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-3 control-label'],
+        'options' => []
+    ],
+]); ?>
 <div class="programacion-nomina-view">
 
  <!--<h1><?= Html::encode($this->title) ?></h1>-->
