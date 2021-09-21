@@ -67,14 +67,14 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#listado" aria-controls="listado" role="tab" data-toggle="tab">Listado </a></li>
-            <li role="presentation"><a href="#eficiencia" aria-controls="eficiencia" role="modulo" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
+            <li role="presentation"><a href="#eficiencia" aria-controls="eficiencia" role="tab" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
         </ul>
         <div class="tab-content" >
             <div role="tabpanel" class="tab-pane active" id="listado">
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            <table class="table table-bordered table-striped table-hover" width="100%"
+                            <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr align="center" >
                                         <th scope="col" style='background-color:#B9D5CE;'>Referencia</th>   
@@ -110,7 +110,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
-                            <table class="table table-bordered table-hover" width="100%">
+                            <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col" style='background-color:#B9D5CE; width: 15%'>Fecha confección</th>   

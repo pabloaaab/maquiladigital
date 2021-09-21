@@ -88,8 +88,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#detalleorden" aria-controls="detalleorden" role="tab" data-toggle="tab">Detalle orden <span class="badge"><?= count($modeldetalles) ?></span></a></li>
-            <li role="presentation"><a href="#costoordenproduccion" aria-controls="costoordenproduccion" role="modulo" data-toggle="tab">Costo del servicio <span class="badge"><?= count($ordenproduccion) ?></span></a></li>
-            <li role="presentation"><a href="#modulo" aria-controls="modulo" role="modulo" data-toggle="tab">Modulos <span class="badge"><?= count($modulos) ?></span></a></li>
+            <li role="presentation"><a href="#costoordenproduccion" aria-controls="costoordenproduccion" role="tab" data-toggle="tab">Costo del servicio <span class="badge"><?= count($ordenproduccion) ?></span></a></li>
+            <li role="presentation"><a href="#modulo" aria-controls="modulo" role="tab" data-toggle="tab">Modulos <span class="badge"><?= count($modulos) ?></span></a></li>
            
         </ul>
         <div class="tab-content">
