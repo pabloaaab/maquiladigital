@@ -75,13 +75,12 @@ $form = ActiveForm::begin([
    <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            
             <li role="presentation" class="active"><a href="#eficiencia" aria-controls="eficiencia" role="modulo" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
         </ul>
         <div class="tab-content" >
-   
-        <!-- TERMINA TAB-->
-        <div role="tabpanel" class="tab-pane" id="eficiencia">
+           
+            <!-- TERMINA TAB-->
+            <div role="tabpanel" class="tab-pane" id="eficiencia">
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
