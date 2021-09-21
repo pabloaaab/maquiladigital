@@ -1,9 +1,6 @@
 <?php
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap\Modal;
-
 use app\models\CantidadPrendaTerminadas;
 use app\models\Balanceo;
 use app\models\Horario;
@@ -195,7 +192,7 @@ $form = ActiveForm::begin([
             <!---TERMINA TAB-->
     </div> 
 </div>
-<?php $form->end() ?>
+<?php ActiveForm::end(); ?>
 
     
 
