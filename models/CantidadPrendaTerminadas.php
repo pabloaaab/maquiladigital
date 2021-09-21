@@ -37,7 +37,7 @@ class CantidadPrendaTerminadas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_balanceo', 'idordenproduccion', 'iddetalleorden', 'cantidad_terminada'], 'integer'],
+            [['id_balanceo', 'idordenproduccion', 'iddetalleorden', 'cantidad_terminada','nro_operarios'], 'integer'],
             [['cantidad_terminada'], 'required'],
             [['fecha_entrada', 'fecha_procesada'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -63,6 +63,7 @@ class CantidadPrendaTerminadas extends \yii\db\ActiveRecord
             'fecha_procesada' => 'Fecha Procesada',
             'usuariosistema' => 'Usuariosistema',
             'observacion' => 'Observacion',
+            'nro_operarios' => 'Nro Operarios:',
         ];
     }
 

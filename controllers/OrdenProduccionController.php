@@ -1856,8 +1856,8 @@ class OrdenProduccionController extends Controller {
     public function actionSubirprendaterminada($id_balanceo, $idordenproduccion)
     {
         $model = new FormPrendasTerminadas();
-        $fechaActual = date('Y-m-d');
         $suma = 0;
+        $balanceo = Balanceo::findOne($id_balanceo);
         $total = 0;
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()) {
@@ -1869,16 +1869,21 @@ class OrdenProduccionController extends Controller {
                             $orden_detalle = Ordenproducciondetalle::find()->where(['=','iddetalleorden', $intCodigo])->one();
                             $total = $orden_detalle->faltante + $model->cantidad_terminada;
                             if($total <= $orden_detalle->cantidad){
-                                $table = new CantidadPrendaTerminadas();
-                                $table->id_balanceo = $id_balanceo;
-                                $table->idordenproduccion = $idordenproduccion;
-                                $table->cantidad_terminada = $model->cantidad_terminada;
-                                $table->fecha_entrada = $fechaActual;
-                                $table->usuariosistema = Yii::$app->user->identity->username;
-                                $table->observacion = $model->observacion;
-                                $table->iddetalleorden = $intCodigo;
-                                $table->insert();
-                                $intIndice ++;
+                                if($model->cantidad_terminada > 0 && $model->fecha_entrada != '' ){ 
+                                    $table = new CantidadPrendaTerminadas();
+                                    $table->id_balanceo = $id_balanceo;
+                                    $table->idordenproduccion = $idordenproduccion;
+                                    $table->cantidad_terminada = $model->cantidad_terminada;
+                                    $table->fecha_entrada = $model->fecha_entrada;
+                                    $table->nro_operarios = $model->nro_operarios;
+                                    $table->usuariosistema = Yii::$app->user->identity->username;
+                                    $table->observacion = $model->observacion;
+                                    $table->iddetalleorden = $intCodigo;
+                                    $table->insert();
+                                    $intIndice ++;
+                                }else{
+                                   Yii::$app->getSession()->setFlash('warning', 'Campos vacios en el ingrero.'); 
+                                }    
                             }else{
                                 Yii::$app->getSession()->setFlash('error', 'Favor validar la cantidad de prendas confeccionadas.!');
                             }    
@@ -1915,9 +1920,13 @@ class OrdenProduccionController extends Controller {
                 }
             }                
         }
+        if (Yii::$app->request->get($id_balanceo, $idordenproduccion)) {
+            $model->nro_operarios = $balanceo->cantidad_empleados;
+        }
         return $this->renderAjax('_subirprendaterminada', [
             'model' => $model,       
             'idordenproduccion' => $idordenproduccion,
+            'balanceo' => $balanceo,
             
         ]);      
     }
@@ -2115,14 +2124,38 @@ class OrdenProduccionController extends Controller {
     
     public function actionViewconsultaficha($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
-       // $costoservicio = \app\models\ValorPrendaUnidad::find()->where(['=','idordenproduccion', $id])->all();
+        $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
         return $this->render('view_consulta_ficha', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
-         //           'costoservicio' => $costoservicio,
+                    'modulos' => $modulos,
         ]);
+    }
+    
+  //VENTANA MODAL DE LA EFICIENCIA DEL LOTE
+    
+      public function actionVereficiencia($id_balanceo, $op)
+    {
+        $model = new \app\models\FormEficienciaFecha();
+       
+     
+        if (Yii::$app->request->get("id_balanceo")) {
+           $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
+           $orden = Ordenproduccion::findOne($op);
+            if ($balanceo) {                                
+                $model->id_balanceo = $id_balanceo;
+                $model->fecha_entrada = $model->fecha_entrada;
+                $model->fecha_inicio = $balanceo->fecha_inicio;
+                $model->fecha_terminacion = $balanceo->fecha_terminacion;
+                $model->orden_produccion = $op;
+            }
+        }
+       return $this->renderAjax('eficienciafecha',
+               ['model' => $model,
+               'id_balanceo' => $id_balanceo,
+               ]);
     }
     
     public function actionDetalle_proceso_consulta($idordenproduccion, $iddetalleorden) {

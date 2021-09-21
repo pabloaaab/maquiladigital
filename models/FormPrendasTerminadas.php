@@ -20,13 +20,16 @@ class FormPrendasTerminadas extends Model
     public $fecha_procesada;
     public $usuariosistema;
     public $observacion;
-    
+    public $nro_operarios;
+
+
     public function rules()
     {
         return [            
-           [['cantidad_terminada'], 'required', 'message' => 'Campo requerido'],
-            [['cantidad_terminada'], 'integer'],
+           [['cantidad_terminada','fecha_entrada'], 'required', 'message' => 'Campo requerido'],
+            [['cantidad_terminada','nro_operarios'], 'integer'],
             [['observacion'], 'string', 'max' => 50],
+            [['fecha_entrada'], 'safe'],
         ];
     }
 
@@ -36,6 +39,7 @@ class FormPrendasTerminadas extends Model
             'cantidad_terminada' => 'Nro prendas:',
             'fecha_entrada' => 'Fecha_entrada:',
             'observacion' => 'Observacion:',
+            'nro_operarios'=> 'Nro Operarios:'
             
         ];
     }

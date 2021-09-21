@@ -89,6 +89,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#detalleorden" aria-controls="detalleorden" role="tab" data-toggle="tab">Detalle orden <span class="badge"><?= count($modeldetalles) ?></span></a></li>
             <li role="presentation"><a href="#costoordenproduccion" aria-controls="costoordenproduccion" role="modulo" data-toggle="tab">Costo del servicio <span class="badge"><?= count($ordenproduccion) ?></span></a></li>
+            <li role="presentation"><a href="#modulo" aria-controls="modulo" role="modulo" data-toggle="tab">Modulos <span class="badge"><?= count($modulos) ?></span></a></li>
            
         </ul>
         <div class="tab-content">
@@ -213,6 +214,62 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     </div>    
                 </div>
             <?php include('indicador.php'); ?>   
+            </div>   
+            <div role="tabpanel" class="tab-pane" id="modulo">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                      <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Número</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Modulo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Sam Pro.</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Sam Conf.</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Sam Balanceo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Nro Operarios</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'></th>
+                                      
+                                    </tr>
+                                </thead>
+                                  <?php foreach ($modulos as $registro_modulo): ?>
+                                        <tr style="font-size: 85%;">
+                                            <td><?= $registro_modulo->id_balanceo ?></td>
+                                            <td><?= $registro_modulo->modulo ?></td>
+                                            <td><?= $registro_modulo->ordenproduccion->duracion ?></td>
+                                            <td><?= $registro_modulo->total_minutos ?></td>
+                                            <td><?= $registro_modulo->tiempo_balanceo ?></td>
+                                            <td><?= $registro_modulo->cantidad_empleados ?></td>
+                                            <td><?= $registro_modulo->fecha_inicio ?></td>
+                                            <td><?= $registro_modulo->fecha_terminacion ?></td>
+                                            <td><?= $registro_modulo->observacion ?></td>
+                                            <td style="width: 0.5%; height: 0.5%; ">  
+                                                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>',            
+                                                    ['orden-produccion/vereficiencia','id_balanceo'=>$registro_modulo->id_balanceo, 'op' =>$model->idordenproduccion],
+                                                        [
+                                                            'title' => 'Eficiencia por fecha',
+                                                            'data-toggle'=>'modal',
+                                                            'data-target'=>'#modalvereficiencia'.$registro_modulo->id_balanceo,
+                                                            'class' => 'btn btn-info btn-xs'
+                                                        ]
+                                                    );
+                                                    ?>
+                                                     <div class="modal remote fade" id="modalvereficiencia<?= $registro_modulo->id_balanceo ?>">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content"></div>
+                                                        </div>
+                                                     </div>
+                                               </td>
+                                        </tr>    
+                                  <?php endforeach; ?>          
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>    
+            
    </div>
 </div>    

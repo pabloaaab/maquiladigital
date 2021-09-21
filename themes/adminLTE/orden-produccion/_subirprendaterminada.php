@@ -9,7 +9,6 @@ use yii\helpers\ArrayHelper;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
 $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenproduccion])->all();
-
 ?>
 <?php
 $form = ActiveForm::begin([
@@ -38,11 +37,24 @@ $form = ActiveForm::begin([
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <?= $form->field($model, 'cantidad_terminada')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'cantidad_terminada')->textInput(['maxlength' => true])  ?>
+                    </div>   
+                    <div class="row">
+                        <?= $form->field($model, 'fecha_entrada')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                              'value' => date('d-M-Y', strtotime('+2 days')),
+                              'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                              'pluginOptions' => [
+                                  'format' => 'yyyy-m-d',
+                                  'todayHighlight' => true]])
+                        ?>
+                    </div>    
+                     <div class="row">
+                        <?= $form->field($model, 'nro_operarios')->textInput(['maxlength' => true])  ?>
                     </div>    
                     <div class="row" col>
                         <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-6 form-group">{input}{error}</div>'])->textarea(['rows' => 2]) ?>
                     </div>
+                    
                        
                 </div>                
             </div>

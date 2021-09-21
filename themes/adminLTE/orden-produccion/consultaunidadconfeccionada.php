@@ -82,8 +82,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-hover">
             <thead>
                 <tr style ='font-size:85%;'>                
-                <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Nro balanceo</th>
+                  <th scope="col" style='background-color:#B9D5CE;'>No_Operarios</th>
                 <th scope="col" style='background-color:#B9D5CE;'>OP</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Referencia</th>
@@ -101,8 +101,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 $facturado = 0;
                 foreach ($modelo as $val):?>
                     <tr style='font-size:85%;'>  
-                        <td><?= $val->id_entrada ?></td>
+                    
                         <td><?= $val->id_balanceo ?></td>
+                        <td><?= $val->nro_operarios ?></td>
                         <td><?= $val->idordenproduccion ?></td>
                         <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                         <td><?= $val->detalleorden->productodetalle->prendatipo->prenda. ' / '. $val->detalleorden->productodetalle->prendatipo->talla->talla?></td>
