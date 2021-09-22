@@ -248,7 +248,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                             <td><?= $registro_modulo->observacion ?></td>
                                              <td style="width:10px; height: 10px;">
                                                <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
-                                                    ['/orden-produccion/vereficiencia','id_balanceo' => $registro_modulo->id_balanceo, 'op' =>$model->idordenproduccion],
+                                                    ['/orden-produccion/eficienciaporfecha','id_balanceo' => $registro_modulo->id_balanceo, 'op' =>$model->idordenproduccion],
                                                         [
                                                             'title' => 'Eficiencia por fecha',
                                                             'data-toggle'=>'modal',
