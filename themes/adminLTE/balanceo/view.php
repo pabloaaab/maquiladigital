@@ -135,6 +135,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                     $totalsegundos = 0;
                                     $totalminutos = 0;
                                     $sam_balanceo = 0;
+                                    $total = 0;
                                     foreach ($flujo_operaciones as $val):
                                         $totalminutos += $val->minutos;
                                         $totalsegundos += $val->segundos;
