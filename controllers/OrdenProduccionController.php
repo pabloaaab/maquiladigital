@@ -2141,7 +2141,7 @@ class OrdenProduccionController extends Controller {
        // $model = new \app\models\FormEficienciaFecha();
         $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
         $orden = Ordenproduccion::findOne($op);
-       return $this->renderAjax('eficienciafecha',
+       return $this->renderAjax('eficienciafechaprueba',
                ['id_balanceo' => $id_balanceo,
                'orden' => $orden,
                ]);
