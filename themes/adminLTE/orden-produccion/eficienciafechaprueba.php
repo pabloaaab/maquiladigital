@@ -8,9 +8,6 @@ use app\models\Ordenproduccion;
 
 $cantidad_prendas = CantidadPrendaTerminadas::find()->where(['=', 'id_balanceo', $id_balanceo])->all();
 $balanceo = Balanceo::find()->where(['=', 'id_balanceo', $id_balanceo])->one();
-//$horario = Horario::findOne(1);
-$calculo = 0;
-//$calculo = round((60 / $balanceo->tiempo_balanceo) * ($horario->total_horas));
 $orden_produccion = Ordenproduccion::findOne($idordenproduccion);
 
 ?>
@@ -54,6 +51,49 @@ $orden_produccion = Ordenproduccion::findOne($idordenproduccion);
         </div>
     </div>
    <!-- COMIENZA EL TAB-->
+   <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#listado" aria-controls="listado" role="tab" data-toggle="tab">Listado </a></li>
+        </ul>
+        <div class="tab-content" >
+            <div role="tabpanel" class="tab-pane active" id="listado">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr align="center" >
+                                        <th scope="col" style='background-color:#B9D5CE;'>Referencia</th>   
+                                        <th scope="col" style='background-color:#B9D5CE;'>Nro Unidades</th>  
+                                        <th scope="col" style='background-color:#B9D5CE;'>Facturación</th>  
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha confección</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha/hora Confección</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Observación</th>                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    foreach ($cantidad_prendas as $val):?>
+                                        <tr style ='font-size:100%;'>
+                                            <td><?= $val->detalleorden->productodetalle->prendatipo->prenda. ' / '. $val->detalleorden->productodetalle->prendatipo->talla->talla?></td>
+                                            <td><?= $val->cantidad_terminada ?></td>  
+                                            <td align="right"><?= ''. number_format($val->detalleorden->vlrprecio * $val->cantidad_terminada,0) ?></td>
+                                            <td ><?= $val->fecha_entrada ?></td>
+                                            <td ><?= $val->fecha_procesada ?></td>
+                                            <td ><?= $val->usuariosistema ?></td>
+                                            <td ><?= $val->observacion ?></td>
+                                        </tr>
+                                    <?php endforeach;?>
+                               </tbody>
+                            </table>
+                        </div>    
+                   </div> 
+                </div>
+            </div>
+        </div>
+   </div>    
   
 </div>   
 
