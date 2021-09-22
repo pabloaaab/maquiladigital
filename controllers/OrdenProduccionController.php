@@ -2136,7 +2136,7 @@ class OrdenProduccionController extends Controller {
     
   //VENTANA MODAL DE LA EFICIENCIA DEL LOTE
     
-      public function actionEficienciaporfecha($idordenproduccion, $iddetalleorden)
+      public function actionEficienciaporfecha($idordenproduccion, $id_balanceo)
     {
        // $model = new \app\models\FormEficienciaFecha();
        // $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  

@@ -28,7 +28,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);*/
                Modulo
             </div>
             <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover" width="100%">
+                <table class="table table-bordered table-striped table-hover">
                     
                 </table>
             </div>
