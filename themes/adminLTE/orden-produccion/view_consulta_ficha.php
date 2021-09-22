@@ -246,23 +246,23 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                             <td><?= $registro_modulo->fecha_inicio ?></td>
                                             <td><?= $registro_modulo->fecha_terminacion ?></td>
                                             <td><?= $registro_modulo->observacion ?></td>
-                                             <td style="width:10px; height: 10px;">
+                                            <td style="width:25px;">
                                                <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
                                                     ['/orden-produccion/eficienciaporfecha','id_balanceo' => $registro_modulo->id_balanceo, 'op' =>$model->idordenproduccion],
                                                         [
                                                             'title' => 'Eficiencia por fecha',
                                                             'data-toggle'=>'modal',
-                                                            'data-target'=>'#modalvereficiencia'.$registro_modulo->id_balanceo,
-                                                            'class' => 'btn btn-info btn-xs'
+                                                            'data-target'=>'#modaleficienciafecha'.$registro_modulo->id_balanceo,
                                                         ]
                                                     );
                                                     ?>
-                                                     <div class="modal remote fade" id="modalvereficiencia<?= $registro_modulo->id_balanceo ?>">
+                                                     <div class="modal remote fade" id="modaleficienciafecha<?= $registro_modulo->id_balanceo ?>">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content"></div>
                                                         </div>
                                                      </div>
-                                               </td>
+                                              
+                                            </td>
                                         </tr>    
                                   <?php endforeach; ?>          
                             </table>
