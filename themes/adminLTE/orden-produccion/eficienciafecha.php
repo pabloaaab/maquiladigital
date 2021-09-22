@@ -23,7 +23,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
         'options' => []
     ],
 ]); ?>
-<div class="orden-produccion-view_consulta_ficha">
+<div class="programacion-nomina-view">
 
  <!--<h1><?= Html::encode($this->title) ?></h1>-->
    
