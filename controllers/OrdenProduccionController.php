@@ -47,6 +47,7 @@ use yii\helpers\ArrayHelper;
 use Codeception\Lib\HelperModule;
 use yii\db\Expression;
 use yii\db\Query;
+use yii\db\Command;
 
 
 /**
@@ -2139,12 +2140,14 @@ class OrdenProduccionController extends Controller {
   //VENTANA MODAL DE LA EFICIENCIA DEL MODULO
     
     public function actionEficienciamodulo($id_balanceo){
-       //$unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
-         $unidades =new Query();
-         $unidades = CantidadPrendaTerminadas::find()->select([new Expression('fecha_entrada,cantidad_terminada, nro_operarios')])
-                      ->where(['=','id_balanceo', $id_balanceo])
-                      ->groupBy('fecha_entrada')
-                      ->all();       
+       $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
+       /*  $query =new Query();
+              $query->select(['fecha_entrada','cantidad_terminada', 'nro_operarios'])
+              ->from ('cantidad_prenda_terminadas')        
+              ->where(['=','id_balanceo', $id_balanceo])
+              ->groupBy('fecha_entrada');
+                $command = $query->createCommand();
+                $unidades = $command->queryAll();   */    
        
         return $this->render('eficienciafecha', [
                         'unidades' => $unidades,
