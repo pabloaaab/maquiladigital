@@ -6,8 +6,8 @@ use app\models\Balanceo;
 use app\models\Horario;
 use app\models\Ordenproduccion;
 
-//$cantidad_prendas = CantidadPrendaTerminadas::find()->where(['=', 'id_balanceo', $id_balanceo])->all();
-//$unidades = CantidadPrendaTerminadas::find()->where(['=', 'id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all();
+$cantidad_prendas = CantidadPrendaTerminadas::find()->where(['=', 'id_balanceo', $id_balanceo])->all();
+$unidades = CantidadPrendaTerminadas::find()->where(['=', 'id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all();
 $balanceo = Balanceo::find()->where(['=', 'id_balanceo', $id_balanceo])->one();
 //$horario = Horario::findOne(1);
 $calculo = 0;
