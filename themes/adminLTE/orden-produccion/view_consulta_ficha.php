@@ -143,6 +143,23 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                                     <!-- Fin Vista,Eliminar,Editar -->
 
                                                 </td>
+                                             <td style="width:25px;">
+                                               <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
+                                                    ['/orden-produccion/eficienciaporfecha','idordenproduccion' => $model->idordenproduccion,'iddetalleorden' => $val->iddetalleorden],
+                                                        [
+                                                            'title' => 'Eficiencia por fecha',
+                                                            'data-toggle'=>'modal',
+                                                            'data-target'=>'#modaleficienciafecha'.$model->idordenproduccion,
+                                                        ]
+                                                    );
+                                                    ?>
+                                                     <div class="modal remote fade" id="modaleficienciafecha<?= $model->idordenproduccion ?>">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content"></div>
+                                                        </div>
+                                                     </div>
+                                              
+                                            </td>   
 
                                         </tr>
                                     <?php endforeach; ?>   

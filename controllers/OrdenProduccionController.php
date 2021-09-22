@@ -2136,14 +2136,14 @@ class OrdenProduccionController extends Controller {
     
   //VENTANA MODAL DE LA EFICIENCIA DEL LOTE
     
-      public function actionEficienciaporfecha($id_balanceo, $op)
+      public function actionEficienciaporfecha($idordenproduccion, $iddetalleorden)
     {
        // $model = new \app\models\FormEficienciaFecha();
-        $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
-        $orden = Ordenproduccion::find()->where(['=','idordenproduccion', $op])->one();
+       // $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
+        $orden = Ordenproduccion::find()->where(['=','idordenproduccion', $idordenproduccion])->one();
         return $this->renderAjax('eficienciafechaprueba', [
-                    'id_balanceo' => $id_balanceo,
-                    'orden' => $orden,
+                    'idordenproduccion' => $idordenproduccion,
+                    //'orden' => $orden,
         ]);
     }
     
