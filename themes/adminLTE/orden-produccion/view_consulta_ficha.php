@@ -90,7 +90,6 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
             <li role="presentation" class="active"><a href="#detalleorden" aria-controls="detalleorden" role="tab" data-toggle="tab">Detalle orden <span class="badge"><?= count($modeldetalles) ?></span></a></li>
             <li role="presentation"><a href="#costoordenproduccion" aria-controls="costoordenproduccion" role="tab" data-toggle="tab">Costo del servicio <span class="badge"><?= count($ordenproduccion) ?></span></a></li>
             <li role="presentation"><a href="#modulo" aria-controls="modulo" role="tab" data-toggle="tab">Modulos <span class="badge"><?= count($modulos) ?></span></a></li>
-           
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="detalleorden">
@@ -245,22 +244,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                             <td><?= $registro_modulo->fecha_inicio ?></td>
                                             <td><?= $registro_modulo->fecha_terminacion ?></td>
                                             <td><?= $registro_modulo->observacion ?></td>
-                                            <td style="width:25px;">
-                                               <?php echo Html::a('<span class="glyphicon glyphicon-eye-open"></span>',
-                                                    ['/orden-produccion/eficienciaporfecha','id_balanceo' => $registro_modulo->id_balanceo, 'idordenproduccion' =>$model->idordenproduccion],
-                                                        [
-                                                            'title' => 'Eficiencia por fecha',
-                                                            'data-toggle'=>'modal',
-                                                            'data-target'=>'#modaleficienciafecha'.$registro_modulo->id_balanceo,
-                                                        ]
-                                                    );
-                                                    ?>
-                                                     <div class="modal remote fade" id="modaleficienciafecha<?= $registro_modulo->id_balanceo ?>">
-                                                        <div class="modal-dialog modal-lg">
-                                                            <div class="modal-content"></div>
-                                                        </div>
-                                                     </div>
-                                              
+                                            
+                                            <td style="width: 25px;">
+                                                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/orden-produccion/eficienciamodulo', 'id_balanceo' => $registro_modulo->id_balanceo], ['target' => '_blank']) ?>
                                             </td>
                                         </tr>    
                                   <?php endforeach; ?>          
@@ -269,6 +255,6 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     </div>
                 </div>
             </div>    
-            
+            <!-- TERMINA EL TAB-->
    </div>
 </div>    

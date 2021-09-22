@@ -2126,24 +2126,25 @@ class OrdenProduccionController extends Controller {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
+        
         return $this->render('view_consulta_ficha', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
                     'modulos' => $modulos,
+                    
         ]);
     }
     
-  //VENTANA MODAL DE LA EFICIENCIA DEL LOTE
+  //VENTANA MODAL DE LA EFICIENCIA DEL MODULO
     
-      public function actionEficienciaporfecha($idordenproduccion, $id_balanceo)
-    {
-        $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();  
-        $orden = Ordenproduccion::find()->where(['=','idordenproduccion', $idordenproduccion])->one();
-        return $this->renderAjax('eficienciafechaprueba', [
-                    'idordenproduccion' => $idordenproduccion,
-                    'id_balanceo' => $id_balanceo,
-        ]);
+    public function actionEficienciamodulo($id_balanceo){
+       $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
+        return $this->render('eficienciafecha', [
+                        'unidades' => $unidades,
+                        'id_balanceo' => $id_balanceo,
+            ]);    
+       
     }
     
     public function actionDetalle_proceso_consulta($idordenproduccion, $iddetalleorden) {

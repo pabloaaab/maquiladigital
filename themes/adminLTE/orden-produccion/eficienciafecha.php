@@ -5,6 +5,9 @@ use app\models\CantidadPrendaTerminadas;
 use app\models\Balanceo;
 use app\models\Horario;
 use app\models\Ordenproduccion;
+$this->title = 'Eficiencia modular';
+$this->params['breadcrumbs'][] = ['label' => 'Eficiencia', 'url' => ['view_consulta_ficha']];
+$this->params['breadcrumbs'][] = $id_balanceo;
 
 $cantidad_prendas= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->all(); 
 $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
@@ -12,9 +15,43 @@ $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();
 $horario = Horario::findOne(1);
 $calculo = 0;
 $calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
-$orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion); 
+$orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idordenproduccion); 
 ?>
-<?php $form = ActiveForm::begin([
+
+<div class="orden-produccion-view">
+
+ <!--<?= Html::encode($this->title) ?>-->
+   
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            Modulo
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered table-striped table-hover" width="100%">
+                <tr style ='font-size:95%;'>
+                    <th><?= Html::activeLabel($balanceo, 'Nro_Balanceo') ?>:</th>
+                    <td><?= Html::encode($balanceo->id_balanceo) ?></td>
+                    <th><?= Html::activeLabel($balanceo, 'fecha_inicio') ?>:</th>
+                    <td><?= Html::encode($balanceo->fecha_inicio) ?></td>
+                     <th><?= Html::activeLabel($balanceo, 'fecha_terminacion') ?></th>
+                    <td><?= Html::encode($balanceo->fecha_terminacion) ?></td>
+                    <th><?= Html::activeLabel($balanceo, 'Minutos_Proveedor') ?>:</th>
+                    <td><?= Html::encode($orden_produccion->duracion) ?></td>
+                    </tr>   
+                <tr style ='font-size:95%;'>
+                       <th><?= Html::activeLabel($balanceo, 'Minutos_Confección') ?>:</th>
+                    <td><?= Html::encode($balanceo->total_minutos) ?></td>
+                     <th><?= Html::activeLabel($balanceo, 'Minutos_Balanceo') ?>:</th>
+                    <td><?= Html::encode($balanceo->tiempo_balanceo) ?></td>
+                    <th><?= Html::activeLabel($balanceo, 'Tiempo_Operario') ?>:</th>
+                     <td><?= Html::encode($balanceo->tiempo_operario) ?></td>
+                    <th><?= Html::activeLabel($balanceo, 'Usuario') ?>:</th>
+                    <td colspan="5"><?= Html::encode($balanceo->usuariosistema) ?></td>
+                </tr>   
+            </table>
+        </div>
+    </div>
+    <?php $form = ActiveForm::begin([
 
     'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
     'fieldConfig' => [
@@ -22,51 +59,12 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
         'labelOptions' => ['class' => 'col-sm-3 control-label'],
         'options' => []
     ],
-]); ?>
-<div class="programacion-nomina-view">
-
- <!--<h1><?= Html::encode($this->title) ?></h1>-->
-   
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title"></h4>
-    </div>
-    <div class="modal-body">
-        <div class="panel panel-success">
-            <div class="panel-heading">
-               Modulo
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover" width="100%">
-                    <tr style ='font-size:95%;'>
-                        <th><?= Html::activeLabel($balanceo, 'Nro_Balanceo') ?>:</th>
-                        <td><?= Html::encode($balanceo->id_balanceo) ?></td>
-                        <th><?= Html::activeLabel($balanceo, 'fecha_inicio') ?>:</th>
-                        <td><?= Html::encode($balanceo->fecha_inicio) ?></td>
-                         <th><?= Html::activeLabel($balanceo, 'fecha_terminacion') ?></th>
-                        <td><?= Html::encode($balanceo->fecha_terminacion) ?></td>
-                        <th><?= Html::activeLabel($balanceo, 'Minutos_Proveedor') ?>:</th>
-                        <td><?= Html::encode($orden_produccion->duracion) ?></td>
-                        </tr>   
-                    <tr style ='font-size:95%;'>
-                           <th><?= Html::activeLabel($balanceo, 'Minutos_Confección') ?>:</th>
-                        <td><?= Html::encode($balanceo->total_minutos) ?></td>
-                         <th><?= Html::activeLabel($balanceo, 'Minutos_Balanceo') ?>:</th>
-                        <td><?= Html::encode($balanceo->tiempo_balanceo) ?></td>
-                        <th><?= Html::activeLabel($balanceo, 'Tiempo_Operario') ?>:</th>
-                         <td><?= Html::encode($balanceo->tiempo_operario) ?></td>
-                        <th><?= Html::activeLabel($balanceo, 'Usuario') ?>:</th>
-                        <td colspan="5"><?= Html::encode($balanceo->usuariosistema) ?></td>
-                    </tr>   
-                </table>
-            </div>
-        </div>
-    </div>
+  ]); ?>
    <!-- COMIENZA EL TAB-->
    <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#listado" aria-controls="listado" role="tab" data-toggle="tab">Listado </a></li>
+            <li role="presentation" class="active"><a href="#listado" aria-controls="listado" role="tab" data-toggle="tab">Listado <span class="badge"><?= count($cantidad_prendas)?></span> </a></li>
             <li role="presentation"><a href="#eficiencia" aria-controls="eficiencia" role="tab" data-toggle="tab">Eficiencia <span class="badge"><?= count($unidades)?></span></a></li>
         </ul>
         <div class="tab-content" >
@@ -89,7 +87,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                                 <tbody>
                                     <?php
                                     foreach ($cantidad_prendas as $val):?>
-                                        <tr style ='font-size:100%;'>
+                                        <tr style ='font-size:85%;'>
                                             <td><?= $val->detalleorden->productodetalle->prendatipo->prenda. ' / '. $val->detalleorden->productodetalle->prendatipo->talla->talla?></td>
                                             <td><?= $val->cantidad_terminada ?></td>  
                                             <td align="right"><?= ''. number_format($val->detalleorden->vlrprecio * $val->cantidad_terminada,0) ?></td>
@@ -113,7 +111,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style='background-color:#B9D5CE; width: 15%'>Fecha confección</th>   
+                                        <th scope="col" style='background-color:#B9D5CE; width: 15%'>Dias confección</th>   
                                         <th scope="col" style='background-color:#B9D5CE; width: 15%'>Unidades Confeccionadas</th>
                                         <th scope="col" style='background-color:#B9D5CE; width: 15%'>Nro Operarios </th>
                                         <th scope="col" style='background-color:#B9D5CE; width: 15%'>Unidad x Operario(100%)</th>
@@ -144,7 +142,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                                              $suma =   $eficiencia->cantidad_terminada;
                                              $cumplimiento = round(($suma * 100)/$calculo_dia,2);
                                              $aux1 += $cumplimiento;?>
-                                             <tr>
+                                             <tr style="font-size: 85%;">
                                                 <td ><?= $eficiencia->fecha_entrada ?></td>
                                                 <td ><?= $suma ?></td>
                                                 <td ><?= $eficiencia->nro_operarios ?></td>
@@ -162,7 +160,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                                                     $calculo_dia = round($calculo * $eficiencia->nro_operarios);
                                                     $cumplimiento = round(($suma * 100)/$calculo_dia,2);
                                                     $aux2 += $cumplimiento;?>
-                                                  <tr>
+                                                  <tr style="font-size: 85%;">
                                                      <td ><?= $eficiencia->fecha_entrada ?></td>
                                                      <td ><?= $suma ?></td>
                                                       <td ><?= $eficiencia->nro_operarios ?></td>
@@ -176,7 +174,7 @@ $orden_produccion = Ordenproduccion::findOne($orden->idordenproduccion);
                                     $efectividad = round(($aux1 + $aux2) / $con,2) ;      
                                            
                                     ?>
-                                    <td colspan="5"><td style="font-size: 100%;background: #4B6C67; color: #FFFFFF; width: 142px;" align="right"><b>Eficiencia modulo:</b> <?= $efectividad ?>%</td>
+                                    <td colspan="5"><td style="font-size: 90%;background: #4B6C67; color: #FFFFFF; width: 142px;" align="right"><b>Eficiencia modulo:</b> <?= $efectividad ?>%</td>
                                </tbody>
                             </table>
                         </div>    
