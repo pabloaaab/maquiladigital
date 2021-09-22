@@ -2139,9 +2139,9 @@ class OrdenProduccionController extends Controller {
   //VENTANA MODAL DE LA EFICIENCIA DEL MODULO
     
     public function actionEficienciamodulo($id_balanceo){
-       $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
+      // $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $id_balanceo])->groupBy('fecha_entrada')->all(); 
         return $this->render('eficienciafecha', [
-                        'unidades' => $unidades,
+                        //'unidades' => $unidades,
                         'id_balanceo' => $id_balanceo,
             ]);    
        
