@@ -175,6 +175,7 @@
                                                 ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/indexconsulta']],
                                                 ['label' => 'Seguimiento Producción', 'icon' => 'plus-square-o', 'url' => ['seguimiento-produccion/indexconsulta']],
                                                 ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsultaficha']],
+                                                ['label' => 'Operaciones x Prenda', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexoperacionprenda']],
                                                 ['label' => 'Unidades confeccionadas', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/consultaunidadconfeccionada']],
                                             ],
                                         ],

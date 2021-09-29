@@ -120,7 +120,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <td><?= $val->tipo->tipo ?></td>
                 <td><?= 'Proceso '.'<b>'.round($val->porcentaje_proceso,1).' % - </b>Cantidad '.'<b>'.round($val->porcentaje_cantidad,1).' %' ?></td>
                 <td>
-                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['viewconsultaficha', 'id' => $val->idordenproduccion] ) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['viewconsultaficha', 'id' => $val->idordenproduccion,'condicion'=> $condicion] ) ?>
                 </td>
             </tr>
             </tbody>

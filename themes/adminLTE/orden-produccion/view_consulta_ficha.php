@@ -34,7 +34,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 ?>
 <div class="ordenproduccionproceso-view">
     <p>
-        <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsultaficha'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <?php if($condicion == 0){?> 
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexconsultaficha'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <?php }else{?>
+            <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['indexoperacionprenda'], ['class' => 'btn btn-primary btn-sm']) ?>
+        <?php }?>
     </p>
 
     <div class="panel panel-success">

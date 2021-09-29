@@ -2044,6 +2044,7 @@ class OrdenProduccionController extends Controller {
             $ordenproduccion = null;
             $idtipo = null;
             $codigoproducto = null;
+            $condicion = 0;
             $clientes = Cliente::find()->orderBy('nombrecorto ASC')->all();
             $ordenproducciontipos = Ordenproducciontipo::find()->all();
             if ($form->load(Yii::$app->request->get())) {
@@ -2098,9 +2099,83 @@ class OrdenProduccionController extends Controller {
             return $this->render('index_consulta_ficha', [
                         'model' => $model,
                         'form' => $form,
+                        'condicion' => $condicion,
                         'pagination' => $pages,
                         'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
                         'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
+    
+    public function actionIndexoperacionprenda() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',113])->all()){
+            $form = new \app\models\FormFiltroConsultaOperaciones();
+            $idproceso = null;
+            $ordenproduccion = null;
+            $id_tipo = null;
+            $condicion = 1;
+            $operaciones = ProcesoProduccion::find()->orderBy('proceso ASC')->all();
+            $maquinas = \app\models\TiposMaquinas::find()->orderBy('descripcion ASC')->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idproceso = Html::encode($form->idproceso);
+                    $ordenproduccion = Html::encode($form->idordenproduccion);
+                    $id_tipo = Html::encode($form->id_tipo);
+                    $table = FlujoOperaciones::find()
+                            ->andFilterWhere(['=', 'idproceso', $idproceso])
+                            ->andFilterWhere(['=', 'idordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'id_tipo', $id_tipo])
+                            ->orderBy('fecha_creacion desc');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 50,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if(isset($_POST['excel'])){
+                        //$table = $table->all();
+                        $this->actionExcelconsultaoperacionesprenda($tableexcel);
+                    }
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = FlujoOperaciones::find()
+                        ->orderBy('fecha_creacion desc');
+                $tableexcel = $table->all();
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 40,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+                if(isset($_POST['excel'])){
+                        //$table = $table->all();
+                        $this->actionExcelconsultaoperacionesprenda($tableexcel);
+                }
+            }
+
+            return $this->render('indexfichaoperaciones', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'condicion' => $condicion, 
+                        'operaciones' => ArrayHelper::map($operaciones, "idproceso", "proceso"),
+                        'maquinas' => ArrayHelper::map($maquinas, "id_tipo", "descripcion"),
             ]);
          }else{
             return $this->redirect(['site/sinpermiso']);
@@ -2123,7 +2198,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-    public function actionViewconsultaficha($id) {
+    public function actionViewconsultaficha($id, $condicion) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
@@ -2133,6 +2208,7 @@ class OrdenProduccionController extends Controller {
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
                     'modulos' => $modulos,
+                    'condicion' => $condicion,
                     
         ]);
     }
@@ -2141,14 +2217,6 @@ class OrdenProduccionController extends Controller {
     
     public function actionEficienciamodulo($id_balanceo){
        $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo',$id_balanceo])->groupBy('fecha_entrada')->all(); 
-       
-       /*  $query =new Query();
-              $query->select(['fecha_entrada','cantidad_terminada', 'nro_operarios'])
-              ->from ('cantidad_prenda_terminadas')        
-              ->where(['=','id_balanceo', $id_balanceo])
-              ->groupBy('fecha_entrada');
-                $command = $query->createCommand();
-                $unidades = $command->queryAll();   */    
        
         return $this->render('eficienciafecha', [
                         'unidades' => $unidades,
@@ -2644,6 +2712,90 @@ class OrdenProduccionController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Cantidades_Talla.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    //permite esportar las operaciones por prenda
+     public function actionExcelconsultaoperacionesprenda($tableexcel) {                
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+                              
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'CODIGO')
+                    ->setCellValue('B1', 'OPERACION')
+                    ->setCellValue('C1', 'MAQUINA')
+                    ->setCellValue('D1', 'OP CLIENTE')
+                    ->setCellValue('E1', 'CLIENTE')
+                    ->setCellValue('F1', 'PRODUCTO')
+                    ->setCellValue('G1', 'OP INTERNA')
+                    ->setCellValue('H1', 'SEGUNDOS')
+                    ->setCellValue('I1', 'MINUTOS')
+                    ->setCellValue('J1', 'TIPO OPERACION')
+                    ->setCellValue('K1', 'FECHA CREACION')
+                    ->setCellValue('L1', 'USUARIO');
+                   
+        $i = 2;
+        foreach ($tableexcel as $val) {
+         
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->idproceso)
+                    ->setCellValue('B' . $i, $val->proceso->proceso)
+                    ->setCellValue('C' . $i, $val->tipomaquina->descripcion)
+                    ->setCellValue('D' . $i, $val->ordenproduccion->ordenproduccion)
+                    ->setCellValue('E' . $i, $val->ordenproduccion->cliente->nombrecorto)
+                    ->setCellValue('F' . $i, $val->ordenproduccion->codigoproducto)
+                    ->setCellValue('G' . $i, $val->idordenproduccion)
+                    ->setCellValue('H' . $i, $val->segundos)
+                    ->setCellValue('I' . $i, $val->minutos);
+                     if($val->operacion == 0){
+                         $objPHPExcel->setActiveSheetIndex(0)
+                                  ->setCellValue('J' . $i, 'BALACEO');
+                                 
+                     }else{
+                         $objPHPExcel->setActiveSheetIndex(0)
+                                  ->setCellValue('J' . $i, 'PREPARACION');
+                     }
+                     $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('K' . $i, $val->fecha_creacion)
+                    ->setCellValue('L' . $i, $val->usuariosistema);
+            $i++;
+        }
+        $objPHPExcel->getActiveSheet()->setTitle('Listado operaciones');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Operaciones x prenda.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
