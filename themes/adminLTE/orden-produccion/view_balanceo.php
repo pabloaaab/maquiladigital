@@ -189,7 +189,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     $tota_preparacion = $conminuto - $total_balanceo;
                                     ?>  
                                 </tbody> 
-                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Minutos:</b> <?= $conminuto ?></td><td style="font-size: 85%; color: "><b>Sam_Balanceo:</b> <?= $total_balanceo ?><td style="font-size: 85%; color: "><b>Sam_Preparacion:</b> <?= $tota_preparacion ?></td><td colspan="3"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Balanceo:</b> <?= $total_balanceo ?></td><td style="font-size: 85%; color: "><b>Sam_Preparacion:</b> <?= $tota_preparacion ?><td style="font-size: 85%; color: "></td><td colspan="3"></td>
                             </table>
                         </div>    
                     </div>

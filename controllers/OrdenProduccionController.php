@@ -945,6 +945,7 @@ class OrdenProduccionController extends Controller {
                 
                 $intIndice++;
             }
+          
            $this->redirect(["orden-produccion/view_balanceo", 'id' => $idordenproduccion]);            
         }
         return $this->render('_formeditarflujooperaciones', [
@@ -952,7 +953,7 @@ class OrdenProduccionController extends Controller {
                     'idordenproduccion' => $idordenproduccion,
         ]);
     }
-    
+          
     //balanceo de prendas
     
     public function actionBalanceoprenda($idordenproduccion) {

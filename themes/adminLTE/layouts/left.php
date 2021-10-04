@@ -172,10 +172,17 @@
                                             'url' => '#',
                                             'items' => [
                                                 ['label' => 'Orden Producción', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsulta']],
-                                                ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/indexconsulta']],
-                                                ['label' => 'Seguimiento Producción', 'icon' => 'plus-square-o', 'url' => ['seguimiento-produccion/indexconsulta']],
-                                                ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsultaficha']],
-                                                ['label' => 'Operaciones x Prenda', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexoperacionprenda']],
+                                                 [
+                                                'label' => 'Operaciones',
+                                                'icon' => 'database',
+                                                'url' => '#',
+                                                'items' => [
+                                                    ['label' => 'Ficha Tiempo', 'icon' => 'plus-square-o', 'url' => ['fichatiempo/indexconsulta']],
+                                                    ['label' => 'Seguimiento', 'icon' => 'plus-square-o', 'url' => ['seguimiento-produccion/indexconsulta']],
+                                                    ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsultaficha']],
+                                                    ['label' => 'Operaciones x Prenda', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexoperacionprenda']],
+                                                    ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/indexbalanceoperario']],
+                                                ]],
                                                 ['label' => 'Unidades confeccionadas', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/consultaunidadconfeccionada']],
                                             ],
                                         ],

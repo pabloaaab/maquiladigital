@@ -55,6 +55,7 @@ class BalanceoController extends Controller
      * Lists all Balanceo models.
      * @return mixed
      */
+    //INDEZ INICIAL
     public function actionIndex() {
         if (Yii::$app->user->identity){
         if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',99])->all()){
@@ -121,7 +122,83 @@ class BalanceoController extends Controller
             return $this->redirect(['site/login']);
         }
     }
-
+    // INDEX QUE CONSULTA LOS BALANCEOS POR OPERARIOS
+    
+    public function actionIndexbalanceoperario() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',114])->all()){
+            $form = new \app\models\FormFiltroBalanceoOperario();
+            $id_balanceo = null;
+            $id_proceso = null;
+            $id_operario = null;
+            $id_tipo = null;
+            $operaciones = \app\models\ProcesoProduccion::find()->orderBy('proceso ASC')->all();
+            $maquinas = \app\models\TiposMaquinas::find()->orderBy('descripcion ASC')->all();
+            $operarios = \app\models\Operarios::find()->orderBy('nombrecompleto ASC')->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $id_balanceo = Html::encode($form->id_balanceo);
+                    $id_proceso = Html::encode($form->id_proceso);
+                    $id_operario = Html::encode($form->id_operario);
+                    $id_tipo = Html::encode($form->id_tipo);
+                    $table = BalanceoDetalle::find()
+                            ->andFilterWhere(['=', 'id_operario', $id_operario])
+                            ->andFilterWhere(['=', 'id_tipo', $id_tipo])
+                            ->andFilterWhere(['=', 'id_proceso', $id_proceso])
+                            ->andFilterWhere(['=', 'id_balanceo', $id_balanceo]);
+                    $table = $table->orderBy('id_balanceo desc');
+                    $tableexcel = $table->all();
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 50,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                    if(isset($_POST['excel'])){
+                        //$table = $table->all();
+                        $this->actionExcelconsultaOperarios($tableexcel);
+                    }
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = BalanceoDetalle::find()
+                        ->orderBy('id_balanceo desc');
+                $tableexcel = $table->all();
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 50,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+                if(isset($_POST['excel'])){
+                    //$table = $table->all();
+                    $this->actionExcelconsultaOperarios($tableexcel);
+                }
+            }
+            $to = $count->count();
+            return $this->render('indexbalanceoperario', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'operaciones' => ArrayHelper::map($operaciones, "idproceso", "proceso"),
+                        'maquinas' => ArrayHelper::map($maquinas, "id_tipo", "descripcion"),
+                        'operarios' => ArrayHelper::map($operarios, "id_operario", "nombrecompleto"),
+            ]);
+        }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
     /**
      * Displays a single Balanceo model.
      * @param integer $id
@@ -185,6 +262,22 @@ class BalanceoController extends Controller
              ]);
        } 
     }
+    
+  //vista de la consulta de balanceo y operario
+  public function actionViewconsultabalanceo($id, $idordenproduccion)
+    {
+        $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('operacion, orden_aleatorio asc')->all();
+        $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
+        $operarios = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC');
+        return $this->render('viewconsultabalanceo', [
+                 'model' => $this->findModel($id),
+                 'flujo_operaciones' => $flujo_operaciones,
+                'balanceo_detalle' => $balanceo_detalle,
+                'idordenproduccion' => $idordenproduccion,
+                'operarios'=> $operarios,
+        ]);
+    }
+    
  // codigo que actualiza los minutos y segundos de los operarios
     
  protected function ActualizarSegundos($id)
