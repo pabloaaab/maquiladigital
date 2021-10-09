@@ -27,8 +27,6 @@ use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\db\Query;
 
-
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
