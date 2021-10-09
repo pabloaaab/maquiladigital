@@ -26,7 +26,7 @@ use yii\web\Response;
 use yii\filters\AccessControl;
 use yii\db\Expression;
 use yii\db\Query;
-
+    
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
@@ -48,7 +48,6 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
               </ul>
         </div>
     </div>    
-
     <div class="panel panel-success">
         <div class="panel-heading">
             Detalle del registro
