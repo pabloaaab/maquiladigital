@@ -67,7 +67,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     <td><?= Html::encode($model->total_segundos) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_operativo') ?>:</th>
                     <td><?= Html::encode($model->total_minutos) ?></td>
-                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_minutos') ?>:</th>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Minuto_operario') ?>:</th>
                     <td><?= Html::encode($model->tiempo_operario) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_Segundos') ?>:</th>
                     <td><?= Html::encode($model->tiempo_operario * 60) ?></td>
@@ -100,6 +100,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
             <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($balanceo_detalle) ?></span></a></li>
+            <li role="presentation"><a href="#automatico" aria-controls="automatico" role="tab" data-toggle="tab">Automatico</a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="flujo">
@@ -160,7 +161,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <?php }?>   
                                              <td><?= $val->tipomaquina->descripcion ?></td>
                                            
-                                            <input type="hidden" name="id_balanceo[]" value="<?= $model->id_balanceo ?>">
+                                           <input type="hidden" name="id_balanceo[]" value="<?= $model->id_balanceo ?>">
                                             <input type="hidden" name="id_tipo[]" value="<?= $val->id_tipo ?>">
                                             <input type="hidden" name="segundos[]" value="<?= $val->segundos ?>">
                                             <input type="hidden" name="minutos[]" value="<?= $val->minutos ?>">
@@ -274,12 +275,76 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     </div>
                 </div>    
             </div>
+            <!-- TERMINA EL TABS-->    
+              <div role="tabpanel" class="tab-pane" id="automatico">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                     
+                                    <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="automatico(this);"/></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>codigo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Documento</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Polivalente</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $id = 0;
+                                    foreach ($operario as $val):
+                                        $maquina = app\models\MaquinaOperario::find()->where(['=','id_operario', $val->id_operario])->all();
+                                        foreach ($maquina as $valor):
+                                            if($id <> $valor->id_operario){
+                                                ?>
+                                                 <tr style="font-size: 85%;">
+                                                    <td style="width: 30px;"><input type="checkbox"  name="id_operario[]" value="<?= $val->id_operario ?>"></td>
+                                                    <td><?= $val->nombrecompleto ?></td> 
+                                                    <td ><?= $val->id_operario ?></td>
+                                                    <td ><?= $val->documento ?></td>
+                                                     <td ><?= $val->polivalenteOperacion ?></td>
+                                                 </tr>
+                                            <?php
+                                            $id = $val->id_operario;
+                                            
+                                            }
+                                            endforeach;?>
+                                   <?php endforeach;
+                                   ?>
+                                    <input type="hidden" name="id_balanceo" value="<?= $model->id_balanceo ?>">
+                                </tbody>  
+                            </table>
+                        </div>   
+                        <?php
+                        if($model->estado_modulo == 0){?>
+                            <div class="panel-footer text-right">
+                                <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Generar", ["class" => "btn btn-success btn-sm", 'name' => 'generar']) ?>
+                            </div>
+                        <?php }?>
+                    </div>
+                </div>    
+            </div>
        </div>  
     </div>   
     <?php ActiveForm::end(); ?>
 </div>
 <script type="text/javascript">
 	function marcar(source) 
+	{
+		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
+		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
+		{
+			if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
+			{
+				checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
+			}
+		}
+	}
+        function automatico(source) 
 	{
 		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
 		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles

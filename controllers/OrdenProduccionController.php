@@ -934,19 +934,31 @@ class OrdenProduccionController extends Controller {
     public function actionEditarflujooperaciones($idordenproduccion) {
         $mds = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('orden_aleatorio ASC')->all();
         $error = 0;
+        $orden = Ordenproduccion::findOne($idordenproduccion);
         if (isset($_POST["id"])) {
             $intIndice = 0;
+            $suma_balanceo = 0;
+            $suma_preparacion = 0;
+            $sam_operativo = 0;
             foreach ($_POST["id"] as $intCodigo) {
                     $table = FlujoOperaciones::findOne($intCodigo);
                     $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
                     $table->operacion = $_POST["operacionflujo"][$intIndice];
                     $table->id_tipo = $_POST["id_tipo"][$intIndice];
                     $table->save(false); 
-                
+                    if($_POST["operacionflujo"][$intIndice] == 0){
+                         $suma_balanceo += $_POST["sam_balanceo"][$intIndice]; 
+                    }else{
+                        $suma_preparacion += $_POST["sam_balanceo"][$intIndice];
+                    }
+                    $sam_operativo += $_POST["sam_balanceo"][$intIndice];
+                    $orden->sam_balanceo = $suma_balanceo;
+                    $orden->sam_preparacion = $suma_preparacion;
+                    $orden->sam_operativo = $sam_operativo;
+                    $orden->save(false);
                 $intIndice++;
             }
-          
-           $this->redirect(["orden-produccion/view_balanceo", 'id' => $idordenproduccion]);            
+          $this->redirect(["orden-produccion/view_balanceo", 'id' => $idordenproduccion]);            
         }
         return $this->render('_formeditarflujooperaciones', [
                     'mds' => $mds,

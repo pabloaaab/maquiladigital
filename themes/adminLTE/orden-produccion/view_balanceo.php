@@ -75,14 +75,21 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Codigo_producto') ?>:</th>
-                    <td><?= Html::encode($model->codigoproducto) ?></td>
+                    
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_standar') ?>:</th>
                     <td><?= Html::encode($model->duracion.'  minutos') ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_operativo') ?>:</th>
-                     <td><?= Html::encode(''.number_format($model->segundosficha/60, 2)) ?></td>
+                     <td><?= Html::encode($model->sam_operativo) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_balanceo') ?>:</th>
+                    <td><?= Html::encode($model->sam_balanceo.'  minutos') ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_preparacion') ?>:</th>
+                    <td><?= Html::encode($model->sam_preparacion.'  minutos') ?></td>
+                </tr>
+                 <tr style="font-size: 85%;">
+                  <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Codigo_producto') ?>:</th>
+                    <td><?= Html::encode($model->codigoproducto) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Servicio') ?>:</th>
-                    <td colspan="2"><?= Html::encode($model->tipo->tipo) ?></td>
+                    <td colspan="5"><?= Html::encode($model->tipo->tipo) ?></td>
                 </tr>
                 <tr>
                     <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -151,8 +158,6 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                     $conminuto = 0;
                                     $consegundo = 0;
-                                    $total_balanceo = 0;
-                                    $tota_preparacion = 0;
                                     $prenda = app\models\FlujoOperaciones::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
                                     foreach ($prenda as $registro):?>
                                             <tr style="font-size: 85%;">
@@ -179,14 +184,10 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                        $consegundo += $registro->segundos;
                                        $conminuto += $registro->minutos;
-                                       if($registro->orden_aleatorio > 0){
-                                          $total_balanceo +=  $registro->minutos;
-                                       }
                                     endforeach;
-                                    $tota_preparacion = $conminuto - $total_balanceo;
                                     ?>  
                                 </tbody> 
-                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Balanceo:</b> <?= $total_balanceo ?></td><td style="font-size: 85%; color: "><b>Sam_Preparacion:</b> <?= $tota_preparacion ?><td style="font-size: 85%; color: "></td><td colspan="3"></td>
+                                <td colspan="3"></td><td style="font-size: 85%;"><b>Tot. Seg.:</b> <?= $consegundo ?> <td style="font-size: 85%;"><b>Sam_Balanceo:</b> <?= $model->sam_balanceo ?></td><td style="font-size: 85%; color: "><b>Sam_Preparacion:</b> <?= $model->sam_preparacion ?><td style="font-size: 85%; color: "></td><td colspan="3"></td>
                             </table>
                         </div>    
                     </div>

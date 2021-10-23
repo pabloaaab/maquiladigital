@@ -81,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </select></td>
                             <td><?= Html::dropDownList('id_tipo[]', $val->id_tipo, $maquinas, ['class' => 'col-sm-12', 'prompt' => 'Seleccion la maquina']) ?></td>
                             <td><input type="hidden" name="id[]" value="<?= $val->id ?>"></td>
+                            <td><input type="hidden" name="sam_balanceo[]" value="<?= $val->minutos ?>"></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>  

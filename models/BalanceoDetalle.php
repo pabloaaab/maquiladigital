@@ -38,7 +38,7 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_proceso', 'id_balanceo', 'id_tipo','id_operario','ordenamiento'], 'integer'],
+            [['id_proceso', 'id_balanceo', 'id_tipo','id_operario','ordenamiento','aplicado'], 'integer'],
             [['segundos', 'minutos', 'total_segundos', 'total_minutos','sobrante_faltante'], 'number'],
             [['fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],

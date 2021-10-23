@@ -209,10 +209,11 @@ class BalanceoController extends Controller
     {
         $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('operacion, orden_aleatorio asc')->all();
         $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
-        $operarios = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC');
+        $operario = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC')->all();
+        $balanceo = Balanceo::findOne($id);
+        //Proceso que guarda el balanceo manual
         if (isset($_POST["guardar"])) {
             if ($_POST["id_operario"] > 0) {  
-                   
                 if (isset($_POST["idproceso"])) {
                      $intIndice = 0;
                     foreach ($_POST["idproceso"] as $intCodigo) {
@@ -233,34 +234,130 @@ class BalanceoController extends Controller
                      $this->ActualizarSegundos($id);
                      return $this->redirect(["balanceo/view",
                       'id'=> $id,
+                      'flujo_operaciones' => $flujo_operaciones,   
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
+                      'operario'=> $operario,
                     ]); 
                 }else{
                    Yii::$app->getSession()->setFlash('warning', 'Debe seleccionar las operaciones para el operario.');
                     return $this->redirect(["balanceo/view",
                       'id'=> $id,
+                       'flujo_operaciones' => $flujo_operaciones,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
+                      'operario'=> $operario,
                     ]); 
                 }
             }else{
-                 Yii::$app->getSession()->setFlash('error', 'Debe de seleccionar un operario.');
+                  Yii::$app->getSession()->setFlash('error', 'Debe de seleccionar un operario.');
                   return $this->redirect(["balanceo/view",
                       'id'=> $id,
+                      'flujo_operaciones' => $flujo_operaciones,
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
+                      'operario'=> $operario,
                     ]); 
             }
-        }else{    
+        } //Fin de proceso..
+        //Proceso que guarda automatico el balanceo
+        if (isset($_POST["generar"])){
+            if ($_POST["id_operario"] > 0) {
+                $total = $balanceo->tiempo_operario + 0.5;
+                if(count($_POST["id_operario"]) == $balanceo->cantidad_empleados){
+                    foreach ($_POST["id_operario"] as $variable):
+                        //carga las operaciones
+                        $suma =0;
+                        $operaciones = FlujoOperaciones::find()->where(['=','idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 0])->orderBy('minutos DESC')->all();
+                        if (count($operaciones) >= $balanceo->cantidad_empleados){
+                            foreach ($operaciones as $operacion):
+                                if(!BalanceoDetalle::find()->where(['=','id_proceso', $operacion->idproceso])->andWhere(['=','id_balanceo', $id])->one()){
+                                    $tabla = new BalanceoDetalle();
+                                    $tabla->id_proceso = $operacion->idproceso;
+                                    $tabla->id_balanceo = $id;
+                                    $tabla->id_tipo = $operacion->id_tipo;
+                                    $tabla->id_operario = $variable;
+                                    $tabla->segundos = $operacion->segundos;
+                                    $tabla->minutos = $operacion->minutos;
+                                    $tabla->total_segundos = $operacion->segundos;
+                                    $tabla->usuariosistema = Yii::$app->user->identity->username;
+                                    $tabla->ordenamiento = $operacion->orden_aleatorio;
+                                    $tabla->insert();
+                                }   
+                            endforeach; 
+                            //listar el detalle balanceo
+                            $detalle = BalanceoDetalle::find()->where(['=','id_balanceo', $id])->andWhere(['=','aplicado', 0])->all();
+                            foreach ($detalle as $detalles):
+                               $detalles->id_operario = (NULL);
+                               $detalles->save(false);
+                               if($detalles->id_operario == (NULL)){
+                                    $suma += $detalles->minutos;
+                                    if($suma <= $total){
+                                        $detalles->id_operario = $variable;
+                                        $detalles->aplicado = 1;
+                                        $detalles->save(false);
+                                        $this->ActualizarSegundos($id);
+                                    }else{
+                                        break;
+                                    }    
+                               }
+                            endforeach;
+                        }else{
+                            Yii::$app->getSession()->setFlash('warning', 'Este balanceo no se puede hacer automatico, debe ser manual.');
+                            return $this->redirect(["balanceo/view",
+                                 'id'=> $id,
+                                 'flujo_operaciones' => $flujo_operaciones,
+                                 'idordenproduccion' => $idordenproduccion,
+                                 'balanceo_detalle' => $balanceo_detalle,
+                                 'operario'=> $operario,
+                               ]); 
+                        }      
+                      endforeach;  //termina el ciclo
+                      $final_archivo = BalanceoDetalle::find()->where(['=','id_balanceo', $id])->andWhere(['=','aplicado', 0])->one();
+                      if($final_archivo){
+                        $detalle_balanceo = BalanceoDetalle::find()->where(['=','id_balanceo', $id])->orderBy('total_minutos ASC')->one();
+                        $final_archivo->id_operario = $detalle_balanceo->id_operario;
+                        $final_archivo->save(false);
+                        $this->ActualizarSegundos($id);
+                      }  
+                       return $this->redirect(["balanceo/view",
+                                 'id'=> $id,
+                                 'flujo_operaciones' => $flujo_operaciones,
+                                 'idordenproduccion' => $idordenproduccion,
+                                 'balanceo_detalle' => $balanceo_detalle,
+                                 'operario'=> $operario,
+                               ]); 
+                      
+                }else{  
+                    Yii::$app->getSession()->setFlash('warning', 'La cantidad seleccionada de operarios ('.count($_POST["id_operario"]).'), es mayor a la cantidad del balanceo ('.$balanceo->cantidad_empleados.')');
+                    return $this->redirect(["balanceo/view",
+                         'id'=> $id,
+                         'flujo_operaciones' => $flujo_operaciones,
+                         'idordenproduccion' => $idordenproduccion,
+                         'balanceo_detalle' => $balanceo_detalle,
+                         'operario'=> $operario,
+                       ]); 
+                }            
+           
+            }else{
+                 Yii::$app->getSession()->setFlash('error', 'Debe de seleccionar los ('.$balanceo->cantidad_empleados.') operarios para el balanceo.');
+                 return $this->redirect(["balanceo/view",
+                      'id'=> $id,
+                      'flujo_operaciones' => $flujo_operaciones,
+                      'idordenproduccion' => $idordenproduccion,
+                      'balanceo_detalle' => $balanceo_detalle,
+                      'operario'=> $operario,
+                    ]); 
+            }
+        }
             return $this->render('view', [
                  'model' => $this->findModel($id),
                  'flujo_operaciones' => $flujo_operaciones,
                 'balanceo_detalle' => $balanceo_detalle,
                 'idordenproduccion' => $idordenproduccion,
-                'operarios'=> $operarios,
+                'operario'=> $operario,
              ]);
-       } 
+      
     }
     
   //vista de la consulta de balanceo y operario
@@ -310,8 +407,6 @@ class BalanceoController extends Controller
     {
         $model = new Balanceo();
         $orden = Ordenproduccion::findOne($idordenproduccion);
-        $total_minutos = 0;
-        $total_minutos = ''.number_format($orden->segundosficha/60 ,2);
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -330,9 +425,10 @@ class BalanceoController extends Controller
                     $table->fecha_inicio = $model->fecha_inicio;
                     $table->cantidad_empleados = $model->cantidad_empleados;
                     $table->modulo = $model->modulo;
-                    $table->total_minutos = $total_minutos;
+                    $table->total_minutos = $orden->sam_operativo;
+                    $table->tiempo_balanceo = $orden->sam_balanceo;
                     $table->total_segundos = $orden->segundosficha;
-                    $table->tiempo_operario = ''.number_format($table->total_minutos /$table->cantidad_empleados,2); 
+                    $table->tiempo_operario = ''.number_format($table->tiempo_balanceo /$table->cantidad_empleados,2); 
                     $table->observacion = $model->observacion;
                     $table->porcentaje = 100;
                     $table->usuariosistema = Yii::$app->user->identity->username;
@@ -375,8 +471,9 @@ class BalanceoController extends Controller
     
    public function actionUpdate($id, $idordenproduccion)
     {
-       $model = new Balanceo();
+        $model = new Balanceo();
         $orden = Ordenproduccion::findOne($idordenproduccion);
+        $balanceo = Balanceo::findOne($id);
        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
@@ -395,7 +492,7 @@ class BalanceoController extends Controller
                         $table->observacion = $model->observacion;
                         $table->total_segundos = $orden->segundosficha;
                         $table->total_minutos = ''.number_format($table->total_segundos /60,2);
-                        $table->tiempo_operario = ''.number_format($table->total_minutos / $table->cantidad_empleados ,2);
+                        $table->tiempo_operario = ''.number_format($balanceo->tiempo_balanceo / $table->cantidad_empleados ,3);
                         $table->save(false);
                         $this->actionActualizarfechaterminacion($idordenproduccion);
                         return $this->redirect(["balanceo/index"]);  

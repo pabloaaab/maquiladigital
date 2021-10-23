@@ -54,7 +54,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto'], 'required', 'message' => 'Campo requerido'],            
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo','faltante','cerrar_orden','pagada'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],            
-            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion'], 'number'],
+            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion','sam_balanceo','sam_preparacion','sam_operativo'], 'number'],
             [['valorletras', 'observacion','codigoproducto'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],            
@@ -93,6 +93,9 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'duracion' => 'Duración',
             'aplicar_balanceo' => 'Aplicar balanceo',
             'faltante' => 'Faltante',
+            'sam_balanceo' => 'Sam Balanceo:',
+            'sam_preparacion' => 'Sam Preparacion:',
+            'sam_operativo' => 'Sam Operativo:',
           
         ];
     }

@@ -92,14 +92,14 @@ $form = ActiveForm::begin([
             <thead>
                 <tr >         
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Nro del modulo">Nro mod.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Nro del modulo">Modulo</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Total segundos">Op_Int.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Operarios"># Ope.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Inicio</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Final</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Total segundos">T. Seg.</span></th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Total minutos">T. Min.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Minutos balanceo">M. Bal.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Minutos por operarios">M/O</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Unidades">Uni.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Cerrado o abierto el modulo">C/A</span></th>
