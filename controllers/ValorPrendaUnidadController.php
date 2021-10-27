@@ -314,9 +314,11 @@ class ValorPrendaUnidadController extends Controller
         $model = $this->findModel($id);
         $orden = Ordenproduccion::find()->where(['=','pagada', 0])->orderBy('idordenproduccion desc')->all();  
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $ordenproduccion = Ordenproduccion::findOne($model->idordenproduccion);
             $model->usuario_editado = Yii::$app->user->identity->username;
             $fecha = date('Y-m-d h:i:s');
             $model->fecha_editado = $fecha;
+            $model->cantidad = $ordenproduccion->cantidad;
             $model->update();
             return $this->redirect(['index', 'id' => $model->id_valor]);
         }

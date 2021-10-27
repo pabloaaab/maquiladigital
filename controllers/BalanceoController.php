@@ -520,6 +520,38 @@ class BalanceoController extends Controller
         ]);
     }
 
+    //Actualizar cantidad de operarios
+    
+     public function actionNuevacantidad($id) {  
+        $model = new \app\models\FormParametroCantidadOperario();
+        if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }
+        if ($model->load(Yii::$app->request->post())) {            
+            if ($model->validate()) {
+                $archivo = Balanceo::findOne($id);
+                if (isset($_POST["actualizaroperario"])) { 
+                    $archivo->cantidad_empleados = $model->cantidad_empleados;
+                    $archivo->save(false);
+                    $this->actionActualizarfechaterminacion($model->idordenproduccion);
+                    return $this->redirect(["balanceo/view", 'id' => $id, 'idordenproduccion' => $model->idordenproduccion]);                                                     
+                }
+            }
+        }
+        if (Yii::$app->request->get("id")) {
+            $table = Balanceo::find()->where(['id_balanceo' => $id])->one();            
+            if ($table) {                                
+                $model->tiempo_balanceo = $table->tiempo_balanceo;                
+                $model->fecha_inicio = $table->fecha_inicio; 
+                $model->fecha_final = $table->fecha_terminacion; 
+                $model->idordenproduccion = $table->idordenproduccion;
+            }
+            
+        }
+        return $this->renderAjax('_nuevacantidadoperario', ['model' => $model, 'id' => $id]);
+    }
+    
    public function actionEliminar($id) {
         if (Yii::$app->request->post()) {
             $balanceo = Balanceo::findOne($id);

@@ -73,7 +73,8 @@ $view = 'orden-produccion/vistatallas';
                     <thead >
                         <tr style='font-size: 85%;'>
                             <td scope="col" style='background-color:#B9D5CE;'><b>Id</b></td>                        
-                            <td scope="col" style='background-color:#B9D5CE;'><b>Nro Balanceo</b></td>                        
+                            <td scope="col" style='background-color:#B9D5CE;'><b>Nro Balanceo</b></td>   
+                            <td scope="col" style='background-color:#B9D5CE;'><b>Cant.</b></td>     
                             <th scope="col" style='background-color:#B9D5CE;'>Op</th>                        
                             <th scope="col" style='background-color:#B9D5CE;'>F. Entrada</th>
                             <th scope="col" style='background-color:#B9D5CE;'>F. Registro</th>
@@ -91,6 +92,7 @@ $view = 'orden-produccion/vistatallas';
                         <tr style='font-size: 85%;'>
                             <td><?= $val->id_entrada ?></td>
                             <td><?= $val->id_balanceo ?></td>
+                             <td><?= $val->nro_operarios ?></td>
                             <td><?= $val->idordenproduccion ?></td>
                             <td><?= $val->fecha_entrada ?></td>
                             <td><?= $val->fecha_procesada ?></td>

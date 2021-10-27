@@ -19,7 +19,6 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use yii\filters\AccessControl;
 use kartik\select2\Select2;
-
 /* @var $this yii\web\View */
 /* @var $model app\models\Ordenproduccion */
 
@@ -33,9 +32,23 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'],['class' => 'btn btn-primary btn-xs']) ?></button>
         <?php if($model->estado_modulo == 0){?>
            <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar modulo', ['cerrarmodulo', 'id' => $model->id_balanceo, 'idordenproduccion' => $idordenproduccion],['class' => 'btn btn-warning btn-xs',
-            'data' => ['confirm' => 'Esta seguro de cerrar el modulo Nro: '. $model->modulo. '', 'method' => 'post']]) ?></button>
+            'data' => ['confirm' => 'Esta seguro de cerrar el modulo Nro: '. $model->modulo. '', 'method' => 'post']])?>
         <?php }?>
-    </div>    
+         <?= Html::a('<span class="glyphicon glyphicon-user"></span> Nueva cantidad',            
+             ['/balanceo/nuevacantidad','id' => $model->id_balanceo],
+             [
+                 'title' => 'Nueva cantidad de operarios',
+                 'data-toggle'=>'modal',
+                 'data-target'=>'#modalnuevacantidad'.$model->id_balanceo,
+                 'class' => 'btn btn-info btn-sm'
+             ]
+         );?></button>
+    </div>
+     <div class="modal remote fade" id="modalnuevacantidad<?= $model->id_balanceo ?>">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content"></div>
+            </div>
+        </div>
     <div class="panel panel-success">
         <div class="panel-heading">
             Detalle del registro
