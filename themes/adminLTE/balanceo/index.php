@@ -102,6 +102,7 @@ $form = ActiveForm::begin([
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Minutos balanceo">M. Bal.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Minutos por operarios">M/O</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Unidades">Uni.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'> <span title="Proceso de confeccion">Proceso</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'> <span title="Cerrado o abierto el modulo">C/A</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
@@ -123,17 +124,22 @@ $form = ActiveForm::begin([
                 <td><?= $val->total_minutos ?></td>
                 <td><?= $val->tiempo_operario ?></td>
                 <td><?= $val->ordenproduccion->cantidad ?></td>
+                <?php if($val->id_proceso_confeccion == 1){?>
+                      <td style='background-color:#A1D2D8;'><?= $val->procesoconfeccion->descripcion_proceso ?></td>
+                <?php }else{?>
+                      <td style='background-color:#F1E4F4;'><?= $val->procesoconfeccion->descripcion_proceso ?></td> 
+                <?php } ?>      
                 <td><?= $val->estadomodulo ?></td>
                 <td><?= $val->observacion ?></td>
                  <?php 
                     if($val->estado_modulo == 0){?>
-                        <td style= 'width: 25px;'>
-                          <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <td style= 'width: 25px; height: 25px;'>
+                          <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion, 'id_proceso_confeccion' =>$val->id_proceso_confeccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                         </td>
-                        <td style= 'width: 25px;'>
-                            <a href="<?= Url::toRoute(["balanceo/update", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
+                        <td style= 'width: 25px; height: 25px;'>
+                            <a href="<?= Url::toRoute(["balanceo/update", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion, 'id_proceso_confeccion' =>$val->id_proceso_confeccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>                   
                        </td>
-                        <td style= 'width: 25px;'>
+                        <td style= 'width: 25px; height: 25px;'>
                             <?= Html::a('', ['eliminar', 'id' => $val->id_balanceo], [
                                 'class' => 'glyphicon glyphicon-trash',
                                 'data' => [
@@ -143,8 +149,8 @@ $form = ActiveForm::begin([
                             ]) ?>
                         </td>
                     <?php }else {?>
-                         <td style= 'width: 25px;'>
-                            <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                         <td style= 'width: 25px; height: 25px;'>
+                            <a href="<?= Url::toRoute(["balanceo/view", "id" => $val->id_balanceo, 'idordenproduccion' => $val->idordenproduccion, 'id_proceso_confeccion' =>$val->id_proceso_confeccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                          </td>   
                          <td></td>
                          <td></td>

@@ -19,6 +19,7 @@ use app\models\FlujoOperaciones;
 use app\models\Producto;
 use app\models\Productodetalle;
 use app\models\Balanceo;
+use app\models\BalanceoDetalle;
 use app\models\UsuarioDetalle;
 use app\models\FormFiltroConsultaUnidadConfeccionada;
 use app\models\FormFiltroEntradaSalida;
@@ -27,6 +28,7 @@ use app\models\SalidaEntradaProduccionDetalle;
 use app\models\FormFiltroOrdenTercero;
 use app\models\OrdenProduccionTercero;
 use app\models\OrdenProduccionTerceroDetalle;
+use app\models\CantidadPrendaTerminadasPreparacion;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -835,14 +837,18 @@ class OrdenProduccionController extends Controller {
     }
     
     //EDITAR ENTRADA DE PRENDAS CONFECCIONADAS
-    public function actionEditarentrada()
+    public function actionEditarentrada($id_proceso_confeccion)
     {
         $identrada = Html::encode($_POST["identrada"]);
         $iddetalleorden = Html::encode($_POST["iddetalleorden"]);
         $error = 0;
         if (Yii::$app->request->post()) {
             if ((int) $identrada) {
-                $table = CantidadPrendaTerminadas::findOne($identrada);
+                if($id_proceso_confeccion == 1){
+                     $table = CantidadPrendaTerminadas::findOne($identrada);
+                }else{
+                    $table = CantidadPrendaTerminadasPreparacion::findOne($identrada);
+                }     
                 if ($table) {
                     $table->cantidad_terminada = Html::encode($_POST["cantidad_terminada"]);
                     $table->observacion = Html::encode($_POST["observacion"]);
@@ -1331,6 +1337,79 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(['site/login']);
         }
     }
+    
+    //INDEZ QUE ME PERMITE VER LOS REPROCESOS
+    
+     public function actionIndexreprocesoproduccion() {
+        if (Yii::$app->user->identity){
+        if (UsuarioDetalle::find()->where(['=','codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=','id_permiso',115])->all()){
+            $balan = Balanceo::find()->all();
+            $form = new FormFiltroOrdenProduccionProceso();
+            $idcliente = null;
+            $ordenproduccion = null;
+            $idtipo = null;
+            $codigoproducto = null;
+            $clientes = Cliente::find()->all();
+            $ordenproducciontipos = Ordenproducciontipo::find()->where(['=','ver_registro', 1])->all();
+            if ($form->load(Yii::$app->request->get())) {
+                if ($form->validate()) {
+                    $idcliente = Html::encode($form->idcliente);
+                    $ordenproduccion = Html::encode($form->ordenproduccion);
+                    $idtipo = Html::encode($form->idtipo);
+                    $codigoproducto = Html::encode($form->codigoproducto);
+                    $table = Ordenproduccion::find()
+                            ->andFilterWhere(['=', 'idcliente', $idcliente])
+                            ->andFilterWhere(['like', 'idordenproduccion', $ordenproduccion])
+                            ->andFilterWhere(['=', 'codigoproducto', $codigoproducto])
+                            ->andFilterWhere(['=', 'idtipo', $idtipo])
+                            ->andFilterWhere(['=','aplicar_balanceo', 1])
+                           
+                            ->orderBy('idordenproduccion desc');
+                    $count = clone $table;
+                    $to = $count->count();
+                    $pages = new Pagination([
+                        'pageSize' => 40,
+                        'totalCount' => $count->count()
+                    ]);
+                    $model = $table
+                            ->offset($pages->offset)
+                            ->limit($pages->limit)
+                            ->all();
+                } else {
+                    $form->getErrors();
+                }
+            } else {
+                $table = Ordenproduccion::find()
+                        ->where(['=', 'idtipo', 1])
+                        ->orWhere(['=', 'idtipo', 4])
+                        ->andWhere(['=','aplicar_balanceo', 1])
+                        ->orderBy('idordenproduccion desc');
+                $count = clone $table;
+                $pages = new Pagination([
+                    'pageSize' => 40,
+                    'totalCount' => $count->count(),
+                ]);
+                $model = $table
+                        ->offset($pages->offset)
+                        ->limit($pages->limit)
+                        ->all();
+            }
+
+            return $this->render('indexreprocesoproduccion', [
+                        'model' => $model,
+                        'form' => $form,
+                        'pagination' => $pages,
+                        'balan' => $balan,
+                        'clientes' => ArrayHelper::map($clientes, "idcliente", "nombrecorto"),
+                        'ordenproducciontipos' => ArrayHelper::map($ordenproducciontipos, "idtipo", "tipo"),
+            ]);
+         }else{
+            return $this->redirect(['site/sinpermiso']);
+        }
+        }else{
+            return $this->redirect(['site/login']);
+        }
+    }
 
     public function actionNuevo_detalle_proceso($id, $iddetalleorden) {
         $detalleorden = Ordenproducciondetalle::findOne($iddetalleorden);
@@ -1722,10 +1801,32 @@ class OrdenProduccionController extends Controller {
     {
       $detalletallas = Ordenproducciondetalle::findOne($iddetalleorden);  
       $cantidades = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_entrada DESC')->all();
+      $cantidad_preparacion = CantidadPrendaTerminadasPreparacion::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_entrada DESC')->all();
        return $this->render('vistatallas', [
                     'detalletallas' => $detalletallas, 
                     'cantidades' => $cantidades,
+                    'cantidad_preparacion' => $cantidad_preparacion,
                     
+        ]);
+      
+    }
+    
+    //VISTA PARA EL REPROCESO DE PRODUCCION
+    
+      public function actionView_reproceso_produccion($id)
+      {
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $ordendetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->one();
+        $operaciones = Ordenproducciondetalleproceso::find()->Where(['=','iddetalleorden', $ordendetalle->iddetalleorden])
+                                                                    ->orderBy('id_tipo DESC')
+                                                                   ->all();
+        $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
+        return $this->render('view_reproceso_produccion', [
+                    'model' => $this->findModel($id),
+                    'modeldetalles' => $modeldetalles,
+                    'operaciones' => $operaciones,
+                    'modulos' => $modulos,
+                     
         ]);
       
     }
@@ -1867,7 +1968,7 @@ class OrdenProduccionController extends Controller {
     }
     
     //codigo que permite subir las prendas terminas
-    public function actionSubirprendaterminada($id_balanceo, $idordenproduccion)
+    public function actionSubirprendaterminada($id_balanceo, $idordenproduccion, $id_proceso_confeccion)
     {
         $model = new FormPrendasTerminadas();
         $suma = 0;
@@ -1893,6 +1994,7 @@ class OrdenProduccionController extends Controller {
                                     $table->usuariosistema = Yii::$app->user->identity->username;
                                     $table->observacion = $model->observacion;
                                     $table->iddetalleorden = $intCodigo;
+                                    $table->id_proceso_confeccion = $id_proceso_confeccion;
                                     $table->insert();
                                     $intIndice ++;
                                 }else{
@@ -1936,11 +2038,13 @@ class OrdenProduccionController extends Controller {
         }
         if (Yii::$app->request->get($id_balanceo, $idordenproduccion)) {
             $model->nro_operarios = $balanceo->cantidad_empleados;
+            $model->id_proceso_confeccion = $id_proceso_confeccion;
         }
         return $this->renderAjax('_subirprendaterminada', [
             'model' => $model,       
             'idordenproduccion' => $idordenproduccion,
             'balanceo' => $balanceo,
+            'id_proceso_confeccion' => $id_proceso_confeccion,
             
         ]);      
     }
@@ -2226,7 +2330,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
-  //VENTANA MODAL DE LA EFICIENCIA DEL MODULO
+  //PROCESO PARA IR A LA EFICIENCIA DEL MODULO
     
     public function actionEficienciamodulo($id_balanceo){
        $unidades= CantidadPrendaTerminadas::find()->where(['=','id_balanceo',$id_balanceo])->groupBy('fecha_entrada')->all(); 
@@ -2234,6 +2338,44 @@ class OrdenProduccionController extends Controller {
         return $this->render('eficienciafecha', [
                         'unidades' => $unidades,
                         'id_balanceo' => $id_balanceo,
+            ]);    
+       
+    }
+    
+    // PROCESO PARA SUBIR LOS REPROCESOS AL MODULO Y LA OPERACION
+    
+     public function actionDetalle_reproceso_prenda($id_balanceo, $id){
+       $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id_balanceo])->orderBy('id_operario asc')->all();
+       
+        if (isset($_POST["iddetalle"])) {
+            $intIndice = 0;
+            foreach ($_POST["iddetalle"] as $intCodigo) {
+                if($_POST["cantidad"][$intIndice] > 0){
+                    $detalle = BalanceoDetalle::find()->where(['=','id_detalle', $intCodigo])->one();
+                    $table = new \app\models\ReprocesoProduccionPrendas();
+                   $table->id_detalle = $intCodigo;
+                   $table->id_proceso = $detalle->id_proceso;
+                   $table->id_balanceo = $id_balanceo ;
+                   $table->id_operario = $detalle->id_operario;
+                   $table->cantidad = $_POST["cantidad"][$intIndice];
+                   $table->idproductodetalle = $_POST["id_talla"];
+                   $table->fecha_registro = date('Y-m-d'); 
+                   $table->observacion = $_POST["observacion"][$intIndice];
+                   $table->usuariosistema = Yii::$app->user->identity->username;
+                   $table->insert();
+                }    
+                $intIndice++;
+            }
+            return $this->render('detalle_reproceso_prenda', [
+                        'balanceo_detalle' => $balanceo_detalle,
+                        'id_balanceo' => $id_balanceo,
+                         'id' => $id,
+            ]);   
+       }     
+        return $this->render('detalle_reproceso_prenda', [
+                        'balanceo_detalle' => $balanceo_detalle,
+                        'id_balanceo' => $id_balanceo,
+                         'id' => $id,
             ]);    
        
     }
@@ -2249,6 +2391,47 @@ class OrdenProduccionController extends Controller {
                     'cont' => $cont,
                     'idordenproduccion' => $idordenproduccion,
                     'iddetalleorden' => $iddetalleorden,
+        ]);
+    }
+    
+    public function actionRecoger_preparacion($iddetalleorden, $modulo, $id) {
+        $detalle_balanceo = BalanceoDetalle::find()->where(['=','id_balanceo', $modulo])->andWhere(['=','ordenamiento', 0])->orderBy('id_operario ASC,id_proceso DESC')->all();
+        $detalletallas = Ordenproducciondetalle::findOne($iddetalleorden);
+        if (isset($_POST["id_proceso"])) {
+            $intIndice = 0;
+            foreach ($_POST["id_proceso"] as $intCodigo){
+                if($_POST["cantidad"][$intIndice]>0){
+                     $tabla = new CantidadPrendaTerminadasPreparacion();
+                     $tabla->id_balanceo = $modulo;
+                     $tabla->idordenproduccion = $id;
+                     $tabla->iddetalleorden = $iddetalleorden;
+                     $tabla->id_proceso_confeccion = 2;
+                     $tabla->id_operario = $_POST["id_operario"][$intIndice];
+                     $tabla->cantidad_terminada = $_POST["cantidad"][$intIndice];
+                     $tabla->nro_operarios = 1;
+                     $tabla->id_proceso = $intCodigo;
+                     $tabla->total_operaciones = $_POST["total_operaciones"][$intIndice]; 
+                     $tabla->fecha_entrada = $_POST["fecha_entrada"][$intIndice];
+                     $tabla->usuariosistema = Yii::$app->user->identity->username;
+                     $tabla->observacion = $_POST["observacion"][$intIndice];
+                     $tabla->insert(false);
+                }
+                $intIndice++;      
+            }
+            return $this->render('recoger_prenda_preparada', [
+                        'iddetalleorden' => $iddetalleorden,
+                        'detalletallas' => $detalletallas,
+                        'detalle_balanceo' => $detalle_balanceo,
+                        'modulo' => $modulo,
+                        'id' => $id,
+                         ]);
+        }
+        return $this->render('recoger_prenda_preparada', [
+            'iddetalleorden' => $iddetalleorden,
+            'detalletallas' => $detalletallas,
+            'detalle_balanceo' => $detalle_balanceo,
+            'modulo' => $modulo,
+            'id' => $id,
         ]);
     }
     
@@ -2676,8 +2859,9 @@ class OrdenProduccionController extends Controller {
         exit;
     }
     
-    public function actionCantidadconfeccionada($iddetalleorden) {                
+    public function actionCantidadconfeccionada($iddetalleorden, $id_proceso_confeccion) {                
         $cantidades = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $iddetalleorden])->all();
+        $preparacion = CantidadPrendaTerminadasPreparacion::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_entrada DESC')->all();
         $detalletallas = Ordenproducciondetalle::findOne($iddetalleorden);
         $objPHPExcel = new \PHPExcel();
         // Set document properties
@@ -2688,36 +2872,84 @@ class OrdenProduccionController extends Controller {
             ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
             ->setKeywords("office 2007 openxml php")
             ->setCategory("Test result file");
-        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
-        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        
-                               
-        $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'ID')
-                    ->setCellValue('B1', 'F. ENTRADA')
-                    ->setCellValue('C1', 'F. REGISTRO')
-                    ->setCellValue('D1', 'CANT.')
-                    ->setCellValue('E1', 'USUARIO')
-                    ->setCellValue('F1', 'OBSERVACION');
-        $i = 2;
-        
-        foreach ($cantidades as $val) {
-                                  
+        if ($id_proceso_confeccion == 1){
+            $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+            $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+
+
             $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A' . $i, $val->id_entrada)
-                    ->setCellValue('B' . $i, $val->fecha_entrada)
-                    ->setCellValue('C' . $i, $val->fecha_procesada)
-                    ->setCellValue('D' . $i, $val->cantidad_terminada)
-                    ->setCellValue('E' . $i, $val->usuariosistema)
-                    ->setCellValue('F' . $i, $val->observacion);
-            $i++;
-        }
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'F. ENTRADA')
+                        ->setCellValue('C1', 'F. REGISTRO')
+                        ->setCellValue('D1', 'CANT.')
+                        ->setCellValue('E1', 'USUARIO')
+                        ->setCellValue('F1', 'OBSERVACION');
+            $i = 2;
+        }else{
+            $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+            $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+
+            $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'No BALANCEO')
+                        ->setCellValue('C1', 'ORDEN PROD.')
+                        ->setCellValue('D1', 'TALLA')
+                        ->setCellValue('E1', 'OPERACION')
+                        ->setCellValue('F1', 'OPERARIO')
+                        ->setCellValue('G1', 'F. ENTRADA')
+                        ->setCellValue('H1', 'F. REGISTRO')
+                        ->setCellValue('I1', 'UNIDADES.')
+                        ->setCellValue('J1', 'USUARIO')
+                        ->setCellValue('K1', 'OBSERVACION');
+            $i = 2;
+        }    
+        if ($id_proceso_confeccion == 1){
+            foreach ($cantidades as $val) {
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $i, $val->id_entrada)
+                        ->setCellValue('B' . $i, $val->fecha_entrada)
+                        ->setCellValue('C' . $i, $val->fecha_procesada)
+                        ->setCellValue('D' . $i, $val->cantidad_terminada)
+                        ->setCellValue('E' . $i, $val->usuariosistema)
+                        ->setCellValue('F' . $i, $val->observacion);
+                $i++;
+            }
+        }else{
+            foreach ($preparacion as $val) {
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $i, $val->id_entrada)
+                        ->setCellValue('B' . $i, $val->id_balanceo)
+                        ->setCellValue('C' . $i, $val->idordenproduccion)
+                        ->setCellValue('D' . $i, $val->detalleorden->productodetalle->prendatipo->prenda.'/'. $val->detalleorden->productodetalle->prendatipo->talla->talla)
+                        ->setCellValue('E' . $i, $val->proceso->proceso)
+                        ->setCellValue('F' . $i, $val->operario->nombrecompleto)
+                        ->setCellValue('G' . $i, $val->fecha_entrada)
+                        ->setCellValue('H' . $i, $val->fecha_procesada)
+                        ->setCellValue('I' . $i, $val->cantidad_terminada)
+                        ->setCellValue('J' . $i, $val->usuariosistema)
+                        ->setCellValue('K' . $i, $val->observacion);
+                $i++;
+            }
+        }    
 
         $objPHPExcel->getActiveSheet()->setTitle('Cantidad x tallas');
         $objPHPExcel->setActiveSheetIndex(0);

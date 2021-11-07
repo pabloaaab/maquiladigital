@@ -205,9 +205,13 @@ class BalanceoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id, $idordenproduccion)
+    public function actionView($id, $idordenproduccion, $id_proceso_confeccion)
     {
-        $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('operacion, orden_aleatorio asc')->all();
+       if ($id_proceso_confeccion == 1){
+          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 0])->orderBy('operacion, orden_aleatorio asc')->all();
+       }else{
+          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 1])->orderBy('operacion, orden_aleatorio asc')->all(); 
+       }   
         $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
         $operario = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC')->all();
         $balanceo = Balanceo::findOne($id);
@@ -230,14 +234,17 @@ class BalanceoController extends Controller
                         $table->usuariosistema = Yii::$app->user->identity->username;
                         $table->ordenamiento = $proceso->orden_aleatorio;
                         $table->insert();
-                     }   
-                     $this->ActualizarSegundos($id);
-                     return $this->redirect(["balanceo/view",
+                     } 
+                    if($id_proceso_confeccion == 1){
+                        $this->ActualizarSegundos($id);
+                    }   
+                    return $this->redirect(["balanceo/view",
                       'id'=> $id,
                       'flujo_operaciones' => $flujo_operaciones,   
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                       'operario'=> $operario,
+                      'id_proceso_confeccion' => $id_proceso_confeccion,
                     ]); 
                 }else{
                    Yii::$app->getSession()->setFlash('warning', 'Debe seleccionar las operaciones para el operario.');
@@ -247,6 +254,7 @@ class BalanceoController extends Controller
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                       'operario'=> $operario,
+                       'id_proceso_confeccion' => $id_proceso_confeccion, 
                     ]); 
                 }
             }else{
@@ -257,6 +265,7 @@ class BalanceoController extends Controller
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                       'operario'=> $operario,
+                      'id_proceso_confeccion' => $id_proceso_confeccion,
                     ]); 
             }
         } //Fin de proceso..
@@ -310,6 +319,7 @@ class BalanceoController extends Controller
                                  'idordenproduccion' => $idordenproduccion,
                                  'balanceo_detalle' => $balanceo_detalle,
                                  'operario'=> $operario,
+                                'id_proceso_confeccion' => $id_proceso_confeccion,
                                ]); 
                         }      
                       endforeach;  //termina el ciclo
@@ -326,6 +336,7 @@ class BalanceoController extends Controller
                                  'idordenproduccion' => $idordenproduccion,
                                  'balanceo_detalle' => $balanceo_detalle,
                                  'operario'=> $operario,
+                                'id_proceso_confeccion' => $id_proceso_confeccion,
                                ]); 
                       
                 }else{  
@@ -336,6 +347,7 @@ class BalanceoController extends Controller
                          'idordenproduccion' => $idordenproduccion,
                          'balanceo_detalle' => $balanceo_detalle,
                          'operario'=> $operario,
+                         'id_proceso_confeccion' => $id_proceso_confeccion,
                        ]); 
                 }            
            
@@ -347,6 +359,7 @@ class BalanceoController extends Controller
                       'idordenproduccion' => $idordenproduccion,
                       'balanceo_detalle' => $balanceo_detalle,
                       'operario'=> $operario,
+                      'id_proceso_confeccion' => $id_proceso_confeccion,
                     ]); 
             }
         }
@@ -356,6 +369,7 @@ class BalanceoController extends Controller
                 'balanceo_detalle' => $balanceo_detalle,
                 'idordenproduccion' => $idordenproduccion,
                 'operario'=> $operario,
+                'id_proceso_confeccion' => $id_proceso_confeccion,
              ]);
       
     }
@@ -430,6 +444,7 @@ class BalanceoController extends Controller
                     $table->total_segundos = $orden->segundosficha;
                     $table->tiempo_operario = ''.number_format($table->tiempo_balanceo /$table->cantidad_empleados,2); 
                     $table->observacion = $model->observacion;
+                    $table->id_proceso_confeccion = $model->id_proceso_confeccion;
                     $table->porcentaje = 100;
                     $table->usuariosistema = Yii::$app->user->identity->username;
                     $table->save(false);
@@ -493,6 +508,7 @@ class BalanceoController extends Controller
                         $table->total_segundos = $orden->segundosficha;
                         $table->total_minutos = ''.number_format($table->total_segundos /60,2);
                         $table->tiempo_operario = ''.number_format($balanceo->tiempo_balanceo / $table->cantidad_empleados ,3);
+                        $table->id_proceso_confeccion = $model->id_proceso_confeccion;
                         $table->save(false);
                         $this->actionActualizarfechaterminacion($idordenproduccion);
                         return $this->redirect(["balanceo/index"]);  
@@ -506,6 +522,7 @@ class BalanceoController extends Controller
                $model->fecha_inicio = $table->fecha_inicio;
                $model->cantidad_empleados = $table->cantidad_empleados;
                $model->modulo = $table->modulo;
+               $model->id_proceso_confeccion = $table->id_proceso_confeccion;
                $model->observacion = $table->observacion;
            }else{
                 return $this->redirect(['index']);
@@ -522,7 +539,7 @@ class BalanceoController extends Controller
 
     //Actualizar cantidad de operarios
     
-     public function actionNuevacantidad($id) {  
+     public function actionNuevacantidad($id, $id_proceso_confeccion) {  
         $model = new \app\models\FormParametroCantidadOperario();
         if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -535,7 +552,7 @@ class BalanceoController extends Controller
                     $archivo->cantidad_empleados = $model->cantidad_empleados;
                     $archivo->save(false);
                     $this->actionActualizarfechaterminacion($model->idordenproduccion);
-                    return $this->redirect(["balanceo/view", 'id' => $id, 'idordenproduccion' => $model->idordenproduccion]);                                                     
+                    return $this->redirect(["balanceo/view", 'id' => $id, 'idordenproduccion' => $model->idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);                                                     
                 }
             }
         }
@@ -549,7 +566,7 @@ class BalanceoController extends Controller
             }
             
         }
-        return $this->renderAjax('_nuevacantidadoperario', ['model' => $model, 'id' => $id]);
+        return $this->renderAjax('_nuevacantidadoperario', ['model' => $model, 'id' => $id, 'id_proceso_confeccion' => $id_proceso_confeccion]);
     }
     
    public function actionEliminar($id) {
@@ -577,32 +594,37 @@ class BalanceoController extends Controller
         }
     }
    
-   public function actionEliminardetalle($id_detalle, $id, $idordenproduccion) {
+   public function actionEliminardetalle($id_detalle, $id, $idordenproduccion, $id_proceso_confeccion) {
         if (Yii::$app->request->post()) {
             $balanceo_detalle = BalanceoDetalle::findOne($id_detalle);
             if ((int) $id_detalle) {
                 try {
                     BalanceoDetalle::deleteAll("id_detalle=:id_detalle", [":id_detalle" => $id_detalle]);
-                    $this->ActualizarSegundos($id);
-                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                    if($id_proceso_confeccion == 2){
+                        
+                    }else{
+                       $this->ActualizarSegundos($id);    
+                    }
+                    
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);
                 } catch (IntegrityException $e) {
-                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
                 } catch (\Exception $e) {
 
-                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+                    $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
                 }
             } else {
                 // echo "Ha ocurrido un error al eliminar el registros, redireccionando ...";
-                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["balanceo/view", 'id'=>$id, 'idordenproduccion'=>$idordenproduccion]) . "'>";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["balanceo/view", 'id'=>$id, 'idordenproduccion'=>$idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]) . "'>";
             }
         } else {
-            return $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion]);
+            return $this->redirect(["balanceo/view",'id'=>$id, 'idordenproduccion'=>$idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);
         }
     }
     
-    public function actionEditaroperacionasignada($id_detalle, $id, $idordenproduccion) {
+    public function actionEditaroperacionasignada($id_detalle, $id, $idordenproduccion, $id_proceso_confeccion) {
        
         $model = new BalanceoDetalle;
         $balanceo = Balanceo::findOne($id);   
@@ -614,11 +636,12 @@ class BalanceoController extends Controller
             $tabla_detalle->segundos = $model->segundos;
             $tabla_detalle->minutos = $model->minutos;    
              $tabla_detalle->ordenamiento = $model->ordenamiento;    
-            $tabla_detalle->save(false);     
-            $this->ActualizarSegundos($id);
-            $this->actionActualizarSobranteRestante($id);
-            
-            return $this->redirect(['balanceo/view','id' => $id, 'idordenproduccion' => $idordenproduccion]);
+            $tabla_detalle->save(false);   
+            if($id_proceso_confeccion == 1){
+                $this->ActualizarSegundos($id);
+                $this->actionActualizarSobranteRestante($id);
+            }    
+            return $this->redirect(['balanceo/view','id' => $id, 'idordenproduccion' => $idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]);
         }
         if (Yii::$app->request->get("id_detalle")) {
             $table = BalanceoDetalle::find()->where(['id_detalle' => $id_detalle])->one();
@@ -635,6 +658,7 @@ class BalanceoController extends Controller
             'model' => $model,
             'balanceo' => $balanceo,
             'idordenproduccion' => $idordenproduccion,
+            'id_proceso_confeccion' => $id_proceso_confeccion,
            ]);         
     } 
 

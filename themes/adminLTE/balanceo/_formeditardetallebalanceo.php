@@ -71,7 +71,7 @@ $form = ActiveForm::begin([
         <div class="row" col>
       
         <div class="panel-footer text-right">                        
-            <a href="<?= Url::toRoute(["balanceo/view", 'id' => $balanceo->id_balanceo, 'idordenproduccion' => $idordenproduccion]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
+            <a href="<?= Url::toRoute(["balanceo/view", 'id' => $balanceo->id_balanceo, 'idordenproduccion' => $idordenproduccion,'id_proceso_confeccion' => $id_proceso_confeccion]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>
         </div>
     </div>

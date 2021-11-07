@@ -33,16 +33,17 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <?php if($model->estado_modulo == 0){?>
            <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar modulo', ['cerrarmodulo', 'id' => $model->id_balanceo, 'idordenproduccion' => $idordenproduccion],['class' => 'btn btn-warning btn-xs',
             'data' => ['confirm' => 'Esta seguro de cerrar el modulo Nro: '. $model->modulo. '', 'method' => 'post']])?>
-        <?php }?>
          <?= Html::a('<span class="glyphicon glyphicon-user"></span> Nueva cantidad',            
-             ['/balanceo/nuevacantidad','id' => $model->id_balanceo],
+             ['/balanceo/nuevacantidad','id' => $model->id_balanceo,'id_proceso_confeccion' => $id_proceso_confeccion],
              [
                  'title' => 'Nueva cantidad de operarios',
                  'data-toggle'=>'modal',
                  'data-target'=>'#modalnuevacantidad'.$model->id_balanceo,
                  'class' => 'btn btn-info btn-sm'
              ]
-         );?></button>
+         );
+         }
+        ?></button>
     </div>
      <div class="modal remote fade" id="modalnuevacantidad<?= $model->id_balanceo ?>">
             <div class="modal-dialog modal-lg">
@@ -79,7 +80,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Total_segundos') ?>:</th>
                     <td><?= Html::encode($model->total_segundos) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Sam_operativo') ?>:</th>
-                    <td><?= Html::encode($model->total_minutos) ?></td>
+                    <td><?= Html::encode($model->ordenproduccion->sam_operativo) ?></td>
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Minuto_operario') ?>:</th>
                     <td><?= Html::encode($model->tiempo_operario) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Tiempo_Segundos') ?>:</th>
@@ -113,7 +114,9 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#flujo" aria-controls="flujo" role="tab" data-toggle="tab">Operaciones <span class="badge"><?= count($flujo_operaciones) ?></span></a></li>
             <li role="presentation"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($balanceo_detalle) ?></span></a></li>
-            <li role="presentation"><a href="#automatico" aria-controls="automatico" role="tab" data-toggle="tab">Automatico</a></li>
+            <?php if($id_proceso_confeccion == 1){?>
+               <li role="presentation"><a href="#automatico" aria-controls="automatico" role="tab" data-toggle="tab">Automatico</a></li>
+            <?php }?>  
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="flujo">
@@ -155,14 +158,12 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         $totalsegundos += $val->segundos;
                                         if($val->operacion == 0){
                                            $sam_balanceo += $val->minutos; 
+                                        }else{
+                                            $sam_balanceo += $val->minutos;
                                         }
                                         ?>
                                          <tr style="font-size: 85%;">
-                                             <?php if($val->operacion == 0){?>
-                                               <td style="width: 30px;"><input type="checkbox"  name="idproceso[]" value="<?= $val->idproceso ?>"></td>
-                                             <?php }else{?>
-                                               <td style="width: 30px;"><input type="checkbox" disabled="true" name="idproceso[]" value="<?= $val->idproceso ?>"></td>
-                                             <?php }?>  
+                                             <td style="width: 30px;"><input type="checkbox"  name="idproceso[]" value="<?= $val->idproceso ?>"></td>
                                             <td ><?= $val->proceso->proceso ?></td>
                                             <td><?= $val->segundos ?></td>
                                             <td><?= $val->minutos ?></td>
@@ -185,11 +186,21 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         </tr>
                                    <?php endforeach;
                                     $model->tiempo_balanceo = $sam_balanceo;
-                                    $model->tiempo_operario = $sam_balanceo/$model->cantidad_empleados;
-                                    $model->save(false);
+                                    if($model->cantidad_empleados == 0){
+                                    }else{
+                                        $model->tiempo_operario = $sam_balanceo/$model->cantidad_empleados;
+                                         $model->save(false);
+                                    }
+                           
+                                  
+                                  
                                    ?>
                                 </tbody>  
-                                <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $totalminutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
+                                <?php if($model->id_proceso_confeccion == 1){?>
+                                      <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
+                                <?php }else{ ?>
+                                      <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_preparación:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
+                                <?php } ?>      
                             </table>
                         </div>   
                         <?php
@@ -248,10 +259,10 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             <?php
                                             if($model->estado_modulo == 0){?>
                                                 <td style=' width: 25px;'>
-                                                  <a href="<?= Url::toRoute(["balanceo/editaroperacionasignada",'id_detalle'=>$val->id_detalle,'id' => $model->id_balanceo, 'idordenproduccion' => $model->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                                                  <a href="<?= Url::toRoute(["balanceo/editaroperacionasignada",'id_detalle'=>$val->id_detalle,'id' => $model->id_balanceo, 'idordenproduccion' => $model->idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
                                                 </td> 
                                                 <td style= 'width: 25px;'>
-                                                  <?= Html::a('', ['eliminardetalle', 'id_detalle' => $val->id_detalle,'id'=>$model->id_balanceo,'idordenproduccion'=>$model->idordenproduccion], [
+                                                  <?= Html::a('', ['eliminardetalle', 'id_detalle' => $val->id_detalle,'id'=>$model->id_balanceo,'idordenproduccion'=>$model->idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion], [
                                                       'class' => 'glyphicon glyphicon-trash',
                                                       'data' => [
                                                           'confirm' => 'Esta seguro de eliminar el registro?',
@@ -288,7 +299,8 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     </div>
                 </div>    
             </div>
-            <!-- TERMINA EL TABS-->    
+             <?php if($id_proceso_confeccion == 1){?>
+               <!-- TERMINA EL TABS-->    
               <div role="tabpanel" class="tab-pane" id="automatico">
                 <div class="table-responsive">
                     <div class="panel panel-success">
@@ -341,6 +353,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                     </div>
                 </div>    
             </div>
+             <?php } ?>    
        </div>  
     </div>   
     <?php ActiveForm::end(); ?>

@@ -11,6 +11,7 @@ use kartik\select2\Select2;
 $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenproduccion])->all();
 ?>
 <?php
+echo $id_proceso_confeccion;
 $form = ActiveForm::begin([
             "method" => "post",
             'id' => 'formulario',

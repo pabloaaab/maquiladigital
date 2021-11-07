@@ -116,7 +116,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#operaciones" aria-controls="operaciones" role="tab" data-toggle="tab">Flujo: <span class="badge"><?= count($operaciones) ?></span></a></li>
-            <li role="presentation"><a href="#modulo" aria-controls="tallas" role="modulo" data-toggle="tab">Modulos: <span class="badge"><?= count($modulos) ?></span></a></li>
+            <li role="presentation"><a href="#modulo" aria-controls="modulo" role="tab" data-toggle="tab">Modulos: <span class="badge"><?= count($modulos) ?></span></a></li>
             <li role="presentation"><a href="#tallas" aria-controls="tallas" role="tab" data-toggle="tab">Tallas: <span class="badge"><?= count($modeldetalles) ?></span></a></li>
             <li role="presentation"><a href="#grafica" aria-controls="grafica" role="tab" data-toggle="tab">Gráfica: </a></li>
         </ul>
@@ -212,50 +212,69 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Nro modulo</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>F. terminación</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                             
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($modulos as $val): ?>
-                                    <tr style="font-size: 85%; ">
-                                        <td><?= $val->id_balanceo ?></td>
-                                        <td><?= $val->idordenproduccion ?></td>
-                                         <td><?= $val->cliente->nombrecorto ?></td>
-                                        <td><?= $val->cantidad_empleados ?></td>
-                                        <td><?= $val->modulo ?></td>
-                                        <td><?= $val->fecha_inicio ?></td>
-                                        <td><?= $val->fecha_terminacion ?></td>
-                                        <td><?= $val->observacion ?></td>
-                                        <?php if($val->estado_modulo == 0){?>
-                                            <td style="width: 50px; height: 30px;">
-                                                <div class="panel-footer text-center">
-                                                  <!-- Inicio Nuevo Detalle proceso -->
-                                                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
-                                                        ['/orden-produccion/subirprendaterminada','id_balanceo' => $val->id_balanceo, 'idordenproduccion' => $model->idordenproduccion],
-                                                        [
-                                                            'title' => 'Prendas terminadas',
-                                                            'data-toggle'=>'modal',
-                                                            'data-target'=>'#modalsubirprendaterminada'.$val->id_balanceo,
-                                                            'class' => 'btn btn-success btn-xs'
-                                                        ])    
-                                                   ?>
-                                                </div> 
-                                                <div class="modal remote fade" id="modalsubirprendaterminada<?= $val->id_balanceo ?>">
-                                                    <div class="modal-dialog modal-lg">
-                                                        <div class="modal-content"></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        <?php }else{ ?>
-                                            <td style="width: 50px; height: 30px;"></td>
-                                        <?php } ?>    
-                                       
-                                    </tr>
-                                </tbody>
-                                <?php endforeach; ?>
+                                    <?php if(count($modulos) > 0){
+                                        foreach ($modulos as $val): ?>
+                                        <tr style="font-size: 85%; ">
+                                            <td><?= $val->id_balanceo ?></td>
+                                            <td><?= $val->idordenproduccion ?></td>
+                                             <td><?= $val->cliente->nombrecorto ?></td>
+                                            <td><?= $val->cantidad_empleados ?></td>
+                                            <td><?= $val->modulo ?></td>
+                                            <td><?= $val->fecha_inicio ?></td>
+                                            <td><?= $val->fecha_terminacion ?></td>
+                                            <?php if($val->id_proceso_confeccion == 1){?>
+                                                       <td style='background-color:#B9D5CE;'><?= $val->procesoconfeccion->descripcion_proceso?></td>
+                                                    <?php }else{?>
+                                                       <td style='background-color:#A5D3E6;'><?= $val->procesoconfeccion->descripcion_proceso?></td>
+                                                    <?php }?>   
+                                            <td><?= $val->observacion ?></td>
+                                            <?php if($val->id_proceso_confeccion == 1){
+                                                   $modulo = $val->id_balanceo;
+                                                    if($val->estado_modulo == 0){?>
+                                                        <td style="width: 50px; height: 30px;">
+                                                            <div class="panel-footer text-center">
+                                                              <!-- Inicio Nuevo Detalle proceso -->
+                                                                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Prendas',
+                                                                    ['/orden-produccion/subirprendaterminada','id_balanceo' => $val->id_balanceo, 'idordenproduccion' => $model->idordenproduccion, 'id_proceso_confeccion' => $val->id_proceso_confeccion],
+                                                                    [
+                                                                        'title' => 'Prendas terminadas',
+                                                                        'data-toggle'=>'modal',
+                                                                        'data-target'=>'#modalsubirprendaterminada'.$val->id_balanceo,
+                                                                        'class' => 'btn btn-success btn-xs'
+                                                                    ])    
+                                                               ?>
+                                                            </div> 
+                                                            <div class="modal remote fade" id="modalsubirprendaterminada<?= $val->id_balanceo ?>">
+                                                                <div class="modal-dialog modal-lg">
+                                                                    <div class="modal-content"></div>
+                                                                </div>
+                                                            </div>
+                                                         </td>
+                                                    <?php }else{ ?>
+                                                        <td style="width: 50px; height: 30px;"></td>
+                                                    <?php }
+                                            }else{
+                                                $modulo = $val->id_balanceo;
+                                                ?>
+                                                        <td style="width: 50px; height: 30px;"></td>
+                                            <?php } ?>                                    
+                                        </tr>
+                                    </tbody>
+                                    <?php endforeach;
+                                     $modulo = $modulo;
+                                    }else{
+                                         $modulo = 0;
+                                    }
+                               
+                                ?>
                             </table>
                         </div>    
                     </div>
@@ -278,6 +297,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Total minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos confección</th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
+                                         <th scope="col" style='background-color:#B9D5CE;'></th>
 
                                     </tr>
                                 </thead>
@@ -308,6 +328,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <td style= 'width: 25px; height: 25px;'>
                                                 <a href="<?= Url::toRoute(["orden-produccion/vistatallas", "iddetalleorden" => $val->iddetalleorden]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                                         </td>
+                                        <td style= 'width: 25px; height: 25px;'>
+                                                <a href="<?= Url::toRoute(["orden-produccion/recoger_preparacion", "iddetalleorden" => $val->iddetalleorden,'modulo' => $modulo, 'id'=> $model->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-plus"></span></a>
+                                        </td>
                                     </tr>
                                     <?php
                                         $total_confeccion +=$val->faltante;
@@ -315,7 +338,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         $t_segundos = $t_minutos * 60;
                                         $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
                                     endforeach; ?>
-                                     <td colspan="3"><td style="font-size: 85%; width: 220px; text-align: right;"><b>T. Confeccion:</b> <?= ''.number_format($total_confeccion),' <b>Falta:</b> ',($model->cantidad - $total_confeccion) ?> </td></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="1">
+                                     <td colspan="3"><td style="font-size: 85%; width: 220px; text-align: right;"><b>T. Confeccion:</b> <?= ''.number_format($total_confeccion),' <b>Falta:</b> ',($model->cantidad - $total_confeccion) ?> </td></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="2">
                                 </tbody>     
                             </table>
                         </div>    

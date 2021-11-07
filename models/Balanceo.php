@@ -39,13 +39,14 @@ class Balanceo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fecha_inicio'], 'required'],
-            [['idordenproduccion', 'cantidad_empleados','idcliente','modulo'], 'integer'],
+            [['fecha_inicio','id_proceso_confeccion'], 'required'],
+            [['idordenproduccion', 'cantidad_empleados','idcliente','modulo','id_proceso_confeccion'], 'integer'],
             [['fecha_inicio'], 'safe'],
             [['total_minutos','total_segundos','tiempo_operario','porcentaje','tiempo_balanceo'],'number'],
             [['observacion'],'string', 'max' => 150],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
             [['idcliente'], 'exist', 'skipOnError' => true, 'targetClass' => Cliente::className(), 'targetAttribute' => ['idcliente' => 'idcliente']],
+            [['id_proceso_confeccion'], 'exist', 'skipOnError' => true, 'targetClass' => ProcesoConfeccionPrenda::className(), 'targetAttribute' => ['id_proceso_confeccion' => 'id_proceso_confeccion']],
         ];
     }
 
@@ -64,7 +65,8 @@ class Balanceo extends \yii\db\ActiveRecord
             'usuariosistema' => 'Usuariosistema',
             'idcliente' => 'Cliente',
             'modulo' => 'Nro modulo',
-            'tiempo_balanceo' => 'Sam balanceo:'
+            'tiempo_balanceo' => 'Sam balanceo:',
+            'id_proceso_confeccion' => 'Proceso confeccion:',
         ];
     }
 
@@ -79,6 +81,10 @@ class Balanceo extends \yii\db\ActiveRecord
      public function getCliente()
     {
         return $this->hasOne(Cliente::className(), ['idcliente' => 'idcliente']);
+    }
+     public function getProcesoconfeccion()
+    {
+        return $this->hasOne(ProcesoConfeccionPrenda::className(), ['id_proceso_confeccion' => 'id_proceso_confeccion']);
     }
     
     public function getEstadomodulo() {
