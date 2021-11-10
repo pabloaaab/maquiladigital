@@ -26,6 +26,8 @@ $this->title = 'Confección (Balanceo/Preparación)';
 $this->params['breadcrumbs'][] = ['label' => 'Detalle', 'url' => ['view_balanceo']];
 $this->params['breadcrumbs'][] = $detalletallas->iddetalleorden;
 $view = 'orden-produccion/vistatallas';
+$orden = app\models\Ordenproduccion::findOne($detalletallas->idordenproduccion);
+
 ?>
 <div class="operarios-view">
 
@@ -48,7 +50,7 @@ $view = 'orden-produccion/vistatallas';
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($detalletallas, 'Unidades') ?>:</th>
                     <td><?= Html::encode($detalletallas->cantidad) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($detalletallas, 'Op_Interna') ?>:</th>
-                    <td><?= Html::encode($detalletallas->idordenproduccion) ?></td>
+                    <td><?= Html::encode($detalletallas->idordenproduccion) ?>  - Op Cliente: <?= Html::encode($orden->ordenproduccion) ?></td>
                 </tr>
                 
             </table>
@@ -261,7 +263,7 @@ $view = 'orden-produccion/vistatallas';
                                           </tr>
                                 <?php endforeach; ?>
                                 </tbody>
-                                <td colspan="5"><td style="font-size: 85%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Operaciones:</b> <?= $operacion ?> </td><td style="font-size: 85%; width: 120px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades:</b> <?= $total_c ?> <td colspan="4"></td>
+                                <td colspan="5"><td style="font-size: 85%; width: 210px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Operaciones:</b> <?= ''.number_format($operacion,0) ?> </td><td style="font-size: 85%; width: 115px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades:</b> <?= ''.number_format($total_c,0) ?> <td colspan="4"></td>
                             </table>
                             <div class="panel-footer text-right">
                                 <?= Html::a('<span class="glyphicon glyphicon-exportar"></span> Excel', ['cantidadconfeccionada', 'iddetalleorden' => $detalletallas->iddetalleorden, 'id_proceso_confeccion' => 2], ['class' => 'btn btn-primary btn-sm']);?>

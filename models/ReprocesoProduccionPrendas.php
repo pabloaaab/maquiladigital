@@ -50,8 +50,8 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle', 'fecha_registro'], 'required'],
-            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle'], 'integer'],
+            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle', 'fecha_registro','idordenproduccion'], 'required'],
+            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle','idordenproduccion'], 'integer'],
             [['fecha_registro'], 'safe'],
             [['observacion'], 'string', 'max' => 50],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -60,6 +60,7 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
             [['id_balanceo'], 'exist', 'skipOnError' => true, 'targetClass' => Balanceo::className(), 'targetAttribute' => ['id_balanceo' => 'id_balanceo']],
             [['id_operario'], 'exist', 'skipOnError' => true, 'targetClass' => Operarios::className(), 'targetAttribute' => ['id_operario' => 'id_operario']],
             [['idproductodetalle'], 'exist', 'skipOnError' => true, 'targetClass' => Productodetalle::className(), 'targetAttribute' => ['idproductodetalle' => 'idproductodetalle']],
+            [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
         ];
     }
 
@@ -79,6 +80,7 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
             'fecha_registro' => 'Fecha Registro',
             'observacion' => 'Observacion',
             'usuariosistema' => 'Usuariosistema',
+            'idordenproduccion' => 'idordenproduccion',
         ];
     }
 
@@ -120,5 +122,9 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
     public function getProductodetalle()
     {
         return $this->hasOne(Productodetalle::className(), ['idproductodetalle' => 'idproductodetalle']);
+    }
+    public function getOrdenproduccion()
+    {
+        return $this->hasOne(Ordenproduccion::className(), ['idordenproduccion' => 'idordenproduccion']);
     }
 }

@@ -1821,11 +1821,13 @@ class OrdenProduccionController extends Controller {
                                                                     ->orderBy('id_tipo DESC')
                                                                    ->all();
         $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
+        $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','idordenproduccion', $id])->orderBy('idproductodetalle ASC')->all();
         return $this->render('view_reproceso_produccion', [
                     'model' => $this->findModel($id),
                     'modeldetalles' => $modeldetalles,
                     'operaciones' => $operaciones,
                     'modulos' => $modulos,
+                    'reproceso' => $reproceso,
                      
         ]);
       
@@ -2351,12 +2353,13 @@ class OrdenProduccionController extends Controller {
             $intIndice = 0;
             foreach ($_POST["iddetalle"] as $intCodigo) {
                 if($_POST["cantidad"][$intIndice] > 0){
-                    $detalle = BalanceoDetalle::find()->where(['=','id_detalle', $intCodigo])->one();
-                    $table = new \app\models\ReprocesoProduccionPrendas();
+                   $detalle = BalanceoDetalle::find()->where(['=','id_detalle', $intCodigo])->one();
+                   $table = new \app\models\ReprocesoProduccionPrendas();
                    $table->id_detalle = $intCodigo;
                    $table->id_proceso = $detalle->id_proceso;
                    $table->id_balanceo = $id_balanceo ;
                    $table->id_operario = $detalle->id_operario;
+                   $table->idordenproduccion = $id;
                    $table->cantidad = $_POST["cantidad"][$intIndice];
                    $table->idproductodetalle = $_POST["id_talla"];
                    $table->fecha_registro = date('Y-m-d'); 
@@ -2969,6 +2972,85 @@ class OrdenProduccionController extends Controller {
         $objWriter->save('php://output');
         exit;
     }
+    
+   //permite exportar los reprocesos de la op
+   public function actionReprocesosexcel($id) {                
+        $reprocesos = \app\models\ReprocesoProduccionPrendas::find()->where(['=','idordenproduccion', $id])->orderBy('idproductodetalle ASC')->all();
+       
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+            $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+            $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+            $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+            $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A1', 'ID')
+                        ->setCellValue('B1', 'OPERARIO')
+                        ->setCellValue('C1', 'TALLA')
+                        ->setCellValue('D1', 'OPERACION')
+                        ->setCellValue('E1', 'CLIENTE')
+                        ->setCellValue('F1', 'MODULO')
+                        ->setCellValue('G1', 'ORDEN PROD.')
+                        ->setCellValue('H1', 'UNIDADES')
+                        ->setCellValue('I1', 'F. PROCESO')
+                        ->setCellValue('J1', 'USUARIO')
+                         ->setCellValue('J1', 'OBSERVACION');
+            $i = 2;
+         
+            foreach ($reprocesos as $val) {
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                        ->setCellValue('A' . $i, $val->id_reproceso)
+                        ->setCellValue('B' . $i, $val->operario->nombrecompleto)
+                        ->setCellValue('C' . $i, $val->productodetalle->prendatipo->prenda .'/'.$val->productodetalle->prendatipo->talla->talla)
+                        ->setCellValue('D' . $i, $val->proceso->proceso)
+                        ->setCellValue('E' . $i, $val->ordenproduccion->cliente->nombrecorto)
+                        ->setCellValue('F' . $i, $val->id_balanceo)
+                        ->setCellValue('G' . $i, $val->idordenproduccion)
+                        ->setCellValue('H' . $i, $val->cantidad)
+                        ->setCellValue('I' . $i, $val->fecha_registro)
+                        ->setCellValue('J' . $i, $val->usuariosistema)
+                        ->setCellValue('K' . $i, $val->observacion);
+                $i++;
+            }
+           
+
+        $objPHPExcel->getActiveSheet()->setTitle('Reprocesos');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Reprocesos.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }// fin del exportar
+    
+    
     //permite esportar las operaciones por prenda
      public function actionExcelconsultaoperacionesprenda($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
