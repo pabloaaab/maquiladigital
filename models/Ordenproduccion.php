@@ -51,8 +51,8 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto'], 'required', 'message' => 'Campo requerido'],            
-            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo','faltante','cerrar_orden','pagada'], 'integer'],
+            [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto','exportacion'], 'required', 'message' => 'Campo requerido'],            
+            [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo','faltante','cerrar_orden','pagada','exportacion'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],            
             [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion','sam_balanceo','sam_preparacion','sam_operativo'], 'number'],
             [['valorletras', 'observacion','codigoproducto'], 'string'],
@@ -69,7 +69,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idordenproduccion' => 'Id',
+            'idordenproduccion' => 'OP Interna',
             'idcliente' => 'Cliente',
             'fechallegada' => 'Fecha Llegada',
             'fechaprocesada' => 'Fecha Procesada',
@@ -82,7 +82,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'facturado' => 'Fact.',
             'proceso_control' => 'Control',
             'autorizado' => 'Aut.',
-            'ordenproduccion' => 'Op cliente:',
+            'ordenproduccion' => 'Op cliente',
             'ordenproduccionext' => 'Op Externa',
             'idtipo' => 'Servicio',
             'usuariosistema' => 'Usuario Sistema',
@@ -96,6 +96,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'sam_balanceo' => 'Sam Balanceo:',
             'sam_preparacion' => 'Sam Preparacion:',
             'sam_operativo' => 'Sam Operativo:',
+            'exportacion' => 'Exportación',
           
         ];
     }

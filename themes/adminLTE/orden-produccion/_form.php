@@ -86,11 +86,15 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?= $form->field($model, 'aplicar_balanceo')->dropDownList(['1'=> 'SI', '0'=> 'NO'], ['prompt' => 'Seleccione']) ?>
-            <?= $form->field($model, 'observacion')->textArea(['maxlength' => true]) ?>
+             <?= $form->field($model, 'exportacion')->dropDownList(['1'=> 'NO', '2'=> 'SI'], ['prompt' => 'Seleccione']) ?>
+        </div>
+         <div class="row" >
+            <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-3 form-group">{input}{error}</div>'])->textarea(['rows' => 2]) ?>
         </div>
          <div class="checkbox checkbox-success" align ="right">
                <?= $form->field($model, 'pagada')->checkBox(['label' => 'Pagada',''=>'small', 'class'=>'bs_switch','style'=>'margin-bottom:5px;', 'id'=>'pagada']) ?>
          </div>
+        
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("orden-produccion/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>
             <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Guardar", ["class" => "btn btn-success btn-sm",]) ?>		

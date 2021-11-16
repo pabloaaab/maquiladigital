@@ -89,12 +89,22 @@ $view = 'orden-produccion';
                                             <h4>Información Remisión</h4>
                                         </div>
                                         <div class="panel-body">
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 <label>Colores:</label>
                                             </div>
                                             <div class="col-lg-3">
                                                 <?php echo Html::dropdownList('color', '',$colores, ['class' => 'form-control', 'style' => 'width:200px','prompt' => 'Seleccione...','required' => true]) ?>
-                                            </div>                                                                                
+                                            </div>   
+                                            
+                                        </div>
+                                         <div class="panel-body">
+                                            <div class="col-lg-3">
+                                                <label>% Exportación:</label>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="porcentaje" value="" class="form-control" required>
+                                            </div>   
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +134,8 @@ $view = 'orden-produccion';
                     <td><?= Html::encode($model->cliente->nombrecorto) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'tipo') ?>:</th>
                     <td><?= Html::encode($model->tipo->tipo) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Unidades') ?>:</th>
+                    <td><?= Html::encode($model->cantidad) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechallegada') ?>:</th>
@@ -132,35 +144,26 @@ $view = 'orden-produccion';
                     <td><?= Html::encode($model->fechaprocesada) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'fechaentrega') ?>:</th>
                     <td><?= Html::encode($model->fechaentrega) ?></td>
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
+                    <td><?= Html::encode($model->usuariosistema) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Ponderación') ?>:</th>
-                    <td><?= Html::encode($model->ponderacion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccion') ?>:</th>
                     <td><?= Html::encode($model->ordenproduccion) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'ordenproduccionext') ?>:</th>
-                    <td><?= Html::encode($model->ordenproduccionext) ?></td>                    
-                </tr>
-                <tr style="font-size: 85%;">
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'cantidad') ?>:</th>
-                    <td><?= Html::encode($model->cantidad) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'usuariosistema') ?>:</th>
-                    <td><?= Html::encode($model->usuariosistema) ?></td>
-                    <th></th>
-                    <td></td>
-                </tr>
-                <tr style="font-size: 85%;">
+                    <td><?= Html::encode($model->ordenproduccionext) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'codigoproducto') ?>:</th>
                     <td><?= Html::encode($model->codigoproducto) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'duracion') ?>:</th>
-                    <td><?= Html::encode($model->duracion) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Minutos') ?>:</th>
+                    <td><?= Html::encode($model->duracion) ?></td>                    
+                </tr>
+                <tr style="font-size: 85%;">
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
+                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>    
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
-                <tr>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>                                        
-                </tr>
+              
             </table>
         </div>
     </div>

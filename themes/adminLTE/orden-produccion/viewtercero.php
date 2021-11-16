@@ -110,10 +110,10 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <thead>
                     <tr>
                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                         <th scope="col" style='background-color:#B9D5CE;'>Código</th>
                         <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Código</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
                         <th scope="col" style='background-color:#B9D5CE;'>Vr. Minuto</th>
+                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
                         <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
                         <th scope="col" style='background-color:#B9D5CE;'></th>
                         <th scope="col" style='background-color:#B9D5CE;'></th>
@@ -124,11 +124,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                     <?php foreach ($modeldetalles as $val): ?>
                     <tr style="font-size: 85%;">
                         <td><?= $val->id_detalle ?></td>
-                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
                         <td><?= $model->codigo_producto ?></td>
-                        <td><?= $val->cantidad ?></td>
-                        <td><?= '$ '.number_format($val->vlr_minuto,2) ?></td>
-                        <td><?= '$ '.number_format($val->total_pagar,2) ?></td>
+                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
+                          <td style="text-align: right;"><?= '$ '.number_format($val->vlr_minuto,2) ?></td>
+                          <td style="text-align: right;"><?= $val->cantidad ?></td>
+                        <td style="text-align: right;"><?= '$ '.number_format($val->total_pagar,2) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                         <td style="width: 25px;">
                                 <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->id_detalle ?>"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -207,8 +207,8 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
             <?php if ($model->autorizado == 0) { ?>
                 <div class="panel-footer text-right">
                     <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetallestercero', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente, 'id' =>$model->id_orden_tercero], ['class' => 'btn btn-success btn-sm']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                            
-                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger btn-sm']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetallestercero', 'id' =>$model->id_orden_tercero],[ 'class' => 'btn btn-success btn-sm']) ?>                                            
+                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetallesordenterceromasivo', 'id' => $model->id_orden_tercero], ['class' => 'btn btn-danger btn-sm']) ?>
                 </div>
             
             <?php } ?>

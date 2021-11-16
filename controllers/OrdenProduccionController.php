@@ -558,6 +558,9 @@ class OrdenProduccionController extends Controller {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $orden_produccion = Ordenproduccion::find()->where(['=','codigoproducto', $model->codigo_producto])->andWhere(['=','idcliente', $model->idcliente])->one();
+                $model->idordenproduccion = $orden_produccion->idordenproduccion;
+                $model->save(false);
                 return $this->redirect(['indextercero']);
             }
         }
@@ -640,15 +643,21 @@ class OrdenProduccionController extends Controller {
    // proceso par autorizar las ordenes de tercero
     public function actionAutorizadotercero($id) {
         $model = OrdenProduccionTercero::findOne($id);
-        if ($model->autorizado == 0) {
-            $model->autorizado = 1;
-            $model->update();
-            $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
-        } else {
-            $model->autorizado = 0;
-            $model->update();
-            $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
-        }
+        $detalle = OrdenProduccionTerceroDetalle::find()->where(['=','id_orden_tercero', $id])->one();
+        if($detalle){
+            if ($model->autorizado == 0) {
+                $model->autorizado = 1;
+                $model->update();
+                $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+            } else {
+                $model->autorizado = 0;
+                $model->update();
+                $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+            }
+        }else{
+             $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+            Yii::$app->getSession()->setFlash('info', 'No hay registros en el detalle de la orden de producción para tercero.');
+        }    
     }
   // nuevo detalle para las ordenes de produccion
     public function actionNuevodetalles($idordenproduccion, $idcliente) {
@@ -863,7 +872,7 @@ class OrdenProduccionController extends Controller {
         
     }
     
-
+   //EDITAR DETALLES ORDEN DE PRODUCCION
     public function actionEditardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
         $error = 0;
@@ -888,6 +897,32 @@ class OrdenProduccionController extends Controller {
         return $this->render('_formeditardetalles', [
                     'mds' => $mds,
                     'idordenproduccion' => $idordenproduccion,
+        ]);
+    }
+    
+    //EDITAR DETALLES ORDEN DE PRODUCCION TERCERO
+    public function actionEditardetallestercero($id) {
+        $mds = OrdenProduccionTerceroDetalle::find()->where(['=', 'id_orden_tercero', $id])->all();
+        $orden_tercero = OrdenProduccionTercero::findOne($id);
+        $error = 0;
+        if (isset($_POST["id_detalle"])) {
+            $intIndice = 0;
+            foreach ($_POST["id_detalle"] as $intCodigo) {
+                if ($_POST["cantidad"][$intIndice] > 0) {
+                    $table = OrdenProduccionTerceroDetalle::findOne($intCodigo);
+                    $table->cantidad = $_POST["cantidad"][$intIndice];
+                    $table->total_pagar = round(($_POST["cantidad"][$intIndice] * $orden_tercero->vlr_minuto) *$orden_tercero->cantidad_minutos,0) ;                    
+                    $table->update();                        
+                }
+                $intIndice++;
+            }
+              $this->ActualizarValorTercero($id);
+            $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);            
+        }
+        return $this->render('_formeditardetallestercero', [
+                    'mds' => $mds,
+                    'id' => $id,
+                    'orden_tercero' => $orden_tercero,
         ]);
     }
     
@@ -1053,6 +1088,9 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(["orden-produccion/index"]);
         }
     }
+    
+    //ELIMINAR DETALLES DE LA ORDEN DE PRODUCCION PARA TERCERO
+    
    
     public function actionEliminardetalles($idordenproduccion) {
         $mds = Ordenproducciondetalle::find()->where(['=', 'idordenproduccion', $idordenproduccion])->all();
@@ -1099,7 +1137,44 @@ class OrdenProduccionController extends Controller {
         ]);
     }
 
-    //ELIMINAR DETALLES DE LA ORDEN DE TERCERO
+    //ELIMINAR DETALLES MAXIVO DE LA ORDEN DE TERCERO
+    
+    public function actionEliminardetallesordenterceromasivo($id) {
+        $mds = OrdenProduccionTerceroDetalle::find()->where(['=', 'id_orden_tercero', $id])->all();
+        $orden_tercero = OrdenProduccionTercero::findOne($id);
+        $mensaje = "";
+        
+        if (Yii::$app->request->post()) {
+            $intIndice = 0;
+
+            if (isset($_POST["seleccion"])) {
+                foreach ($_POST["seleccion"] as $intCodigo) {
+                    try {
+                        OrdenProduccionTerceroDetalle::findOne($intCodigo)->delete();
+                        $this->ActualizarValorTercero($id);
+                        $this->redirect(["orden-produccion/viewtercero", 'id' => $id]);
+                    } catch (IntegrityException $e) {
+                        //$this->redirect(["orden-produccion/view", 'id' => $idordenproduccion]);
+                        Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados.');
+                       
+                    } catch (\Exception $e) {
+                        Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados.');
+                        
+                    }
+                    
+                }
+                
+            } else {
+                $mensaje = "Debe seleccionar al menos un registro para ejecutar el proceso.";
+            }
+        }
+        return $this->render('_formeliminardetallesordentercero', [
+                    'mds' => $mds,
+                    'id' => $id,
+                    'mensaje' => $mensaje,
+                    'orden_tercero' => $orden_tercero,
+        ]);
+    }
     
     public function actionEliminardetalletercero() {
         if (Yii::$app->request->post()) {
