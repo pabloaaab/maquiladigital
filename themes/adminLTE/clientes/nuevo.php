@@ -59,7 +59,6 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
     </div>
     <div class="row">
         <div id="razonsocial" style="display:none"><?= $form->field($model, 'razonsocial')->input("text") ?></div>
-
     </div>
     <div class="row">
         <?= $form->field($model, 'emailcliente')->input("text") ?>

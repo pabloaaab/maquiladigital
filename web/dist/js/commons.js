@@ -203,6 +203,15 @@ function mostrar() {
     }
 };
 
+function porcentajeExportacion() {
+    variable = document.getElementById('exportacion').value;
+    if (variable == '1') {
+        porcentaje_exportacion.style.display = "block";
+    } else if (variable == '2') {
+        porcentaje_exportacion.style.display = "none";
+    }
+};
+
 function mostrar2() {
     idtipo = document.getElementById('id_tipo_documento').value;
     if (idtipo == '1') {

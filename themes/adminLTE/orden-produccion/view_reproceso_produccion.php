@@ -192,7 +192,7 @@ $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',
                                                  <tr style="font-size: 85%; ">
                                                      <td><?= $val->id_reproceso ?></td>
                                                      <td><?= $val->operario->nombrecompleto ?></td>
-                                                      <td><?= $val->productodetalle->prendatipo->prenda .'/'.$val->productodetalle->prendatipo->talla->talla .' - ('. $tallas->cantidad.')'?></td>
+                                                      <td><?= $val->productodetalle->prendatipo->prenda .' / '.$val->productodetalle->prendatipo->talla->talla .' - ('. $tallas->cantidad.')'?></td>
                                                      <td><?= $val->proceso->proceso ?></td>
                                                      <td><?= $val->id_balanceo ?></td>
                                                      <td><?= $val->idordenproduccion ?></td>
@@ -210,7 +210,7 @@ $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',
                                      
                                         if($suma == 0){
                                         }else{?>
-                                         <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
+                                         <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
                                          <?php }
                                         endforeach;    ?>
                                           

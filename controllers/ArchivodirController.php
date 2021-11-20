@@ -32,7 +32,7 @@ class ArchivodirController extends \yii\web\Controller
     {
         //if (!Yii::$app->user->isGuest) {
 
-        $table = Archivodir::find()->where(['=','numero',$numero])->andWhere(['=','codigo',$codigo]);
+        $table = Archivodir::find()->where(['=','numero',$numero])->andWhere(['=','codigo',$codigo])->orderBy('idarchivodir DESC');
         $count = clone $table;
         $pages = new Pagination([
             'pageSize' => 20,

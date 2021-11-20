@@ -54,7 +54,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             [['idcliente', 'fechallegada', 'fechaprocesada', 'fechaentrega', 'observacion', 'idtipo','ponderacion','ordenproduccion','ordenproduccionext','codigoproducto','exportacion'], 'required', 'message' => 'Campo requerido'],            
             [['idcliente', 'estado', 'idtipo','autorizado','facturado','proceso_control','cantidad','aplicar_balanceo','faltante','cerrar_orden','pagada','exportacion'], 'integer'],
             [['fechallegada', 'fechaprocesada', 'fechaentrega'], 'safe'],            
-            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion','sam_balanceo','sam_preparacion','sam_operativo'], 'number'],
+            [['totalorden','ponderacion','porcentaje_proceso','porcentaje_cantidad','segundosficha','duracion','sam_balanceo','sam_preparacion','sam_operativo','porcentaje_exportacion'], 'number'],
             [['valorletras', 'observacion','codigoproducto'], 'string'],
             [['ordenproduccion'], 'string', 'max' => 25],
             [['usuariosistema'], 'string', 'max' => 50],            
@@ -97,6 +97,7 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             'sam_preparacion' => 'Sam Preparacion:',
             'sam_operativo' => 'Sam Operativo:',
             'exportacion' => 'Exportación',
+            'porcentaje_exportacion' => '% Exportacion:',
           
         ];
     }
@@ -148,6 +149,16 @@ class Ordenproduccion extends \yii\db\ActiveRecord
             $facturar = "NO";
         }
         return $facturar;
-    }           
+    }     
+    
+    public function getExportarOrden()
+    {
+        if($this->exportacion == 2){
+            $exportar = "SI";
+        }else{
+            $exportar = "NO";
+        }
+        return $exportar;
+    }
         
 }

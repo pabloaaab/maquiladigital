@@ -55,8 +55,8 @@ class Remision extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_remision' => 'Id Remision',
-            'idordenproduccion' => 'Idordenproduccion',
+            'id_remision' => 'Remision',
+            'idordenproduccion' => 'Op Interna',
             'numero' => 'Numero',
             'total_tulas' => 'Total Tulas',
             'total_exportacion' => 'Total Exportacion',
@@ -64,7 +64,7 @@ class Remision extends \yii\db\ActiveRecord
             'total_colombia' => 'Total Colombia',
             'total_confeccion' => 'Total Confeccion',
             'total_despachadas' => 'Total Despachadas',
-            'fechacreacion' => 'Fechacreacion',
+            'fechacreacion' => 'Fecha creacion',
             'color' => 'Color',
             'id_color' => 'Id Color',
         ];

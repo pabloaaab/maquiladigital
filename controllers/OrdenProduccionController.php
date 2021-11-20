@@ -431,14 +431,25 @@ class OrdenProduccionController extends Controller {
     public function actionCreate() {
         $model = new Ordenproduccion();
         $clientes = Cliente::find()->all();
-          $codigos = Producto::find()->orderBy('idproducto desc')->all(); 
+        $codigos = Producto::find()->orderBy('idproducto desc')->all(); 
         $ordenproducciontipos = Ordenproducciontipo::find()->all();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())&& $model->save()) {
             $model->totalorden = 0;
             $model->estado = 0;
             $model->autorizado = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->update();
+            $valor = $model->exportacion;
+            $campo = $model->porcentaje_exportacion;
+              if($valor == 1){
+                  $model->porcentaje_exportacion = 0;
+                  $model->update();
+              }else{
+                  if($valor == 2 && $campo <= 0){
+                      Yii::$app->getSession()->setFlash('warning', 'No ingreso el  porcentaje de exportacion ');
+                      return $this->redirect(['index']); 
+                  }
+              }
             return $this->redirect(['index']);
         }
 
@@ -515,7 +526,20 @@ class OrdenProduccionController extends Controller {
             Yii::$app->getSession()->setFlash('warning', 'No se puede modificar la información, tiene detalles asociados');
         } else {
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                return $this->redirect(['index']);
+                $valor =  $model->exportacion;
+                $campo = $model->porcentaje_exportacion;
+                if($valor == 1){
+                 $model->porcentaje_exportacion = 0;
+                  $model->update();
+                }else{
+                    if($valor == 2 && $campo <= 0 ){
+                          Yii::$app->getSession()->setFlash('warning', 'Debe de ingresar el porcentaje de exportacion ');
+                         return $this->redirect(['update','id' => $id]);
+                      
+                    }
+                }
+                
+               return $this->redirect(['index']);
             }
         }
         return $this->render('update', [

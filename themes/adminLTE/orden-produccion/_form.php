@@ -86,9 +86,10 @@ $form = ActiveForm::begin([
         </div>
         <div class="row">
             <?= $form->field($model, 'aplicar_balanceo')->dropDownList(['1'=> 'SI', '0'=> 'NO'], ['prompt' => 'Seleccione']) ?>
-             <?= $form->field($model, 'exportacion')->dropDownList(['1'=> 'NO', '2'=> 'SI'], ['prompt' => 'Seleccione']) ?>
+             <?= $form->field($model, 'exportacion')->dropDownList(['1'=> 'NO', '2'=> 'SI'], ['prompt' => 'Seleccione...', 'onchange' => 'porcentajeExportacion()', 'id' => 'exportacion']) ?>
         </div>
-         <div class="row" >
+        <div class="row">
+            <?= $form->field($model, 'porcentaje_exportacion')->textInput(['maxlength' => true]) ?>
             <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-3 form-group">{input}{error}</div>'])->textarea(['rows' => 2]) ?>
         </div>
          <div class="checkbox checkbox-success" align ="right">

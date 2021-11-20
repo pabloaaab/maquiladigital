@@ -97,15 +97,6 @@ $view = 'orden-produccion';
                                             </div>   
                                             
                                         </div>
-                                         <div class="panel-body">
-                                            <div class="col-lg-3">
-                                                <label>% Exportación:</label>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <input type="text" name="porcentaje" value="" class="form-control" required>
-                                            </div>   
-                                            
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -159,7 +150,9 @@ $view = 'orden-produccion';
                 </tr>
                 <tr style="font-size: 85%;">
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>    
+                    <td colspan="3"><?= Html::encode($model->observacion) ?></td>    
+                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Exportacion') ?>:</th>
+                    <td><?= Html::encode($model->exportarOrden) ?></td>    
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalorden') ?>:</th>
                     <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
