@@ -208,9 +208,9 @@ class BalanceoController extends Controller
     public function actionView($id, $idordenproduccion, $id_proceso_confeccion)
     {
        if ($id_proceso_confeccion == 1){
-          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 0])->orderBy('operacion, orden_aleatorio asc')->all();
+          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 0])->orderBy('pieza, operacion, orden_aleatorio asc')->all();
        }else{
-          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 1])->orderBy('operacion, orden_aleatorio asc')->all(); 
+          $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->andWhere(['=','operacion', 1])->orderBy('pieza, operacion, orden_aleatorio asc')->all(); 
        }   
         $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
         $operario = \app\models\Operarios::find()->where(['=','estado', 1])->orderBy('nombrecompleto ASC')->all();

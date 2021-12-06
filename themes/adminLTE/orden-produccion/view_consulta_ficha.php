@@ -226,10 +226,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                       <tr>
                                         <th scope="col" style='background-color:#B9D5CE;'>Número</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Modulo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Tipo</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Sam Pro.</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Sam Conf.</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Sam Balanceo</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Nro Operarios</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'># Operarios</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
@@ -241,6 +242,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <tr style="font-size: 85%;">
                                             <td><?= $registro_modulo->id_balanceo ?></td>
                                             <td><?= $registro_modulo->modulo ?></td>
+                                               <td><?= $registro_modulo->procesoconfeccion->descripcion_proceso ?></td>
                                             <td><?= $registro_modulo->ordenproduccion->duracion ?></td>
                                             <td><?= $registro_modulo->total_minutos ?></td>
                                             <td><?= $registro_modulo->tiempo_balanceo ?></td>
@@ -248,10 +250,13 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                             <td><?= $registro_modulo->fecha_inicio ?></td>
                                             <td><?= $registro_modulo->fecha_terminacion ?></td>
                                             <td><?= $registro_modulo->observacion ?></td>
-                                            
-                                            <td style="width: 25px;">
-                                                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/orden-produccion/eficienciamodulo', 'id_balanceo' => $registro_modulo->id_balanceo], ['target' => '_blank']) ?>
-                                            </td>
+                                            <?php if($registro_modulo->id_proceso_confeccion == 1){?>
+                                                <td style="width: 25px;">
+                                                    <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/orden-produccion/eficienciamodulo', 'id_balanceo' => $registro_modulo->id_balanceo], ['target' => '_blank']) ?>
+                                                </td>
+                                            <?php }else{?>    
+                                                <td></td>
+                                            <?php }?>    
                                         </tr>    
                                   <?php endforeach; ?>          
                             </table>

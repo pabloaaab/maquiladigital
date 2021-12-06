@@ -133,8 +133,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Operación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Segundos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Ordenamiento</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
                                          <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Pieza</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha creación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                                         <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
@@ -158,7 +159,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                     $conminuto = 0;
                                     $consegundo = 0;
-                                    $prenda = app\models\FlujoOperaciones::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->all();
+                                    $prenda = app\models\FlujoOperaciones::find()->where(['=', 'idordenproduccion', $model->idordenproduccion])->orderBy('pieza ASC, operacion DESC, orden_aleatorio ASC')->all();
                                     foreach ($prenda as $registro):?>
                                             <tr style="font-size: 85%;">
                                                  <td><?= $registro->id ?></td>
@@ -172,6 +173,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                                 <?php }else{?>
                                                    <td style='background-color:#A5D3E6;'><?= 'PREPARACION' ?></td>
                                                 <?php }?>   
+                                                <?php if($registro->pieza == 0){?>
+                                                   <td style='background-color:#ACF1D8;'><?= 'PIEZA 1' ?></td>
+                                                <?php }else{?>
+                                                   <td style='background-color:#E3CDFC;'><?= 'PIEZA 2' ?></td>
+                                                <?php }?>     
                                                  <td><?= $registro->fecha_creacion ?></td>
                                                 <?php 
                                                 if($registro->id_tipo == ''){?>
@@ -192,10 +198,18 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         </div>    
                     </div>
                 </div>
-               <div class="panel-footer text-right">
-                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editarflujooperaciones', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                                             
-                     <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger btn-sm", 'name' => 'eliminarflujo']) ?>
-              </div>
+                <?php $orden = Ordenproduccion::findOne($model->idordenproduccion);
+                if($orden->faltante <> 0){ ?>
+                    <div class="panel-footer text-right">
+                        <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Excel', ['exceloperaciones_iniciales', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm'])?>
+                        <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editarflujooperaciones', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                                             
+                        <?= Html::submitButton("<span class='glyphicon glyphicon-trash'></span> Eliminar", ["class" => "btn btn-danger btn-sm", 'name' => 'eliminarflujo']) ?>
+                   </div>
+                <?php }else{?>
+                <div class="panel-footer text-right">
+                    <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Excel', ['exceloperaciones_iniciales', 'id'=>$model->idordenproduccion], ['class' => 'btn btn-primary btn-sm'])?>
+                </div>    
+                <?php }?>
             </div>
            <!-- TERMINA EL TABS-->
            

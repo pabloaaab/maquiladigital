@@ -997,7 +997,7 @@ class OrdenProduccionController extends Controller {
     //editar flujo de operaciones
     
     public function actionEditarflujooperaciones($idordenproduccion) {
-        $mds = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('orden_aleatorio ASC')->all();
+        $mds = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('pieza ASC, operacion ASC, orden_aleatorio ASC')->all();
         $error = 0;
         $orden = Ordenproduccion::findOne($idordenproduccion);
         if (isset($_POST["id"])) {
@@ -1010,6 +1010,7 @@ class OrdenProduccionController extends Controller {
                     $table->orden_aleatorio = $_POST["orden_aleatorio"][$intIndice];
                     $table->operacion = $_POST["operacionflujo"][$intIndice];
                     $table->id_tipo = $_POST["id_tipo"][$intIndice];
+                    $table->pieza = $_POST["pieza"][$intIndice];
                     $table->save(false); 
                     if($_POST["operacionflujo"][$intIndice] == 0){
                          $suma_balanceo += $_POST["sam_balanceo"][$intIndice]; 
@@ -2418,7 +2419,7 @@ class OrdenProduccionController extends Controller {
     
     public function actionViewconsultaficha($id, $condicion) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
-        $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
+        $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->orderBy('id_balanceo DESC')->all();
         $modeldetalle = new Ordenproducciondetalle();
         
         return $this->render('view_consulta_ficha', [
@@ -3222,6 +3223,97 @@ class OrdenProduccionController extends Controller {
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="Operaciones x prenda.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
+    //PROCESO PARA EXPORTAR A EXCEL TODAS LAS OPERACIONES
+    
+      public function actionExceloperaciones_iniciales($id) {
+        $flujo = FlujoOperaciones::find()->where(['=','idordenproduccion', $id])->orderBy('pieza ASC, operacion ASC, orden_aleatorio ASC')->all();
+        $orden = Ordenproduccion::findOne($id);
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'CODIGO')
+                    ->setCellValue('B1', 'OPERACION')
+                    ->setCellValue('C1', 'T. MAQUINA')
+                    ->setCellValue('D1', 'OP)')
+                    ->setCellValue('E1', 'CLIENTE')
+                    ->setCellValue('F1', 'SEGUNDOS')
+                    ->setCellValue('G1', 'MINUTOS')
+                    ->setCellValue('H1', 'ORDENAMIENTO')
+                    ->setCellValue('I1', 'OPERACION')
+                    ->setCellValue('J1', 'PIEZA')
+                    ->setCellValue('K1', 'F. CREACION')
+                    ->setCellValue('L1', 'USUARIO');
+        $i = 3;
+        
+        foreach ($flujo as $val) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id)
+                    ->setCellValue('B' . $i, $val->proceso->proceso)
+                    ->setCellValue('C' . $i, $val->tipomaquina->descripcion)
+                    ->setCellValue('D' . $i, $id)                    
+                    ->setCellValue('E' . $i, $orden->cliente->nombrecorto)                    
+                    ->setCellValue('F' . $i, $val->segundos)
+                    ->setCellValue('G' . $i, $val->minutos)
+                    ->setCellValue('H' . $i, $val->orden_aleatorio)
+                    ->setCellValue('I' . $i, $val->operacionPrenda)
+                    ->setCellValue('J' . $i, $val->piezaPrenda)
+                    ->setCellValue('K' . $i, $val->fecha_creacion)
+                    ->setCellValue('L' . $i, $val->usuariosistema);
+            $i++;
+        }
+        $j = $i + 1;
+        $objPHPExcel->getActiveSheet()->getStyle($j)->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                ->setCellValue('B' . $j, 'Sam Operativo: '. $orden->sam_operativo);
+                $j = $j+1;
+          $objPHPExcel->getActiveSheet()->getStyle($j)->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0)                
+                ->setCellValue('B' . $j, 'Sam Balanceo: '. $orden->sam_balanceo);
+        $j = $j+1;
+          $objPHPExcel->getActiveSheet()->getStyle($j)->getFont()->setBold(true);
+        $objPHPExcel->setActiveSheetIndex(0) 
+                ->setCellValue('B' . $j, 'Sam Preparacion: '. $orden->sam_preparacion);
+        
+        $objPHPExcel->getActiveSheet()->setTitle('Operaciones x orden');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Operaciones.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

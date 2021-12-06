@@ -34,6 +34,8 @@ $tipopagocredito = ArrayHelper::map(TipoPagoCredito::find()->where(['=','estado'
                         <tr>
                              <th><?= Html::activeLabel($credito, 'Nro_Prestamo') ?>:</th>
                             <td><?= Html::encode($credito->id_credito) ?></td>
+                             <th><?= Html::activeLabel($credito, 'Vlr_Cuota') ?>:</th>
+                            <td><?= Html::encode('$'.number_format($credito->vlr_cuota,2)) ?></td>
                             <th><?= Html::activeLabel($credito, 'Nuevo_saldo') ?>:</th>
                             <td><?= Html::encode('$'.number_format($credito->saldo_credito,2)) ?></td>
                         </tr>   

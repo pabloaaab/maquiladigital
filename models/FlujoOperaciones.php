@@ -33,7 +33,7 @@ class FlujoOperaciones extends \yii\db\ActiveRecord
     {
         return [
             [['idproceso'], 'required'],
-            [['idproceso', 'idordenproduccion','orden_aleatorio','operacion'], 'integer'],
+            [['idproceso', 'idordenproduccion','orden_aleatorio','operacion','pieza'], 'integer'],
             [['fecha_creacion'], 'safe'],
             [['segundos','minutos'],'number'],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -58,6 +58,7 @@ class FlujoOperaciones extends \yii\db\ActiveRecord
             'minutos' =>'Minutos',
             'usuariosistema' => 'Usuariosistema',
             'operacion' => 'Proceso',
+            'pieza' => 'Pieza',
         ];
     }
 
@@ -80,5 +81,21 @@ class FlujoOperaciones extends \yii\db\ActiveRecord
     public function getTipomaquina()
     {
         return $this->hasOne(TiposMaquinas::className(), ['id_tipo' => 'id_tipo']);
+    }
+    public function getOperacionPrenda() {
+        if($this->operacion == 0){
+            $operacion = 'BALANCEO';
+        }else{
+            $operacion = 'PREPARACION';
+        }
+        return $operacion;
+    }
+     public function getPiezaPrenda() {
+        if($this->pieza == 0){
+            $pieza = 'PIEZA 1';
+        }else{
+            $pieza = 'PIEZA 2';
+        }
+        return $pieza;
     }
 }

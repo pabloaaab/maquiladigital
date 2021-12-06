@@ -143,6 +143,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Orden</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Pieza</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                                                                          
                                     </tr>
@@ -172,6 +173,11 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                                  <td style='background-color:#B9D5CE;'><?= 'BALANCEO' ?></td>
                                               <?php }else{?>
                                                  <td style='background-color:#A5D3E6;'><?= 'PREPARACION' ?></td>
+                                            <?php }?>   
+                                                 <?php if($val->pieza == 0){?>
+                                                 <td style='background-color:#ACF1D8;'><?= 'PIEZA 1' ?></td>
+                                              <?php }else{?>
+                                                 <td style='background-color:#E3CDFC;'><?= 'PIEZA 2' ?></td>
                                             <?php }?>   
                                              <td><?= $val->tipomaquina->descripcion ?></td>
                                            
@@ -292,7 +298,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                         </div>
                                             
                             <div class="panel-footer text-right">
-                                <?= Html::a('<span class="glyphicon glyphicon-exportar"></span> Excel', ['excelbalanceo', 'id_balanceo' => $model->id_balanceo, 'idordenproduccion'=>$model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']);?>
+                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Excel', ['excelbalanceo', 'id_balanceo' => $model->id_balanceo, 'idordenproduccion'=>$model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']);?>
            
                             </div>
                          
