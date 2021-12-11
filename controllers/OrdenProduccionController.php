@@ -1480,9 +1480,7 @@ class OrdenProduccionController extends Controller {
                 }
             } else {
                 $table = Ordenproduccion::find()
-                        ->where(['=', 'idtipo', 1])
-                        ->orWhere(['=', 'idtipo', 4])
-                        ->andWhere(['=','aplicar_balanceo', 1])
+                       ->where(['=','aplicar_balanceo', 1])
                         ->orderBy('idordenproduccion desc');
                 $count = clone $table;
                 $pages = new Pagination([
@@ -1921,13 +1919,11 @@ class OrdenProduccionController extends Controller {
                                                                     ->orderBy('id_tipo DESC')
                                                                    ->all();
         $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all();
-        $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','idordenproduccion', $id])->orderBy('idproductodetalle ASC')->all();
         return $this->render('view_reproceso_produccion', [
                     'model' => $this->findModel($id),
                     'modeldetalles' => $modeldetalles,
                     'operaciones' => $operaciones,
                     'modulos' => $modulos,
-                    'reproceso' => $reproceso,
                      
         ]);
       
@@ -2448,7 +2444,7 @@ class OrdenProduccionController extends Controller {
     
      public function actionDetalle_reproceso_prenda($id_balanceo, $id){
        $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id_balanceo])->orderBy('id_operario asc')->all();
-       
+       $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','idordenproduccion', $id])->orderBy('idproductodetalle ASC')->all();
         if (isset($_POST["iddetalle"])) {
             $intIndice = 0;
             foreach ($_POST["iddetalle"] as $intCodigo) {
@@ -2472,13 +2468,15 @@ class OrdenProduccionController extends Controller {
             return $this->render('detalle_reproceso_prenda', [
                         'balanceo_detalle' => $balanceo_detalle,
                         'id_balanceo' => $id_balanceo,
-                         'id' => $id,
+                        'id' => $id,
+                        'reproceso' => $reproceso,
             ]);   
        }     
         return $this->render('detalle_reproceso_prenda', [
                         'balanceo_detalle' => $balanceo_detalle,
                         'id_balanceo' => $id_balanceo,
-                         'id' => $id,
+                        'id' => $id,
+                        'reproceso' => $reproceso, 
             ]);    
        
     }

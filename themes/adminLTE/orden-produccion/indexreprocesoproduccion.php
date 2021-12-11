@@ -119,14 +119,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php }else{?>
                                                     <td style="font-size: 85%;background: #D5F2E7; color: #0A3664;"><?php echo 'TERMINADO'?></td>
                                             <?php }
-                                    }  
-                                    if($val->faltante == $val->cantidad && $val->cerrar_orden == 0){?>
-                                          <td></td>
-                                    <?php }else{?>    
-                                        <td style="width: 25px;">
-                                            <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_reproceso_produccion', 'id' => $val->idordenproduccion] ) ?>
-                                        </td>
-                                    <?php }?>     
+                                    }?>  
+                                    <td style="width: 25px;">
+                                         <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view_reproceso_produccion', 'id' => $val->idordenproduccion] ) ?>
+                                    </td>
+
                                 </tr>
                                 <?php endforeach; ?>
                             </tbody>
