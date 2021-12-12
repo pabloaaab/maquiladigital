@@ -21,7 +21,7 @@ $calculo = 0;
  try {
         $calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
     } catch (ErrorException $e) {
-        Yii::warning("Division by zero.");
+        Yii::$app->getSession()->setFlash('warning', 'Error en la division por ceros en el tabs de eficiencia.');
     }
 
 $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idordenproduccion); 
@@ -152,7 +152,7 @@ $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idorden
                                             try {
                                                   $cumplimiento = round(($suma * 100)/$calculo_dia,2);
                                               } catch (ErrorException $e) {
-                                                  Yii::warning("Division by zero.");
+                                                  Yii::$app->getSession()->setFlash('warning', 'Error en la division por ceros en el tabs de eficiencia.');
                                               }
                                              
                                              $aux1 += $cumplimiento;?>
@@ -175,7 +175,7 @@ $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idorden
                                                      try {
                                                         $cumplimiento = round(($suma * 100)/$calculo_dia,2);
                                                     } catch (ErrorException $e) {
-                                                        Yii::warning("Division by zero.");
+                                                        Yii::$app->getSession()->setFlash('warning', 'Error en la division por ceros en el tabs de eficiencia.');
                                                     }
                                                     
                                                     $aux2 += $cumplimiento;?>
