@@ -87,7 +87,7 @@ $operario = ArrayHelper::map(Operarios::find()->orderBy('id_operario ASC')->all(
                 <th scope="col" style='background-color:#B9D5CE;'>Municipio</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Celular</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Email</th>
-                  <th scope="col" style='background-color:#B9D5CE;'>Tipo Operaria</th>
+                  <th scope="col" style='background-color:#B9D5CE;'>Dpto</th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Personal activo" >Act.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Polivalente" >Pol.</span></th>
                  <th scope="col" style='background-color:#B9D5CE;'><span title="Vinculado" >Vin.</span></th>
@@ -108,8 +108,8 @@ $operario = ArrayHelper::map(Operarios::find()->orderBy('id_operario ASC')->all(
                 <td><?= $val->departamento->departamento ?></td>
                 <td><?= $val->municipio->municipio ?></td>
                 <td><?= $val->celular ?></td>
-                 <td><?= $val->tipoOperaria ?></td>
-                <td><?= $val->email ?></td>
+                   <td><?= $val->email ?></td>
+                <td><?= $val->tipoOperaria ?></td>
                 <td><?= $val->estadopago?></td>
                 <td><?= $val->polivalenteOperacion?></td>
                  <td><?= $val->vinculadoOperacion?></td>

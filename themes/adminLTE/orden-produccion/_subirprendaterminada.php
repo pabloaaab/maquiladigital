@@ -11,7 +11,7 @@ use kartik\select2\Select2;
 $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $idordenproduccion])->all();
 ?>
 <?php
-echo $id_proceso_confeccion;
+
 $form = ActiveForm::begin([
             "method" => "post",
             'id' => 'formulario',
@@ -67,7 +67,7 @@ $form = ActiveForm::begin([
                            <th scope="col" style='background-color:#B9D5CE;'>Producto / Talla</th>
                            <th scope="col" style='background-color:#B9D5CE;'>Unidades x Talla</th>
                            <th scope="col" style='background-color:#B9D5CE;'>Unidades confeccionadas</th>
-                          <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
+                          <th scope="col" style='background-color:#B9D5CE;'></th>
                         </tr>
                         
                     </thead>

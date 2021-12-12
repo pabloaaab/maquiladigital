@@ -28,6 +28,7 @@ class FormOperarios extends Model
     public $polivalente;
     public $vinculado;
     public $tipo_operaria;
+    public $fecha_nacimiento;
 
     /**
      * {@inheritdoc}
@@ -38,6 +39,7 @@ class FormOperarios extends Model
           [['documento', 'nombres','apellidos','id_tipo_documento','iddepartamento','idmunicipio'], 'required', 'message' => 'Campo requerido'],
             ['documento', 'identificacion_existe'],
             ['email', 'email_existe'],
+            [['fecha_creacion','fecha_nacimiento'], 'safe'],
             [['documento', 'estado', 'id_tipo_documento','polivalente','vinculado','tipo_operaria'], 'integer'],
             ['documento', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             [['nombres', 'apellidos'], 'string', 'max' => 40],
@@ -66,6 +68,7 @@ class FormOperarios extends Model
             'polivalente' => 'Polivalente:',
             'idmunicipio' => 'Municipio:',
             'iddepartamento' => 'Departamento:',
+            'fecha_nacimiento' => 'Fecha nacimiento:',
             
         ];
     }

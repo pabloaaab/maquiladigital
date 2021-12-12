@@ -59,11 +59,20 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
         </div>
        
         <div class="row">
+            <?=  $form->field($model, 'fecha_nacimiento')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                           'value' => date('Y-m-d', strtotime('+2 days')),
+                           'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                           'pluginOptions' => [
+                               'format' => 'yyyy-m-d',
+                               'todayHighlight' => true]])
+                       ?>
             <?= $form->field($model, 'estado')->dropDownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione una opcion...']) ?>
-             <?= $form->field($model, 'polivalente')->dropDownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
          <div class="row">
+              <?= $form->field($model, 'polivalente')->dropDownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione una opcion...']) ?>
             <?= $form->field($model, 'vinculado')->dropDownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione una opcion...']) ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'tipo_operaria')->dropDownList(['1' => 'CONFECCION', '2' => 'TERMINACION'], ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
         

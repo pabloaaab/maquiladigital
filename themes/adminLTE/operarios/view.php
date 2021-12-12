@@ -64,8 +64,8 @@ $view = 'operarios';
                 <tr style="font-size: 85%;">
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Polivalente') ?>:</th>
                     <td><?= Html::encode($model->polivalenteOperacion) ?></td>
-                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_creacion') ?>:</th>
-                    <td><?= Html::encode($model->fecha_creacion) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_nacimiento') ?>:</th>
+                    <td><?= Html::encode($model->fecha_nacimiento) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Usuario') ?>:</th>
                     <td><?= Html::encode($model->usuariosistema) ?></td>
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Activo') ?>:</th>

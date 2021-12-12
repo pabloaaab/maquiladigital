@@ -203,9 +203,9 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                    ?>
                                 </tbody>  
                                 <?php if($model->id_proceso_confeccion == 1){?>
-                                      <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
+                                      <td colspan="2"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 149px;"><b>Sam_balanceo:</b> <?= $sam_balanceo ?></td><td colspan="3"></td>
                                 <?php }else{ ?>
-                                      <td colspan="3"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_preparación:</b> <?= $sam_balanceo ?></td><td colspan="1"></td>
+                                      <td colspan="2"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 120px;" ><b>Segundos:</b> <?= $totalsegundos ?> <td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 142px;"><b>Sam_Operativo:</b> <?= $model->total_minutos ?></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 149px;"><b>Sam_preparación:</b> <?= $sam_balanceo ?></td><td colspan="3"></td>
                                 <?php } ?>      
                             </table>
                         </div>   

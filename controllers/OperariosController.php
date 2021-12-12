@@ -175,6 +175,7 @@ class OperariosController extends Controller
                 $table->email = $model->email;
                 $table->iddepartamento = $model->iddepartamento;
                 $table->polivalente = $model->polivalente;
+                $table->fecha_nacimiento = $model->fecha_nacimiento;
                 $table->vinculado = $model->vinculado;
                 $table->tipo_operaria = $model->tipo_operaria;
                 $table->idmunicipio = $model->idmunicipio;
@@ -223,6 +224,7 @@ class OperariosController extends Controller
                    $table->idmunicipio = $model->idmunicipio;
                    $table->estado = $model->estado;
                    $table->polivalente = $model->polivalente;
+                   $table->fecha_nacimiento = $model->fecha_nacimiento;
                    $table->vinculado = $model->vinculado;
                    $table->tipo_operaria = $model->tipo_operaria;
                    $table->save(false);
@@ -245,6 +247,7 @@ class OperariosController extends Controller
                 $model->idmunicipio = $table->idmunicipio;
                 $model->estado = $table->estado;
                 $model->polivalente = $table->polivalente;
+                $model->fecha_nacimiento = $table->fecha_nacimiento;
                 $model->vinculado = $table->vinculado;
                  $model->tipo_operaria = $table->tipo_operaria;
             }else{
@@ -409,9 +412,10 @@ class OperariosController extends Controller
                     ->setCellValue('F1', 'MUNICIPIO')
                     ->setCellValue('G1', 'CELULAR')
                     ->setCellValue('H1', 'EMAIL')
-                    ->setCellValue('I1', 'FECHA CREACION')
-                    ->setCellValue('J1', 'ACTIVO')
-                    ->setCellValue('K1', 'POLIVALENTE');
+                    ->setCellValue('I1', 'F. NACIMIENTO')
+                    ->setCellValue('J1', 'FECHA CREACION')
+                    ->setCellValue('K1', 'ACTIVO')
+                    ->setCellValue('L1', 'POLIVALENTE');
         $i = 2;
         
         foreach ($tableexcel as $val) {
@@ -425,9 +429,10 @@ class OperariosController extends Controller
                     ->setCellValue('F' . $i, $val->municipio->municipio)  
                     ->setCellValue('G' . $i, $val->celular)
                     ->setCellValue('H' . $i, $val->email)
-                    ->setCellValue('I' . $i, $val->fecha_creacion)
-                    ->setCellValue('J' . $i, $val->estadopago)
-                    ->setCellValue('K' . $i, $val->polivalenteOperacion);
+                    ->setCellValue('I' . $i, $val->fecha_nacimiento)
+                    ->setCellValue('J' . $i, $val->fecha_creacion)
+                    ->setCellValue('K' . $i, $val->estadopago)
+                    ->setCellValue('L' . $i, $val->polivalenteOperacion);
             $i++;
         }
 

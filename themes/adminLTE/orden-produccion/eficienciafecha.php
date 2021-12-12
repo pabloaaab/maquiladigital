@@ -7,6 +7,8 @@ use app\models\CantidadPrendaTerminadas;
 use app\models\Balanceo;
 use app\models\Horario;
 use app\models\Ordenproduccion;
+use yii\base\ErrorException;
+
 $this->title = 'Eficiencia modular';
 $this->params['breadcrumbs'][] = ['label' => 'Eficiencia', 'url' => ['view_consulta_ficha']];
 $this->params['breadcrumbs'][] = $id_balanceo;
@@ -16,7 +18,12 @@ $cantidad_prendas= CantidadPrendaTerminadas::find()->where(['=','id_balanceo', $
 $balanceo = Balanceo::find()->where(['=','id_balanceo', $id_balanceo])->one();
 $horario = Horario::findOne(1);
 $calculo = 0;
-$calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
+ try {
+        $calculo = round((60/$balanceo->tiempo_balanceo) *($horario->total_horas));
+    } catch (ErrorException $e) {
+        Yii::warning("Division by zero.");
+    }
+
 $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idordenproduccion); 
 ?>
 
@@ -142,7 +149,12 @@ $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idorden
                                              $var_2 = CantidadPrendaTerminadas::find()->where(['=','fecha_entrada', $fecha_entrada])->andWhere(['=','id_balanceo', $balanceo->id_balanceo])->one();
                                              $calculo_dia = round($calculo * $eficiencia->nro_operarios);
                                              $suma =   $eficiencia->cantidad_terminada;
-                                             $cumplimiento = round(($suma * 100)/$calculo_dia,2);
+                                            try {
+                                                  $cumplimiento = round(($suma * 100)/$calculo_dia,2);
+                                              } catch (ErrorException $e) {
+                                                  Yii::warning("Division by zero.");
+                                              }
+                                             
                                              $aux1 += $cumplimiento;?>
                                              <tr style="font-size: 85%;">
                                                 <td ><?= $eficiencia->fecha_entrada ?></td>
@@ -160,7 +172,12 @@ $orden_produccion = Ordenproduccion::findOne($balanceo->ordenproduccion->idorden
                                                     $suma += $dato->cantidad_terminada;
                                                     endforeach;
                                                     $calculo_dia = round($calculo * $eficiencia->nro_operarios);
-                                                    $cumplimiento = round(($suma * 100)/$calculo_dia,2);
+                                                     try {
+                                                        $cumplimiento = round(($suma * 100)/$calculo_dia,2);
+                                                    } catch (ErrorException $e) {
+                                                        Yii::warning("Division by zero.");
+                                                    }
+                                                    
                                                     $aux2 += $cumplimiento;?>
                                                   <tr style="font-size: 85%;">
                                                      <td ><?= $eficiencia->fecha_entrada ?></td>

@@ -145,7 +145,6 @@ $orden_produccion = Ordenproduccion::findOne($id);
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Talla</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
@@ -169,7 +168,6 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                                $suma += $val->cantidad;  
                                                 ?>
                                                  <tr style="font-size: 85%; ">
-                                                     <td><?= $val->id_reproceso ?></td>
                                                      <td><?= $val->operario->nombrecompleto ?></td>
                                                       <td><?= $val->productodetalle->prendatipo->prenda .' / '.$val->productodetalle->prendatipo->talla->talla .' - ('. $tallas->cantidad.')'?></td>
                                                      <td><?= $val->proceso->proceso ?></td>
@@ -186,7 +184,6 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                         $contador = $suma; 
                                         $dato += $contador;
                                         $contador = round(($dato / $total)*100,2); 
-                                     
                                         if($suma == 0){
                                         }else{?>
                                          <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
@@ -194,11 +191,14 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                         endforeach;    ?>
                                           
                                 </tbody>   
-                                <td colspan="1"><td style="font-size: 100%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total reproceso: </b> <?= $contador ?> %</td> <td colspan="8"></td>
+                                <tr>
+                                  <td style="font-size: 100%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total unidades  : </b> <?= $dato ?></td> <td colspan="8"></td>
+                                </tr>
+                                 <td style="font-size: 100%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total reproceso: </b> <?= $contador ?> %</td> <td colspan="8"></td>
                             </table>
                            
                               <div class="panel-footer text-right">
-                                <?= Html::a('<span class="glyphicon glyphicon-exportar"></span> Excel', ['reprocesosexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm']);?>
+                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['reprocesosexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm']);?>
                             </div>
                         </div>    
                     </div>
