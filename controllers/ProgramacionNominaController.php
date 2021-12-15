@@ -748,11 +748,12 @@ class ProgramacionNominaController extends Controller {
                         $salario_adicional = ($contrato_laboral->salario / 30) * $total_dias_adicional;
                     }
                     if ($sw == 1){
+                  
                         $fecha = date($prima_semestral->fecha_ultima_prima);
                         if($mes_ultimo_pago_nomina == 12){
-                           $fecha_inicio_dias = strtotime('2 day', strtotime($fecha));
+                           $fecha_inicio_dias = strtotime('1 day', strtotime($fecha));
                         }else{
-                             $fecha_inicio_dias = strtotime('1 day', strtotime($fecha));
+                             $fecha_inicio_dias = strtotime('2 day', strtotime($fecha));
                         }
                         $fecha_inicio_dias = date('Y-m-d', $fecha_inicio_dias);
                         $vector_nomina = ProgramacionNomina::find()->where(['>=', 'fecha_desde', $fecha_inicio_dias])
@@ -760,7 +761,7 @@ class ProgramacionNominaController extends Controller {
                                                                   ->all();
                     }else{
                         if ($sw == 2){
-                          $vector_nomina = ProgramacionNomina::find()->where(['>=', 'fecha_inicio_contrato', $prima_semestral->fecha_inicio_contrato])
+                            $vector_nomina = ProgramacionNomina::find()->where(['>=', 'fecha_inicio_contrato', $prima_semestral->fecha_inicio_contrato])
                                                                     ->andWhere(['=','id_contrato', $prima_semestral->id_contrato])
                                                                     ->all();
                         }else{
@@ -780,7 +781,7 @@ class ProgramacionNominaController extends Controller {
                     if ($ibp_prima_anterior > 0){
                         $total_ibp = $contador + $contador2 + $ibp_prima_anterior;
                     }else{
-                        $total_ibp = $contador + $contador2;
+                       $total_ibp = $contador + $contador2;
                     }    
                     $nro_dias_licencia = $nro_dias_licencia;
                     $auxilio_transporte_actual = ConfiguracionSalario::find()->where(['=','estado', 1])->one();
@@ -793,17 +794,19 @@ class ProgramacionNominaController extends Controller {
                              $vlr_prima = round($salario_promedio * $dias_prima_pago_real) / 360;
                          }   
                     }else{
-                         $salario_promedio = (($total_ibp + $salario_adicional) / $total_dias)* 30;
+                        $salario_promedio = (($total_ibp + $salario_adicional) / $total_dias)* 30;
                          $dias_prima_pago_real = $total_dias - $nro_dias_licencia;
                          if($contrato_laboral->auxilio_transporte == 1){
-                             $vlr_prima = round(($salario_promedio + $auxilio_transporte_actual->auxilio_transporte_actual)* $dias_prima_pago_real) / 360; // formula de la prima
+                            $vlr_prima = round(($salario_promedio + $auxilio_transporte_actual->auxilio_transporte_actual)* $dias_prima_pago_real) / 360; // formula de la prima
                          }else{
-                             $vlr_prima = round($salario_promedio * $dias_prima_pago_real) / 360;
+                            $vlr_prima = round($salario_promedio * $dias_prima_pago_real) / 360;
                          }   
                      }
                      $prognomdetalle = ProgramacionNominaDetalle::find()->where(['=', 'id_programacion', $prima_semestral->id_programacion])
                                                                          ->andWhere(['=', 'codigo_salario', $tabla_prima->codigo_salario])
                                                                          ->all();
+                    
+                     
                      if(!$prognomdetalle){
                          $detalle_momina = new ProgramacionNominaDetalle();
                          $detalle_momina->id_programacion = $prima_semestral->id_programacion;
@@ -813,13 +816,13 @@ class ProgramacionNominaController extends Controller {
                          $detalle_momina->fecha_desde =  $fecha_desde;
                          $detalle_momina->fecha_hasta =  $fecha_hasta;
                          $detalle_momina->id_periodo_pago_nomina = $id;
-                        $detalle_momina->insert(false);
+                         $detalle_momina->insert(false);
                          $prima_semestral->dias_pago = $total_dias;
                          $prima_semestral->dia_real_pagado = $dias_prima_pago_real;
                          $prima_semestral->total_devengado = round($vlr_prima);
                          $prima_semestral->salario_promedio = round($salario_promedio);
                          $prima_semestral->dias_ausentes = $nro_dias_licencia;
-                      $prima_semestral->save(false);
+                         $prima_semestral->save(false);
                      }    
 
                    
@@ -937,7 +940,7 @@ class ProgramacionNominaController extends Controller {
               
             }
         }    
-        $this->redirect(["programacion-nomina/view", 'id' => $id,
+       $this->redirect(["programacion-nomina/view", 'id' => $id,
             'id_grupo_pago' => $id_grupo_pago,
             'fecha_desde' => $fecha_desde,
             'fecha_hasta' => $fecha_hasta,
