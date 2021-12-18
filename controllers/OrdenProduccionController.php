@@ -2445,7 +2445,7 @@ class OrdenProduccionController extends Controller {
     
      public function actionDetalle_reproceso_prenda($id_balanceo, $id){
        $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id_balanceo])->orderBy('id_operario asc')->all();
-       $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','idordenproduccion', $id])->orderBy('idproductodetalle ASC')->all();
+       $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','id_balanceo', $id_balanceo])->orderBy('idproductodetalle ASC')->all();
         if (isset($_POST["iddetalle"])) {
             $intIndice = 0;
             foreach ($_POST["iddetalle"] as $intCodigo) {
