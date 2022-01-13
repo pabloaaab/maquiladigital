@@ -2466,6 +2466,7 @@ class OrdenProduccionController extends Controller {
                 }    
                 $intIndice++;
             }
+            $reproceso = \app\models\ReprocesoProduccionPrendas::find()->where(['=','id_balanceo', $id_balanceo])->orderBy('idproductodetalle ASC')->all();
             return $this->render('detalle_reproceso_prenda', [
                         'balanceo_detalle' => $balanceo_detalle,
                         'id_balanceo' => $id_balanceo,
