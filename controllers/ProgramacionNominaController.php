@@ -884,9 +884,13 @@ class ProgramacionNominaController extends Controller {
                             $contrato = Contrato::find()->where(['=','id_contrato', $cesantias->id_contrato])->one();
                             $ibp_cesantia_anterior = $contrato->ibp_cesantia_inicial;
                             if($ibp_cesantia_anterior > 0){
+                                $total_acumulado = 0;
                                 $total_acumulado = $suma + $suma2 + $ibp_cesantia_anterior;
+                                $suma = 0; $suma2 = 0 ;
                             }else{
+                                $total_acumulado = 0;
                                 $total_acumulado = $suma + $suma2;
+                                $suma = 0; $suma2 = 0 ; $ibp_cesantia_anterior = 0;
                             }
                            $total_dias_ausentes = $auxiliar;
                             $sw = 0;
@@ -897,7 +901,7 @@ class ProgramacionNominaController extends Controller {
                             } 
                             $total_dias = $this->CrearCesantias($cesantias, $sw, $ano);
                             
-                            $salario_promedio = ($total_acumulado / $total_dias) * 30;  
+                          $salario_promedio = ($total_acumulado / $total_dias) * 30;  
                             if($configuracion_c->aplicar_ausentismo == 1){
                                 $dias_reales = ($total_dias ) - $total_dias_ausentes;
                             }else{
@@ -920,7 +924,7 @@ class ProgramacionNominaController extends Controller {
                                 $detalle->fecha_desde =  $fecha_desde;
                                 $detalle->fecha_hasta =  $fecha_hasta;
                                 $detalle->id_periodo_pago_nomina = $id;
-                                $detalle->insert(false);
+                               $detalle->insert(false);
                                 $cesantias->dia_real_pagado = $dias_reales;
                                 $cesantias->dias_pago = $total_dias;
                                 $cesantias->total_devengado = $pago_cesantia;
@@ -1030,7 +1034,7 @@ class ProgramacionNominaController extends Controller {
                     $dies = $diaTerminacion - $diaInicio;
                 }
             }
-           $total_dias = (($anios * 360) + ($meses * 30)+ ($dies +1));
+          $total_dias = (($anios * 360) + ($meses * 30)+ ($dies +1));
         }
          return ($total_dias);
     }
