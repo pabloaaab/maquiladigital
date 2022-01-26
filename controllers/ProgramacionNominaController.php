@@ -1549,7 +1549,7 @@ class ProgramacionNominaController extends Controller {
                 } else {
 
                     $total_dias = strtotime($val->fecha_hasta) - strtotime($val->fecha_inicio_contrato);
-                    $total_dias = round($total_dias / 86400) + 1 - $total_dias_vacacion;
+                    $total_dias = round($total_dias / 86400)  - $total_dias_vacacion;
                     if($val->dias_pago == $total_dias){
                           $total_dias = $total_dias; 
                         }else{

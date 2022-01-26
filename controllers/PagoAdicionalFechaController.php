@@ -318,7 +318,8 @@ class PagoAdicionalFechaController extends Controller
                 if ($id_grupo_pago or $documento){
                     $intereses = InteresesCesantia::find()
                             ->where(['like','documento',$documento])
-                            ->andFilterWhere(['=','id_grupo_pago',$id_grupo_pago])
+                            ->andFilterWhere(['=','id_grupo_pago', $id_grupo_pago])
+                             ->andFilterWhere(['=','importado', 0])
                             ->orderBy('id_interes DESC')
                             ->all();
                 }               
@@ -331,16 +332,16 @@ class PagoAdicionalFechaController extends Controller
         if (isset($_POST["id_interes"])) {
                 $intIndice = 0;
                 $salario = ConceptoSalarios::find()->where(['=','intereses', 1])->one();
-               echo $fecha_corte = Html::encode($_POST["fecha_corte"]);
+                $fecha_corte = Html::encode($_POST["fecha_corte"]);
                 foreach ($_POST["id_interes"] as $intCodigo) {
-                    $table = new PagoAdicionalPermanente();
                     $interes = InteresesCesantia::find()->where(['id_interes' => $intCodigo])->one();
                     $pagos = PagoAdicionalPermanente::find()
                         ->where(['=', 'id_contrato', $interes->id_contrato])
-                        ->andWhere(['=', 'codigo_salario', $salario->codigo_salario])
+                        ->andWhere(['=', 'fecha_corte', $fecha_corte])
                         ->all();
                     $reg = count($pagos);
                     if ($reg == 0) {
+                        $table = new PagoAdicionalPermanente();
                         $table->id_empleado = $interes->id_empleado;
                         $table->codigo_salario = $salario->codigo_salario;
                         $table->id_contrato = $interes->id_contrato;
@@ -357,13 +358,11 @@ class PagoAdicionalFechaController extends Controller
                         $table->estado_periodo = 1;
                         $table->detalle = 'Pago de intereses';
                         $table->usuariosistema = Yii::$app->user->identity->username;
-                      $table->insert(); 
+                     $table->insert(); 
                       //  $this->actualizarSaldo($id);
                     }
                 }
                $this->redirect(["pago-adicional-fecha/view", 'id' => $id, 'fecha_corte' => $fecha_corte]);
-            }else{
-                
             }
         return $this->render('_formimportinteres', [
             'intereses' => $intereses,            
@@ -643,7 +642,7 @@ class PagoAdicionalFechaController extends Controller
     public function actionAutorizado($id, $fecha_corte) {
         $intereses = InteresesCesantia::find()->where(['=','importado', 0])->all();
         $dato = 0;
-       echo $dato = count($intereses);
+         $dato = count($intereses);
         if($dato > 0){
             foreach ($intereses as $valor):
                 $valor->importado = 1;
