@@ -18,8 +18,12 @@ $orden_produccion = Ordenproduccion::findOne($id);
 ?>
 
 <div class="orden-produccion-view">
-
- <!--<?= Html::encode($this->title) ?>-->
+ <div class="btn-group" role="group" aria-label="...">
+     <?php if($balanceo->activo_reproceso == 0){?>
+        <button type="button" class="btn btn-default btn"> <?= Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar modulo', ['cerrarmodulo', 'id_balanceo' => $id_balanceo, 'id' => $id],['class' => 'btn btn-warning btn-xs',
+             'data' => ['confirm' => 'Esta seguro de cerrar el balanceo Nro: '. $id_balanceo. '', 'method' => 'post']])?>
+        <?php } ?></button>    
+    </div>   
    
     <div class="panel panel-success">
         <div class="panel-heading">
@@ -127,7 +131,7 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                 </tbody>  
                             </table>
                         </div>
-                           <?php if($balanceo->estado_modulo == 0){?>
+                           <?php if($balanceo->activo_reproceso == 0){?>
                             <div class="panel-footer text-right">
 
                                 <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Enviar", ["class" => "btn btn-success btn-sm"]) ?>

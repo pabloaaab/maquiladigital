@@ -160,5 +160,6 @@ class Ordenproduccion extends \yii\db\ActiveRecord
         }
         return $exportar;
     }
+    
         
 }

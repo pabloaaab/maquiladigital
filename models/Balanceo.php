@@ -96,4 +96,13 @@ class Balanceo extends \yii\db\ActiveRecord
         
         return $estadomodulo;
     }
+     public function getVerReproceso()
+    {
+        if($this->activo_reproceso == 0){
+            $verreproceso = "ABIERTO";
+        }else{
+            $verreproceso = "CERRADO";
+        }
+        return $verreproceso;
+    }
 }

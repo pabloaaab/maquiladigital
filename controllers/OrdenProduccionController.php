@@ -1929,6 +1929,28 @@ class OrdenProduccionController extends Controller {
         ]);
       
     }
+    //PROCESO QUE CIERRA EL MODULO DE REPROCESO
+     public function actionCerrarmodulo($id, $id_balanceo)
+    {
+        $balanceo = Balanceo::findOne($id_balanceo);
+        $balanceo->activo_reproceso = 1;
+       $balanceo->save(false);
+        $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
+        $ordendetalle = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->one();
+        $operaciones = Ordenproducciondetalleproceso::find()->Where(['=','iddetalleorden', $ordendetalle->iddetalleorden])
+                                                                    ->orderBy('id_tipo DESC')
+                                                                   ->all();
+       $modulos = Balanceo::find()->where(['=','idordenproduccion', $id])->all(); 
+       return $this->redirect(["orden-produccion/detalle_reproceso_prenda", 
+                    'id_balanceo' => $id_balanceo,
+                    'model' => $this->findModel($id),
+                    'modeldetalles' => $modeldetalles,
+                    'operaciones' => $operaciones,
+                    'modulos' => $modulos,
+                    'id' => $id,
+       ]);
+        
+    }
     
     protected function progresoproceso($iddetalleorden, $idordenproduccion) {
         $tabla = Ordenproducciondetalle::findOne(['=', 'iddetalleorden', $iddetalleorden]);

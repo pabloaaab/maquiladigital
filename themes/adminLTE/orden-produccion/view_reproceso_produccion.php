@@ -120,11 +120,12 @@ $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',
                                         <th scope="col" style='background-color:#B9D5CE;'>Op</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Tipo proceso</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Nro modulo</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha terminación</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Estado</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Modulo</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Reproceso</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                             
@@ -146,6 +147,7 @@ $detalle_orden = Ordenproducciondetalle::find()->where(['=','idordenproduccion',
                                         <td><?= $val->fecha_inicio ?></td>
                                         <td><?= $val->fecha_terminacion ?></td>
                                          <td><?= $val->estadomodulo ?></td>
+                                         <td><?= $val->verreproceso ?></td>
                                         <td><?= $val->observacion ?></td>
                                           <td style="width: 25px;">
                                                 <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/orden-produccion/detalle_reproceso_prenda', 'id_balanceo' => $val->id_balanceo,'id' => $model->idordenproduccion], ['target' => '_blank']) ?>
