@@ -237,6 +237,8 @@ class ValorPrendaUnidadController extends Controller
                 $vlr_unidad = 0;
                 if($operario){
                     if($valor_unidad){
+                        $conMatricula = \app\models\Matriculaempresa::findOne(1);
+                        $conHorario = \app\models\Horario::findOne(1);
                         if($operario->vinculado == 1){
                            $vlr_unidad = $valor_unidad->vlr_vinculado;
                            if($_POST["vlr_prenda"][$intIndice] == ''){
@@ -246,8 +248,14 @@ class ValorPrendaUnidadController extends Controller
                                 $table->vlr_prenda = $_POST["vlr_prenda"][$intIndice];
                                 $table->vlr_pago = $_POST["vlr_prenda"][$intIndice] * $table->cantidad; 
                            }
+                           //calculo para hallar el % de cumplimiento
+                           $can_minutos = $table->vlr_prenda / $conMatricula->vlr_minuto_vinculado; 
+                           $total_diario = round((60/$can_minutos)* $conHorario->total_horas,0);
+                           $cumplimiento = round(($table->cantidad / $total_diario)*100, 2);
+                           //fin proceso
                            $table->usuariosistema = Yii::$app->user->identity->username;
                            $table->observacion = 'Vinculado';
+                           $table->porcentaje_cumplimiento = $cumplimiento;
                            $table->save(false);
                            $intIndice++;
                         }else{
@@ -259,8 +267,14 @@ class ValorPrendaUnidadController extends Controller
                                 $table->vlr_prenda = $_POST["vlr_prenda"][$intIndice];
                                 $table->vlr_pago = $_POST["vlr_prenda"][$intIndice] * $table->cantidad; 
                            }
+                           //calculo para hallar el % de cumplimiento
+                          echo $can_minutos = $table->vlr_prenda / $conMatricula->vlr_minuto_contrato; 
+                           $total_diario = round((60/$can_minutos)* $conHorario->total_horas,0);
+                           $cumplimiento = round(($table->cantidad / $total_diario)*100, 2);
+                           // fin proceso
                            $table->usuariosistema = Yii::$app->user->identity->username;
                            $table->observacion = 'No vinculado';
+                           $table->porcentaje_cumplimiento = $cumplimiento;
                            $table->save(false);
                            $intIndice++;
                         }  
@@ -270,7 +284,7 @@ class ValorPrendaUnidadController extends Controller
                 }
             }
             $this->Totalpagar($id);
-            $this->TotalCantidades($id);
+           $this->TotalCantidades($id);
             return $this->redirect(['view', 'id' => $id]);
         }
         return $this->render('view', [

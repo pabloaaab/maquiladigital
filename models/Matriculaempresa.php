@@ -47,6 +47,15 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     {
         return 'matriculaempresa';
     }
+     public function beforeSave($insert) {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+        $this->representante_legal = strtoupper($this->representante_legal);        
+        $this->emailmatricula = strtolower($this->emailmatricula);       
+      
+        return true;
+    }
 
     /**
      * {@inheritdoc}
@@ -55,8 +64,8 @@ class Matriculaempresa extends \yii\db\ActiveRecord
     {
         return [
             [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion', 'gran_contribuyente','agente_retenedor', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion'], 'required'],
-            [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion','gran_contribuyente','agente_retenedor'], 'integer'],
-            [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion'], 'number'],
+            [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion','gran_contribuyente','agente_retenedor','vlr_minuto_vinculado','vlr_minuto_contrato'], 'integer'],
+            [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion','porcentaje_empresa'], 'number'],
             [['declaracion','nombresistema', 'representante_legal'], 'string'],
             [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
@@ -96,15 +105,18 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             'id_tipo_regimen' => 'Tipo Regimen:',
             'declaracion' => 'Declaración:',
             'id_banco_factura' => 'Banco Factura:',
-            'idresolucion' => 'Resolución:',
+            'idresolucion' => 'Actividad:',
             'nombresistema' => 'Nombre Sistema:',
             'agente_retenedor' => 'Agente Retenedor:',
             'gran_contribuyente' => 'Gran Contribuyente:',
-            'porcentaje_cesantias' => '% cesantias',
-            'porcentaje_intereses' => '% intereses',
-            'porcentaje_prima' => '% prima',
-            'porcentaje_vacacion' => '% vacacion',
+            'porcentaje_cesantias' => '% cesantias:',
+            'porcentaje_intereses' => '% intereses:',
+            'porcentaje_prima' => '% prima:',
+            'porcentaje_vacacion' => '% vacacion:',
             'representante_legal' => 'Representante legal:',
+            'vlr_minuto_vinculado' => 'Vr. minuto vinculado:',
+            'vlr_minuto_contrato' => 'Vr. minuto contrato:',
+            'porcentaje_empresa' => 'Porcentaje_empresa:',
         ];
     }
 
