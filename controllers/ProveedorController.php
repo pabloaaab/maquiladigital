@@ -120,6 +120,7 @@ class ProveedorController extends Controller {
                 $table->banco = $model->banco;
                 $table->tipocuenta = $model->tipocuenta;
                 $table->cuentanumero = $model->cuentanumero;
+                $table->genera_moda = $model->genera_moda;
                 if ($model->id_tipo_documento == 1) {
                     $table->nombrecorto = $model->nombreproveedor . " " . $model->apellidoproveedor;
                     $model->razonsocial = null;
@@ -179,6 +180,7 @@ class ProveedorController extends Controller {
                     $table->banco = $model->banco;
                     $table->tipocuenta = $model->tipocuenta;
                     $table->cuentanumero = $model->cuentanumero;
+                    $table->genera_moda = $model->genera_moda;
                     if ($model->id_tipo_documento == 1) {
                         $table->nombrecorto = strtoupper($model->nombreproveedor . " " . $model->apellidoproveedor);
                         $model->razonsocial = null;
@@ -235,6 +237,7 @@ class ProveedorController extends Controller {
                 $model->banco = $table->banco;
                 $model->tipocuenta = $table->tipocuenta;
                 $model->cuentanumero = $table->cuentanumero;
+                $model->genera_moda = $table->genera_moda;
             } else {
                 return $this->redirect(["proveedor/index"]);
             }

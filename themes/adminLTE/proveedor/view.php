@@ -23,16 +23,16 @@ $view = 'proveedor';
 ?>
 
 <p>
-    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary']) ?>
-    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $table->idproveedor], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index'], ['class' => 'btn btn-primary btn-sm']) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['editar', 'id' => $table->idproveedor], ['class' => 'btn btn-success btn-sm']) ?>
     <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['eliminar', 'id' => $table->idproveedor], [
-        'class' => 'btn btn-danger',
+        'class' => 'btn btn-danger btn-sm',
         'data' => [
             'confirm' => 'Esta seguro de eliminar el registro?',
             'method' => 'post',
         ],
     ]) ?>
-    <?= Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 5, 'codigo' => $table->idproveedor,'view' => $view], ['class' => 'btn btn-default']) ?>
+    <?= Html::a('<span class="glyphicon glyphicon-folder-open"></span> Archivos', ['archivodir/index','numero' => 5, 'codigo' => $table->idproveedor,'view' => $view], ['class' => 'btn btn-default btn-sm']) ?>
 </p>
 
 <div class="panel panel-success">
@@ -40,58 +40,58 @@ $view = 'proveedor';
         Información Proveedor
     </div>
     <div class="panel-body">
-        <table class="table table-bordered">
-            <tr>
-                <th>Código:</th>
+       <table class="table table-bordered table-striped table-hover">
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Código:</th>
                 <td><?= $table->idproveedor ?></td>
-                <th>Tipo Identificación:</th>
+                <th style='background-color:#F0F3EF;'>Tipo Identificación:</th>
                 <td><?= $table->tipo->tipo ?></td>
-                <th>Cedula/Nit:</th>
+                <th style='background-color:#F0F3EF;'>Cedula/Nit:</th>
                 <td><?= $table->cedulanit ?></td>
-                <th >DV:</th>
+                <th style='background-color:#F0F3EF;' >DV:</th>
                 <td><?= $table->dv ?></td>
             </tr>
-            <tr>
+            <tr style="font-size: 85%;">
                 <?php if ($table->id_tipo_documento == 1){ ?>
-                <th>Nombres:</th>
+                <th style='background-color:#F0F3EF;'>Nombres:</th>
                 <td><?= $table->nombreproveedor ?></td>
-                <th>Apellidos:</th>
+                <th style='background-color:#F0F3EF;'>Apellidos:</th>
                 <td><?= $table->apellidoproveedor ?></td>
                 <?php } elseif ($table->id_tipo_documento == 5) { ?>
-                <th>Razon Social:</th>
+                <th style='background-color:#F0F3EF;'>Razon Social:</th>
                 <td><?= $table->razonsocial ?></td>
-                <th></th>
+                <th style='background-color:#F0F3EF;'></th>
                 <td></td>
                 <?php } else { ?>
-                <th>Nombres:</th>
+                <th style='background-color:#F0F3EF;'>Nombres:</th>
                 <td><?= $table->nombreproveedor ?></td>
-                <th>Apellidos:</th>
+                <th style='background-color:#F0F3EF;'>Apellidos:</th>
                 <td><?= $table->apellidoproveedor ?></td>    
                 <?php }?>
-                <th>Email:</th>
+                <th style='background-color:#F0F3EF;'>Email:</th>
                 <td><?= $table->emailproveedor ?></td>
-                <th >Dirección:</th>
+                <th style='background-color:#F0F3EF;' >Dirección:</th>
                 <td><?= $table->direccionproveedor ?></td>
             </tr>
-            <tr>
-                <th>Teléfono:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Teléfono:</th>
                 <td><?= $table->telefonoproveedor ?></td>
-                <th>Celular:</th>
+                <th style='background-color:#F0F3EF;'>Celular:</th>
                 <td><?= $table->celularproveedor ?></td>
-                <th>Departamento:</th>
+                <th style='background-color:#F0F3EF;'>Departamento:</th>
                 <td><?= $table->departamento->departamento ?></td>
-                <th >Municipio:</th>
+                <th style='background-color:#F0F3EF;'>Municipio:</th>
                 <td><?= $table->municipio->municipio ?></td>
             </tr>
-            <tr>
-                <th>Entidad Bancaria:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Entidad Bancaria:</th>
                 <td><?= $table->banco ?></td>
-                <th>Tipo Cuenta:</th>
+                <th style='background-color:#F0F3EF;'>Tipo Cuenta:</th>
                 <td><?= $table->tcuenta ?></td>
-                <th>Numero Cuenta:</th>
+                <th style='background-color:#F0F3EF;'>Numero Cuenta:</th>
                 <td><?= $table->cuentanumero ?></td>
-                <th></th>
-                <td></td>
+                <th style='background-color:#F0F3EF;'>Maquila:</th>
+                <td><?= $table->generamoda ?></td>
             </tr>
         </table>
     </div>
@@ -99,15 +99,15 @@ $view = 'proveedor';
         Información Contacto
     </div>
     <div class="panel-body">
-        <table class="table table-bordered">
-            <tr>
-                <th>Contacto:</th>
+        <table class="table table-bordered table-striped table-hover">
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Contacto:</th>
                 <td><?= $table->contacto ?></td>
-                <th>Teléfono:</th>
+                <th style='background-color:#F0F3EF;'>Teléfono:</th>
                 <td><?= $table->telefonocontacto ?></td>
-                <th>Celular:</th>
+                <th style='background-color:#F0F3EF;'>Celular:</th>
                 <td><?= $table->celularcontacto ?></td>
-                <th></th>
+                <th style='background-color:#F0F3EF;'></th>
                 <td></td>
             </tr>
         </table>
@@ -116,25 +116,25 @@ $view = 'proveedor';
         Información Tributaria
     </div>
     <div class="panel-body">
-        <table class="table table-bordered">
-            <tr>
-                <th>Nit/Matricula:</th>
+       <table class="table table-bordered table-striped table-hover">
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Nit/Matricula:</th>
                 <td><?= $table->nitmatricula ?></td>
-                <th>Forma de Pago:</th>
+                <th style='background-color:#F0F3EF;'>Forma de Pago:</th>
                 <td><?php if ($table->formapago = 1){echo "Contado";} else {echo "Crédito";}  ?></td>
-                <th>Plazo:</th>
+                <th style='background-color:#F0F3EF;'>Plazo:</th>
                 <td><?= $table->plazopago ?></td>
-                <th></th>
+                <th style='background-color:#F0F3EF;'></th>
                 <td></td>
             </tr>
-            <tr>
-                <th>Tipo Regimen:</th>
+            <tr style="font-size: 85%;">
+                <th style='background-color:#F0F3EF;'>Tipo Regimen:</th>
                 <td><?= $table->regimen ?></td>
-                <th>AutoRetenedor:</th>
+                <th style='background-color:#F0F3EF;'>AutoRetenedor:</th>
                 <td><?= $table->autoretener ?></td>
-                <th>Naturaleza:</th>
+                <th style='background-color:#F0F3EF;'>Naturaleza:</th>
                 <td><?= $table->naturalezas ?></td>
-                <th>Sociedad:</th>
+                <th style='background-color:#F0F3EF;'>Sociedad:</th>
                 <td><?= $table->sociedades ?></td>
             </tr>
         </table>
@@ -143,7 +143,7 @@ $view = 'proveedor';
         Observaciones
     </div>
     <div class="panel-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped table-hover">
             <tr>
                 <td><?= $table->observacion ?></td>
             </tr>

@@ -42,6 +42,7 @@ class FormProveedor extends Model
     public $banco;
     public $tipocuenta;
     public $cuentanumero;
+    public $genera_moda;
 
     public function rules()
     {
@@ -49,6 +50,8 @@ class FormProveedor extends Model
 			
             ['id_tipo_documento', 'required', 'message' => 'Campo requerido'],
             ['cedulanit', 'required', 'message' => 'Campo requerido'],
+            ['genera_moda', 'required', 'message' => 'Campo requerido'],
+            [['genera_moda'], 'integer'],
             ['cedulanit', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
             ['cedulanit', 'cedulanit_existe'],            
             [['dv'], 'string', 'max' => 1],
@@ -112,13 +115,15 @@ class FormProveedor extends Model
             'banco' => 'Entidad Bancaria:',
             'tipocuenta' => 'Tipo Cuenta:',
             'cuentanumero' => 'Numero cuenta:',
+            'genera_moda' => 'Maquila:',
         ];
     }
 
     public function cedulanit_existe($attribute, $params)
     {
         //Buscar la cedula/nit en la tabla
-        $table = Proveedor::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit])->andWhere("emailproveedor!=:emailproveedor", [':emailproveedor' => $this->emailproveedor]);
+        $table = Proveedor::find()->where("cedulanit=:cedulanit", [":cedulanit" => $this->cedulanit])
+                                  ->andWhere("emailproveedor!=:emailproveedor", [':emailproveedor' => $this->emailproveedor]);
         //Si la identificacion existe mostrar el error
         if ($table->count() == 1)
         {
@@ -129,7 +134,8 @@ class FormProveedor extends Model
     public function email_existe($attribute, $params)
     {
         //Buscar el email en la tabla
-        $table = Proveedor::find()->where("emailproveedor=:emailproveedor", [":emailproveedor" => $this->emailproveedor])->andWhere("cedulanit!=:cedulanit", [':cedulanit' => $this->cedulanit]);
+        $table = Proveedor::find()->where("emailproveedor=:emailproveedor", [":emailproveedor" => $this->emailproveedor])
+                                 ->andWhere("cedulanit!=:cedulanit", [':cedulanit' => $this->cedulanit]);
         //Si el email existe mostrar el error
         if ($table->count() == 1)
         {

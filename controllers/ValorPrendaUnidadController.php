@@ -677,6 +677,7 @@ class ValorPrendaUnidadController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
   
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'ID')
@@ -689,7 +690,8 @@ class ValorPrendaUnidadController extends Controller
                     ->setCellValue('H1', 'TOTAL PAGADO')
                     ->setCellValue('I1', 'USUARIO')
                     ->setCellValue('J1', 'ESTADO_REGISTRO')
-                    ->setCellValue('K1', 'OBSERVACION');
+                    ->setCellValue('K1', '% CUMPLIMIENTO')
+                     ->setCellValue('L1', 'OBSERVACION');
                    
         $i = 2;
         $confeccion = 'CONFECCION';
@@ -720,7 +722,8 @@ class ValorPrendaUnidadController extends Controller
                     ->setCellValue('H' . $i, $val->vlr_pago)
                     ->setCellValue('I' . $i, $val->usuariosistema)
                     ->setCellValue('J' . $i, $val->registroPagado)
-                    ->setCellValue('K' . $i, $val->observacion);
+                     ->setCellValue('K' . $i, $val->porcentaje_cumplimiento)
+                    ->setCellValue('L' . $i, $val->observacion);
                   
             $i++;
         }

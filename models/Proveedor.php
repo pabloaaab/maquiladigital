@@ -150,4 +150,13 @@ class Proveedor extends \yii\db\ActiveRecord
         }
         return $tipo;
     }
+    public function getGeneramoda()
+    {
+        if($this->genera_moda == 0){
+            $generamoda = "NO";
+        }else{
+            $generamoda = "SI";
+        }
+        return $generamoda;
+    }
 }

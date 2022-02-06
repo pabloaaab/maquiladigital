@@ -97,7 +97,10 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
     <div class="row">
         <?= $form->field($model, 'tipocuenta')->dropdownList(['0' => 'CUENTA DE AHORROS', '1' => 'CUENTA CORRIENTE'], ['prompt' => 'Seleccione...']) ?>
         <?= $form->field($model, 'cuentanumero')->textInput(['maxlength' => true]) ?>
-    </div>                
+    </div>  
+     <div class="row">
+        <?= $form->field($model, 'genera_moda')->dropdownList(['0' => 'NO', '1' => 'SI'], ['prompt' => 'Seleccione...']) ?>
+    </div>
     <div class="row">
         <div class="field-tblproveedor-observaciones_proveedor has-success">
             <?= $form->field($model, 'observacion', ['template' => '{label}<div class="col-sm-10 form-group">{input}{error}</div>'])->textarea(['rows' => 3]) ?>
