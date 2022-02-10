@@ -328,7 +328,7 @@ class OrdenProduccionController extends Controller {
     //proceso de permite crear la consulta de reprocesos
       public function actionSearchreprocesos() {
         if (Yii::$app->user->identity) {
-            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 112])->all()) {
+            if (UsuarioDetalle::find()->where(['=', 'codusuario', Yii::$app->user->identity->codusuario])->andWhere(['=', 'id_permiso', 116])->all()) {
                 $form = new \app\models\FormFiltroReprocesos();
                 $id_operario = null;
                 $idordenproduccion = null;
