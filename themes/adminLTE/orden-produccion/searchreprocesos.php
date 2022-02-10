@@ -11,10 +11,13 @@ use yii\widgets\LinkPager;
 use yii\bootstrap\Modal;
 use kartik\date\DatePicker;
 use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
 
-$this->title = 'Balanceo x operarios';
+$this->title = 'Reprocesos';
 $this->params['breadcrumbs'][] = $this->title;
-
+$operarios = ArrayHelper::map(\app\models\Operarios::find()-> orderBy ('nombrecompleto ASC')->all(), 'id_operario','nombrecompleto');
+$operaciones = ArrayHelper::map(\app\models\ProcesoProduccion::find()-> orderBy ('proceso ASC')->all(), 'idproceso','proceso');
+$indicador = 2;
 ?>
 <script language="JavaScript">
     function mostrarfiltro() {
@@ -25,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $formulario = ActiveForm::begin([
     "method" => "get",
-    "action" => Url::toRoute("balanceo/indexbalanceoperario"),
+    "action" => Url::toRoute("orden-produccion/searchreprocesos"),
     "enableClientValidation" => true,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
@@ -51,6 +54,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     'allowClear' => true
                 ],
             ]); ?>
+            <?= $formulario->field($form, "id_balanceo")->input("search") ?>
+            <?= $formulario->field($form, 'fecha_inicio')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
+        
+            <?= $formulario->field($form, 'fecha_final')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                'value' => date('d-M-Y', strtotime('+2 days')),
+                'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                'pluginOptions' => [
+                    'format' => 'yyyy-m-d',
+                    'todayHighlight' => true]])
+            ?>
             <?= $formulario->field($form, 'id_proceso')->widget(Select2::classname(), [
                 'data' => $operaciones,
                 'options' => ['prompt' => 'Seleccione la operación...'],
@@ -58,19 +77,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'allowClear' => true
                 ],
             ]); ?>
-            <?= $formulario->field($form, 'id_tipo')->widget(Select2::classname(), [
-                'data' => $maquinas,
-                'options' => ['prompt' => 'Seleccione la maquina...'],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
-            ]); ?>
-            <?= $formulario->field($form, "id_balanceo")->input("search") ?>
+             <?= $formulario->field($form, "idordenproduccion")->input("search") ?>
+           
         </div>
         
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
-            <a align="right" href="<?= Url::toRoute("balanceo/indexbalanceoperario") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
+            <a align="right" href="<?= Url::toRoute("orden-produccion/searchreprocesos") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-refresh'></span> Actualizar</a>
         </div>
     </div>
 </div>
@@ -85,40 +98,34 @@ $this->params['breadcrumbs'][] = $this->title;
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th scope="col" style='background-color:#B9D5CE;'>Código</th>  
-                <th scope="col" style='background-color:#B9D5CE;'>Operación</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Balanceo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Id</th>  
                 <th scope="col" style='background-color:#B9D5CE;'>Op</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
+                 <th scope="col" style='background-color:#B9D5CE;'>Ref.</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Balanceo</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Segundos</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Minutos</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Asignados</th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Sobrante/Faltante">S/F</span></th>
-                <th scope="col" style='background-color:#B9D5CE;'>Fecha Creación</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Operaciones</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Producto/Talla</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Tiempo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>F. registro</th>
                  <th scope="col" style='background-color:#B9D5CE;'></th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($model as $val): ?>
                 <tr style="font-size: 85%;">
-                <td><?= $val->id_proceso ?></td>
-               <td><?= $val->proceso->proceso ?></td>
-                <td><?= $val->tipo->descripcion ?></td>
-                 <td><?= $val->id_balanceo ?></td>
-                <td><?= $val->balanceo->ordenproduccion->ordenproduccion ?></td>
-                <td><?= $val->balanceo->cliente->nombrecorto ?></td>
-                 <td><?= $val->operario->nombrecompleto ?></td>
-                <td><?= $val->segundos ?></td>
-                <td><?= $val->minutos ?></td>
-                <td><?= $val->total_minutos ?></td>
-                <?php if($val->sobrante_faltante >= 0){?>
-                    <td style="background: #088A85;"><?= $val->sobrante_faltante ?></td>
-                <?php }else{ ?>
-                    <td style="background: #F5BCA9;"><?= $val->sobrante_faltante ?></td>
-                <?php }?>      
-                <td><?= $val->fecha_creacion ?></td>
+                <td><?= $val->id_reproceso ?></td>
+                <td><?= $val->idordenproduccion ?></td>
+                 <td><?= $val->ordenproduccion->codigoproducto ?></td>
+                <td><?= $val->id_balanceo ?></td>
+                <td><?= $val->operario->nombrecompleto ?></td>
+                <td><?= $val->proceso->proceso ?></td>
+                <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
+                <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
+                <td><?= $val->cantidad ?></td>
+                <td><?= $val->detalle->minutos ?></td>
+                <td><?= $val->fecha_registro ?></td>
                 <td>
                     <a href="<?= Url::toRoute(["balanceo/viewconsultabalanceo", "id" => $val->id_balanceo, 'idordenproduccion' => $val->balanceo->ordenproduccion->idordenproduccion, 'indicador' => $indicador]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                     

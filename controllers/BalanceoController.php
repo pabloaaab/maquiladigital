@@ -191,6 +191,7 @@ class BalanceoController extends Controller
                         'operaciones' => ArrayHelper::map($operaciones, "idproceso", "proceso"),
                         'maquinas' => ArrayHelper::map($maquinas, "id_tipo", "descripcion"),
                         'operarios' => ArrayHelper::map($operarios, "id_operario", "nombrecompleto"),
+                        'indicador' => 1,
             ]);
         }else{
             return $this->redirect(['site/sinpermiso']);
@@ -375,7 +376,7 @@ class BalanceoController extends Controller
     }
     
   //vista de la consulta de balanceo y operario
-  public function actionViewconsultabalanceo($id, $idordenproduccion)
+  public function actionViewconsultabalanceo($id, $idordenproduccion, $indicador)
     {
         $flujo_operaciones = FlujoOperaciones::find()->where(['=', 'idordenproduccion', $idordenproduccion])->orderBy('operacion, orden_aleatorio asc')->all();
         $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id])->orderBy('id_operario asc')->all();
@@ -386,6 +387,7 @@ class BalanceoController extends Controller
                 'balanceo_detalle' => $balanceo_detalle,
                 'idordenproduccion' => $idordenproduccion,
                 'operarios'=> $operarios,
+                'indicador' => $indicador,
         ]);
     }
     

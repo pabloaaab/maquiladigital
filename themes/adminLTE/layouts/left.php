@@ -182,6 +182,7 @@
                                                     ['label' => 'Ficha Operaciones', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexconsultaficha']],
                                                     ['label' => 'Operaciones x Prenda', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/indexoperacionprenda']],
                                                     ['label' => 'Balanceo', 'icon' => 'plus-square-o', 'url' => ['/balanceo/indexbalanceoperario']],
+                                                    ['label' => 'Reprocesos', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/searchreprocesos']],
                                                 ]],
                                                 ['label' => 'Unidades confeccionadas', 'icon' => 'plus-square-o', 'url' => ['/orden-produccion/consultaunidadconfeccionada']],
                                             ],

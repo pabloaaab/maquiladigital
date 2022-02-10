@@ -42,7 +42,7 @@ class OrdenProduccionTercero extends \yii\db\ActiveRecord
     {
         return [
             [['idproveedor', 'idcliente', 'codigo_producto', 'fecha_proceso','vlr_minuto','cantidad_minutos','idtipo'], 'required'],
-            [['idproveedor', 'idcliente', 'idordenproduccion', 'idtipo', 'total_pagar','cantidad_unidades','activo_reproceso'], 'integer'],
+            [['idproveedor', 'idcliente', 'idordenproduccion', 'idtipo', 'total_pagar','cantidad_unidades'], 'integer'],
             [['fecha_proceso', 'fecha_registro'], 'safe'],
             [['vlr_minuto','cantidad_minutos'], 'number'],
             [['codigo_producto'], 'string', 'max' => 15],
