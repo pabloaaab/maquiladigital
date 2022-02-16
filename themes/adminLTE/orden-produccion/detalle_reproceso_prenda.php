@@ -68,7 +68,8 @@ $orden_produccion = Ordenproduccion::findOne($id);
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#balanceo" aria-controls="balanceo" role="tab" data-toggle="tab">Balanceo <span class="badge"><?= count($balanceo_detalle)?></span> </a></li>
-            <li role="presentation" ><a href="#reproceso" aria-controls="reproceso" role="tab" data-toggle="tab">Reprocesos: <span class="badge"><?= count($reproceso) ?></span></a></li>
+            <li role="presentation" ><a href="#reproceso_confeccion" aria-controls="reproceso_confeccion" role="tab" data-toggle="tab">Rep_Confección <span class="badge"><?= count($reproceso_confeccion) ?></span></a></li>
+            <li role="presentation" ><a href="#reproceso_terminacion" aria-controls="reproceso_terminacion" role="tab" data-toggle="tab">Rep_Terminación <span class="badge"><?= count($reproceso_terminacion) ?></span></a></li>
         </ul>
         <div class="tab-content" >
               <div role="tabpanel" class="tab-pane active" id="balanceo">
@@ -82,6 +83,7 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Operaciones</th>
+                                        <th scope="col" style='background-color:#B9D5CE; width: 70px;'>Proceso</th>
                                         <th scope="col" style='background-color:#B9D5CE; width: 70px;'>Cant.</th>    
                                         <?php 
                                         if (count($detalle_orden)== 2 ){?>
@@ -119,6 +121,11 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                                <td><?= $val->id_detalle?></td>
                                                <td><?= $val->operario->nombrecompleto ?></td>
                                                <td><?= $val->proceso->proceso ?></td>
+                                               <td align="center"><select name="tipo_reproceso[]" style="width: 85px;">
+                                                        <option value="1">Confeccion</option>
+                                                        <option value="2">Terminacion</option>
+
+                                                </select> </td> 
                                                <td ><input type="text" style="width: 40px;" name="cantidad[]" value="0" required></td>
                                                <?php foreach ($detalle_orden as $talla):?>
                                                        <td><input type="checkbox"  name="id_talla" value="<?=  $talla->idproductodetalle?>">Talla (<?=  $talla->productodetalle->prendatipo->talla->talla?>)</td>
@@ -142,7 +149,7 @@ $orden_produccion = Ordenproduccion::findOne($id);
                 </div>    
             </div>
             <!-- TERMINA TAB -->
-             <div role="tabpanel" class="tab-pane" id="reproceso">
+             <div role="tabpanel" class="tab-pane" id="reproceso_confeccion">
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
@@ -167,7 +174,7 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                     foreach ($detalle_orden as $tallas):
                                         $suma = 0;
                                        $total += $tallas->cantidad;
-                                        foreach ($reproceso as $val):
+                                        foreach ($reproceso_confeccion as $val):
                                             if($tallas->idproductodetalle == $val->idproductodetalle){
                                                $suma += $val->cantidad;  
                                                 ?>
@@ -202,13 +209,80 @@ $orden_produccion = Ordenproduccion::findOne($id);
                             </table>
                            
                               <div class="panel-footer text-right">
-                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['reprocesosexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm']);?>
+                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['reprocesosexcelconfeccion', 'id' => $id], ['class' => 'btn btn-primary btn-sm']);?>
                             </div>
                         </div>    
                     </div>
                 </div>    
             </div>
            <!-- TERMINA EL TABS-->
+             <div role="tabpanel" class="tab-pane" id="reproceso_terminacion">
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Talla</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Operacion</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Modulo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Op</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Unidades</th>
+                                          <th scope="col" style='background-color:#B9D5CE;'>Reproceso</th>
+                                          <th scope="col" style='background-color:#B9D5CE;'>F_registro.</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
+                                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $contador = 0; $total = 0; $dato = 0;
+                                    foreach ($detalle_orden as $tallas):
+                                        $suma = 0;
+                                       $total += $tallas->cantidad;
+                                        foreach ($reproceso_terminacion as $val):
+                                            if($tallas->idproductodetalle == $val->idproductodetalle){
+                                               $suma += $val->cantidad;  
+                                                ?>
+                                                 <tr style="font-size: 85%; ">
+                                                     <td><?= $val->operario->nombrecompleto ?></td>
+                                                      <td><?= $val->productodetalle->prendatipo->prenda .' / '.$val->productodetalle->prendatipo->talla->talla .' - ('. $tallas->cantidad.')'?></td>
+                                                     <td><?= $val->proceso->proceso ?></td>
+                                                     <td><?= $val->id_balanceo ?></td>
+                                                     <td><?= $val->idordenproduccion ?></td>
+                                                     <td><?= $val->cantidad ?></td>
+                                                     <td><?= round(($suma / $tallas->cantidad)*100,2)?></td>
+                                                      <td><?= $val->fecha_registro ?></td>
+                                                     <td><?= $val->observacion ?></td>
+                                                    
+                                                 </tr>
+                                           <?php }
+                                        endforeach;
+                                        $contador = $suma; 
+                                        $dato += $contador;
+                                        $contador = round(($dato / $total)*100,2); 
+                                        if($suma == 0){
+                                        }else{?>
+                                         <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
+                                         <?php }
+                                        endforeach;    ?>
+                                          
+                                </tbody>   
+                                <tr>
+                                  <td style="font-size: 100%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total unidades  : </b> <?= $dato ?></td> <td colspan="8"></td>
+                                </tr>
+                                 <td style="font-size: 100%; width: 240px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Total reproceso: </b> <?= $contador ?> %</td> <td colspan="8"></td>
+                            </table>
+                           
+                              <div class="panel-footer text-right">
+                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['reprocesosexcelterminacion', 'id' => $id], ['class' => 'btn btn-primary btn-sm']);?>
+                            </div>
+                        </div>    
+                    </div>
+                </div>    
+            </div>
+           <!-- TERMINA TABS-->
             
         
     </div> 

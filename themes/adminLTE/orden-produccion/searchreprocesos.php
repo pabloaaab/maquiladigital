@@ -93,21 +93,22 @@ $indicador = 2;
 <div class="table-responsive">
     <div class="panel panel-success ">
         <div class="panel-heading">
-            Registros: <span class="badge"><?= $pagination->totalCount ?></span>
+            Registros <span class="badge"><?= number_format($pagination->totalCount,0) ?></span>
         </div>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>  
-                <th scope="col" style='background-color:#B9D5CE;'>Op</th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Orden produccion interna">Op.</span></th>
                  <th scope="col" style='background-color:#B9D5CE;'>Ref.</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Balanceo</th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Numero del balanceo"># Bal.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Operario</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Operaciones</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Producto/Talla</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Tiempo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. registro</th>
                  <th scope="col" style='background-color:#B9D5CE;'></th>
             </tr>
@@ -125,6 +126,11 @@ $indicador = 2;
                 <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                 <td><?= $val->cantidad ?></td>
                 <td><?= $val->detalle->minutos ?></td>
+                <?php if ($val->tipo_reproceso == 1){ ?>
+                     <td><?=  'CONFECCION' ?></td>
+                <?php }else {?>
+                     <td><?=  'TERMINACION' ?></td>
+                <?php } ?>     
                 <td><?= $val->fecha_registro ?></td>
                 <td>
                     <a href="<?= Url::toRoute(["balanceo/viewconsultabalanceo", "id" => $val->id_balanceo, 'idordenproduccion' => $val->balanceo->ordenproduccion->idordenproduccion, 'indicador' => $indicador]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>

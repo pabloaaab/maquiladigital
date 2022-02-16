@@ -51,7 +51,7 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
     {
         return [
             [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle', 'fecha_registro','idordenproduccion'], 'required'],
-            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle','idordenproduccion'], 'integer'],
+            [['id_detalle', 'id_proceso', 'id_balanceo', 'id_operario', 'cantidad', 'idproductodetalle','idordenproduccion','tipo_reproceso'], 'integer'],
             [['fecha_registro'], 'safe'],
             [['observacion'], 'string', 'max' => 50],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -81,6 +81,7 @@ class ReprocesoProduccionPrendas extends \yii\db\ActiveRecord
             'observacion' => 'Observacion',
             'usuariosistema' => 'Usuariosistema',
             'idordenproduccion' => 'idordenproduccion',
+            'tipo_reproceso' => 'Tipo reproceso',
         ];
     }
 
