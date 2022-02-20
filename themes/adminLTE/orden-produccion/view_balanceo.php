@@ -33,6 +33,12 @@ use yii\db\Query;
 $this->title = 'Detalle balanceo';
 $this->params['breadcrumbs'][] = ['label' => 'Detalle balanceo', 'url' => ['proceso']];
 $this->params['breadcrumbs'][] = $model->idordenproduccion;
+//codigo que permite buscar el si la OP tiene modulo de balanceo
+$varModular = 0;
+$buscarOrden = app\models\Balanceo::find()->where(['=','idordenproduccion', $model->idordenproduccion])->andWhere(['=','id_proceso_confeccion', 2])->one();
+if($buscarOrden){
+    $varModular = 1;
+}
 ?>
 <div class="ordenproduccionproceso-view">
     <div class="btn-group" role="group" aria-label="...">
@@ -319,38 +325,50 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <?php
                                       $t_segundos = 0; $t_minutos = 0; $t_minutos_conf = 0;
                                       $total_c = 0; $total_confeccion = 0;
+                                     
                                     foreach ($modeldetalles as $val):
                                         $total_c = 0;
                                         ?>
-                                    <tr style="font-size: 85%;">
-                                        <td><?= $val->iddetalleorden ?></td>
-                                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
-                                        <td align="center"><?= $val->cantidad ?></td>
+                                        <tr style="font-size: 85%;">
+                                            <td><?= $val->iddetalleorden ?></td>
+                                            <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla ?></td>
+                                            <td align="center"><?= $val->cantidad ?></td>
+                                            <?php
+                                            $cantidad = app\models\CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $val->iddetalleorden])->all();
+                                            if(count($cantidad) > 0){
+                                                foreach ($cantidad as $variable):
+                                                    $total_c += $variable->cantidad_terminada;
+                                                endforeach;?>   
+                                                 <td align="right" style="background: #F6CECE;"><?= $total_c ?></td>    
+                                            <?php }else {?>
+                                                  <td align="right"><?= 0 ?></td>
+                                             <?php } ?>
+                                             <td align="right"><?= ''.number_format(($model->duracion * 60)* ($val->cantidad),0) ?></td>
+                                             <td align="right"><?= ''.number_format($model->duracion  * $val->cantidad,0) ?></td>
+                                            <td align="right" style="background: #F5BCA9;"><?= ''.number_format($model->segundosficha / 60 * $val->cantidad,0) ?></td>
+                                            <?php if ($varModular == 0){?>
+                                                <td style= 'width: 25px; height: 25px;'>
+                                                        <a href="<?= Url::toRoute(["orden-produccion/vistatallas", "iddetalleorden" => $val->iddetalleorden]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                </td>
+                                            <?php }else{?>
+                                                 <td style= 'width: 25px; height: 25px;'>
+                                                   <a href="<?= Url::toRoute(["orden-produccion/vistatallas", "iddetalleorden" => $val->iddetalleorden, 'modulo' => $buscarOrden->id_balanceo]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                                                 </td>  
+                                            <?php } ?>    
+                                            <?php if ($varModular == 1){?>
+                                                <td style= 'width: 25px; height: 25px;'>
+                                                        <a href="<?= Url::toRoute(["orden-produccion/recoger_preparacion", "iddetalleorden" => $val->iddetalleorden,'modulo' => $buscarOrden->id_balanceo, 'id'=> $model->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-plus"></span></a>
+                                                </td>
+                                            <?php }else{?>
+                                                <td style= 'width: 25px; height: 25px;'>
+                                                </td>
+                                           <?php } ?>   
+                                        </tr>
                                         <?php
-                                        $cantidad = app\models\CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $val->iddetalleorden])->all();
-                                        if(count($cantidad) > 0){
-                                            foreach ($cantidad as $variable):
-                                                $total_c += $variable->cantidad_terminada;
-                                            endforeach;?>   
-                                             <td align="right" style="background: #F6CECE;"><?= $total_c ?></td>    
-                                        <?php }else {?>
-                                              <td align="right"><?= 0 ?></td>
-                                         <?php } ?>
-                                         <td align="right"><?= ''.number_format(($model->duracion * 60)* ($val->cantidad),0) ?></td>
-                                         <td align="right"><?= ''.number_format($model->duracion  * $val->cantidad,0) ?></td>
-                                        <td align="right" style="background: #F5BCA9;"><?= ''.number_format($model->segundosficha / 60 * $val->cantidad,0) ?></td>
-                                        <td style= 'width: 25px; height: 25px;'>
-                                                <a href="<?= Url::toRoute(["orden-produccion/vistatallas", "iddetalleorden" => $val->iddetalleorden]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
-                                        </td>
-                                        <td style= 'width: 25px; height: 25px;'>
-                                                <a href="<?= Url::toRoute(["orden-produccion/recoger_preparacion", "iddetalleorden" => $val->iddetalleorden,'modulo' => $modulo, 'id'=> $model->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-plus"></span></a>
-                                        </td>
-                                    </tr>
-                                    <?php
-                                        $total_confeccion +=$val->faltante;
-                                        $t_minutos += ($model->duracion * $val->cantidad);
-                                        $t_segundos = $t_minutos * 60;
-                                        $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
+                                            $total_confeccion +=$val->faltante;
+                                            $t_minutos += ($model->duracion * $val->cantidad);
+                                            $t_segundos = $t_minutos * 60;
+                                            $t_minutos_conf += ($model->segundosficha/60 * $val->cantidad);
                                     endforeach; ?>
                                      <td colspan="3"><td style="font-size: 85%; width: 220px; text-align: right;"><b>T. Confeccion:</b> <?= ''.number_format($total_confeccion),' <b>Falta:</b> ',($model->cantidad - $total_confeccion) ?> </td></td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Segundos:</b> <?= ''.number_format($t_segundos,0) ?> </td><td style="font-size: 85%; width: 170px; text-align: right;"><b>T. Minutos:</b> <?= ''.number_format($t_minutos,0) ?></td> <td style="font-size: 85%; width: 170px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>T. Minutos conf.:</b> <?= ''.number_format($t_minutos_conf,0) ?></td> <td colspan="2">
                                 </tbody>     

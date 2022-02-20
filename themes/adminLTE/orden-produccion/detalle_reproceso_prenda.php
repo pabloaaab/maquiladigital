@@ -264,9 +264,9 @@ $orden_produccion = Ordenproduccion::findOne($id);
                                         $contador = round(($dato / $total)*100,2); 
                                         if($suma == 0){
                                         }else{?>
-                                         <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
-                                         <?php }
-                                        endforeach;    ?>
+                                               <td colspan="6"><td style="font-size: 85%; width: 100px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Unidades: </b> <?= ''.number_format($suma,0) ?></td> <td style="font-size: 85%; width: 130px; text-align: right; background: #4B6C67; color: #FFFFFF;"><b>Reproceso :</b>  <?= round(($suma / $tallas->cantidad)*100,2) ?>%</td>  <td colspan = "2"></td>    
+                                        <?php }
+                                    endforeach;    ?>
                                           
                                 </tbody>   
                                 <tr>

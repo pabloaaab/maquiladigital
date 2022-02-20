@@ -1991,15 +1991,17 @@ class OrdenProduccionController extends Controller {
   
     //VISTA DE CANTIDADES CONFECCINADAS POR TALLAS
     
-    public function actionVistatallas($iddetalleorden)
+    public function actionVistatallas($iddetalleorden, $modulo)
     {
       $detalletallas = Ordenproducciondetalle::findOne($iddetalleorden);  
       $cantidades = CantidadPrendaTerminadas::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_entrada DESC')->all();
-      $cantidad_preparacion = CantidadPrendaTerminadasPreparacion::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_entrada DESC')->all();
+      $cantidad_preparacion = CantidadPrendaTerminadasPreparacion::find()->where(['=','iddetalleorden', $iddetalleorden])->orderBy('id_proceso DESC')->all();
        return $this->render('vistatallas', [
                     'detalletallas' => $detalletallas, 
                     'cantidades' => $cantidades,
                     'cantidad_preparacion' => $cantidad_preparacion,
+                    'modulo' => $modulo,
+           
                     
         ]);
       
