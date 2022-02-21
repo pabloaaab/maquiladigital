@@ -32,10 +32,10 @@ $ordenproduccion = ArrayHelper::map(Ordenproduccion::find()->where(['=','pagada'
    <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['index', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm']) ?>
 	<?php if ($model->autorizado == 0) { ?>
-                <?= Html::a('<span class="glyphicon glyphicon-ok"></span> autorizado', ['autorizado', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']);
+                <?= Html::a('<span class="glyphicon glyphicon-ok"></span> autorizado', ['autorizado', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']);
         } else { 
              if ($model->cerrar_pago == 0) { 
-                echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_valor], ['class' => 'btn btn-default btn-sm']);
+                echo Html::a('<span class="glyphicon glyphicon-remove"></span> Desautorizar', ['autorizado', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm']);
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar pago', ['cerrarpago', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion],['class' => 'btn btn-warning btn-xs',
                 'data' => ['confirm' => 'Esta seguro de cerrar el proceso de pago Nro : '. $model->id_valor. '', 'method' => 'post']]);
                 echo Html::a('<span class="glyphicon glyphicon-remove"></span> Cerrar pago-Orden', ['cerrarpagoorden', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion],['class' => 'btn btn-info btn-xs',
@@ -122,7 +122,7 @@ $form = ActiveForm::begin([
        
         <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $model->id_valor], ['class' => 'btn btn-primary btn-sm ']); ?>
         <?php if($model->autorizado == 0){?>                
-                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor], ['class' => 'btn btn-success btn-sm']); ?>   
+                <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['valor-prenda-unidad/nuevodetalle', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']); ?>   
                 <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo-Modular', ['valor-prenda-unidad/nuevodetallemodular', 'id' => $model->id_valor, 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-info btn-sm']); ?>        
                 <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
         <?php } ?>
@@ -142,8 +142,8 @@ $form = ActiveForm::begin([
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr style='font-size:85%;'>
-                                        <th scope="col" style='background-color:#B9D5CE; width: 320px;'>Operario</th>                        
-                                        <th scope="col" style='background-color:#B9D5CE;width: 150px;'>Nro_orden</th> 
+                                        <th scope="col" style='background-color:#B9D5CE; width: 300px;'>Operario</th>                        
+                                        <th scope="col" style='background-color:#B9D5CE;width: 75px;'>OP</th> 
                                          <th scope="col" style='background-color:#B9D5CE;width: 150px;'>Operación</th> 
                                         <th scope="col" style='background-color:#B9D5CE;'>Dia</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Cant.</th> 
@@ -160,7 +160,8 @@ $form = ActiveForm::begin([
                                            foreach ($detalles_pago as $val):?>
                                                <tr style='font-size: 85%;'> 
                                                     <td style="padding-left: 1;padding-right: 0;"><?= Html::dropDownList('id_operario[]', $val->id_operario, $operarios, ['class' => 'col-sm-10', 'prompt' => 'Seleccion...', 'required' => true]) ?></td>
-                                                    <td style="padding-left: 1;padding-right: 0;"><?= Html::dropDownList('idordenproduccion[]', $val->idordenproduccion, $ordenproduccion, ['class' => 'col-sm-7', $model->idordenproduccion, 'required' => true]) ?></td>
+                                                    <td style="padding-left: 3;padding-right: 0;"> <?= $val->idordenproduccion ?>
+                                                    </td>   
                                                     <td style="padding-left: 1;padding-right: 0;"><select name="operacion[]">
                                                             <?php if ($val->operacion == 0){
                                                                    echo $operacion = "Confeccion";
@@ -191,7 +192,7 @@ $form = ActiveForm::begin([
                                                         <td>
                                                               <?php if ($model->estado_valor == 0){ ?>
                                                               <?=
-                                                              Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->id_valor, 'detalle' => $val->consecutivo], [
+                                                              Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->id_valor, 'detalle' => $val->consecutivo, 'idordenproduccion' => $model->idordenproduccion], [
                                                                   'class' => '',
                                                                   'data' => [
                                                                       'confirm' => 'Esta seguro de eliminar el registro?',

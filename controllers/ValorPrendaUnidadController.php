@@ -219,7 +219,7 @@ class ValorPrendaUnidadController extends Controller
         }  
         $detalle->save(false);
     }
-   public function actionView($id)
+   public function actionView($id, $idordenproduccion)
     {
         $detalles_pago = ValorPrendaUnidadDetalles::find()->where(['=','id_valor', $id])->orderBy('consecutivo desc')->all();
         //proceso para actualizar
@@ -228,15 +228,14 @@ class ValorPrendaUnidadController extends Controller
             foreach ($_POST["detalle_pago_prenda"] as $intCodigo) {                
                 $table = ValorPrendaUnidadDetalles::findOne($intCodigo);
                 $table->id_operario = $_POST["id_operario"][$intIndice];
-                $table->idordenproduccion = $_POST["idordenproduccion"][$intIndice];
                 $table->operacion = $_POST["operacion"][$intIndice];
                 $table->dia_pago = $_POST["dia_pago"][$intIndice];
                 $table->cantidad = $_POST["cantidad"][$intIndice];
                 $operario = Operarios::find()->where(['=','id_operario', $_POST["id_operario"][$intIndice]])->one();
-                $valor_unidad = ValorPrendaUnidad::find()->where(['=','id_valor', $id])->andWhere(['=','idordenproduccion', $_POST["idordenproduccion"][$intIndice]])->one();
+                $valor_unidad = ValorPrendaUnidad::find()->where(['=','id_valor', $id])->andWhere(['=','idordenproduccion', $idordenproduccion])->one();
                 $vlr_unidad = 0;
                 if($operario){
-                    if($valor_unidad){
+                    
                         $conMatricula = \app\models\Matriculaempresa::findOne(1);
                         $conHorario = \app\models\Horario::findOne(1);
                         if($operario->vinculado == 1){
@@ -268,7 +267,7 @@ class ValorPrendaUnidadController extends Controller
                                 $table->vlr_pago = $_POST["vlr_prenda"][$intIndice] * $table->cantidad; 
                            }
                            //calculo para hallar el % de cumplimiento
-                          echo $can_minutos = $table->vlr_prenda / $conMatricula->vlr_minuto_contrato; 
+                           $can_minutos = $table->vlr_prenda / $conMatricula->vlr_minuto_contrato; 
                            $total_diario = round((60/$can_minutos)* $conHorario->total_horas,0);
                            $cumplimiento = round(($table->cantidad / $total_diario)*100, 2);
                            // fin proceso
@@ -278,17 +277,15 @@ class ValorPrendaUnidadController extends Controller
                            $table->save(false);
                            $intIndice++;
                         }  
-                    }else{
-                        Yii::$app->getSession()->setFlash('error', 'Esta orden de produccion no se la ha asignado el valor a la prenda. Favor consultar con el administrador.');
-                    }    
                 }
             }
             $this->Totalpagar($id);
            $this->TotalCantidades($id);
-            return $this->redirect(['view', 'id' => $id]);
+            return $this->redirect(['view', 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
         }
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'idordenproduccion' => $idordenproduccion,
             'detalles_pago' => $detalles_pago,
         ]);
     }
@@ -374,22 +371,23 @@ class ValorPrendaUnidadController extends Controller
     }
     //PROCESOS Y SUBPROCESOS
     
-     public function actionNuevodetalle($id)
+     public function actionNuevodetalle($id,$idordenproduccion)
     {              
         $valor_unidad = ValorPrendaUnidad::findOne($id);
         if($valor_unidad->cantidad_operacion > $valor_unidad->cantidad){
-           $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+           $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]); 
            Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque la cantidad de operaciones  '.$valor_unidad->cantidad_operacion.' es mayor que la cantidad del lote '.$valor_unidad->cantidad .'.');  
         }else{
             if($valor_unidad->cantidad_procesada > $valor_unidad->cantidad){
-                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+                $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]); 
                 Yii::$app->getSession()->setFlash('error', 'No se puede generar mas lineas porque la cantidad de confeccion y/o Terminación '.$valor_unidad->cantidad_procesada.' es mayor o igual que la cantidad del lote '.$valor_unidad->cantidad.'.');
             }else{    
                 $model = new ValorPrendaUnidadDetalles();
                 $model->id_valor = $id;                
+                 $model->idordenproduccion = $idordenproduccion;
                 $model->dia_pago= date('Y-m-d');
                 $model->insert();
-                return $this->redirect(['view', 'id' => $id]);
+                return $this->redirect(['view', 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
             }
         }
        
@@ -430,29 +428,29 @@ class ValorPrendaUnidadController extends Controller
                               }
                         endforeach;
                     }else{
-                         $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+                         $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
                          Yii::$app->getSession()->setFlash('error', 'La orden de produccion Nro: '. $idordenproduccion. ', no tiene asignado empleados para las operaciones.'); 
                     }    
                 }else{
-                   $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+                   $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
                    Yii::$app->getSession()->setFlash('error', 'El modulo de balanceo Nro: '. $val->id_balanceo. ', no realizo confeccion el dia '.$fecha_corte.'. Favor hacer este proceso manual.'); 
                 }    
             endforeach;
-           return $this->redirect(['view', 'id' => $id]);
+           return $this->redirect(['view', 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
         }else{
-             $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+             $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
              Yii::$app->getSession()->setFlash('error', 'La orden de produccion Nro: '. $idordenproduccion. ', no tiene balanceo creado en sistema.!');
         }
        // return $this->redirect(['view', 'id' => $id]);
     }
    
-    public function actionEliminar($id,$detalle)
+    public function actionEliminar($id,$detalle, $idordenproduccion)
     {                                
         $detalle = ValorPrendaUnidadDetalles::findOne($detalle);
         $detalle->delete();
         $this->Totalpagar($id);
         $this->TotalCantidades($id);
-        $this->redirect(["view",'id' => $id]);        
+        $this->redirect(["view",'id' => $id, 'idordenproduccion' => $idordenproduccion]);        
     }
     
     protected function Totalpagar($id) {
@@ -501,7 +499,7 @@ class ValorPrendaUnidadController extends Controller
        
     }
     
-    public function actionAutorizado($id) {
+    public function actionAutorizado($id, $idordenproduccion) {
         $model = $this->findModel($id);
         $mensaje = "";
         if($model->cantidad_procesada > $model->cantidad  || $model->cantidad_operacion > $model->cantidad){
@@ -511,12 +509,12 @@ class ValorPrendaUnidadController extends Controller
             if ($model->autorizado == 0) {                        
                 $model->autorizado = 1;            
                $model->update();
-               $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);  
+               $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);  
 
             } else{
                 $model->autorizado = 0;
                 $model->update();
-                $this->redirect(["valor-prenda-unidad/view", 'id' => $id]); 
+                $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]); 
             }
         }    
     }
@@ -527,7 +525,7 @@ class ValorPrendaUnidadController extends Controller
            $model->cerrar_pago =  1;
            $model->estado_valor = 1;
            $model->save(false);
-           $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+           $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
     }
     //cerrar el pago y la orden de produccion
     
@@ -539,7 +537,7 @@ class ValorPrendaUnidadController extends Controller
            $model->save(false);
            $orden->pagada = 1;
            $orden->save(false);
-           $this->redirect(["valor-prenda-unidad/view", 'id' => $id]);
+           $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
     }
     
    
@@ -569,6 +567,7 @@ class ValorPrendaUnidadController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":l".(1));
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'PAGO DE OPERACIONES')
@@ -580,8 +579,9 @@ class ValorPrendaUnidadController extends Controller
                     ->setCellValue('F2', 'CANTIDAD')
                     ->setCellValue('G2', 'VR. PRENDA')
                     ->setCellValue('H2', 'VR. PAGO')
-                    ->setCellValue('I2', 'USUARIO')
-                    ->setCellValue('J2', 'OBSERVACION');
+                    ->setCellValue('I2', '% CUMPLIMIENTO')
+                    ->setCellValue('J2', 'USUARIO')
+                    ->setCellValue('K2', 'OBSERVACION');
                   
         $i = 3;
         $confeccion = 'CONFECCION';
@@ -592,11 +592,11 @@ class ValorPrendaUnidadController extends Controller
                     ->setCellValue('A' . $i, $ficha->idordenproduccion)
                     ->setCellValue('B' . $i, $val->operario->documento)
                     ->setCellValue('C' . $i, $val->operario->nombrecompleto);
-                    if($val->operacion == 1){
+                    if($val->operacion == 0){
                          $objPHPExcel->setActiveSheetIndex(0)
                       ->setCellValue('D' . $i, $confeccion);
                     }else{
-                        if($val->operacion == 2){
+                        if($val->operacion == 1){
                              $objPHPExcel->setActiveSheetIndex(0)
                              ->setCellValue('D' . $i, $operaciones);
                         }else{
@@ -609,8 +609,9 @@ class ValorPrendaUnidadController extends Controller
                     ->setCellValue('F' . $i, $val->cantidad)
                     ->setCellValue('G' . $i, $val->vlr_prenda)
                     ->setCellValue('H' . $i, $val->vlr_pago)
-                    ->setCellValue('I' . $i, $val->usuariosistema)
-                    ->setCellValue('J' . $i, $val->observacion);
+                    ->setCellValue('I' . $i, $val->porcentaje_cumplimiento)
+                    ->setCellValue('J' . $i, $val->usuariosistema)
+                    ->setCellValue('K' . $i, $val->observacion);
               
                    
             $i++;                        

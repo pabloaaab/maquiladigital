@@ -136,10 +136,10 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                      <td style='background-color:#DDE6E4;'><?= $val->estadovalor?></td>
                 <?php }?>      
                 <td style= 'width: 25px; height: 25px;'>
-                        <a href="<?= Url::toRoute(["valor-prenda-unidad/view", "id" => $val->id_valor, ]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
+                        <a href="<?= Url::toRoute(["valor-prenda-unidad/view", "id" => $val->id_valor, 'idordenproduccion' => $val->idordenproduccion]) ?>" ><span class="glyphicon glyphicon-eye-open"></span></a>
                 </td>
                 <td style= 'width: 25px; height: 25px;'>
-                        <a href="<?= Url::toRoute(["valor-prenda-unidad/update", "id" => $val->id_valor, ]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="<?= Url::toRoute(["valor-prenda-unidad/update", "id" => $val->id_valor]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
                 </td>
              
             </tbody>            
