@@ -154,146 +154,207 @@ $view = 'orden-produccion';
                      <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Exportacion') ?>:</th>
                     <td><?= Html::encode($model->exportarOrden) ?></td>    
                     <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'totalorden') ?>:</th>
-                    <td><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
+                    <td  style="text-align: right"><?= Html::encode('$ '.number_format($model->totalorden,0)) ?></td>
                 </tr>
               
             </table>
         </div>
     </div>
-    
-    <div class="table-responsive">
-        <div class="panel panel-success ">
-            <div class="panel-heading">
-                Detalles
-            </div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Código</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Precio</th>
-                        <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
-                        <th scope="col" style='background-color:#B9D5CE;'></th>
-                        <th scope="col" style='background-color:#B9D5CE;'></th>
-                           
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($modeldetalles as $val): ?>
-                    <tr style="font-size: 85%;">
-                        <td><?= $val->iddetalleorden ?></td>
-                        <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
-                        <td><?= $val->codigoproducto ?></td>
-                        <td><?= $val->cantidad ?></td>
-                        <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
-                        <td><?= '$ '.number_format($val->subtotal,2) ?></td>
-                        <?php if ($model->autorizado == 0) { ?>
-                        <td style="width: 25px;">
-                                <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
-                                <!-- Editar modal detalle -->
-                                <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden2<?= $val->iddetalleorden ?>">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title">Editar detalle <?= $val->iddetalleorden ?></h4>
-                                            </div>
-                                            <?= Html::beginForm(Url::toRoute("orden-produccion/editardetalle"), "POST") ?>
-                                            <div class="modal-body">
-                                                <div class="panel panel-success">
-                                                    <div class="panel-heading">
-                                                        <h4>Información Orden Producción Detalle</h4>
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <div class="col-lg-2">
-                                                            <label>Cantidad:</label>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <input type="text" name="cantidad" value="<?= $val->cantidad ?>" class="form-control" required>
-                                                        </div>
-                                                        <div class="col-lg-2">
-                                                            <label>Costo:</label>
-                                                        </div>
-                                                        <div class="col-lg-3">
-                                                            <input type="text" name="vlrprecio" value="<?=  $val->vlrprecio ?>" class="form-control" required>
-                                                        </div>
-                                                        <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
-                                                        <input type="hidden" name="idordenproduccion" value="<?= $val->idordenproduccion ?>">
-                                                        <input type="hidden" name="subtotal" value="<?= $val->subtotal ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                                <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
-                                            </div>
-                                             <?= Html::endForm() ?>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
-                        </td>
-                        <td style="width: 25px;">
-                                <!-- Eliminar modal detalle -->
-                                <a href="#" data-toggle="modal" data-target="#iddetalleorden<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-trash"></span></a>
-                                <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden<?= $val->iddetalleorden ?>">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                <h4 class="modal-title">Eliminar Detalle</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>¿Realmente deseas eliminar el registro con código <?= $val->iddetalleorden ?>?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <?= Html::beginForm(Url::toRoute("orden-produccion/eliminardetalle"), "POST") ?>
-                                                <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
-                                                <input type="hidden" name="idordenproduccion" value="<?= $model->idordenproduccion ?>">
-                                                <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
-                                                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
-                                                <?= Html::endForm() ?>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
-                            </td>                            
-                                                       
-                        <?php } else {?>
-                            <th scope="col" style='background-color:#B9D5CE;'></th>
-                            <th scope="col" style='background-color:#B9D5CE;'></th>
-                        <?php }?>
-                    </tr>
-                    </tbody>
-                    <?php endforeach; ?>
-                </table>
-            </div>
-            
-            <?php if ($model->autorizado == 0) { ?>
-                <div class="panel-footer text-right">
-                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success btn-sm']) ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                            
-                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger btn-sm']) ?>
+     <?php $form = ActiveForm::begin([
+    'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
+    'fieldConfig' => [
+        'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
+        'labelOptions' => ['class' => 'col-sm-3 control-label'],
+        'options' => []
+    ],
+    ]);?>
+    <!-- comienza los tabs -->
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#detalle_orden" aria-controls="detalle_orden" role="tab" data-toggle="tab">Detalle <span class="badge"><?= count($modeldetalles) ?></span></a></li>
+            <li role="presentation"><a href="#costo_adicional" aria-controls="costo_adicional" role="tab" data-toggle="tab">Costos <span class="badge"><?= count($otrosCostosProduccion) ?></span></a></li>
+        </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="detalle_orden">
+                    <div class="table-responsive">
+                        <div class="panel panel-success">
+                            <div class="panel-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Id</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Código</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Cantidad</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Precio</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'>Subtotal</th>
+                                            <th scope="col" style='background-color:#B9D5CE;'></th>
+                                            <th scope="col" style='background-color:#B9D5CE;'></th>
+                                        </tr>
+                                    </thead>    
+                                    <body>
+                                        <?php foreach ($modeldetalles as $val): ?>
+                                            <tr style="font-size: 85%;">
+                                                <td><?= $val->iddetalleorden ?></td>
+                                                <td><?= $val->productodetalle->prendatipo->prenda.' / '.$val->productodetalle->prendatipo->talla->talla   ?></td>
+                                                <td><?= $val->codigoproducto ?></td>
+                                                <td><?= $val->cantidad ?></td>
+                                                <td><?= '$ '.number_format($val->vlrprecio,2) ?></td>
+                                                <td><?= '$ '.number_format($val->subtotal,2) ?></td>
+                                                <?php if ($model->autorizado == 0) { ?>
+                                                <td style="width: 25px;">
+                                                        <a href="#" data-toggle="modal" data-target="#iddetalleorden2<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                        <!-- Editar modal detalle -->
+                                                        <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden2<?= $val->iddetalleorden ?>">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                        <h4 class="modal-title">Editar detalle <?= $val->iddetalleorden ?></h4>
+                                                                    </div>
+                                                                    <?= Html::beginForm(Url::toRoute("orden-produccion/editardetalle"), "POST") ?>
+                                                                    <div class="modal-body">
+                                                                        <div class="panel panel-success">
+                                                                            <div class="panel-heading">
+                                                                                <h4>Información Orden Producción Detalle</h4>
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="col-lg-2">
+                                                                                    <label>Cantidad:</label>
+                                                                                </div>
+                                                                                <div class="col-lg-3">
+                                                                                    <input type="text" name="cantidad" value="<?= $val->cantidad ?>" class="form-control" required>
+                                                                                </div>
+                                                                                <div class="col-lg-2">
+                                                                                    <label>Costo:</label>
+                                                                                </div>
+                                                                                <div class="col-lg-3">
+                                                                                    <input type="text" name="vlrprecio" value="<?=  $val->vlrprecio ?>" class="form-control" required>
+                                                                                </div>
+                                                                                <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
+                                                                                <input type="hidden" name="idordenproduccion" value="<?= $val->idordenproduccion ?>">
+                                                                                <input type="hidden" name="subtotal" value="<?= $val->subtotal ?>">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                                                        <button type="submit" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span> Guardar</button>
+                                                                    </div>
+                                                                     <?= Html::endForm() ?>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div><!-- /.modal -->
+                                                </td>
+                                                <td style="width: 25px;">
+                                                        <!-- Eliminar modal detalle -->
+                                                        <a href="#" data-toggle="modal" data-target="#iddetalleorden<?= $val->iddetalleorden ?>"><span class="glyphicon glyphicon-trash"></span></a>
+                                                        <div class="modal fade" role="dialog" aria-hidden="true" id="iddetalleorden<?= $val->iddetalleorden ?>">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                                        <h4 class="modal-title">Eliminar Detalle</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p>¿Realmente deseas eliminar el registro con código <?= $val->iddetalleorden ?>?</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <?= Html::beginForm(Url::toRoute("orden-produccion/eliminardetalle"), "POST") ?>
+                                                                        <input type="hidden" name="iddetalleorden" value="<?= $val->iddetalleorden ?>">
+                                                                        <input type="hidden" name="idordenproduccion" value="<?= $model->idordenproduccion ?>">
+                                                                        <button type="button" class="btn btn-warning" data-dismiss="modal"><span class='glyphicon glyphicon-remove'></span> Cerrar</button>
+                                                                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Eliminar</button>
+                                                                        <?= Html::endForm() ?>
+                                                                    </div>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div><!-- /.modal -->
+                                                    </td>                            
+
+                                                <?php } else {?>
+                                                    <th scope="col" style='background-color:#B9D5CE;'></th>
+                                                    <th scope="col" style='background-color:#B9D5CE;'></th>
+                                                <?php }?>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </body>          
+                                </table>    
+                            </div>  
+                            <?php if ($model->autorizado == 0) { ?>
+                                <div class="panel-footer text-right">
+                                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nuevo', ['orden-produccion/nuevodetalles', 'idordenproduccion' => $model->idordenproduccion,'idcliente' => $model->idcliente], ['class' => 'btn btn-success btn-sm']) ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Editar', ['orden-produccion/editardetalles', 'idordenproduccion' => $model->idordenproduccion],[ 'class' => 'btn btn-success btn-sm']) ?>                                            
+                                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Eliminar', ['orden-produccion/eliminardetalles', 'idordenproduccion' => $model->idordenproduccion], ['class' => 'btn btn-danger btn-sm']) ?>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    </div>    
                 </div>
-            
-            <?php } ?>
-        </div>
+              
+                <!-- TERMINA TABS DE DETALLE -->
+                <div role="tabpanel" class="tab-pane" id="costo_adicional">
+                    <div class="table-responsive">
+                        <div class="panel panel-success">
+                            <div class="panel-body">
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'><b>Documento</b></th>                        
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'>Tercero</th>                        
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'>F. compra</th>       
+                                             <th scope="col" align="center" style='background-color:#B9D5CE;'>F. proceso</th>  
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'>Usuario</th>                        
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'>Vr. compra</th>  
+                                            <th scope="col" align="center" style='background-color:#B9D5CE;'></th> 
+                                             <th scope="col" style='background-color:#B9D5CE;'></th> 
+                                        </tr>
+                                    </thead>
+                                    <body>
+                                         <?php
+                                         foreach ($otrosCostosProduccion as $val):?>
+                                            <tr style="font-size: 85%;">
+                                                <td><?= $val->nrofactura ?></td>
+                                                <td><?= $val->proveedorCostos->nombrecorto ?></td>
+                                                <td><?= $val->fecha_compra ?></td>
+                                                <td><?= $val->fecha_proceso ?></td>
+                                                <td><?= $val->usuariosistema ?></td>
+                                                <td style="text-align:right"><?= ''.number_format($val->vlr_costo,2) ?></td>
+                                                <td style="padding-right: 1;padding-right: 0;"><input type="text" name="vlr_costo[]" value="<?= $val->vlr_costo ?>" size="9" required="true"> </td>  
+                                                <input type="hidden" name="detalle_costo[]" value="<?= $val->id_costo ?>">
+                                                <td style= 'width: 25px; height: 25px;'>
+                                                        <?php 
+                                                        if($model->cerrar_orden == 0){?>
+                                                           <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->idordenproduccion, 'detalle' => $val->id_costo], [
+                                                                      'class' => '',
+                                                                      'data' => [
+                                                                          'confirm' => 'Esta seguro de eliminar el registro?',
+                                                                          'method' => 'post',
+                                                                      ],
+                                                                  ])
+                                                           ?>
+                                                        <?php } ?> 
+                                                    </div>    
+                                                </td>     
+                                            </tr>
+                                         <?php endforeach;?>          
+                                    </body>
+                                </table>
+                            </div>
+                            <div class="panel-footer text-right">  
+                                <?php 
+                                if($model->cerrar_orden == 0){?>
+                                    <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm",]) ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-search"></span> Buscar', ['orden-produccion/nuevocostoproduccion', 'id' => $model->idordenproduccion],[ 'class' => 'btn btn-primary btn-sm']) ?>                                            
+                                    
+                                <?php }?>
+                            </div>   
+                        </div>
+                    </div>
+                </div>    
+            </div>  
     </div>
-    
+  <?php ActiveForm::end(); ?>  
 </div>
 
-<script type="text/javascript">
-	function marcar(source) 
-	{
-		checkboxes=document.getElementsByTagName('input'); //obtenemos todos los controles del tipo Input
-		for(i=0;i<checkboxes.length;i++) //recoremos todos los controles
-		{
-			if(checkboxes[i].type == "checkbox") //solo si es un checkbox entramos
-			{
-				checkboxes[i].checked=source.checked; //si es un checkbox le damos el valor del checkbox que lo llamó (Marcar/Desmarcar Todos)
-			}
-		}
-	}
-</script>

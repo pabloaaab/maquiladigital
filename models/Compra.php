@@ -48,14 +48,15 @@ class Compra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_compra_concepto', 'id_proveedor', 'factura', 'subtotal','fechainicio','fechavencimiento'], 'required'],
-            [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','numero'], 'integer'],
+            [['id_compra_concepto', 'id_proveedor', 'factura', 'subtotal','fechainicio','fechavencimiento','id_tipo_compra'], 'required'],
+            [['id_compra_concepto', 'id_proveedor', 'estado', 'autorizado','numero','id_tipo_compra'], 'integer'],
             [['porcentajeiva', 'porcentajefuente', 'porcentajereteiva', 'subtotal', 'retencionfuente', 'impuestoiva', 'retencioniva', 'saldo', 'base_aiu', 'total'], 'number'],
             [['observacion','factura'], 'string'],
             [['fechacreacion','fechainicio','fechavencimiento'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 50],
             [['id_compra_concepto'], 'exist', 'skipOnError' => true, 'targetClass' => CompraConcepto::className(), 'targetAttribute' => ['id_compra_concepto' => 'id_compra_concepto']],
             [['id_proveedor'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['id_proveedor' => 'idproveedor']],
+            [['id_tipo_compra'], 'exist', 'skipOnError' => true, 'targetClass' => TipoCompraProceso::className(), 'targetAttribute' => ['id_tipo_compra' => 'id_tipo_compra']],
         ];
     }
 
@@ -88,6 +89,7 @@ class Compra extends \yii\db\ActiveRecord
             'factura' => 'Factura',
             'numero' => 'Número',
             'base_aiu' => 'Base AIU',
+            'id_tipo_compra' => 'Tipo compra',
         ];
     }
 
@@ -107,7 +109,12 @@ class Compra extends \yii\db\ActiveRecord
         return $this->hasOne(Proveedor::className(), ['idproveedor' => 'id_proveedor']);
     }
     
-    public function getAutorizar()
+    public function getTipoCompra() {
+        return $this->hasOne(TipoCompraProceso::className(), ['id_tipo_compra' => 'id_tipo_compra']); 
+               
+    }
+ 
+   public function getAutorizar()
     {
         if($this->autorizado == 1){
             $autorizar = "SI";

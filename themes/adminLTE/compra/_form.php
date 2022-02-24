@@ -47,6 +47,14 @@ use kartik\depdrop\DepDrop;
              ]); ?>
         </div>
         <div class="row">
+             <?= $form->field($model, 'id_tipo_compra')->widget(Select2::classname(), [
+            'data' => $tipocompra,
+            'options' => ['placeholder' => 'Tipo de compra ....'],
+            'pluginOptions' => [
+                'allowClear' => true ],
+             ]); ?>
+        </div>
+        <div class="row">
             <?= $form->field($model, 'factura')->textInput(['maxlength' => true]) ?>  					
         </div>
         <div class="row">

@@ -407,6 +407,7 @@ class OrdenProduccionController extends Controller {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
         $mensaje = "";
+        $otrosCostosProduccion = \app\models\OtrosCostosProduccion::find()->where(['=','idordenproduccion', $id])->orderBy('id_proveedor DESC')->all();
         if (isset($_POST["eliminar"])) {
             if (isset($_POST["seleccion"])) {
                 foreach ($_POST["seleccion"] as $intCodigo) {
@@ -427,12 +428,23 @@ class OrdenProduccionController extends Controller {
             } else {
                 Yii::$app->getSession()->setFlash('error', 'Debe seleccionar al menos un registro.');                
             }                        
-        }       
+        }  
+        if (isset($_POST["detalle_costo"])) {
+             $intIndice = 0;
+             foreach ($_POST["detalle_costo"] as $intCodigo) {  
+                 $table = \app\models\OtrosCostosProduccion::findOne($intCodigo); 
+                 $table->vlr_costo = $_POST["vlr_costo"][$intIndice];
+                 $table->save();
+                 $intIndice++;
+             }
+             return $this->redirect(['view', 'id' => $id]);
+        }
         return $this->render('view', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,
                     'modeldetalles' => $modeldetalles,
                     'mensaje' => $mensaje,
+                    'otrosCostosProduccion' => $otrosCostosProduccion,
         ]);
     }
    
@@ -1988,7 +2000,15 @@ class OrdenProduccionController extends Controller {
                      
         ]);
     }        
-  
+    //ELIMINAR UN DETALLE DE LOS COSTOS DE PRODUCCION
+    
+    public function actionEliminar($id,$detalle)
+    {                                
+        $detalle = \app\models\OtrosCostosProduccion::findOne($detalle);
+        $detalle->delete();
+        $this->redirect(["view",'id' => $id]);        
+    }
+    
     //VISTA DE CANTIDADES CONFECCINADAS POR TALLAS
     
     public function actionVistatallas($iddetalleorden, $modulo)
@@ -2666,7 +2686,66 @@ class OrdenProduccionController extends Controller {
             'id' => $id,
         ]);
     }
+    //PROCESO QUE INSERTAR UNA NUEVA FACTURA AL COSTO
     
+      public function actionNuevocostoproduccion($id)
+    {
+        $compras = \app\models\Compra::find()->where(['=','autorizado', 1])->andWhere(['=','id_tipo_compra', 1])->orderBy('id_proveedor, factura DESC')->all();
+        $form = new \app\models\FormCompraBuscar();
+        $factura = null;
+        $id_proveedor = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $factura = Html::encode($form->factura);                                
+                $id_proveedor = Html::encode($form->id_proveedor);
+                if ($factura or $id_proveedor){
+                    $compras = \app\models\compra::find()
+                            ->where(['like','factura',$factura])
+                            ->orwhere(['=','id_proveedor',$id_proveedor])
+                            ->andWhere(['=', 'id_tipo_compra', 1])
+                            ->orderBy('id_proveedor, factura DESC')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+            $compras = \app\models\Compra::find()->where(['=','autorizado', 1])->andWhere(['=','id_tipo_compra', 1])->orderBy('id_proveedor DESC')->all();
+        }
+        if (isset($_POST["id_compra"])) {
+                $intIndice = 0;
+                foreach ($_POST["id_compra"] as $intCodigo) {
+                    $compra = \app\models\Compra::find()->where(['id_compra' => $intCodigo])->one();
+                    $detalle_costo = \app\models\OtrosCostosProduccion::find()
+                    ->where(['=', 'idordenproduccion', $id])
+                    ->andWhere(['=', 'id_compra', $compra->id_compra])
+                    ->all();
+                    if(count($detalle_costo) == 0){
+                        $table = new \app\models\OtrosCostosProduccion();
+                        $table->idordenproduccion = $id;
+                        $table->id_compra = $compra->id_compra;
+                        $table->id_proveedor = $compra->id_proveedor;
+                        $table->vlr_costo = $compra->subtotal;
+                        $table->nrofactura = $compra->factura;
+                        $table->fecha_proceso = date('Y-m-d');
+                        $table->fecha_compra = $compra->fechainicio;
+                        $table->usuariosistema = Yii::$app->user->identity->username;
+                        $table->insert(); 
+                    }    
+                }
+               $this->redirect(["orden-produccion/view", 'id' => $id]);
+        }else{
+                
+        }
+        return $this->render('_nuevocostoproduccion', [
+            'compras' => $compras,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+            'form' => $form,
+
+        ]);
+    }
     public function actionExcelconsulta($tableexcel) {                
         $objPHPExcel = new \PHPExcel();
         // Set document properties

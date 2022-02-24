@@ -98,6 +98,7 @@ class CompraController extends Controller
         $model = new Compra();
         $proveedores = Proveedor::find()->orderBy('nombrecorto ASC')->all();
         $conceptos = CompraConcepto::find()->orderBy('concepto ASC')->all();
+        $tipocompra = \app\models\TipoCompraProceso::find()->where(['=','estado_tipo', 0])->orderBy('id_tipo_compra ASC')->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->usuariosistema = Yii::$app->user->identity->username;            
             $model->update();
@@ -109,6 +110,7 @@ class CompraController extends Controller
             'model' => $model,
             'proveedores' => ArrayHelper::map($proveedores, "idproveedor", "nombreProveedores"),
             'conceptos' => ArrayHelper::map($conceptos, "id_compra_concepto", "concepto"),
+            'tipocompra' => ArrayHelper::map($tipocompra, 'id_tipo_compra', "descripcion"),
         ]);
     }
 
@@ -124,6 +126,7 @@ class CompraController extends Controller
         $model = $this->findModel($id);
         $proveedores = Proveedor::find()->all();
         $conceptos = CompraConcepto::find()->all();
+        $tipocompra = \app\models\TipoCompraProceso::find()->all();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->calculo($id);
             return $this->redirect(['index']);
@@ -133,6 +136,7 @@ class CompraController extends Controller
             'model' => $model,
             'proveedores' => ArrayHelper::map($proveedores, "idproveedor", "nombreProveedores"),
             'conceptos' => ArrayHelper::map($conceptos, "id_compra_concepto", "concepto"),
+            'tipocompra' => ArrayHelper::map($tipocompra, "id_tipo_compra", "descripcion")
         ]);
     }
 

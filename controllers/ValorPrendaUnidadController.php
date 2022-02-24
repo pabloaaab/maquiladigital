@@ -280,7 +280,7 @@ class ValorPrendaUnidadController extends Controller
                 }
             }
             $this->Totalpagar($id);
-           $this->TotalCantidades($id);
+            $this->TotalCantidades($id);
             return $this->redirect(['view', 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
         }
         return $this->render('view', [

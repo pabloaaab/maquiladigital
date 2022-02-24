@@ -191,8 +191,7 @@ $form = ActiveForm::begin([
                                                     <?php if($model->autorizado == 0){?>        
                                                         <td>
                                                               <?php if ($model->estado_valor == 0){ ?>
-                                                              <?=
-                                                              Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->id_valor, 'detalle' => $val->consecutivo, 'idordenproduccion' => $model->idordenproduccion], [
+                                                              <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id' => $model->id_valor, 'detalle' => $val->consecutivo, 'idordenproduccion' => $model->idordenproduccion], [
                                                                   'class' => '',
                                                                   'data' => [
                                                                       'confirm' => 'Esta seguro de eliminar el registro?',

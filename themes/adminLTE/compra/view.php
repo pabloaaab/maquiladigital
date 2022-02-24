@@ -98,8 +98,10 @@ $view = 'compra';
                     <td><?= Html::encode('$ '.number_format($model->total,0)) ?></td>
                 </tr>
                 <tr style="font-size: 85%;">
+                     <th><?= Html::activeLabel($model, 'id_tipo_compra') ?>:</th>
+                    <td><?= Html::encode($model->tipoCompra->descripcion) ?></td>
                     <th><?= Html::activeLabel($model, 'observacion') ?>:</th>
-                    <td colspan="5"><?= Html::encode($model->observacion) ?></td>
+                    <td colspan="4"><?= Html::encode($model->observacion) ?></td>
                 </tr>
             </table>
         </div>
