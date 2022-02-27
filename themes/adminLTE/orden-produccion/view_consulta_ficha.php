@@ -158,6 +158,9 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
             <div role="tabpanel" class="tab-pane" id="costoordenproduccion">
                 <div class="table-responsive">
                     <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Confección / Terminación
+                        </div>
                         <div class="panel-body">
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -165,7 +168,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Tipo servicio</th>
                                         <th scope="col" style='background-color:#B9D5CE;'>Unidades</th>
-                                        <th scope="col" style='background-color:#B9D5CE;'>Vr. lote</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Valor lote</th>
                                           <th scope="col" style='background-color:#B9D5CE;'>Costo servicio</th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Utilidad operativa" >U. Operativa</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje de costo" >%Costo</span></th>
@@ -178,6 +181,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                 <tbody>
                                     <?php
                                     $valor_total = 0; $utilidad = 0; $porcentaje = 0; $buscar1 = 0; $buscar2 = 0;$costo1 =0; $costo2 =0;
+                                    $total_ingresos = 0; $total = 0;
                                     foreach ($ordenproduccion as $val):
                                         $valor_prenda = ValorPrendaUnidad::find()->where(['=','idordenproduccion', $val->idordenproduccion])->all();
                                         foreach ($valor_prenda as $valor):
@@ -207,14 +211,79 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                                <td><?= $val->usuariosistema ?></td>
                                            </tr>
                                     <?php
+                                     $total += $valor_total;
                                     $valor_total = 0;
-                                    endforeach; ?>   
-                                           
-                                </tbody>
-                           </table>
+                                    $total_ingresos += $val->totalorden; 
+                                    endforeach;?>
+                            </table>               
+                        </div>                   
+                    </div>                      
+                </div>                                       
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Compras
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Factura</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Tercero</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Vr. Costo</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Fecha Compra</th>
+                                         <th scope="col" style='background-color:#B9D5CE;'>Fecha Proceso</th>
+                                        <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
+
+                                    </tr>
+                                </thead>
+                                <body>
+                                    <?php
+                                    $total_gastos = 0;
+                                    $TotalGastosOperacion = 0;
+                                    $otrosCostos = app\models\OtrosCostosProduccion::find()->where(['=','idordenproduccion', $model->idordenproduccion])->all();
+                                    foreach ($otrosCostos as $costos):?>
+                                         <tr style="font-size: 85%;">
+                                            <td><?= $costos->nrofactura ?></td>
+                                            <td><?= $costos->proveedorCostos->nombrecorto ?></td>
+                                            <td align="right"><?= ''.number_format($costos->vlr_costo,0) ?></td>
+                                            <td><?= $costos->fecha_compra ?></td>
+                                            <td><?= $costos->fecha_proceso ?></td>
+                                              <td><?= $costos->usuariosistema ?></td>
+                                         </tr>    
+                                    <?php
+                                    $total_gastos += $costos->vlr_costo;
+                                    $TotalGastosOperacion = $total_gastos + $total;
+                                    endforeach;    
+                                    if ($TotalGastosOperacion == 0){
+                                        $TotalGastosOperacion = $total;
+                                    }
+                                    ?> 
+                               
+                            </table>    
                         </div>
                     </div>    
                 </div>
+                <div class="table-responsive">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            Resultados
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-bordered table-hover">
+                                   <?php
+                                    $sumaCosto = 0;
+                                    $porcentaje = 100;
+                                    $sumaCosto = number_format((($TotalGastosOperacion / $total_ingresos)*100),0);
+                                   ?>
+                                    <td colspan="0"><td style="font-size: 90%;background: #4B6C67; color: #FFFFFF; width: 210px;" align="right"><b>Ingresos:</b> <?= ''.number_format($total_ingresos,0) ?></td>       
+                                    <td colspan="0"><td style="font-size: 90%;background: #4B6C67; color: #FFFFFF; width: 210px;" align="right"><b>Gastos:</b> <?= ''.number_format($total_gastos + $total,0)?> ( <?= ''. number_format((($TotalGastosOperacion / $total_ingresos)*100),0) ?>%)</td>    
+                                    <td colspan="0"><td style="font-size: 90%;background: #4B6C67; color: #FFFFFF; width: 210px;" align="right"><b>Utilidad:</b> <?= ''.number_format(($total_ingresos- ($total_gastos + $total)) ,0) ?> (<?= $porcentaje - $sumaCosto ?>%) </td>    
+                            </table>
+                        </div>    
+                    </div>
+                </div>
+                               
             <?php include('indicador.php'); ?>   
             </div>   
             <div role="tabpanel" class="tab-pane" id="modulo">
