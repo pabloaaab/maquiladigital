@@ -85,15 +85,17 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                   <th scope="col" style='background-color:#B9D5CE;'>Cod_Prod.</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Cliente</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Servicio</th>
+                  <th scope="col" style='background-color:#B9D5CE;'>Proceso</th>
                   <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Vr. Vinculado</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Vr. Contrato</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Vinculado</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Contrato</th>
                 <th scope="col" style='background-color:#B9D5CE;'>T. Pagar</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Proceso</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Autorizado" >Aut.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Cerrado" >Cer.</span></th>
                  <th scope="col" style='background-color:#B9D5CE;'><span title="Activo" >Act.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'></th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>
               
@@ -107,9 +109,14 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 <?php if($val->cerrar_pago == 0){?>   
                     <td><?= $val->id_valor ?></td>
                     <td><?= $val->idordenproduccion ?></td>
-                      <td><?= $val->ordenproduccion->codigoproducto ?></td>
+                    <td><?= $val->ordenproduccion->codigoproducto ?></td>
                     <td><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td><?= $val->tipo->tipo?></td>
+                    <?php if($val->id_proceso_confeccion == 1){?>
+                      <td style='background-color:#A1D2D8;'><?= $val->procesoConfeccion->descripcion_proceso ?></td>
+                    <?php }else{?>
+                      <td style='background-color:#F1E4F4;'><?= $val->procesoConfeccion->descripcion_proceso ?></td> 
+                    <?php } ?>  
                     <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_vinculado,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_contrato,0) ?></td>
@@ -125,6 +132,11 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                     <td style='background-color:#DDE6E4;'><?= $val->ordenproduccion->codigoproducto ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->ordenproduccion->cliente->nombrecorto ?></td>
                     <td style='background-color:#DDE6E4;'><?= $val->tipo->tipo?></td>
+                    <?php if($val->id_proceso_confeccion == 1){?>
+                      <td style='background-color:#A1D2D8;'><?= $val->procesoConfeccion->descripcion_proceso ?></td>
+                    <?php }else{?>
+                      <td style='background-color:#F1E4F4;'><?= $val->procesoConfeccion->descripcion_proceso ?></td> 
+                    <?php } ?>  
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->cantidad,0) ?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->vlr_vinculado,0) ?></td>
                     <td align="right" style='background-color:#DDE6E4;'><?= ''.number_format($val->vlr_contrato,0) ?></td>
@@ -141,6 +153,26 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 <td style= 'width: 25px; height: 25px;'>
                         <a href="<?= Url::toRoute(["valor-prenda-unidad/update", "id" => $val->id_valor]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
                 </td>
+                <?php if($val->id_proceso_confeccion == 1){?>
+                     <td style= 'width: 25px; height: 25px;'></td>
+                <?php }else{?>
+                   <td style= 'width: 8px; height: 8px; font-size: 8px;'>
+                        <?php echo Html::a('<span class="glyphicon glyphicon-user "></span> ',            
+                            ['/valor-prenda-unidad/buscaroperaciones','id' => $val->id_valor,'idordenproduccion' => $val->idordenproduccion],
+                            [
+                                'title' => 'Buscar operaciones',
+                                'data-toggle'=>'modal',
+                                'data-target'=>'#modalbuscaroperaciones'.$val->id_valor,
+                            ]
+                        );
+                       ?>
+                    </td> 
+                    <div class="modal remote fade" id="modalbuscaroperaciones<?= $val->id_valor ?>">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content"></div>
+                        </div>
+                    </div>
+                <?php }?>
              
             </tbody>            
             <?php endforeach; ?>

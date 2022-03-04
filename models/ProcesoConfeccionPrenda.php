@@ -53,4 +53,5 @@ class ProcesoConfeccionPrenda extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProcesoConfeccionPrenda::className(), ['id_proceso_confeccion' => 'id_proceso_confeccion']);
     }
+    
 }

@@ -2236,7 +2236,7 @@ class OrdenProduccionController extends Controller {
                                     $table->insert();
                                     $intIndice ++;
                                 }else{
-                                   Yii::$app->getSession()->setFlash('warning', 'Campos vacios en el ingrero.'); 
+                                   Yii::$app->getSession()->setFlash('warning', 'Campos vacios en el ingreso.'); 
                                 }    
                             }else{
                                 Yii::$app->getSession()->setFlash('error', 'Favor validar la cantidad de prendas confeccionadas.!');

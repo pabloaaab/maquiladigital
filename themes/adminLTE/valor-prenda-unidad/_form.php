@@ -23,6 +23,7 @@ $form = ActiveForm::begin([
 ?>
 <?php
 $tipo = ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(), 'idtipo', 'tipo');
+$proceso_confeccion = ArrayHelper::map(\app\models\ProcesoConfeccionPrenda::find()->orderBy('id_proceso_confeccion ASC')->all(),'id_proceso_confeccion','descripcion_proceso');
 ?>
 <div class="panel panel-success">
     <div class="panel-heading">
@@ -46,6 +47,14 @@ $tipo = ArrayHelper::map(app\models\Ordenproducciontipo::find()->all(), 'idtipo'
                 'allowClear' => true
             ],
         ]); ?>    
+        </div>
+        <div class="row">
+            <?= $form->field($model, 'id_proceso_confeccion')->widget(Select2::classname(), [
+             'data' => $proceso_confeccion,
+             'options' => ['placeholder' => 'Seleccione.... '],
+             'pluginOptions' => [
+             'allowClear' => true ]]);
+            ?>
         </div>
         <div class="row">
             <?= $form->field($model, 'vlr_vinculado')->textInput(['maxlength' => true]) ?>  

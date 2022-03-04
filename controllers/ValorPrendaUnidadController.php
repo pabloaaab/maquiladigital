@@ -369,6 +369,59 @@ class ValorPrendaUnidadController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+   
+    //MODAL QUE BUSCA LAS OPERACIONES DE LOS OPERARIOS EN PREPARACION
+    public function actionBuscaroperaciones($id, $idordenproduccion) {
+        
+       // $model = new \app\models\FormBuscarOperacionesOperario();
+        if (Yii::$app->request->post()) {
+            if (isset($_POST["validaroperario"])) {
+                if (isset($_POST["idoperario"])) {
+                    $intIndice = 0;
+                    $empresa = \app\models\Matriculaempresa::find()->where(['=','id', 1])->one();
+                    foreach ($_POST["idoperario"] as $intCodigo):
+                        $balanceo = \app\models\Balanceo::find()->where(['=','idordenproduccion', $idordenproduccion])
+                                              ->andWhere(['=','id_proceso_confeccion', 2])->one();
+                        $detalle_balanceo = \app\models\BalanceoDetalle::find()->where(['=','id_balanceo', $balanceo->id_balanceo])
+                                                                               ->andWhere(['=','id_operario',  $intCodigo]) 
+                                                                               ->orderBy('id_operario DESC')->all();
+                        $operarios = Operarios::findOne($intCodigo);
+                        $total = 0;
+                        foreach ($detalle_balanceo as $val):
+                            $total += $val->minutos;
+                        endforeach;
+                        $valor = 0;
+                        if ($operarios->vinculado == 1){
+                           $valor = number_format($total * $empresa->vlr_minuto_vinculado, 0);
+                           $vinculado = 'Vinculado';
+                        }else{
+                            $valor = number_format($total * $empresa->vlr_minuto_contrato, 0);
+                            $vinculado = 'No vinculado';
+                        }
+                        $prenda = new ValorPrendaUnidadDetalles();
+                        $prenda->id_operario = $intCodigo;
+                        $prenda->id_valor = $id;                
+                        $prenda->idordenproduccion = $idordenproduccion;
+                        $prenda->dia_pago= date('Y-m-d');
+                        $prenda->operacion = 2;
+                        $prenda->vlr_prenda = $valor;
+                        $prenda->observacion = $vinculado;
+                        echo $prenda->save(false);
+                        $intIndice ++;
+                    endforeach;
+                    return $this->redirect(['view', 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
+                }
+            }
+        }   
+        return $this->renderAjax('_buscaroperacionesmodulo', [
+          //  'model' => $model,
+            'id' => $id,
+            'idordenproduccion' => $idordenproduccion,
+            ]);
+    }
+        
+    
+    
     //PROCESOS Y SUBPROCESOS
     
      public function actionNuevodetalle($id,$idordenproduccion)

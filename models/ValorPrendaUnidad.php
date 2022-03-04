@@ -35,7 +35,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idordenproduccion', 'idtipo'], 'required'],
+            [['idordenproduccion', 'idtipo','id_proceso_confeccion'], 'required'],
             [['idordenproduccion', 'idtipo', 'estado_valor','autorizado','cerrar_pago','cantidad_procesada','total_confeccion','total_ajuste',
                 'total_operacion','total_pagar','cantidad','cantidad_operacion'], 'integer'],
             [['vlr_vinculado', 'vlr_contrato'], 'number'],
@@ -43,6 +43,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
             [['usuariosistema','usuario_editado'], 'string', 'max' => 20],
             [['idordenproduccion'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproduccion::className(), 'targetAttribute' => ['idordenproduccion' => 'idordenproduccion']],
             [['idtipo'], 'exist', 'skipOnError' => true, 'targetClass' => Ordenproducciontipo::className(), 'targetAttribute' => ['idtipo' => 'idtipo']],
+            //[['id_proceso_confeccion'], 'exist', 'skipOnError' => true, 'targetClass' => ValorPrendaUnidad::className(), 'targetAttribute' => ['id_proceso_confeccion' => 'id_proceso_confeccion']],
         ];
     }
 
@@ -71,6 +72,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
             'total_pagar' => 'Total pagar',
             'cantidad' => 'Unidades',
             'cantidad_operacion' => 'Cantidad operacion',
+            'id_proceso_confeccion' => 'Tipo proceso',
             
         ];
     }
@@ -89,6 +91,11 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
     public function getTipo()
     {
         return $this->hasOne(Ordenproducciontipo::className(), ['idtipo' => 'idtipo']);
+    }
+    
+     public function getProcesoConfeccion()
+    {
+        return $this->hasOne(ProcesoConfeccionPrenda::className(), ['id_proceso_confeccion' => 'id_proceso_confeccion']);
     }
     
     public function getEstadovalor() {
