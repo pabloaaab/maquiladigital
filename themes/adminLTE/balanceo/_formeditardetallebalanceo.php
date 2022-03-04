@@ -67,8 +67,9 @@ $form = ActiveForm::begin([
         </div>
           <div class="row" col>
             <?= $form->field($model, 'ordenamiento')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="row" col>
+           <?= $form->field($model, 'estado_operacion')->dropDownList(['0'=> 'ACTIVO', '1' => 'INACTIVO'], ['prompt' => 'Seleccione...']) ?>
+         </div>
+       
       
         <div class="panel-footer text-right">                        
             <a href="<?= Url::toRoute(["balanceo/view", 'id' => $balanceo->id_balanceo, 'idordenproduccion' => $idordenproduccion,'id_proceso_confeccion' => $id_proceso_confeccion]) ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

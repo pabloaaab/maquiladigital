@@ -8,7 +8,9 @@ use kartik\select2\Select2;
 use app\models\ProcesoProduccion;
 $balanceo = \app\models\Balanceo::find()->where(['=','idordenproduccion', $idordenproduccion])
                                                       ->andWhere(['=','id_proceso_confeccion', 2])->one();
-$detalle_balanceo = \app\models\BalanceoDetalle::find()->where(['=','id_balanceo', $balanceo->id_balanceo])->orderBy('id_operario DESC')->all();
+$detalle_balanceo = \app\models\BalanceoDetalle::find()->where(['=','id_balanceo', $balanceo->id_balanceo])
+                                                       ->andWhere(['=','estado_operacion', 0])
+                                                       ->orderBy('id_operario DESC')->all();
 $empresa = app\models\Matriculaempresa::findOne(1);
 ?>
 <?php $form = ActiveForm::begin([
@@ -28,7 +30,7 @@ $empresa = app\models\Matriculaempresa::findOne(1);
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                  Modulo de preparación
+                    Modulo de preparación <span class="badge"><?= count($detalle_balanceo)?></span>
                 </div>
                 <div class="panel-body">
                    <div class="panel-body">

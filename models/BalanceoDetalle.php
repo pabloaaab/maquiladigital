@@ -38,7 +38,7 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_proceso', 'id_balanceo', 'id_tipo','id_operario','ordenamiento','aplicado'], 'integer'],
+            [['id_proceso', 'id_balanceo', 'id_tipo','id_operario','ordenamiento','aplicado','estado_operacion'], 'integer'],
             [['segundos', 'minutos', 'total_segundos', 'total_minutos','sobrante_faltante'], 'number'],
             [['fecha_creacion'], 'safe'],
             [['usuariosistema'], 'string', 'max' => 20],
@@ -67,6 +67,7 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
             'fecha_creacion' => 'Fecha Creacion',
             'usuariosistema' => 'Usuariosistema',
             'ordenamiento' => 'ordenamiento',
+            'estado_operacion' => 'Estado Operación:',
         ];
     }
 
@@ -99,5 +100,13 @@ class BalanceoDetalle extends \yii\db\ActiveRecord
         return $this->hasOne(Operarios::className(), ['id_operario' => 'id_operario']);
     }
     
+    public function getEstadoperacion() {
+        if($this->estado_operacion == 0){
+            $estadoOperacion = 'ACTIVO';
+        }else{
+            $estadoOperacion = 'INACTIVO';
+        }
+        return $estadoOperacion;
+    }
    
 }

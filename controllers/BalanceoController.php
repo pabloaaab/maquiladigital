@@ -637,7 +637,8 @@ class BalanceoController extends Controller
             $tabla_detalle->id_operario = $model->id_operario;
             $tabla_detalle->segundos = $model->segundos;
             $tabla_detalle->minutos = $model->minutos;    
-             $tabla_detalle->ordenamiento = $model->ordenamiento;    
+            $tabla_detalle->ordenamiento = $model->ordenamiento;    
+            $tabla_detalle->estado_operacion = $model->estado_operacion;
             $tabla_detalle->save(false);   
             if($id_proceso_confeccion == 1){
                 $this->ActualizarSegundos($id);
@@ -653,6 +654,7 @@ class BalanceoController extends Controller
                 $model->segundos = $table->segundos;
                 $model->minutos = $table->minutos;
                 $model->ordenamiento = $table->ordenamiento;
+                $model->estado_operacion = $table->estado_operacion;
                       
             }    
         }

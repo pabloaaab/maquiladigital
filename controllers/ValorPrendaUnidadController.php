@@ -383,7 +383,8 @@ class ValorPrendaUnidadController extends Controller
                         $balanceo = \app\models\Balanceo::find()->where(['=','idordenproduccion', $idordenproduccion])
                                               ->andWhere(['=','id_proceso_confeccion', 2])->one();
                         $detalle_balanceo = \app\models\BalanceoDetalle::find()->where(['=','id_balanceo', $balanceo->id_balanceo])
-                                                                               ->andWhere(['=','id_operario',  $intCodigo]) 
+                                                                               ->andWhere(['=','id_operario',  $intCodigo])
+                                                                               ->andWhere(['=','estado_operacion', 0])
                                                                                ->orderBy('id_operario DESC')->all();
                         $operarios = Operarios::findOne($intCodigo);
                         $total = 0;

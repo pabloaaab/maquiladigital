@@ -238,6 +238,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                         <th scope="col" style='background-color:#B9D5CE;'>Maquina</th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Unidades por hora">U. x Hora</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje inicial">%</span></th>
+                                         <th scope="col" style='background-color:#B9D5CE;'><span title="Estado de la operacion">Est.</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                     </tr>
@@ -262,6 +263,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                              <td><?= $val->tipo->descripcion ?></td>
                                              <td><?= ''.number_format( 60 /$val->minutos,2) ?></td>
                                               <td><?= $model->porcentaje ?>%</td>
+                                               <td><?= $val->estadoperacion ?></td>
                                             <?php
                                             if($model->estado_modulo == 0){?>
                                                 <td style=' width: 25px;'>
