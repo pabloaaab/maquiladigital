@@ -30,6 +30,7 @@ use app\models\OrdenProduccionTercero;
 use app\models\OrdenProduccionTerceroDetalle;
 use app\models\CantidadPrendaTerminadasPreparacion;
 use app\models\ReprocesoProduccionPrendas;
+use app\models\PilotoDetalleProduccion;
 //clases
 use Yii;
 use yii\web\Controller;
@@ -723,6 +724,64 @@ class OrdenProduccionController extends Controller {
             Yii::$app->getSession()->setFlash('error', 'Error al eliminar la orden de producción, tiene registros asociados en otros procesos');
             $this->redirect(["orden-produccion/index"]);
         }
+    }
+    
+    //PROCESO QUE PERMITE LLAMAR AL PROCESO DE PILOTOS
+    
+    public function actionNewpilotoproduccion($id, $iddetalle) {
+        $detalle_piloto = \app\models\PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
+                                                                     ->andWhere(['=','iddetalleorden', $iddetalle])   
+                                                           ->orderBy('concepto ASC')->all(); 
+        if (isset($_POST["actualizarLinea"])) {
+            $intIndice = 0;
+            foreach ($_POST["listado_piloto"] as $intCodigo) { 
+                $table = PilotoDetalleProduccion::findOne($intCodigo);
+                $table->concepto = $_POST["concepto"][$intIndice];
+                $table->medida_ficha_tecnica = $_POST["medidafichatecnica"][$intIndice];
+                $table->medida_confeccion = $_POST["medidaconfeccion"][$intIndice];
+                if($table->medida_ficha_tecnica < $table->medida_confeccion){
+                     $valor = $table->medida_confeccion - $table->medida_ficha_tecnica; 
+                     $table->tolerancia = $valor;
+                     if($valor > 1){
+                         $table->observacion = 'Medidas fuera de la tolerancia'; 
+                     }else{
+                            $table->observacion = 'Medidas dentro de la tolerancia';
+                     }
+                }else{
+                    $valor = $table->medida_confeccion - $table->medida_ficha_tecnica; 
+                     $table->tolerancia = $valor;
+                     if($valor < -1){
+                        $table->observacion = 'Medidas fuera de la tolerancia'; 
+                     }else{
+                        $table->observacion = 'Medidas dentro de la tolerancia';
+                     }
+                }
+                $table->save(false);
+                $intIndice++;
+            }
+            return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
+        }
+        return $this->render('newpilotoproduccion', [
+             'id' => $id,
+             'iddetalle' => $iddetalle,
+             'detalle_piloto' => $detalle_piloto,
+            
+        ]);
+    }
+    
+    //PERMITE CREAR UNA LINEA EN LAS PILOTOS
+    
+    public function actionNuevalineamedida($iddetalle, $id) {
+            $model = new PilotoDetalleProduccion();
+            $model->iddetalleorden = $iddetalle;                
+            $model->idordenproduccion = $id;
+            $model->fecha_registro= date('Y-m-d');
+            $model->usuariosistema = Yii::$app->user->identity->username;
+            $model->save(false);
+            $detalle_piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
+                                                                     ->andWhere(['=','iddetalleorden', $iddetalle])   
+                                                           ->orderBy('concepto ASC')->all();
+            return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
     }
 
     public function actionAutorizado($id) {
@@ -1950,10 +2009,12 @@ class OrdenProduccionController extends Controller {
     public function actionView_detalle($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
+        $detalle_piloto = \app\models\PilotoDetalleProduccion::find(['=','idordenproduccion', $id])->orderBy('iddetalleorden ASC')->all(); 
         return $this->render('view_detalle', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,                    
                     'modeldetalles' => $modeldetalles,
+                    'detalle_piloto' => $detalle_piloto,
         ]);
     }  
     
