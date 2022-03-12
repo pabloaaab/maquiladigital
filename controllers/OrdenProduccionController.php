@@ -1271,8 +1271,6 @@ class OrdenProduccionController extends Controller {
                     Yii::$app->getSession()->setFlash('error', 'Error al eliminar el detalle, tiene registros asociados en ficha de operaciones');
                     $this->redirect(["orden-produccion/viewsalida", 'id' => $id]);
                 }
-                
-                
             } else {
                 echo "<meta http-equiv='refresh' content='3; " . Url::toRoute("orden-produccion/index") . "'>";
             }
@@ -1280,6 +1278,33 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(["orden-produccion/index"]);
         }
     }
+    
+    //ELIMINA EL DETALLE DE LAS PILOTOS
+    public function actionEliminardetallepiloto($id_proceso, $id, $iddetalle) {
+       if (Yii::$app->request->post()) {
+            $piloto = PilotoDetalleProduccion::findOne($id_proceso);
+            if ((int) $id_proceso) {
+                try {
+                    PilotoDetalleProduccion::deleteAll("id_proceso=:id_proceso", [":id_proceso" => $id_proceso]);
+                                    
+                    $this->redirect(["orden-produccion/newpilotoproduccion",'iddetalle'=>$iddetalle, 'id'=>$id]);
+                } catch (IntegrityException $e) {
+                    $this->redirect(["orden-produccion/newpilotoproduccion",'iddetalle'=>$iddetalle, 'id'=>$id]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
+                } catch (\Exception $e) {
+
+                    $this->redirect(["orden-produccion/newpilotoproduccion",'iddetalle'=>$iddetalle, 'id'=>$id]);
+                    Yii::$app->getSession()->setFlash('error', 'Error al eliminar al eliminar el registro.!');
+                }
+            } else {
+                // echo "Ha ocurrido un error al eliminar el registros, redireccionando ...";
+                echo "<meta http-equiv='refresh' content='3; " . Url::toRoute(["orden-produccion/newpilotoproduccion",'iddetalle'=>$iddetalle, 'id'=>$id]) . "'>";
+            }
+        } else {
+             $this->redirect(["orden-produccion/newpilotoproduccion",'iddetalle'=>$iddetalle, 'id'=>$id]);
+        }
+    }
+  
     
     //ELIMINAR DETALLES DE LA ORDEN DE PRODUCCION PARA TERCERO
     
@@ -1394,6 +1419,8 @@ class OrdenProduccionController extends Controller {
             return $this->redirect(["orden-produccion/indextercero"]);
         }
     }
+    
+    
    
    //IMPRIMIR ORDEN DE CONFECCION
     public function actionImprimir($id) {

@@ -91,20 +91,25 @@ $idToken = 0;
                             <td ><input type="text" size="43"  name="concepto[]" value="<?= $val->concepto ?>"  maxlength="40"></td>
                             <td ><input type="text" size="7" name="medidafichatecnica[]" value="<?= $val->medida_ficha_tecnica ?>" maxlength="6"></td>
                             <td ><input type="text" size="7" name="medidaconfeccion[]" value="<?= $val->medida_confeccion ?>"  maxlength="6"></td>
-                            <td><?= $val->tolerancia ?></td>
-                            <td><?= $val->observacion ?></td>
-                             <input type="hidden" name="listado_piloto[]" value="<?= $val->id_proceso ?>">
-                            <td>
-                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['eliminar', 'id_proceso' => $val->id_proceso, 'iddetalle' => $iddetalle, 'id' => $id], [
-                                    'class' => '',
-                                    'data' => [
-                                        'confirm' => 'Esta seguro de eliminar el registro?',
-                                        'method' => 'post',
-                                    ],
-                                ])
-                                ?>
-                            </td>
-                            
+                            <?php if($val->tolerancia < 0){?>
+                                  <td style="background-color:#B2F3EE; color: #F51F15;"><?= $val->tolerancia ?></td>
+                                  <td style="color: #F51F15;"><?= $val->observacion ?></td>
+                            <?php }else{ ?>
+                                  <td><?= $val->tolerancia ?></td>
+                                   <td><?= $val->observacion ?></td>
+                            <?php } ?>
+                           
+                            <td style= 'width: 25px;'>
+                            <?= Html::a('', ['eliminardetallepiloto', 'id_proceso' => $val->id_proceso,'iddetalle'=>$val->iddetalleorden, 'id'=> $model->idordenproduccion], [
+                                'class' => 'glyphicon glyphicon-trash',
+                                'data' => [
+                                    'confirm' => 'Esta seguro de eliminar el registro?',
+                                    'method' => 'post',
+                                ],
+                            ]) ?>
+                          </td>
+                            <input type="hidden" name="listado_piloto[]" value="<?= $val->id_proceso ?>">
+                                     
                         </tr>
                         </tbody>
                         <?php endforeach; ?>
