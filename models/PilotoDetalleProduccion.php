@@ -45,7 +45,7 @@ class PilotoDetalleProduccion extends \yii\db\ActiveRecord
     {
         return [
             [['iddetalleorden', 'idordenproduccion','aplicado'], 'integer'],
-            [['concepto', 'medida_ficha_tecnica', 'medida_confeccion'], 'required'],
+            [['medida_ficha_tecnica', 'medida_confeccion'], 'required'],
             [['medida_ficha_tecnica', 'tolerancia','medida_confeccion'], 'number'],
             [['fecha_registro'], 'safe'],
             [['concepto'], 'string', 'max' => 40],

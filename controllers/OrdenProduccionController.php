@@ -797,6 +797,8 @@ class OrdenProduccionController extends Controller {
             $model->iddetalleorden = $iddetalle;                
             $model->idordenproduccion = $id;
             $model->fecha_registro= date('Y-m-d');
+            $model->medida_ficha_tecnica = 0;
+            $model->medida_confeccion = 0;
             $model->usuariosistema = Yii::$app->user->identity->username;
             $model->insert(false);
             $detalle_piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
