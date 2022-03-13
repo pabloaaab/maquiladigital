@@ -92,8 +92,9 @@ $form = ActiveForm::begin([
             <thead>
                 <tr >         
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Nro del modulo">Modulo</span></th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Total segundos">Op_Int.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Nro del modulo">Mod.</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Orden produccion interna">Op_Int.</span></th>
+                 <th scope="col" style='background-color:#B9D5CE;'><span title="Referencia">Ref.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Operarios"># Ope.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Inicio</th>
                 <th scope="col" style='background-color:#B9D5CE;'>F. Final</th>
@@ -116,6 +117,7 @@ $form = ActiveForm::begin([
                 <td><?= $val->id_balanceo ?></td>
                  <td><?= $val->modulo ?></td>
                 <td><?= $val->idordenproduccion ?></td>
+                  <td><?= $val->ordenproduccion->codigoproducto ?></td>
                 <td><?= $val->cantidad_empleados ?></td>
                 <td><?= $val->fecha_inicio ?></td>
                 <td><?= $val->fecha_terminacion ?></td>

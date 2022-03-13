@@ -87,7 +87,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a href="#detalle_orden" aria-controls="detalle_orden" role="tab" data-toggle="tab">Detalle <span class="badge"><?= count($modeldetalles) ?></span></a></li>
-            <li role="presentation"><a href="#pilotos" aria-controls="pilotos" role="tab" data-toggle="tab">Pilotos <span class="badge"><?= 1 ?></span></a></li>
+            <li role="presentation"><a href="#medidapilotos" aria-controls="medidapilotos" role="tab" data-toggle="tab">Medidas <span class="badge"><?= count($detalle_piloto) ?></span></a></li>
         </ul>
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="detalle_orden">
@@ -166,7 +166,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                 </div>
             </div>        
             <!--TERMINA EL TABS-->
-            <div role="tabpanel" class="tab-pane " id="pilotos">
+            <div role="tabpanel" class="tab-pane " id="medidapilotos">
                 <div class="table-responsive">
                     <div class="panel panel-success">
                         <div class="panel-body">
@@ -180,8 +180,11 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                     <th scope="col" style='background-color:#B9D5CE;'>Medida Ficha</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Medida Confección</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Tolerancia</th>
-                                    <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
+                                     <th scope="col" style='background-color:#B9D5CE;'>Aplicado</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
+                                    <th scope="col" style='background-color:#B9D5CE;'>Fecha proceso</th>
+                                   
                                      <th style='background-color:#B9D5CE;'></th>
                                 </tr>
                                 </thead>
@@ -191,13 +194,29 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                                         <tr style="font-size: 85%;">
                                             <td><?= $val->id_proceso?></td>
                                             <td><?= $val->idordenproduccion?></td>
-
-                                        </tr> 
+                                            <td><?= $val->detalleorden->productodetalle->prendatipo->prenda.' / '.$val->detalleorden->productodetalle->prendatipo->talla->talla ?></td>
+                                            <td><?= $val->concepto?></td>
+                                            <td><?= $val->medida_ficha_tecnica?></td>
+                                            <td><?= $val->medida_confeccion?></td>
+                                            <?php if($val->tolerancia < 0){?>
+                                                <td style="background-color:#B2F3EE; color: #F51F15;"><?= $val->tolerancia ?></td>
+                                                <td style="color: #F51F15;"><?= $val->observacion ?></td>
+                                              <?php }else{ ?>
+                                                    <td style="background-color:#DAF7A6; color: #111213;"><?= $val->tolerancia ?></td>
+                                                     <td style="color: #117A65;"><?= $val->observacion ?></td>
+                                            <?php } ?>
+                                            <td><?= $val->aplicadoproceso?></td>
+                                            <td><?= $val->usuariosistema?></td>
+                                            <td><?= $val->fecha_registro?></td>
+                                       </tr> 
                                     <?php endforeach; ?>
                                     
                                 </body>
                                 
                             </table>
+                            <div class="panel-footer text-right">
+                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcelmedidas', 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm ']); ?>
+                            </div>
                         </div>
                     </div>
                 </div>

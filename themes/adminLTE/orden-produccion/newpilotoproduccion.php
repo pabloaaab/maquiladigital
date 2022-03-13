@@ -58,25 +58,29 @@ $idToken = 0;
        ?>
         <div class="panel-footer text-right">
             <?php 
-            if(count($detalle_piloto)== 0){?>
-              <?= Html::a('<span class="glyphicon glyphicon-save"></span> Importar', ['orden-produccion/importarmedidapiloto', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']); ?>      
-            <?php }else{
-                $estado =0;
+            $estado =0;
                 foreach ($detalle_piloto as $dato):
                       $estado = $dato->aplicado;
                 endforeach;
-                if($estado == 0){?>
+            if(count($detalle_piloto)== 0 and $estado == 0){?>
+              <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['orden-produccion/nuevalineamedida', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']); ?>  
+             <?= Html::a('<span class="glyphicon glyphicon-save"></span> Importar', ['orden-produccion/importarmedidapiloto', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']); ?>      
+              <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
+              
+            <?php }
+            if(count($detalle_piloto)> 0 and $estado == 0){?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['orden-produccion/nuevalineamedida', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']); ?>  
                      <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
-                <?php }else{ ?>
-                  <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['orden-produccion/nuevalineamedida', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']); ?> 
-                 <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
-                <?php }
-           } ?> 
+                   
+            <?php } 
+            if($estado == 1){?>
+                <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
+            <?php } ?>
         </div>
         <div class="table table-responsive">
             <div class="panel panel-success ">
                 <div class="panel-heading">
-                    
+                    Lineas : <span class="badge"><?= count($detalle_piloto)?></span>
                 </div>
                 <div class="panel-body">
                  <table class="table table-bordered table-striped table-hover">
@@ -130,8 +134,8 @@ $idToken = 0;
                         <?php endforeach; ?>
                     </table>
                     <div class="panel-footer text-right">
-                        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm ']); ?>
-                         <?= Html::submitButton("<span class='glyphicon glyphicon-ok'></span> Aplicar", ["class" => "btn btn-warning btn-sm", 'name' => 'aplicarregistro']) ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcelmedidas', 'id' => $id], ['class' => 'btn btn-primary btn-sm ']); ?>
+                        <?= Html::submitButton("<span class='glyphicon glyphicon-ok'></span> Aplicar", ["class" => "btn btn-warning btn-sm", 'name' => 'aplicarregistro']) ?>
                     </div>
                 </div>
            </div>

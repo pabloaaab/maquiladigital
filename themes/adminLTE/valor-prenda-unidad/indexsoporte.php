@@ -100,6 +100,7 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                 <th scope="col" style='background-color:#B9D5CE;'>Cant.</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Vr. Prenda</th>
                 <th scope="col" style='background-color:#B9D5CE;'>T. pagado</th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje de cumplimiento">% Cump.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Registro pagado" >Pagado</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Observacion</th>
@@ -121,6 +122,7 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                     <td align="right"><?= ''.number_format($val->cantidad,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_prenda,0) ?></td>
                     <td align="right"><?= ''.number_format($val->vlr_pago,0) ?></td>
+                      <td><?= $val->porcentaje_cumplimiento ?></td>
                     <td><?= $val->usuariosistema ?></td>
                     <td><?= $val->registroPagado?></td>
                     <td><?= $val->observacion?></td>

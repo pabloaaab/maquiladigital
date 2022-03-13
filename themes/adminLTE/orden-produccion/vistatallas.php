@@ -283,7 +283,7 @@ $operacionModulo = app\models\BalanceoDetalle::find()->where(['=','id_balanceo',
                                 </tbody>
                             </table>
                             <div class="panel-footer text-right">
-                                <?= Html::a('<span class="glyphicon glyphicon-exportar"></span> Excel', ['cantidadconfeccionada', 'iddetalleorden' => $detalletallas->iddetalleorden, 'id_proceso_confeccion' => 2], ['class' => 'btn btn-primary btn-sm']);?>
+                                <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['cantidadconfeccionada', 'iddetalleorden' => $detalletallas->iddetalleorden, 'id_proceso_confeccion' => 2], ['class' => 'btn btn-primary btn-sm']);?>
                             </div>
                         </div>
                     </div>

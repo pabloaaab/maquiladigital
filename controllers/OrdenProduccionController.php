@@ -732,7 +732,7 @@ class OrdenProduccionController extends Controller {
         $sw = 0;
         $detalle_piloto = \app\models\PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
                                                                      ->andWhere(['=','iddetalleorden', $iddetalle])   
-                                                           ->orderBy('concepto ASC')->all(); 
+                                                           ->orderBy('id_proceso DESC')->all(); 
         if (isset($_POST["actualizarLinea"])) {
             $intIndice = 0;
             foreach ($_POST["listado_piloto"] as $intCodigo) { 
@@ -801,7 +801,7 @@ class OrdenProduccionController extends Controller {
             $model->save(false);
             $detalle_piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
                                                                      ->andWhere(['=','iddetalleorden', $iddetalle])   
-                                                           ->orderBy('concepto ASC')->all();
+                                                           ->orderBy('id_proceso DESC')->all();
             return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
     }
     //PROCESO DE ENVIA TODAS LAS OPERACIONES A LAS OTRAS TALLAS
@@ -2122,7 +2122,7 @@ class OrdenProduccionController extends Controller {
     public function actionView_detalle($id) {
         $modeldetalles = Ordenproducciondetalle::find()->Where(['=', 'idordenproduccion', $id])->all();
         $modeldetalle = new Ordenproducciondetalle();
-        $detalle_piloto = \app\models\PilotoDetalleProduccion::find(['=','idordenproduccion', $id])->orderBy('iddetalleorden ASC')->all(); 
+        $detalle_piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])->orderBy('id_proceso DESC')->all(); 
         return $this->render('view_detalle', [
                     'model' => $this->findModel($id),
                     'modeldetalle' => $modeldetalle,                    
@@ -3895,5 +3895,80 @@ class OrdenProduccionController extends Controller {
         $objWriter->save('php://output');
         exit;
     }
+    
+    //PROCESO QUE EXPORTA A EXCEL TODAS LAS MERDIDAS DE LA OP
+    
+      public function actionGenerarexcelmedidas($id) {
+        $medida = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])->orderBy('iddetalleorden ASC')->all();
+        $orden = Ordenproduccion::findOne($id);
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+         $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A1', 'CODIGO')
+                    ->setCellValue('B1', 'OP')
+                    ->setCellValue('C1', 'TALLA')
+                    ->setCellValue('D1', 'CONCEPTO)')
+                    ->setCellValue('E1', 'CLIENTE')
+                    ->setCellValue('F1', 'MEDIDA FICHA')
+                    ->setCellValue('G1', 'MEDIDA CONFECCION')
+                    ->setCellValue('H1', 'TOLERANCIA')
+                    ->setCellValue('I1', 'FECHA REGISTRO')
+                    ->setCellValue('J1', 'USUARIO')
+                    ->setCellValue('K1', 'APLICADO')
+                    ->setCellValue('L1', 'OBSERVACION');
+        $i = 3;
+        foreach ($medida as $val) {
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_proceso)
+                    ->setCellValue('B' . $i, $orden->idordenproduccion)
+                    ->setCellValue('C' . $i, $val->detalleorden->productodetalle->prendatipo->prenda.' / '.$val->detalleorden->productodetalle->prendatipo->talla->talla)
+                    ->setCellValue('D' . $i, $val->concepto)                    
+                    ->setCellValue('E' . $i, $orden->cliente->nombrecorto)                    
+                    ->setCellValue('F' . $i, $val->medida_ficha_tecnica)
+                    ->setCellValue('G' . $i, $val->medida_confeccion)
+                    ->setCellValue('H' . $i, $val->tolerancia)
+                    ->setCellValue('I' . $i, $val->fecha_registro)
+                    ->setCellValue('J' . $i, $val->usuariosistema)
+                    ->setCellValue('K' . $i, $val->aplicadoproceso)
+                    ->setCellValue('L' . $i, $val->observacion);
+            $i++;
+        }
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Medida_piltos.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
+        $objWriter->save('php://output');
+        exit;
+    }
+    
 
 }
