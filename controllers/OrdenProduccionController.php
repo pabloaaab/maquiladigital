@@ -798,7 +798,7 @@ class OrdenProduccionController extends Controller {
             $model->idordenproduccion = $id;
             $model->fecha_registro= date('Y-m-d');
             $model->usuariosistema = Yii::$app->user->identity->username;
-            $model->save(false);
+            $model->insert(false);
             $detalle_piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
                                                                      ->andWhere(['=','iddetalleorden', $iddetalle])   
                                                            ->orderBy('id_proceso DESC')->all();
