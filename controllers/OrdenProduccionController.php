@@ -842,6 +842,8 @@ class OrdenProduccionController extends Controller {
                 $table->iddetalleorden = $iddetalle;
                 $table->idordenproduccion = $id;
                 $table->concepto = $detalle->concepto;
+                $table->medida_ficha_tecnica = 0;
+                $table->medida_confeccion = 0;
                 $table->fecha_registro = date('Y-m-d');
                 $table->usuariosistema = Yii::$app->user->identity->username;
                 $table->save(false);                                                
