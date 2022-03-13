@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
 <div class="ordenproduccionproceso-view">
     <p>
         <?= Html::a('<span class="glyphicon glyphicon-circle-arrow-left"></span> Regresar', ['proceso'], ['class' => 'btn btn-primary btn-sm']) ?>
+         <?= Html::a('<span class="glyphicon glyphicon-print"></span> Imprimir pilotos', ['imprimirpilotos', 'id' => $model->idordenproduccion], ['class' => 'btn btn-default btn-sm'])?>           
     </p>
 
     <div class="panel panel-success">

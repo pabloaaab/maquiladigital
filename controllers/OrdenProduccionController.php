@@ -729,6 +729,7 @@ class OrdenProduccionController extends Controller {
     //PROCESO QUE PERMITE LLAMAR AL PROCESO DE PILOTOS
     
     public function actionNewpilotoproduccion($id, $iddetalle) {
+        $sw = 0;
         $detalle_piloto = \app\models\PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])
                                                                      ->andWhere(['=','iddetalleorden', $iddetalle])   
                                                            ->orderBy('concepto ASC')->all(); 
@@ -761,6 +762,26 @@ class OrdenProduccionController extends Controller {
             }
             return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
         }
+        if(isset($_POST['aplicarregistro'])){  
+            if(isset($_REQUEST['id_proceso'])){                            
+                $intIndice = 0;
+                foreach ($_POST["id_proceso"] as $intCodigo) {
+                    if ($_POST["id_proceso"][$intIndice]) {
+                        $id_detalle = $_POST["id_proceso"][$intIndice];
+                        $piloto = PilotoDetalleProduccion::findOne($id_detalle);
+                        if($piloto->aplicado == 0){
+                            $piloto->aplicado = 1;
+                             $piloto->save(false);
+                        }else{
+                            $piloto->aplicado = 0;
+                            $piloto->save(false);
+                        }            
+                    }
+                    $intIndice++;
+                }
+            }
+           return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
+        }
         return $this->render('newpilotoproduccion', [
              'id' => $id,
              'iddetalle' => $iddetalle,
@@ -783,7 +804,60 @@ class OrdenProduccionController extends Controller {
                                                            ->orderBy('concepto ASC')->all();
             return $this->redirect(['newpilotoproduccion', 'id' => $id, 'iddetalle' => $iddetalle]);
     }
+    //PROCESO DE ENVIA TODAS LAS OPERACIONES A LAS OTRAS TALLAS
+    
+      public function actionImportarmedidapiloto($id, $iddetalle)
+    {
+        $pilotoDetalle = PilotoDetalleProduccion::find()->Where(['=','idordenproduccion', $id])
+                                                        ->andWhere(['=','aplicado', 1])
+                                                        ->orderBy('id_proceso asc')->all();
+        $form = new \app\models\FormMaquinaBuscar();
+        $q = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $q = Html::encode($form->q);                                
+                if ($q){
+                    $pilotoDetalle = PilotoDetalleProduccion::find()
+                            ->where(['like','concepto',$q])
+                            ->orwhere(['like','id_proceso',$q])
+                            ->orderBy('concepto asc')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+            $pilotoDetalle = PilotoDetalleProduccion::find()->andWhere(['=','idordenproduccion', $id])
+                                                        ->andWhere(['=','aplicado', 1])
+                                                        ->orderBy('id_proceso asc')->all();
+        }
+        if (isset($_POST["id_proceso"])) {
+            $intIndice = 0;
+            foreach ($_POST["id_proceso"] as $intCodigo) {
+                $table = new PilotoDetalleProduccion();
+                $detalle = PilotoDetalleProduccion::find()->where(['id_proceso' => $intCodigo])->one();
+                $table->iddetalleorden = $iddetalle;
+                $table->idordenproduccion = $id;
+                $table->concepto = $detalle->concepto;
+                $table->fecha_registro = date('Y-m-d');
+                $table->usuariosistema = Yii::$app->user->identity->username;
+                $table->save(false);                                                
+            }
+           $this->redirect(["orden-produccion/newpilotoproduccion", 'id' => $id, 'iddetalle' => $iddetalle]);
+        }else{
+           
+        }
+        return $this->render('importarmedidaproduccion', [
+            'pilotoDetalle' => $pilotoDetalle,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+            'iddetalle' => $iddetalle,
+            'form' => $form,
 
+        ]);
+    }
+    
     public function actionAutorizado($id) {
         $model = $this->findModel($id);
         $mensaje = "";
@@ -1428,6 +1502,18 @@ class OrdenProduccionController extends Controller {
         return $this->render('../formatos/ordenProduccion', [
                     'model' => $this->findModel($id),
         ]);
+    }
+     public function actionImprimirpilotos($id) {
+       $piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])->one();
+       if($piloto){  
+            return $this->render('../formatos/reporteentregapilotos', [
+                    'model' => $this->findModel($id),
+          ]);
+       }else{
+          $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
+          Yii::$app->getSession()->setFlash('warning', 'Esta referencia no se le ha creado el proceso de medidas a las pilotos.');
+       }
+       
     }
     
      public function actionImprimirtercero($id) {

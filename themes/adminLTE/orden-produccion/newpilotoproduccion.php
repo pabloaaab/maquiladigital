@@ -57,9 +57,21 @@ $idToken = 0;
         ]);
        ?>
         <div class="panel-footer text-right">
-            <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm ']); ?>
-            <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['orden-produccion/nuevalineamedida', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion, 'idToken' => 1], ['class' => 'btn btn-success btn-sm']); ?>   
-            <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Actualizar", ["class" => "btn btn-success btn-sm", 'name' => 'actualizarLinea']) ?>
+            <?php 
+            if(count($detalle_piloto)== 0){?>
+              <?= Html::a('<span class="glyphicon glyphicon-save"></span> Importar', ['orden-produccion/importarmedidapiloto', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-success btn-sm']); ?>      
+            <?php }else{
+                $estado =0;
+                foreach ($detalle_piloto as $dato):
+                      $estado = $dato->aplicado;
+                endforeach;
+                if($estado == 0){?>
+                     <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
+                <?php }else{ ?>
+                  <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Nueva-Linea', ['orden-produccion/nuevalineamedida', 'iddetalle' => $iddetalle, 'id' => $model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']); ?> 
+                 <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Actualizar", ["class" => "btn btn-info btn-sm", 'name' => 'actualizarLinea']) ?>
+                <?php }
+           } ?> 
         </div>
         <div class="table table-responsive">
             <div class="panel panel-success ">
@@ -69,7 +81,7 @@ $idToken = 0;
                 <div class="panel-body">
                  <table class="table table-bordered table-striped table-hover">
                         <thead>
-                        <tr>
+                        <tr style="font-size: 85%;">
                             
                             <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                              <th scope="col" style='background-color:#B9D5CE;'>Op</th>
@@ -77,9 +89,11 @@ $idToken = 0;
                             <th scope="col" style='background-color:#B9D5CE;'>Concepto</th>
                             <th scope="col" style='background-color:#B9D5CE;'>Medidas Ficha</th>
                             <th scope="col" style='background-color:#B9D5CE;'>Medidas Confección</th>
+                              <th scope="col" style='background-color:#B9D5CE;'>Aplicado</th>
                             <th scope="col" style='background-color:#B9D5CE;'>Tolerancia</th>
                             <th scope="col" style='background-color:#B9D5CE;'>Observación</th>
                             <th scope="col" style='background-color:#B9D5CE;'></th>
+                            <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -91,12 +105,13 @@ $idToken = 0;
                             <td ><input type="text" size="43"  name="concepto[]" value="<?= $val->concepto ?>"  maxlength="40"></td>
                             <td ><input type="text" size="7" name="medidafichatecnica[]" value="<?= $val->medida_ficha_tecnica ?>" maxlength="6"></td>
                             <td ><input type="text" size="7" name="medidaconfeccion[]" value="<?= $val->medida_confeccion ?>"  maxlength="6"></td>
+                             <td><?= $val->aplicadoproceso ?></td>
                             <?php if($val->tolerancia < 0){?>
                                   <td style="background-color:#B2F3EE; color: #F51F15;"><?= $val->tolerancia ?></td>
                                   <td style="color: #F51F15;"><?= $val->observacion ?></td>
                             <?php }else{ ?>
-                                  <td><?= $val->tolerancia ?></td>
-                                   <td><?= $val->observacion ?></td>
+                                  <td style="background-color:#DAF7A6; color: #111213;"><?= $val->tolerancia ?></td>
+                                   <td style="color: #117A65;"><?= $val->observacion ?></td>
                             <?php } ?>
                            
                             <td style= 'width: 25px;'>
@@ -109,11 +124,15 @@ $idToken = 0;
                             ]) ?>
                           </td>
                             <input type="hidden" name="listado_piloto[]" value="<?= $val->id_proceso ?>">
-                                     
+                            <td style="width: 25px;"><input type="checkbox" name="id_proceso[]" value="<?= $val->id_proceso ?>"></td>         
                         </tr>
                         </tbody>
                         <?php endforeach; ?>
                     </table>
+                    <div class="panel-footer text-right">
+                        <?= Html::a('<span class="glyphicon glyphicon-export"></span> Excel', ['generarexcel', 'id' => $id], ['class' => 'btn btn-primary btn-sm ']); ?>
+                         <?= Html::submitButton("<span class='glyphicon glyphicon-ok'></span> Aplicar", ["class" => "btn btn-warning btn-sm", 'name' => 'aplicarregistro']) ?>
+                    </div>
                 </div>
            </div>
         </div>

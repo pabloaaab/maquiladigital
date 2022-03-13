@@ -44,7 +44,7 @@ class PilotoDetalleProduccion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['iddetalleorden', 'idordenproduccion', 'medida_confeccion'], 'integer'],
+            [['iddetalleorden', 'idordenproduccion', 'medida_confeccion','aplicado'], 'integer'],
             [['concepto', 'medida_ficha_tecnica', 'medida_confeccion'], 'required'],
             [['medida_ficha_tecnica', 'tolerancia'], 'number'],
             [['fecha_registro'], 'safe'],
@@ -90,4 +90,13 @@ class PilotoDetalleProduccion extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Ordenproduccion::className(), ['idordenproduccion' => 'idordenproduccion']);
     }
+    public function getAplicadoproceso() {
+        if($this->aplicado == 0){
+           $aplicado = 'NO';
+        }else{
+           $aplicado = 'SI';
+        }
+        return $aplicado;
+    }
+    
 }
