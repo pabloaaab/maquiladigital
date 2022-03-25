@@ -364,6 +364,35 @@ class BalanceoController extends Controller
                     ]); 
             }
         }
+        //PROCESO QUE ACTIVA O DESACTIVA EL ESTADO DE LA OPERACION
+        if(isset($_POST['aplicarestado'])){
+            if(isset($_REQUEST['id_detalle_balanceo'])){
+                $intIndice = 0;
+                foreach ($_POST['id_detalle_balanceo'] as $intCodigo):
+                    if($_POST['id_detalle_balanceo'][$intIndice]){
+                        $id_detalle = $_POST["id_detalle_balanceo"][$intIndice];
+                        $detalle = BalanceoDetalle::findOne($id_detalle);
+                        if($detalle->estado_operacion == 1){
+                            $detalle->estado_operacion = 0;
+                             $detalle->save(false);
+                        }else{
+                            $detalle->estado_operacion = 1;
+                            $detalle->save(false);
+                        }            
+                    }
+                    $intIndice++;
+                endforeach;
+            }
+             return $this->redirect(['view',
+                    'id' => $id,
+                    'idordenproduccion' => $idordenproduccion,
+                    'id_proceso_confeccion' => $id_proceso_confeccion,
+                    'operario'=> $operario,
+                    'balanceo_detalle' => $balanceo_detalle,
+                    'flujo_operaciones' => $flujo_operaciones]);
+                    
+        }
+        
             return $this->render('view', [
                  'model' => $this->findModel($id),
                  'flujo_operaciones' => $flujo_operaciones,

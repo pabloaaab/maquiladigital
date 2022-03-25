@@ -241,6 +241,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                          <th scope="col" style='background-color:#B9D5CE;'><span title="Estado de la operacion">Est.</span></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
                                         <th scope="col" style='background-color:#B9D5CE;'></th>
+                                        <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -262,9 +263,10 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                              <?php }?>     
                                              <td><?= $val->tipo->descripcion ?></td>
                                              <td><?= ''.number_format( 60 /$val->minutos,2) ?></td>
-                                              <td><?= $model->porcentaje ?>%</td>
-                                               <td><?= $val->estadoperacion ?></td>
+                                             <td><?= $model->porcentaje ?>%</td>
+                                             <td><?= $val->estadoperacion ?></td>
                                             <?php
+                                            
                                             if($model->estado_modulo == 0){?>
                                                 <td style=' width: 25px;'>
                                                   <a href="<?= Url::toRoute(["balanceo/editaroperacionasignada",'id_detalle'=>$val->id_detalle,'id' => $model->id_balanceo, 'idordenproduccion' => $model->idordenproduccion, 'id_proceso_confeccion' => $id_proceso_confeccion]) ?>" ><span class="glyphicon glyphicon-pencil"></span></a>
@@ -279,18 +281,19 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                                   ]) ?>
                                                 </td>
                                             <?php }else{ ?>
-                                                <td></td>
-                                                <td></td>
+                                                <td style= 'width: 25px;'></td>
+                                                <td style= 'width: 25px;'></td>
 
                                             <?php } ?>    
-
+                                          <input type="hidden" name="listado_operacion[]" value="<?= $val->id_detalle ?>">
+                                             <td style="width: 25px;"><input type="checkbox" name="id_detalle_balanceo[]" value="<?= $val->id_detalle ?>"></td>    
                                         </tr>
                                    <?php
                                         $total_mi += $val->minutos;
                                    endforeach; ?>
                                 </tbody>  
                                 <?php if(count($balanceo_detalle)> 0){?>
-                                    <td colspan="4"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $total_mi?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="3"></td>
+                                    <td colspan="4"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $total_mi?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="5"></td>
                                     <?php 
                                      if($total_mi > $model->total_minutos){
                                         Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');
@@ -301,6 +304,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                             
                             <div class="panel-footer text-right">
                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Excel', ['excelbalanceo', 'id_balanceo' => $model->id_balanceo, 'idordenproduccion'=>$model->idordenproduccion], ['class' => 'btn btn-primary btn-sm']);?>
+                                <?= Html::submitButton("<span class='glyphicon glyphicon-check'></span> Act./Desact.", ["class" => "btn btn-warning btn-sm", 'name' => 'aplicarestado']) ?>
            
                             </div>
                          

@@ -65,7 +65,7 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
                            'pluginOptions' => [
                                'format' => 'yyyy-m-d',
                                'todayHighlight' => true]])
-                       ?>
+            ?>
             <?= $form->field($model, 'estado')->dropDownList(['1' => 'SI', '0' => 'NO'], ['prompt' => 'Seleccione una opcion...']) ?>
         </div>
          <div class="row">
@@ -74,6 +74,13 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
         </div>
         <div class="row">
             <?= $form->field($model, 'tipo_operaria')->dropDownList(['1' => 'CONFECCION', '2' => 'TERMINACION'], ['prompt' => 'Seleccione una opcion...']) ?>
+            <?=  $form->field($model, 'fecha_ingreso')->widget(DatePicker::className(), ['name' => 'check_issue_date',
+                           'value' => date('Y-m-d', strtotime('+2 days')),
+                           'options' => ['placeholder' => 'Seleccione una fecha ...'],
+                           'pluginOptions' => [
+                               'format' => 'yyyy-m-d',
+                               'todayHighlight' => true]])
+            ?>
         </div>
         
         <div class="panel-footer text-right">			

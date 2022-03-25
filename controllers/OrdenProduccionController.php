@@ -1508,6 +1508,7 @@ class OrdenProduccionController extends Controller {
         ]);
     }
      public function actionImprimirpilotos($id) {
+       $orden = Ordenproduccion::findOne($id);
        $piloto = PilotoDetalleProduccion::find()->where(['=','idordenproduccion', $id])->one();
        if($piloto){  
             return $this->render('../formatos/reporteentregapilotos', [
@@ -1515,7 +1516,7 @@ class OrdenProduccionController extends Controller {
           ]);
        }else{
           $this->redirect(["orden-produccion/view_detalle", 'id' => $id]);
-          Yii::$app->getSession()->setFlash('warning', 'Esta referencia no se le ha creado el proceso de medidas a las pilotos.');
+          Yii::$app->getSession()->setFlash('warning', 'La referencia ('.$orden->codigoproducto.') no se le ha creado el proceso de medidas a las pilotos por sistemas. Favor validar con producción.');
        }
        
     }

@@ -72,6 +72,15 @@ $view = 'operarios';
                     <td colspan="4"><?= Html::encode($model->estadoPago) ?></td>
                  
                 </tr>
+                 <tr style="font-size: 85%;">
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_Ingreso') ?>:</th>
+                    <td><?= Html::encode($model->fecha_ingreso) ?></td>
+                    <th style='background-color:#F0F3EF;'><?= Html::activeLabel($model, 'Fecha_creacion') ?>:</th>
+                    <td><?= Html::encode($model->fecha_creacion) ?></td>
+                    <td colspan="5"></td>
+                    
+                 
+                </tr>
                 
             </table>
         </div>

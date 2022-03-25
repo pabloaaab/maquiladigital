@@ -54,7 +54,7 @@ class Operarios extends \yii\db\ActiveRecord
             [['celular'], 'string', 'max' => 15],
             [['iddepartamento', 'idmunicipio'], 'string'],
             [['usuariosistema'], 'string', 'max' => 20],
-            [['fecha_creacion','fecha_nacimiento'], 'safe'],
+            [['fecha_creacion','fecha_nacimiento','fecha_ingreso'], 'safe'],
             [['id_tipo_documento'], 'exist', 'skipOnError' => true, 'targetClass' => TipoDocumento::className(), 'targetAttribute' => ['id_tipo_documento' => 'id_tipo_documento']],
             [['iddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['iddepartamento' => 'iddepartamento']],
             [['idmunicipio'], 'exist', 'skipOnError' => true, 'targetClass' => Municipio::className(), 'targetAttribute' => ['idmunicipio' => 'idmunicipio']],
@@ -81,6 +81,7 @@ class Operarios extends \yii\db\ActiveRecord
             'estado' => 'Activo',
             'vinculado' => 'Vinculado',
             'fecha_nacimiento' => 'Fecha nacimiento',
+            'fecha_ingreso' => 'Fecha Ingreso',
         ];
     }
 

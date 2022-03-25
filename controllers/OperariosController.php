@@ -179,6 +179,7 @@ class OperariosController extends Controller
                 $table->vinculado = $model->vinculado;
                 $table->tipo_operaria = $model->tipo_operaria;
                 $table->idmunicipio = $model->idmunicipio;
+                $table->fecha_ingreso = $model->fecha_ingreso;
                 $table->usuariosistema =  Yii::$app->user->identity->username;
                 if($table->save(false)){;
                    return $this->redirect(["operarios/index"]);
@@ -227,6 +228,7 @@ class OperariosController extends Controller
                    $table->fecha_nacimiento = $model->fecha_nacimiento;
                    $table->vinculado = $model->vinculado;
                    $table->tipo_operaria = $model->tipo_operaria;
+                   $table->fecha_ingreso = $model->fecha_ingreso;
                    $table->save(false);
                     return $this->redirect(["operarios/index"]);
                }
@@ -249,7 +251,8 @@ class OperariosController extends Controller
                 $model->polivalente = $table->polivalente;
                 $model->fecha_nacimiento = $table->fecha_nacimiento;
                 $model->vinculado = $table->vinculado;
-                 $model->tipo_operaria = $table->tipo_operaria;
+                $model->tipo_operaria = $table->tipo_operaria;
+                $model->fecha_ingreso = $table->fecha_ingreso;
             }else{
                  return $this->redirect(["operarios/index"]);
             }    
@@ -403,6 +406,8 @@ class OperariosController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
         $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
         $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'CODIGO')
                     ->setCellValue('B1', 'TIPO DOCUMENTO')
@@ -415,7 +420,8 @@ class OperariosController extends Controller
                     ->setCellValue('I1', 'F. NACIMIENTO')
                     ->setCellValue('J1', 'FECHA CREACION')
                     ->setCellValue('K1', 'ACTIVO')
-                    ->setCellValue('L1', 'POLIVALENTE');
+                    ->setCellValue('L1', 'POLIVALENTE')
+                    ->setCellValue('M1', 'FECHA INGRESO');
         $i = 2;
         
         foreach ($tableexcel as $val) {
@@ -432,7 +438,8 @@ class OperariosController extends Controller
                     ->setCellValue('I' . $i, $val->fecha_nacimiento)
                     ->setCellValue('J' . $i, $val->fecha_creacion)
                     ->setCellValue('K' . $i, $val->estadopago)
-                    ->setCellValue('L' . $i, $val->polivalenteOperacion);
+                    ->setCellValue('L' . $i, $val->polivalenteOperacion)
+                    ->setCellValue('M' . $i, $val->fecha_ingreso);
             $i++;
         }
 

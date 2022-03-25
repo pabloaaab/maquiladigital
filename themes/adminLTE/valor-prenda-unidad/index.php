@@ -155,27 +155,30 @@ $tipo = ArrayHelper::map(Ordenproducciontipo::find()->orderBy('idtipo ASC')->all
                 </td>
                 <?php if($val->id_proceso_confeccion == 1){?>
                      <td style= 'width: 25px; height: 25px;'></td>
-                <?php }else{?>
-                   <td style= 'width: 8px; height: 8px; font-size: 8px;'>
-                        <?php echo Html::a('<span class="glyphicon glyphicon-user "></span> ',            
-                            ['/valor-prenda-unidad/buscaroperaciones','id' => $val->id_valor,'idordenproduccion' => $val->idordenproduccion],
-                            [
-                                'title' => 'Buscar operaciones',
-                                'data-toggle'=>'modal',
-                                'data-target'=>'#modalbuscaroperaciones'.$val->id_valor,
-                            ]
-                        );
-                       ?>
-                    </td> 
-                    <div class="modal remote fade" id="modalbuscaroperaciones<?= $val->id_valor ?>">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content"></div>
-                        </div>
-                    </div>
-                <?php }?>
-             
-            </tbody>            
+                <?php }else{
+                        if ($val->cerrar_pago == 0){?>
+                            <td style= 'width: 8px; height: 8px; font-size: 8px;'>
+                                 <?php echo Html::a('<span class="glyphicon glyphicon-user "></span> ',            
+                                     ['/valor-prenda-unidad/buscaroperaciones','id' => $val->id_valor,'idordenproduccion' => $val->idordenproduccion],
+                                     [
+                                         'title' => 'Buscar operaciones',
+                                         'data-toggle'=>'modal',
+                                         'data-target'=>'#modalbuscaroperaciones'.$val->id_valor,
+                                     ]
+                                 );
+                                ?>
+                             </td> 
+                             <div class="modal remote fade" id="modalbuscaroperaciones<?= $val->id_valor ?>">
+                                 <div class="modal-dialog modal-lg">
+                                     <div class="modal-content"></div>
+                                 </div>
+                             </div>
+                        <?php }else{?>
+                           <td style= 'width: 25px; height: 25px;'></td>
+                        <?php }   
+                 }?>
             <?php endforeach; ?>
+             </tbody>                               
         </table>    
         <div class="panel-footer text-right" >            
                 <?= Html::submitButton("<span class='glyphicon glyphicon-export'></span> Excel", ['name' => 'excel','class' => 'btn btn-primary btn-sm ']); ?>                
