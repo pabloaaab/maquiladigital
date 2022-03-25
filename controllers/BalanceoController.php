@@ -588,9 +588,9 @@ class BalanceoController extends Controller
             }
         }
         if (Yii::$app->request->get("id")) {
-            $table = Ordenproduccion::find()->where(['id' => $id])->one();            
+            $table = Balanceo::findOne($id);            
             if ($table) {                                
-                $model->idordenproduccion = $table->tiempo_balanceo;                
+                $model->tiempo_balanceo = $table->tiempo_balanceo;                
                 $model->fecha_inicio = $table->fecha_inicio; 
                 $model->fecha_final = $table->fecha_terminacion; 
                 $model->idordenproduccion = $table->idordenproduccion;
