@@ -50,9 +50,9 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
             <tr>
                 <th><?= Html::activeLabel($costolaboral, 'empleados_administrativos') ?>:</th>
                 <td><?= Html::encode($costolaboral->empleados_administrativos) ?></td>
-                <th><?= Html::activeLabel($costolaboral, 'empleados_operativos') ?>:</th>
+                <th><?= Html::activeLabel($costolaboral, 'empleados_Confeccion') ?>:</th>
                 <td><?= Html::encode($costolaboral->empleados_operativos) ?></td>
-                <th><?= Html::activeLabel($costolaboral, 'total_administracion') ?>:</th>
+                <th><?= Html::activeLabel($costolaboral, 'Empleados_Terminacion') ?>:</th>
                 <td><?= Html::encode('$' . number_format($costolaboral->total_administracion)) ?></td>                
             </tr>
             <tr>                
@@ -82,7 +82,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
     <div class="panel-body">
         <table class="table table-bordered table-striped table-hover">
             <thead>
-                <tr>
+                <tr style="font-size: 85%;">
                     <th scope="col" title="N° Empleados">N°</th>
                     <th scope="col">Tipo Cargo</th>
                     <th scope="col" title="Es/Son Empleado(s)?">E</th>
@@ -111,7 +111,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                         $checked = ' ';
                     }                         
                     ?>
-                    <tr>                    
+                    <tr style="font-size: 85%;">                    
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="nro_empleados[]" value="<?= $val->nro_empleados ?>" size="1" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 0;padding-right: 1;"><?= Html::dropDownList('id_tipo_cargo[]', $val->id_tipo_cargo, $tiposcargo, ['class' => 'col-sm-13', 'prompt' => 'Opción', 'required' => true]) ?></td>
                         <td style="padding-left: 0;padding-right: 0;"><?= Html::dropDownList('no_empleado[]', $val->no_empleado, ['0' => 'NO', '1' => 'SI']) ?></td>
@@ -119,7 +119,7 @@ $arl = ArrayHelper::map(Arl::find()->all(), 'id_arl', 'arl');
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="salario[]" value="<?= $val->salario ?>" size="5" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="auxilio_transporte[]" value="<?= $val->auxilio_transporte ?>" size="4" onkeypress="return esInteger(event)" required></td>
                         <td style="padding-left: 0;padding-right: 1;"><input type="text" name="tiempo_extra[]" value="<?= $val->tiempo_extra ?>" size="4" onkeypress="return esInteger(event)" required></td>
-                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="4" onkeypress="return esInteger(event)" required></td>
+                        <td style="padding-left: 0;padding-right: 1;"><input type="text" name="bonificacion[]" value="<?= $val->bonificacion ?>" size="5" onkeypress="return esInteger(event)" required></td>
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->arl) ?></td>
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->pension) ?></td>
                         <td align="right" style="padding-left: 1;padding-right: 0;"><?= '$' . number_format($val->caja) ?></td>

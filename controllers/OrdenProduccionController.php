@@ -1542,6 +1542,12 @@ class OrdenProduccionController extends Controller {
         ]);
     }
     
+   public function actionImprimirexportacion($id) {
+        return $this->render('../formatos/reporteexportacion', [
+                    'model' => $this->findModel($id),
+        ]);
+    }
+    
     protected function findModel($id) {
         if (($model = Ordenproduccion::findOne($id)) !== null) {
             return $model;

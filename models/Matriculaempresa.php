@@ -53,7 +53,12 @@ class Matriculaempresa extends \yii\db\ActiveRecord
         }
         $this->representante_legal = strtoupper($this->representante_legal);        
         $this->emailmatricula = strtolower($this->emailmatricula);       
-      
+        $this->historia = strtolower($this->historia);  
+        $this->vision = strtolower($this->vision);  
+        $this->mision = strtolower($this->mision); 
+        $this->historia = ucfirst($this->historia);  
+        $this->vision = ucfirst($this->vision);  
+        $this->mision = ucfirst($this->mision);  
         return true;
     }
 
@@ -66,7 +71,7 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             [['nitmatricula', 'dv', 'razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'telefonomatricula', 'celularmatricula', 'emailmatricula', 'iddepartamento', 'idmunicipio', 'paginaweb', 'id_tipo_regimen', 'declaracion', 'idresolucion', 'gran_contribuyente','agente_retenedor', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion'], 'required'],
             [['dv', 'id_tipo_regimen', 'id_banco_factura', 'idresolucion','gran_contribuyente','agente_retenedor','vlr_minuto_vinculado','vlr_minuto_contrato'], 'integer'],
             [['porcentajeiva', 'porcentajeretefuente', 'retefuente', 'porcentajereteiva', 'porcentaje_cesantias', 'porcentaje_intereses', 'porcentaje_prima', 'porcentaje_vacacion','porcentaje_empresa'], 'number'],
-            [['declaracion','nombresistema', 'representante_legal'], 'string'],
+            [['declaracion','nombresistema', 'representante_legal','historia','mision','vision'], 'string'],
             [['nitmatricula', 'telefonomatricula', 'celularmatricula', 'iddepartamento', 'idmunicipio'], 'string', 'max' => 15],
             [['razonsocialmatricula', 'nombrematricula', 'apellidomatricula', 'direccionmatricula', 'emailmatricula', 'paginaweb'], 'string', 'max' => 40],
             [['representante_legal'], 'string', 'max' => 50],
@@ -117,6 +122,10 @@ class Matriculaempresa extends \yii\db\ActiveRecord
             'vlr_minuto_vinculado' => 'Vr. minuto vinculado:',
             'vlr_minuto_contrato' => 'Vr. minuto contrato:',
             'porcentaje_empresa' => 'Porcentaje_empresa:',
+            'mision' => 'Mision:',
+            'vision' => 'Vision:',
+            'historia' => 'Historia:',
+            
         ];
     }
 
