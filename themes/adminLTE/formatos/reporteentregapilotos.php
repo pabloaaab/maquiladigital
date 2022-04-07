@@ -67,7 +67,7 @@ class PDF extends FPDF {
             $this->SetXY(10, 39);
             $this->SetFont('Arial', 'B', 12);
             $this->Cell(162, 7, utf8_decode("REPORTE DE MEDIDAS (PILOTOS)"), 0, 0, 'l', 0);
-            $this->Cell(30, 7, utf8_decode('N° : '.str_pad($piloto->idordenproduccion, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
+            $this->Cell(30, 7, utf8_decode('REF. : '.str_pad($piloto->codigoproducto, 4, "0", STR_PAD_LEFT)), 0, 0, 'l', 0);
            // $this->SetFillColor(200, 200, 200);
             $this->SetXY(10, 48);
             $this->SetFont('Arial', 'B', 7);
@@ -95,7 +95,7 @@ class PDF extends FPDF {
             $this->SetFont('Arial', 'B', 7);
             $this->Cell(25, 5, utf8_decode("OP CLIENTE:"), 0, 0, 'L', 1);
             $this->SetFont('Arial', '', 7);
-            $this->Cell(40  , 5, utf8_decode($piloto->ordenproduccion. "  REF.: ".$piloto->cantidad), 0, 0, 'L', 1);
+            $this->Cell(40  , 5, utf8_decode($piloto->ordenproduccion. "  OP: ".$piloto->idordenproduccion), 0, 0, 'L', 1);
             //FIN
              $this->EncabezadoDetalles();
         }
