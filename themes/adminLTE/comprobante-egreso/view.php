@@ -146,12 +146,12 @@ $view = 'comprobante-egreso';
                             <td><?= "No Aplica" ?></td>
                         <?php } ?>
                         
-                            <td><?= '$ '.  number_format($val->subtotal,1) ?></td>
-                            <td><?= '$ '.  number_format($val->iva,1) ?></td>
-                            <td><?= '$ '.  number_format($val->retefuente,1) ?></td>
-                            <td><?= '$ '.  number_format($val->reteiva,1) ?></td>
-                            <td><?= '$ '.  number_format($val->base_aiu,1) ?></td>
-                            <td><?= '$ '.  number_format($val->vlr_abono,1) ?></td>
+                            <td><?= '$ '.  number_format($val->subtotal,0) ?></td>
+                            <td><?= '$ '.  number_format($val->iva,0) ?></td>
+                            <td><?= '$ '.  number_format($val->retefuente,0) ?></td>
+                            <td><?= '$ '.  number_format($val->reteiva,0) ?></td>
+                            <td><?= '$ '.  number_format($val->base_aiu,0) ?></td>
+                            <td><?= '$ '.  number_format($val->vlr_abono,0) ?></td>
                             <td><?= '$ '.  number_format($val->vlr_saldo,0) ?></td>
                         <?php if ($model->autorizado == 0) { ?>
                             <td>

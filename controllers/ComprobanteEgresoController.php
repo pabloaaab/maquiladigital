@@ -293,8 +293,8 @@ class ComprobanteEgresoController extends Controller
                     $reg = count($detalles);
                     if ($reg == 0) {
                         $table->id_compra = $compra->id_compra;
-                        $table->vlr_abono = $compra->total;
-                        $table->vlr_saldo = $compra->saldo;
+                        $table->vlr_abono = round($compra->saldo, 0);
+                        $table->vlr_saldo = round($compra->saldo, 0);
                         $table->subtotal = $compra->subtotal;
                         $table->iva = $compra->impuestoiva;
                         $table->retefuente = $compra->retencionfuente;

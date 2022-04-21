@@ -200,12 +200,34 @@ class CostoProductoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'id' => $model->id_producto]);
+            if($model->aplicar_iva == 0){
+                $model->aplicar_iva = 0;
+                $model->porcentaje_iva = 0;
+                $model->costo_con_iva = $model->costo_sin_iva;
+                $model->save();
+            }else{
+                $matricula = \app\models\Matriculaempresa::findOne(1);
+                $model->aplicar_iva = 1;
+                $model->porcentaje_iva = $matricula->porcentajeiva;
+                $model->save(false);
+                $this->ActualizarCosto($id, $model);
+            }
+           return $this->redirect(['index', 'id' => $model->id_producto]);
         }
 
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+    protected function ActualizarCosto($id, $model) {
+        $detalle = CostoProductoDetalle::find()->where(['=','id_producto', $id])->all();
+        $total = 0;
+        foreach ($detalle as $valores):
+            $total += $valores->total;
+        endforeach;
+        $model->costo_sin_iva = $total;
+        $model->costo_con_iva = $total + round($total * $model->porcentaje_iva)/100;
+        $model->save(false);
     }
  // permita buscar los insumos para el costo del producto
     
