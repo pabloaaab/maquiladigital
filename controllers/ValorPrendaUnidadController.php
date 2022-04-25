@@ -498,6 +498,251 @@ class ValorPrendaUnidadController extends Controller
        // return $this->redirect(['view', 'id' => $id]);
     }
    
+    //proceso de carga el pago de nomina
+    
+    public function actionPagarserviciosoperarios() {
+        
+        $model = new \app\models\FormPagarServicioOperario();
+       /* if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($model);
+        }*/
+        
+         if ($model->load(Yii::$app->request->post())) {  
+            if ($model->validate()){
+                if (isset($_POST["crearfechaspago"])) {
+                   $datosPago = \app\models\PagoNominaServicios::find()->where(['=','fecha_inicio', $model->fecha_inicio])
+                                                                      ->andWhere(['=','fecha_corte', $model->fecha_corte])->one(); 
+                    $fecha_inicio = $model->fecha_inicio;
+                    $fecha_corte = $model->fecha_corte;                   
+                    if($datosPago){
+                       $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
+                    }else{
+                        $operario = Operarios::find()->where(['=','vinculado', 0])
+                                                     ->andWhere(['=','estado', 1])->all();
+                       
+                        foreach ($operario as $operarios):
+                            $tabla = new \app\models\PagoNominaServicios();
+                            $tabla->id_operario = $operarios->id_operario;
+                            $tabla->documento = $operarios->documento;
+                            $tabla->operario = $operarios->nombrecompleto;
+                            $tabla->fecha_inicio = $model->fecha_inicio;
+                            $tabla->fecha_corte = $model->fecha_corte;
+                            $tabla->observacion = $model->observacion;
+                            $tabla->usuario = Yii::$app->user->identity->username;
+                            $tabla->save(false);
+                        endforeach;
+                       
+                         $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
+                    }    
+                }
+                 
+            }
+        }
+         if (Yii::$app->request->get()) {
+             
+         }
+        return $this->renderAjax('pagarserviciosoperario', [
+            'model' => $model,       
+        ]);      
+    }
+    
+    //metodo que llama los pagos del servicio
+    
+    public function actionPageserviceoperario($fecha_inicio, $fecha_corte) {
+        if (isset($_POST["id_pago"])) {
+            $intIndice = 0;
+            $matricula = \app\models\Matriculaempresa::findOne(1);
+            $configuracion_salario = \app\models\ConfiguracionSalario::find()->where(['=','estado', 1])->one();
+            foreach ($_POST["id_pago"] as $intCodigo):
+                $pago = \app\models\PagoNominaServicios::findOne($intCodigo);
+                $buscarPagos = ValorPrendaUnidadDetalles::find()->where(['=','id_operario', $pago->id_operario])
+                                                           ->andWhere(['>=','dia_pago', $fecha_inicio])
+                                                           ->andWhere(['<=','dia_pago', $fecha_corte]) ->all();
+                $contador = 0; $con = 0;
+                $auxiliar = '';
+                foreach ($buscarPagos as $valores):
+                    $contador += $valores->vlr_pago;
+                    if ($auxiliar <> $valores->dia_pago){
+                        $con += 1; 
+                        $auxiliar = $valores->dia_pago;
+                    }else{
+                        $auxiliar = $valores->dia_pago;
+                    }
+                endforeach;
+                $pago->Total_pagar = $contador;
+                $pago->total_dias = $con;
+                $pago->save(false);
+                //codigo para insertar devengados
+                $buscar = \app\models\PagoNominaServicioDetalle::find()->where(['=','id_pago', $intCodigo])->one();
+                if (!$buscar){
+                    $detalle_pago = new \app\models\PagoNominaServicioDetalle();
+                    $detalle_pago->id_pago = $intCodigo;
+                    $detalle_pago->codigo_salario = $matricula->codigo_salario;
+                    $detalle_pago->devengado = $contador;
+                    $detalle_pago->save(false);
+                    //codigo para insertar creditos
+                    $credito = \app\models\CreditoOperarios::find()->where(['=','id_operario', $pago->id_operario])
+                                                                   ->andWhere(['>','saldo_credito', 0])
+                                                                   ->andWhere(['=','estado_credito', 1])->all();
+                    if($credito){
+                        foreach ($credito as $descuento):
+                            $configuracion = \app\models\ConfiguracionCredito::find()->where(['=','codigo_credito', $descuento->codigo_credito])->one();
+                            $detalle_credito = new \app\models\PagoNominaServicioDetalle();
+                            $detalle_credito->id_pago = $intCodigo;
+                            $detalle_credito->codigo_salario = $configuracion->codigo_salario;
+                            $detalle_credito->deduccion = $descuento->vlr_cuota;
+                            $detalle_credito->id_credito = $descuento->id_credito;
+                            $detalle_credito->save(false);   
+                        endforeach;
+                    }
+                   //codigo que inserta el auxilio de transporte
+                    if($matricula->aplica_auxilio == 1){
+                        $pagoBuscar = \app\models\PagoNominaServicios::findOne($intCodigo);
+                        if($pagoBuscar->Total_pagar > $matricula->base_auxilio){
+                            $detalle_auxilio = new \app\models\PagoNominaServicioDetalle();
+                            $detalle_auxilio->id_pago = $intCodigo;
+                            $detalle_auxilio->codigo_salario = $matricula->codigo_salario_auxilio;
+                            $detalle_auxilio->devengado = round(($configuracion_salario->auxilio_transporte_actual / 30) * $pagoBuscar->total_dias);
+                            $detalle_auxilio->save(false);   
+                        }
+                    }
+                }    
+            endforeach;
+            return $this->render('pageserviceoperario', ['fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
+         }
+         return $this->render('pageserviceoperario', ['fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);
+    }
+    //METODO QUE ACTUALIZA SALDO DE LA NOMINA DE CONFECCION
+    
+    public function actionActualizarsaldo($fecha_corte, $fecha_inicio){
+        
+        $pago = \app\models\PagoNominaServicios::find()->where(['=','fecha_inicio', $fecha_inicio])->andWhere(['=','fecha_corte', $fecha_corte])->all(); 
+        foreach ($pago as $pagoNomina):
+            $pagoDetalle = \app\models\PagoNominaServicioDetalle::find()->where(['=','id_pago', $pagoNomina->id_pago])->all();
+            $deduccion = 0;
+            $devengado = 0;
+            foreach ($pagoDetalle as $detalle):
+                 $devengado += $detalle->devengado;
+                 $deduccion += $detalle->deduccion;
+            endforeach;
+            $pagoNomina->devengado = $devengado;
+            $pagoNomina->deduccion = $deduccion;
+            $pagoNomina->Total_pagar = $devengado - $deduccion;
+            $pagoNomina->save(false);
+        endforeach;
+        $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
+    }
+    
+    //CODIGO QUE VA AL DETALLE DEL PAGO
+    
+    public function actionVistadetallepago($id_pago, $fecha_corte, $fecha_inicio) {
+        $model = \app\models\PagoNominaServicios::findOne($id_pago);
+        $detalle_pago = \app\models\PagoNominaServicioDetalle::find()->where(['=','id_pago', $model->id_pago])->orderBy('devengado asc')->all();
+        return $this->render('vista_detalle_pago', [
+                    'model' => $model,
+                    'detalle_pago' => $detalle_pago,
+                    'fecha_inicio' => $fecha_inicio,
+                    'fecha_corte' => $fecha_corte,
+                    
+        ]);
+    }
+    
+    //ESTE CODIGO EDITAR EL DETALLE DEL PAGO
+    public function actionEditarvistadetallepago($id_pago, $id_detalle, $fecha_inicio, $fecha_corte) {
+        
+        $model = \app\models\PagoNominaServicioDetalle::findOne($id_detalle);
+        if ($model->load(Yii::$app->request->post())) {
+            $tabla = \app\models\PagoNominaServicioDetalle::findOne($id_detalle);
+            $tabla->deduccion = $model->deduccion;
+            $tabla->devengado = $model->devengado;
+            $tabla->save(false);
+            return $this->redirect(['valor-prenda-unidad/vistadetallepago','id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);
+        }
+        return $this->render('editar_vista_detalle_pago', [
+            'fecha_corte' => $fecha_corte,
+            'fecha_inicio' => $fecha_inicio,
+            'model' => $model,
+            'id_pago' => $id_pago,
+        ]);
+    }
+   // codigo que permite agregar mas concepto de salario
+    
+    public function actionImportarconceptosalarios($id_pago, $fecha_inicio, $fecha_corte)
+    {
+        $pilotoDetalle = \app\models\ConceptoSalarios::find()->Where(['=','adicion', 1])
+                                                        ->andWhere(['=','tipo_adicion', 1])
+                                                        ->andWhere(['=','debito_credito', 0]) 
+                                                        ->orderBy('nombre_concepto asc')->all();
+        $form = new \app\models\FormMaquinaBuscar();
+        $q = null;
+        $mensaje = '';
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $q = Html::encode($form->q);                                
+                if ($q){
+                    $pilotoDetalle = \app\models\ConceptoSalarios::find()
+                            ->where(['like','nombre_concepto',$q])
+                            ->orwhere(['like','codigo_salario',$q])
+                            ->orderBy('nombre_concepto asc')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+            $pilotoDetalle = \app\models\ConceptoSalarios::find()->Where(['=','adicion', 1])
+                                                        ->andWhere(['=','tipo_adicion', 1])
+                                                        ->andWhere(['=','debito_credito', 0]) 
+                                                        ->orderBy('nombre_concepto asc')->all();
+        }
+        if (isset($_POST["codigo_salario"])) {
+            $intIndice = 0;
+            foreach ($_POST["codigo_salario"] as $intCodigo) {
+                $table = new \app\models\PagoNominaServicioDetalle();
+               // $detalle = PilotoDetalleProduccion::find()->where(['id_proceso' => $intCodigo])->one();
+                $table->id_pago = $id_pago;
+                $table->codigo_salario = $intCodigo;
+                $table->devengado = 0;
+                $table->deduccion = 0;
+                $table->save(false);                                                
+            }
+           $this->redirect(["valor-prenda-unidad/vistadetallepago", 'id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);
+        }else{
+           
+        }
+        return $this->render('importarconceptosalarios', [
+            'pilotoDetalle' => $pilotoDetalle,            
+            'mensaje' => $mensaje,
+            'id_pago' => $id_pago,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_corte' => $fecha_corte,
+            'form' => $form,
+
+        ]);
+    }
+    
+    // PROCESO QUE ELIMINE EL DETALLE DEL PAGO
+    
+     public function actionEliminardetallepago($id_pago,$id_detalle, $fecha_inicio, $fecha_corte)
+    {                                
+        $detalle = \app\models\PagoNominaServicioDetalle::findOne($id_detalle);
+        $detalle->delete();
+        $this->redirect(["vistadetallepago",'id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);        
+    }
+    //proceso que imprime la colilla de confeccion
+    
+    public function actionImprimircolillaconfeccion($id_pago, $fecha_inicio, $fecha_corte)
+    {                                
+      //   $model = \app\models\PagoNominaServicios::findOne($id_pago);
+        
+         return $this->render('../formatos/colillapagoconfeccion', [
+              'model' => $this->findModel($id_pago),
+             'fecha_inicio' => $fecha_inicio,
+             'fecha_corte' => $fecha_corte,
+        ]);
+    }
+    
     public function actionEliminar($id,$detalle, $idordenproduccion)
     {                                
         $detalle = ValorPrendaUnidadDetalles::findOne($detalle);

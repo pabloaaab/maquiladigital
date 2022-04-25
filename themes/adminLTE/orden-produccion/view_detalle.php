@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $model->idordenproduccion;
                         <div class="panel-body">
                             <table class="table table-bordered table-striped table-hover">
                                 <thead>
-                                <tr>
+                                    <tr style="font-size: 85%;">
                                     <th scope="col" style='background-color:#B9D5CE;'>Id</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Producto</th>
                                     <th scope="col" style='background-color:#B9D5CE;'>Código</th>

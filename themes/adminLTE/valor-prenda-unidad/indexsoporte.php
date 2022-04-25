@@ -84,6 +84,26 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                 "method" => "post",                            
             ]);
     ?>
+<div class="panel-footer text-right">
+    <div class="panel-footer text-right">
+      <!-- Inicio Nuevo Detalle proceso -->
+        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> Crear pago',
+            ['/valor-prenda-unidad/pagarserviciosoperarios'],
+            [
+                'title' => 'Crear servicios',
+                'data-toggle'=>'modal',
+                'data-target'=>'#modalpagarserviciosoperarios',
+                'class' => 'btn btn-info btn-xs'
+            ])    
+       ?>
+    </div> 
+    <div class="modal remote fade" id="modalpagarserviciosoperarios">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content"></div>
+        </div>
+    </div>
+</div>    
+    
 <div class="table-responsive">
 <div class="panel panel-success ">
     <div class="panel-heading">
