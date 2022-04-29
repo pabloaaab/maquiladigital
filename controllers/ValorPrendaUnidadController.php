@@ -502,10 +502,7 @@ class ValorPrendaUnidadController extends Controller
     public function actionPagarserviciosoperarios() {
         
         $model = new \app\models\FormPagarServicioOperario();
-       if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return ActiveForm::validate($model);
-        }
+      
         if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()){
                 if (isset($_POST["crearfechaspago"])) {
