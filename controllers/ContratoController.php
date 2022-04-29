@@ -3,12 +3,21 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Empleado;
-use app\models\Contrato;
-use app\models\ContratoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\widgets\ActiveForm;
+use yii\filters\AccessControl;
+use yii\helpers\Url;
+use yii\web\Response;
+use yii\helpers\Html;
+use yii\data\Pagination;
+use yii\bootstrap\Modal;
+
+//modelos
+use app\models\Empleado;
+use app\models\Contrato;
+use app\models\ContratoSearch;
 use app\models\FormContratoNuevo;
 use app\models\FormContratoNuevoEmpleado;
 use app\models\FormFiltroContrato;
@@ -29,13 +38,7 @@ use app\models\CambioEps;
 use app\models\CambioPension;
 use app\models\FormParametroContrato;
 //clases
-use yii\widgets\ActiveForm;
-use yii\filters\AccessControl;
-use yii\helpers\Url;
-use yii\web\Response;
-use yii\helpers\Html;
-use yii\data\Pagination;
-use yii\bootstrap\Modal;
+
 
 /**
  * EmpleadoController implements the CRUD actions for Empleado model.

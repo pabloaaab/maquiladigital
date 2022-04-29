@@ -17,8 +17,8 @@ $form = ActiveForm::begin([
             'enableAjaxValidation' => true,
             'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
-            'template' => '{label}<div class="col-sm-6 form-group">{input}{error}</div>',
-            'labelOptions' => ['class' => 'col-sm-3 control-label'],
+            'template' => '{label}<div class="col-sm-4 form-group">{input}{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
             'options' => []
         ],
         ]);
@@ -59,7 +59,7 @@ $form = ActiveForm::begin([
                     
                        
                 </div>  
-                    <div class="panel-footer text-right">	
+                    <div class="panel-footer text-right">
                        <?= Html::submitButton("<span class='glyphicon glyphicon-floppy-disk'></span> Crear fechas", ["class" => "btn btn-primary", 'name' => 'crearfechaspago']) ?>                    
                    </div>
                 

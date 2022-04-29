@@ -22,7 +22,6 @@ use yii\web\Response;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\bootstrap\Modal;
-use yii\helpers\ArrayHelper;
 
 /**
  * ValorPrendaUnidadController implements the CRUD actions for ValorPrendaUnidad model.
@@ -503,12 +502,11 @@ class ValorPrendaUnidadController extends Controller
     public function actionPagarserviciosoperarios() {
         
         $model = new \app\models\FormPagarServicioOperario();
-       /* if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
+       if ($model->load(Yii::$app->request->post()) && Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return ActiveForm::validate($model);
-        }*/
-        
-         if ($model->load(Yii::$app->request->post())) {  
+        }
+        if ($model->load(Yii::$app->request->post())) {
             if ($model->validate()){
                 if (isset($_POST["crearfechaspago"])) {
                    $datosPago = \app\models\PagoNominaServicios::find()->where(['=','fecha_inicio', $model->fecha_inicio])
@@ -539,9 +537,7 @@ class ValorPrendaUnidadController extends Controller
                  
             }
         }
-         if (Yii::$app->request->get()) {
-             
-         }
+        
         return $this->renderAjax('pagarserviciosoperario', [
             'model' => $model,       
         ]);      
