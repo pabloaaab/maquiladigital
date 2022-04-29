@@ -634,9 +634,20 @@ class ValorPrendaUnidadController extends Controller
         $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
     }
     
+    //CODIGO QUE AUTORIZA LA NOMINA
+    public function actionAutorizarnomina($fecha_corte, $fecha_inicio) {
+        $pago = \app\models\PagoNominaServicios::find()->where(['=','fecha_inicio', $fecha_inicio])->andWhere(['=','fecha_corte', $fecha_corte])->orderBy('operario')->all();
+        foreach ($pago as $autorizar):
+            $autorizar->autorizado = 1;
+            $autorizar->save(false);
+        endforeach;
+          $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
+    }
+    
+    
     //CODIGO QUE VA AL DETALLE DEL PAGO
     
-    public function actionVistadetallepago($id_pago, $fecha_corte, $fecha_inicio) {
+    public function actionVistadetallepago($id_pago, $fecha_corte, $fecha_inicio, $autorizado) {
         $model = \app\models\PagoNominaServicios::findOne($id_pago);
         $detalle_pago = \app\models\PagoNominaServicioDetalle::find()->where(['=','id_pago', $model->id_pago])->orderBy('devengado asc')->all();
         return $this->render('vista_detalle_pago', [
@@ -644,6 +655,7 @@ class ValorPrendaUnidadController extends Controller
                     'detalle_pago' => $detalle_pago,
                     'fecha_inicio' => $fecha_inicio,
                     'fecha_corte' => $fecha_corte,
+                    'autorizado' => $autorizado,
                     
         ]);
     }
@@ -697,7 +709,7 @@ class ValorPrendaUnidadController extends Controller
                                                         ->orderBy('nombre_concepto asc')->all();
         }
         if (isset($_POST["codigo_salario"])) {
-            $intIndice = 0;
+           $intIndice = 0;
             foreach ($_POST["codigo_salario"] as $intCodigo) {
                 $table = new \app\models\PagoNominaServicioDetalle();
                // $detalle = PilotoDetalleProduccion::find()->where(['id_proceso' => $intCodigo])->one();
@@ -737,7 +749,7 @@ class ValorPrendaUnidadController extends Controller
       //   $model = \app\models\PagoNominaServicios::findOne($id_pago);
         
          return $this->render('../formatos/colillapagoconfeccion', [
-              'model' => $this->findModel($id_pago),
+              'model' => \app\models\PagoNominaServicios::findOne($id_pago),
              'fecha_inicio' => $fecha_inicio,
              'fecha_corte' => $fecha_corte,
         ]);
@@ -839,7 +851,97 @@ class ValorPrendaUnidadController extends Controller
            $this->redirect(["valor-prenda-unidad/view", 'id' => $id, 'idordenproduccion' => $idordenproduccion]);
     }
     
-   
+   //EXCEL QUE ESPORTAR LOS PAGOS DE NOMINA
+    
+     public function actionPagoservicioconfeccion($fecha_corte, $fecha_inicio) {        
+        $model = \app\models\PagoNominaServicios::find()->where(['=','fecha_inicio', $fecha_inicio])->andWhere(['=','fecha_corte', $fecha_corte])->orderBy([ 'operario' =>SORT_ASC ])->all();
+        $objPHPExcel = new \PHPExcel();
+        // Set document properties
+        $objPHPExcel->getProperties()->setCreator("EMPRESA")
+            ->setLastModifiedBy("EMPRESA")
+            ->setTitle("Office 2007 XLSX Test Document")
+            ->setSubject("Office 2007 XLSX Test Document")
+            ->setDescription("Test document for Office 2007 XLSX, generated using PHP classes.")
+            ->setKeywords("office 2007 openxml php")
+            ->setCategory("Test result file");
+        $objPHPExcel->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $objPHPExcel->getActiveSheet()->getStyle('1')->getFont()->setBold(true);
+        $objPHPExcel->getActiveSheet()->getStyle('2')->getFont()->setBold(true);        
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true); 
+        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $objPHPExcel->getActiveSheet()->mergeCells("a".(1).":l".(1));
+        $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A2', 'No PAGO')
+                    ->setCellValue('B2', 'DOCUMENTO')
+                    ->setCellValue('C2', 'OPERARIO')
+                    ->setCellValue('D2', 'FECHA INICIO')
+                    ->setCellValue('E2', 'FECHA CORTE')
+                    ->setCellValue('F2', 'FECHA PROCESO')
+                    ->setCellValue('G2', 'No DIAS')
+                    ->setCellValue('H2', 'USUARIO')
+                    ->setCellValue('I2', 'AUTORIZADO')
+                    ->setCellValue('J2', 'DEVENGADO')
+                    ->setCellValue('K2', 'DEDUCCION')
+                    ->setCellValue('L2', 'TOTAL PAGAR')
+                    ->setCellValue('M2', 'OBSERVACION');
+                  
+        $i = 3;
+        foreach ($model as $val) {                            
+            $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A' . $i, $val->id_pago)
+                    ->setCellValue('B' . $i, $val->documento)
+                    ->setCellValue('C' . $i, $val->operario)
+                    ->setCellValue('D' . $i, $val->fecha_inicio)
+                    ->setCellValue('E' . $i, $val->fecha_corte)
+                    ->setCellValue('F' . $i, $val->fecha_registro)
+                    ->setCellValue('G' . $i, $val->total_dias)
+                    ->setCellValue('H' . $i, $val->usuario)
+                    ->setCellValue('I' . $i, $val->autorizado)
+                    ->setCellValue('J' . $i, $val->devengado)
+                    ->setCellValue('K' . $i, $val->deduccion)
+                    ->setCellValue('L' . $i, $val->Total_pagar)
+                    ->setCellValue('M' . $i, $val->observacion);
+              
+                   
+            $i++;                        
+        }
+
+        $objPHPExcel->getActiveSheet()->setTitle('Total pagar');
+        $objPHPExcel->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+        header('Content-Disposition: attachment;filename="Valor_Nomina.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0 
+        header("Content-Transfer-Encoding: binary ");
+        $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);        
+        $objWriter->save('php://output');
+        //$objWriter->save($pFilename = 'Descargas');
+        exit; 
+        
+    }
     
     public function actionGenerarexcel($id) {        
         $ficha = ValorPrendaUnidad::findOne($id);

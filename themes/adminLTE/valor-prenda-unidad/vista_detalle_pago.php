@@ -102,25 +102,32 @@ $this->params['breadcrumbs'][] = $model->id_pago;
                         <td><?= $val->codigoSalario->nombre_concepto  ?></td>
                         <td><?= '$ '.number_format($val->devengado,0) ?></td>
                         <td><?= '$ '.number_format($val->deduccion,0) ?></td>
-                        <td style=' width: 25px;'>
-                           <a href="<?= Url::toRoute(["valor-prenda-unidad/editarvistadetallepago", 'id_detalle' => $val->id_detalle, 'id_pago'=>$val->id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]) ?>" ><span class="glyphicon glyphicon-pencil "></span></a>
-                        </td>
-                        <td style= 'width: 25px;'>
-                            <?= Html::a('', ['eliminardetallepago', 'id_detalle' => $val->id_detalle, 'id_pago' => $val->id_pago,'fecha_inicio'=>$fecha_inicio, 'fecha_corte' => $fecha_corte], [
-                                'class' => 'glyphicon glyphicon-trash',
-                                'data' => [
-                                    'confirm' => 'Esta seguro de eliminar el registro?',
-                                    'method' => 'post',
-                                ],
-                            ]) ?>
-                        </td>
+                        <?php if($autorizado == 0){?>
+                            <td style=' width: 25px;'>
+                               <a href="<?= Url::toRoute(["valor-prenda-unidad/editarvistadetallepago", 'id_detalle' => $val->id_detalle, 'id_pago'=>$val->id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]) ?>" ><span class="glyphicon glyphicon-pencil "></span></a>
+                            </td>
+                            <td style= 'width: 25px;'>
+                                <?= Html::a('', ['eliminardetallepago', 'id_detalle' => $val->id_detalle, 'id_pago' => $val->id_pago,'fecha_inicio'=>$fecha_inicio, 'fecha_corte' => $fecha_corte], [
+                                    'class' => 'glyphicon glyphicon-trash',
+                                    'data' => [
+                                        'confirm' => 'Esta seguro de eliminar el registro?',
+                                        'method' => 'post',
+                                    ],
+                                ]) ?>
+                            </td>
+                        <?php }else{?>
+                             <th></th>
+                             <th ></th>
+                        <?php }?>    
                     </tr>
                     </tbody>
                     <?php endforeach; ?>
                 </table>
-                <div class="panel-footer text-right"> 
-                   <?= Html::a('<span class="glyphicon glyphicon-save"></span> Importar', ['valor-prenda-unidad/importarconceptosalarios', 'id_pago' => $val->id_pago, 'fecha_corte' => $fecha_corte, 'fecha_inicio' => $fecha_inicio], ['class' => 'btn btn-success btn-sm']); ?>      
-                </div>    
+                <?php if($autorizado == 0){?>
+                    <div class="panel-footer text-right"> 
+                       <?= Html::a('<span class="glyphicon glyphicon-save"></span> Importar', ['valor-prenda-unidad/importarconceptosalarios', 'id_pago' => $val->id_pago, 'fecha_corte' => $fecha_corte, 'fecha_inicio' => $fecha_inicio], ['class' => 'btn btn-success btn-sm']); ?>      
+                    </div>  
+                <?php }?>
             </div>
             
             

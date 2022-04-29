@@ -36,7 +36,7 @@ class PagoNominaServicios extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_operario', 'documento', 'Total_pagar','total_dias','devengado','deduccion'], 'integer'],
+            [['id_operario', 'documento', 'Total_pagar','total_dias','devengado','deduccion','autorizado'], 'integer'],
             [['id_operario', 'fecha_inicio', 'fecha_corte', 'Total_pagar'], 'required'],
             [['fecha_inicio', 'fecha_corte', 'fecha_registro'], 'safe'],
             [['operario','observacion','usuario'], 'string', 'max' => 50],
@@ -76,5 +76,14 @@ class PagoNominaServicios extends \yii\db\ActiveRecord
     public function getOperario()
     {
         return $this->hasOne(Operarios::className(), ['id_operario' => 'id_operario']);
+    }
+    
+    public function getAutorizar (){
+        if($this->autorizado == 0){
+            $autorizado = 'NO';
+        }else{
+            $autorizado = 'SI';
+        }
+        return $autorizado;
     }
 }
