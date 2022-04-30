@@ -654,7 +654,7 @@ class ValorPrendaUnidadController extends Controller
     }
     
     //ESTE CODIGO EDITAR EL DETALLE DEL PAGO
-    public function actionEditarvistadetallepago($id_pago, $id_detalle, $fecha_inicio, $fecha_corte) {
+    public function actionEditarvistadetallepago($id_pago, $id_detalle, $fecha_inicio, $fecha_corte, $autorizado) {
         
         $model = \app\models\PagoNominaServicioDetalle::findOne($id_detalle);
         if ($model->load(Yii::$app->request->post())) {
@@ -662,18 +662,20 @@ class ValorPrendaUnidadController extends Controller
             $tabla->deduccion = $model->deduccion;
             $tabla->devengado = $model->devengado;
             $tabla->save(false);
-            return $this->redirect(['valor-prenda-unidad/vistadetallepago','id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);
+            return $this->redirect(['valor-prenda-unidad/vistadetallepago','id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte, 'autorizado' => $autorizado]);
         }
         return $this->render('editar_vista_detalle_pago', [
             'fecha_corte' => $fecha_corte,
             'fecha_inicio' => $fecha_inicio,
             'model' => $model,
             'id_pago' => $id_pago,
+            'id_detalle' => $id_detalle,
+            'autorizado' => $autorizado,
         ]);
     }
    // codigo que permite agregar mas concepto de salario
     
-    public function actionImportarconceptosalarios($id_pago, $fecha_inicio, $fecha_corte)
+    public function actionImportarconceptosalarios($id_pago, $fecha_inicio, $fecha_corte, $autorizado)
     {
         $pilotoDetalle = \app\models\ConceptoSalarios::find()->Where(['=','adicion', 1])
                                                         ->andWhere(['=','tipo_adicion', 1])
@@ -712,9 +714,7 @@ class ValorPrendaUnidadController extends Controller
                 $table->deduccion = 0;
                 $table->save(false);                                                
             }
-           $this->redirect(["valor-prenda-unidad/vistadetallepago", 'id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]);
-        }else{
-           
+           $this->redirect(["valor-prenda-unidad/vistadetallepago", 'id_pago' => $id_pago, 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte, 'autorizado' => $autorizado]);
         }
         return $this->render('importarconceptosalarios', [
             'pilotoDetalle' => $pilotoDetalle,            
@@ -722,6 +722,7 @@ class ValorPrendaUnidadController extends Controller
             'id_pago' => $id_pago,
             'fecha_inicio' => $fecha_inicio,
             'fecha_corte' => $fecha_corte,
+            'autorizado' => $autorizado,
             'form' => $form,
 
         ]);
