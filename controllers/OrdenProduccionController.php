@@ -2768,7 +2768,7 @@ class OrdenProduccionController extends Controller {
     // PROCESO PARA SUBIR LOS REPROCESOS AL MODULO Y LA OPERACION
     
      public function actionDetalle_reproceso_prenda($id_balanceo, $id){
-       $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id_balanceo])->orderBy('id_operario asc')->all();
+       $balanceo_detalle = BalanceoDetalle::find()->where(['=', 'id_balanceo', $id_balanceo])->andWhere(['=','estado_operacion', 0])->orderBy('id_operario asc')->all();
        $reproceso_confeccion = \app\models\ReprocesoProduccionPrendas::find()->where(['=','id_balanceo', $id_balanceo])
                                                                  ->andWhere(['=','tipo_reproceso', 1])->orderBy('idproductodetalle ASC')->all();
        $reproceso_terminacion = \app\models\ReprocesoProduccionPrendas::find()->where(['=','id_balanceo', $id_balanceo])
