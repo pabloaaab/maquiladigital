@@ -633,7 +633,16 @@ class ValorPrendaUnidadController extends Controller
         foreach ($pago as $autorizar):
             $autorizar->autorizado = 1;
             $autorizar->save(false);
+            $detalle = ValorPrendaUnidadDetalles::find()->where(['>=','dia_pago', $fecha_inicio])->andWhere(['<=','dia_pago', $fecha_corte])
+                                                    ->andWhere(['=','id_operario', $autorizar->id_operario])->all();
+            if(count($detalle)> 0){
+                foreach ($detalle as $valor):
+                    $valor->exportado = 1;
+                    $valor->save(false);
+                endforeach;
+            }
         endforeach;
+       
           $this->redirect(["pageserviceoperario", 'fecha_inicio' => $fecha_inicio, 'fecha_corte' => $fecha_corte]); 
     }
     

@@ -374,6 +374,98 @@ class PagoAdicionalFechaController extends Controller
         ]);
     }
     
+   //PROCESO QUE IMPORTA LOS PAGOS O BONIFICACION DESDE VALOR PRENDA UNIDAD
+    
+   public function actionImportarpagoproduccion($id, $fecha_corte) {
+        $contratos = Contrato::find()->where(['=','tipo_salario', 'VARIABLE'])->orderBy('identificacion DESC')->all();
+        $form = new FormBuscarIntereses();
+        $documento = null;
+        $id_grupo_pago = null;
+        $mensaje = ''; 
+        if ($form->load(Yii::$app->request->get())) {
+            if ($form->validate()) {
+                $documento = Html::encode($form->documento); 
+                $id_grupo_pago = Html::encode($form->id_grupo_pago);
+                if ($id_grupo_pago or $documento){
+                    $contratos = Contrato::find()
+                            ->where(['like','identificacion',$documento])
+                            ->orFilterWhere(['=','id_grupo_pago', $id_grupo_pago])
+                            ->andFilterWhere(['=','tipo_salario', 'VARIABLE'])
+                            ->orderBy('identificacion DESC')
+                            ->all();
+                }               
+            } else {
+                $form->getErrors();
+            }                    
+        } else {
+           $contratos = Contrato::find()->where(['=','tipo_salario', 'VARIABLE'])->orderBy('identificacion DESC')->all();
+        }
+        if (isset($_POST["id_contrato"])) {
+            $intIndice = 0;
+            $fecha_corte = Html::encode($_POST["fecha_corte"]);
+            $matricula = \app\models\Matriculaempresa::findOne(1);
+            foreach ($_POST["id_contrato"] as $intCodigo) {
+                $contrato = Contrato::find()->where(['id_contrato' => $intCodigo])->one();
+                $operario = \app\models\Operarios::find()->where(['=','documento', $contrato->identificacion])->andWhere(['=','vinculado', 1])->andWhere(['=','estado', 1])->one();
+                if($operario){
+                   $valor_prenda = \app\models\ValorPrendaUnidadDetalles::find()->where(['=', 'exportado', 0])->andWhere(['<=', 'dia_pago', $fecha_corte])->andWhere(['=','id_operario', $operario->id_operario])->all(); 
+                   if(count($valor_prenda)>0){
+                       $suma = 0;
+                       foreach ($valor_prenda as $pagos):
+                           $suma += $pagos->vlr_pago;
+                       endforeach;
+                       $table = new PagoAdicionalPermanente();
+                       $table->id_empleado = $contrato->id_empleado;
+                       $table->codigo_salario = $matricula->codigo_salario_pago_produccion;
+                       $table->id_contrato = $contrato->id_contrato;
+                       $table->id_grupo_pago = $contrato->id_grupo_pago;
+                       $table->id_pago_fecha = $id;
+                       $table->fecha_corte = $fecha_corte;
+                       $table->tipo_adicion = 1;
+                       $table->vlr_adicion = $suma;
+                       $table->permanente = 2;
+                       $table->aplicar_dia_laborado = 0;
+                       $table->aplicar_prima = 0;
+                       $table->aplicar_cesantias = 0;
+                       $table->estado_registro = 1;
+                       $table->estado_periodo = 1;
+                       $table->detalle = 'Bonificacion no prestacional';
+                       $table->usuariosistema = Yii::$app->user->identity->username;
+                       $table->insert();
+                    }
+                }
+            }
+            $this->redirect(["pago-adicional-fecha/view", 'id' => $id, 'fecha_corte' => $fecha_corte]);
+        }
+        return $this->render('_formimportarpagoproduccion', [
+            'contratos' => $contratos,            
+            'mensaje' => $mensaje,
+            'id' => $id,
+            'form' => $form,
+            'fecha_corte' => $fecha_corte,
+
+        ]);
+   }
+   
+   //PROCESO QUE APLICA LOS PAGOS
+   public function actionAplicarpagoproduccion($id, $fecha_corte) {
+       
+       $operarios = \app\models\Operarios::find()->where(['=','estado', 1])->andWhere(['=','vinculado', 1])->all();
+       foreach ($operarios as $operario):
+           $valor_prenda = \app\models\ValorPrendaUnidadDetalles::find()->where(['=','id_operario', $operario->id_operario])
+                                                                        ->andWhere(['<=','dia_pago', $fecha_corte])
+                                                                        ->andWhere(['=','exportado', 0])->all();
+            if(count($valor_prenda)>0){
+                foreach ($valor_prenda as $valor):
+                     $valor->exportado = 1;
+                     $valor->save(false);
+                endforeach;
+            }    
+       endforeach;
+       return $this->redirect(["pago-adicional-fecha/view", 'id'=>$id, 'fecha_corte' => $fecha_corte]);
+       
+   }
+    
     public function actionCreate() {   
       
       $model = new PagoAdicionalFecha();        
