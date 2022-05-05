@@ -22,6 +22,7 @@ use yii\web\Response;
 use yii\helpers\Html;
 use yii\data\Pagination;
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 
 /**
  * ValorPrendaUnidadController implements the CRUD actions for ValorPrendaUnidad model.
