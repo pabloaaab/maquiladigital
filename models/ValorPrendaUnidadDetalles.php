@@ -127,4 +127,13 @@ class ValorPrendaUnidadDetalles extends \yii\db\ActiveRecord
         }
         return $registropagado;
     }
+    
+    public function getRegistroExportado(){
+        if($this->exportado == 1){
+            $exportado = 'SI';
+        }else{
+                $exportado = 'NO';
+        }
+        return $exportado;
+    }
 }

@@ -13,11 +13,15 @@ use kartik\select2\Select2;
 
 <?php
 $form = ActiveForm::begin([
+           "method" => "post",
+            'id' => 'formulario',
+            'enableClientValidation' => false,
+            'enableAjaxValidation' => false,
             'options' => ['class' => 'form-horizontal condensed', 'role' => 'form'],
             'fieldConfig' => [
-                'template' => '{label}<div class="col-sm-5 form-group">{input}{error}</div>',
-                'labelOptions' => ['class' => 'col-sm-3 control-label'],
-                'options' => []
+            'template' => '{label}<div class="col-sm-3 form-group">{input}{error}</div>',
+            'labelOptions' => ['class' => 'col-sm-2 control-label'],
+            'options' => []
             ],
         ]);
 ?>
@@ -38,8 +42,6 @@ $proceso_confeccion = ArrayHelper::map(\app\models\ProcesoConfeccionPrenda::find
                 'allowClear' => true
             ],
         ]); ?>
-        </div>
-        <div class="row">            
             <?= $form->field($model, 'idtipo')->widget(Select2::classname(), [
             'data' => $tipo,
             'options' => ['placeholder' => 'Seleccione el servicio'],
@@ -55,13 +57,12 @@ $proceso_confeccion = ArrayHelper::map(\app\models\ProcesoConfeccionPrenda::find
              'pluginOptions' => [
              'allowClear' => true ]]);
             ?>
-        </div>
-        <div class="row">
             <?= $form->field($model, 'vlr_vinculado')->textInput(['maxlength' => true]) ?>  
         </div>
         
         <div class="row">
             <?= $form->field($model, 'vlr_contrato')->textInput(['maxlength' => true]) ?>
+            <div class="checkbox checkbox-success" align ="right"><?= $form->field($model, 'debitar_salario_dia')->checkbox(['label' => 'Debitar dia laboral', '1' =>'small', 'class'=>'bs_switch','style'=>'margin-bottom:5px;', 'id'=>'debitar_salario_dia']) ?></div>
         </div>
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("valor-prenda-unidad/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

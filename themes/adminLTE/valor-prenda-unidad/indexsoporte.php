@@ -69,7 +69,7 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                     'todayHighlight' => true]])
             ?>
              <?= $formulario->field($form, 'operacion')->dropDownList(['' => 'TODOS', '1' => 'CONFECCION', '2' => 'OPERACIN', '3' => 'AJUSTE'],['prompt' => 'Seleccione el estado ...']) ?>
-             <?= $formulario->field($form, 'registro_pagado')->dropDownList(['' => 'TODOS', '0' => 'NO', '1' => 'SI'],['prompt' => 'Seleccione el estado ...']) ?>
+             <?= $formulario->field($form, 'exportado')->dropDownList(['' => 'TODOS', '0' => 'NO', '1' => 'SI'],['prompt' => 'Seleccione el estado ...']) ?>
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>
@@ -122,7 +122,7 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                 <th scope="col" style='background-color:#B9D5CE;'>T. pagado</th>
                 <th scope="col" style='background-color:#B9D5CE;'><span title="Porcentaje de cumplimiento">% Cump.</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Usuario</th>
-                <th scope="col" style='background-color:#B9D5CE;'><span title="Registro pagado" >Pagado</span></th>
+                <th scope="col" style='background-color:#B9D5CE;'><span title="Registro exportado" >Exportado</span></th>
                 <th scope="col" style='background-color:#B9D5CE;'>Observacion</th>
                 <th scope="col" style='background-color:#B9D5CE;'><input type="checkbox" onclick="marcar(this);"/></th>
                 
@@ -144,7 +144,7 @@ $operario= ArrayHelper::map(\app\models\Operarios::find()->orderBy('nombrecomple
                     <td align="right"><?= ''.number_format($val->vlr_pago,0) ?></td>
                       <td><?= $val->porcentaje_cumplimiento ?></td>
                     <td><?= $val->usuariosistema ?></td>
-                    <td><?= $val->registroPagado?></td>
+                    <td><?= $val->registroExportado?></td>
                     <td><?= $val->observacion?></td>
                     <td style="width: 35px;"><input type="checkbox" name="consecutivo[]" value="<?= $val->consecutivo ?>"></td>
             </tbody>            

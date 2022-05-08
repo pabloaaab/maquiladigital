@@ -82,6 +82,9 @@ $tipodocumento = ArrayHelper::map(TipoDocumento::find()->all(), 'id_tipo_documen
                                'todayHighlight' => true]])
             ?>
         </div>
+        <div class="row">
+            <?= $form->field($model, 'salario')->textInput(['maxlength' => true]) ?>
+        </div>     
         
         <div class="panel-footer text-right">			
             <a href="<?= Url::toRoute("operarios/index") ?>" class="btn btn-primary btn-sm"><span class='glyphicon glyphicon-circle-arrow-left'></span> Regresar</a>

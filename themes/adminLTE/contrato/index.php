@@ -96,13 +96,13 @@ $tiempo = ArrayHelper::map(TiempoServicio::find()->orderBy ('id_tiempo ASC')->al
             <thead>
             <tr>                
                 <th scope="col" style='background-color:#B9D5CE;'>Id</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Tipo Contrato</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Tipo contrato</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Tiempo</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Identificación</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Nombre</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Fecha Inicio</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Fecha Final</th>
-                <th scope="col" style='background-color:#B9D5CE;'>Cargo</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Fecha inicio</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Fecha final</th>
+                <th scope="col" style='background-color:#B9D5CE;'>Grupo pago</th>
                 <th scope="col" style='background-color:#B9D5CE;'>Act.</th>
                 <th scope="col" style='background-color:#B9D5CE;'></th>                               
                 <th scope="col" style='background-color:#B9D5CE;'></th>  

@@ -386,11 +386,14 @@ class PagoAdicionalFechaController extends Controller
             if ($form->validate()) {
                 $documento = Html::encode($form->documento); 
                 $id_grupo_pago = Html::encode($form->id_grupo_pago);
-                if ($id_grupo_pago or $documento){
+                if ($documento){
                     $contratos = Contrato::find()
                             ->where(['like','identificacion',$documento])
-                            ->orFilterWhere(['=','id_grupo_pago', $id_grupo_pago])
-                            ->andFilterWhere(['=','tipo_salario', 'VARIABLE'])
+                            ->orderBy('identificacion DESC')
+                            ->all();
+                }else{    
+                     $contratos = Contrato::find()
+                            ->where(['=','id_grupo_pago', $id_grupo_pago])
                             ->orderBy('identificacion DESC')
                             ->all();
                 }               

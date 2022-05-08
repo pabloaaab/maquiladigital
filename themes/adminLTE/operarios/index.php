@@ -57,6 +57,7 @@ $operario = ArrayHelper::map(Operarios::find()->orderBy('id_operario ASC')->all(
                 ],
             ]); ?>
              <?= $formulario->field($form, 'estado')->dropDownList(['' => 'TODOS', '1' => 'SI', '0' => 'NO'],['prompt' => 'Seleccione el estado ...']) ?>
+            <?= $formulario->field($form, 'vinculado')->dropDownList(['' => 'TODOS', '1' => 'SI', '0' => 'NO'],['prompt' => 'Seleccione el estado ...']) ?>
         </div>
         <div class="panel-footer text-right">
             <?= Html::submitButton("<span class='glyphicon glyphicon-search'></span> Buscar", ["class" => "btn btn-primary btn-sm",]) ?>

@@ -138,14 +138,14 @@ class ValorPrendaUnidadController extends Controller
                         $operacion = Html::encode($form->operacion);
                         $dia_pago = Html::encode($form->dia_pago);
                         $fecha_corte = Html::encode($form->fecha_corte);
-                        $registro = Html::encode($form->registro_pagado);
+                        $registro = Html::encode($form->exportado);
                         $table = ValorPrendaUnidadDetalles::find()
                                 ->andFilterWhere(['=', 'id_operario', $id_operario])
                                 ->andFilterWhere(['=', 'idordenproduccion', $idordenproduccion])
                                 ->andFilterWhere(['=', 'operacion', $operacion])
                                 ->andFilterWhere(['>=', 'dia_pago', $dia_pago])
                                 ->andFilterWhere(['<=', 'dia_pago', $fecha_corte])
-                                ->andFilterWhere(['=', 'registro_pagado', $registro]);
+                                ->andFilterWhere(['=', 'exportado', $registro]);
                         $table = $table->orderBy('consecutivo DESC');
                         $tableexcel = $table->all();
                         $count = clone $table;
@@ -225,6 +225,7 @@ class ValorPrendaUnidadController extends Controller
         //proceso para actualizar
         if (isset($_POST["detalle_pago_prenda"])) {
             $intIndice = 0;
+            $salario = 0;
             foreach ($_POST["detalle_pago_prenda"] as $intCodigo) {                
                 $table = ValorPrendaUnidadDetalles::findOne($intCodigo);
                 $table->id_operario = $_POST["id_operario"][$intIndice];
@@ -239,14 +240,24 @@ class ValorPrendaUnidadController extends Controller
                         $conMatricula = \app\models\Matriculaempresa::findOne(1);
                         $conHorario = \app\models\Horario::findOne(1);
                         if($operario->vinculado == 1){
-                           $vlr_unidad = $valor_unidad->vlr_vinculado;
-                           if($_POST["vlr_prenda"][$intIndice] == ''){
+                            $vlr_unidad = $valor_unidad->vlr_vinculado;
+                            if($_POST["vlr_prenda"][$intIndice] == ''){
                                 $table->vlr_prenda = $vlr_unidad;
-                               $table->vlr_pago = $table->vlr_prenda * $table->cantidad;
-                           }else{
+                                if($valor_unidad->debitar_salario_dia == 1){ 
+                                    $salario = round($operario->salario_base /30);
+                                    $table->vlr_pago = (($table->vlr_prenda * $table->cantidad) - $salario);
+                                }else{
+                                    $table->vlr_pago = $table->vlr_prenda * $table->cantidad;
+                                }    
+                            }else{
                                 $table->vlr_prenda = $_POST["vlr_prenda"][$intIndice];
-                                $table->vlr_pago = $_POST["vlr_prenda"][$intIndice] * $table->cantidad; 
-                           }
+                                if($valor_unidad->debitar_salario_dia == 1){ 
+                                    $salario = round($operario->salario_base /30);
+                                    $table->vlr_pago = ($_POST["vlr_prenda"][$intIndice] * $table->cantidad) - $salario; 
+                                }else{
+                                    $table->vlr_pago = $_POST["vlr_prenda"][$intIndice] * $table->cantidad; 
+                                }    
+                            }
                            //calculo para hallar el % de cumplimiento
                            $can_minutos = $table->vlr_prenda / $conMatricula->vlr_minuto_vinculado; 
                            $total_diario = round((60/$can_minutos)* $conHorario->total_horas,0);

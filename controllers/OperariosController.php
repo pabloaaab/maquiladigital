@@ -54,15 +54,18 @@ class OperariosController extends Controller
                 $id_operario = null;
                 $documento = null;
                 $estado = null;
+                $vinculado = null;
                 if ($form->load(Yii::$app->request->get())) {
                     if ($form->validate()) {
                         $id_operario = Html::encode($form->id_operario);
                         $documento = Html::encode($form->documento);
                         $estado = Html::encode($form->estado);
+                        $vinculado = Html::encode($form->vinculado);
                         $table = Operarios::find()
                                 ->andFilterWhere(['=', 'id_operario', $id_operario])
                                 ->andFilterWhere(['=', 'documento', $documento])
-                               ->andFilterWhere(['=', 'estado', $estado]);
+                                ->andFilterWhere(['=', 'estado', $estado])
+                                ->andFilterWhere(['=','vinculado', $vinculado]); 
                         $table = $table->orderBy('id_operario DESC');
                         $tableexcel = $table->all();
                         $count = clone $table;
@@ -180,6 +183,7 @@ class OperariosController extends Controller
                 $table->tipo_operaria = $model->tipo_operaria;
                 $table->idmunicipio = $model->idmunicipio;
                 $table->fecha_ingreso = $model->fecha_ingreso;
+                $table->salario_base = $model->salario;
                 $table->usuariosistema =  Yii::$app->user->identity->username;
                 if($table->save(false)){;
                    return $this->redirect(["operarios/index"]);
@@ -229,6 +233,7 @@ class OperariosController extends Controller
                    $table->vinculado = $model->vinculado;
                    $table->tipo_operaria = $model->tipo_operaria;
                    $table->fecha_ingreso = $model->fecha_ingreso;
+                   $table->salario_base = $model->salario;
                    $table->save(false);
                     return $this->redirect(["operarios/index"]);
                }
@@ -253,6 +258,7 @@ class OperariosController extends Controller
                 $model->vinculado = $table->vinculado;
                 $model->tipo_operaria = $table->tipo_operaria;
                 $model->fecha_ingreso = $table->fecha_ingreso;
+                $model->salario = $table->salario_base;
             }else{
                  return $this->redirect(["operarios/index"]);
             }    

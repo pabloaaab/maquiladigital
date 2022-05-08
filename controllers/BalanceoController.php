@@ -433,6 +433,7 @@ class BalanceoController extends Controller
           $table = BalanceoDetalle::find()->select([new Expression('SUM(minutos) as total_minutos'), 'id_operario'])
                       ->where(['=','id_operario', $operario->id_operario])
                       ->andWhere(['=','id_balanceo', $id])
+                      ->andWhere (['=','estado_operacion', 0])
                       ->groupBy('id_operario')
                       ->all();       
         foreach ($table as $valor):

@@ -49,7 +49,7 @@ class Operarios extends \yii\db\ActiveRecord
     {
         return [
             [['id_tipo_documento', 'documento', 'nombres', 'apellidos', 'iddepartamento','idmunicipio'], 'required'],
-            [['id_tipo_documento', 'documento','estado','polivalente','vinculado'], 'integer'],
+            [['id_tipo_documento', 'documento','estado','polivalente','vinculado','salario_base'], 'integer'],
             [['nombres', 'apellidos', 'email'], 'string', 'max' => 50],
             [['celular'], 'string', 'max' => 15],
             [['iddepartamento', 'idmunicipio'], 'string'],
@@ -82,6 +82,7 @@ class Operarios extends \yii\db\ActiveRecord
             'vinculado' => 'Vinculado',
             'fecha_nacimiento' => 'Fecha nacimiento',
             'fecha_ingreso' => 'Fecha Ingreso',
+            'salario_base' => 'Salario base:',
         ];
     }
 

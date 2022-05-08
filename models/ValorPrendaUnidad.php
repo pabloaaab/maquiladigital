@@ -37,7 +37,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
         return [
             [['idordenproduccion', 'idtipo','id_proceso_confeccion'], 'required'],
             [['idordenproduccion', 'idtipo', 'estado_valor','autorizado','cerrar_pago','cantidad_procesada','total_confeccion','total_ajuste',
-                'total_operacion','total_pagar','cantidad','cantidad_operacion'], 'integer'],
+                'total_operacion','total_pagar','cantidad','cantidad_operacion','debitar_salario_dia'], 'integer'],
             [['vlr_vinculado', 'vlr_contrato'], 'number'],
             [['fecha_proceso','fecha_editado'], 'safe'],
             [['usuariosistema','usuario_editado'], 'string', 'max' => 20],
@@ -73,6 +73,7 @@ class ValorPrendaUnidad extends \yii\db\ActiveRecord
             'cantidad' => 'Unidades',
             'cantidad_operacion' => 'Cantidad operacion',
             'id_proceso_confeccion' => 'Tipo proceso',
+            'debitar_salario_dia' => 'Debitar dia:',
             
             
         ];

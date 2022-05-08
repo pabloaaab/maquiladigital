@@ -293,7 +293,7 @@ $operarios = ArrayHelper::map(\app\models\Operarios::find()->where(['=','estado'
                                    endforeach; ?>
                                 </tbody>  
                                 <?php if(count($balanceo_detalle)> 0){?>
-                                    <td colspan="4"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $total_mi?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $total_mi) * $model->cantidad_empleados,2) ?></td><td colspan="5"></td>
+                                    <td colspan="4"></td><td style="font-size: 85%;background: #3B6495; color: #FFFFFF; width: 135px;"><b>Sam_balanceo:</b> <?= $model->tiempo_balanceo?></td><td colspan="4"></td><td style="font-size: 85%;background: #4B6C67; color: #FFFFFF; width: 90px;"><b>Total:</b> <?= ''. number_format((60 / $model->tiempo_balanceo) * $model->cantidad_empleados,2) ?></td><td colspan="5"></td>
                                     <?php 
                                      if($total_mi > $model->total_minutos){
                                         Yii::$app->getSession()->setFlash('warning', 'Importante: El tiempo asignado en el listado de operaciones ('. $total_mi .'), es mayor que el tiempo inicial asignado ('. $model->total_minutos .') ');

@@ -14,6 +14,7 @@ class FormFiltroOperarios extends Model
     public $id_operario;
     public $documento;
     public $estado;
+    public $vinculado;
 
     /**
      * {@inheritdoc}
@@ -21,7 +22,7 @@ class FormFiltroOperarios extends Model
     public function rules()
     {
         return [
-            [['id_operario', 'documento','estado'], 'integer'],
+            [['id_operario', 'documento','estado','vinculado'], 'integer'],
             ['documento', 'match', 'pattern' => '/^[0-9\s]+$/i', 'message' => 'Sólo se aceptan números'],
         ];
     }
@@ -35,6 +36,7 @@ class FormFiltroOperarios extends Model
             'id_operario' => 'Operario:',
             'documento' => 'Documento:',
             'estado' => 'Activo:',
+            'vinculado' => 'Vinculado:',
             
         ];
     }
